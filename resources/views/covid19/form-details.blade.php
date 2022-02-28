@@ -21,7 +21,7 @@
                     <div class="panel-content">
                         <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
                         <h4 style="text-align: center">
-                            <b>INTEC EDUCATION COLLEGE COVID19 RISK SCREENING DAILY DECLARATION RESULT</b>
+                            <b>COVID19 RISK SCREENING DAILY DECLARATION RESULT</b>
                         </h4>
 
                         <div class="panel-container show">
@@ -78,7 +78,7 @@
                                                     <th width="15%"><label for="qHeader">STAFF DEPARTMENT :</label></th>
                                                     <td colspan="2"><label for="qHeader">{{ strtoupper(isset($declare->staffs->staff_dept) ? $declare->staffs->staff_dept : '-')}}</label></td>
                                                     <th width="15%"><label for="qHeader">CATEGORY :</label></th>
-                                                    <td colspan="4"><label for="qHeader">{{ strtoupper(isset($declare->categoryUser->category_name) ? $declare->categoryUser->category_name : '-')}}</label></td>
+                                                    <td colspan="4"><label for="qHeader">{{ $declare->user_category }} - {{ strtoupper(isset($declare->categoryUser->category_name) ? $declare->categoryUser->category_name : '-')}}</label></td>
                                                 </div>
                                             </tr>
                                                 @if($declare->user_category == 'WFO')
@@ -106,6 +106,173 @@
                                     </table>
                                 </div>
                                 
+                                @if($declare->declare_date >= '2022-03-01')
+                                    <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            <tr>
+                                                <div class="form-group">
+                                                    <th style="text-align: center" width="4%"><label class="form-label" for="qHeader">NO.</label></th>
+                                                    <th style="text-align: center"><label class="form-label" for="qHeader">SELF-DECLARATION CHECKLIST</label></th>
+                                                    {{-- <th style="text-align: center"><label class="form-label" for="qHeader">ANSWER</label></th> --}}
+                                                </div>
+                                            </tr>
+                                            @if(!empty($declare->q1))
+                                            <tr class="q1">
+                                                <div class="form-group">
+                                                    <td style="text-align: center" width="4%"><label for="q1">1.</label></td>
+                                                    <td width="80%">
+                                                        <label for="q1">Have you been confirmed positive with COVID-19 within 14 days ?</label><br>
+                                                        <p style="line-height: 25px">
+                                                            <b>Answer : </b>
+                                                            @if ($declare->q1 == 'Y') YES @endif
+                                                            @if ($declare->q1 == 'N') NO @endif
+                                                            <br>
+                                                            @if ($declare->q1 == 'Y')  
+                                                                <b>Date Confirmed Positive : </b>
+                                                                {{ date( 'd/m/Y', strtotime(\Carbon\Carbon::now())) }}
+                                                            @endif
+                                                        </p>
+                                                    </td>
+                                                </div>
+                                            </tr>
+                                            @endif
+                                            @if(!empty($declare->q2))
+                                            <tr class="q2">
+                                                <div class="form-group">
+                                                    <td style="text-align: center" width="4%"><label for="q2">2.</label></td>
+                                                    <td>
+                                                        <label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days?</label><br>
+                                                        <p style="line-height: 25px">
+                                                            <b>Answer : </b>
+                                                            @if ($declare->q2 == 'Y') YES @endif
+                                                            @if ($declare->q2 == 'N') NO @endif
+                                                            <br>
+                                                            @if ($declare->q2 == 'Y')  
+                                                                <b>Date Confirmed Contact : </b>
+                                                                {{ isset($declare->declare_date) ? date( 'd/m/Y', strtotime($declare->declare_date)) : '--' }} <br>
+                                                                <b> Who's The Close Contact (eg: parents/siblings/friend) ? : </b>
+                                                                {{ $declare->declare_contact ?? '--' }} <br>
+                                                                <b> Done Your Own COVID-19 Care Medical Kit ? : </b>
+                                                                    @if ($declare->declare_kit == 'Y') YES @endif
+                                                                    @if ($declare->declare_kit == 'N') NO @endif
+                                                                    <br>
+                                                                    @if($declare->declare_kit == 'Y')
+                                                                        <b> Result : </b>
+                                                                        @if ($declare->declare_result == 'P') POSITIVE (+) @endif
+                                                                        @if ($declare->declare_result == 'N') NEGATIVE (-) @endif
+                                                                    @endif
+                                                            @endif
+                                                        </p>
+                                                    </td>
+                                                </div>
+                                            </tr>
+                                            @endif
+                                            @if(!empty($declare->q3))
+                                            <tr class="q3">
+                                                <div class="form-group">
+                                                    <td style="text-align: center" width="4%"><label for="q3">3.</label></td>
+                                                    <td>
+                                                        <label for="q3">
+                                                            Are you categorized as Casual Contact in MySejahtera ? <b>OR</b><br>
+                                                            Have you ever attended an event or visited any place involving suspected or positive COVID-19 case ? <b>OR</b><br>
+                                                            Are you from an area of Enhanced Movement Control Order (EMCO) in period of 10 days ?</label>
+                                                            <p style="line-height: 25px">
+                                                                <b>Answer : </b>
+                                                                @if ($declare->q3 == 'Y') YES @endif
+                                                                @if ($declare->q3 == 'N') NO @endif
+                                                            </p>
+                                                    </td>
+                                                </div>
+                                            </tr>
+                                            @endif
+                                            @if(!empty($declare->q4a) | !empty($declare->q4b) | !empty($declare->q4c) | !empty($declare->q4d))
+                                                <tr>
+                                                    <div class="form-group">
+                                                        <td style="text-align: center" width="3%" rowspan="5"><label for="q4">4.</label></td>
+                                                        <td>
+                                                            <label for="q4">Do you have any symptom of Covid-19 (Fever/Cough/Flu/Sore Throat) ?</label>
+                                                            <p style="line-height: 25px">
+                                                                <b>Answer : </b>
+                                                                @if (!empty($declare->q4a) | !empty($declare->q4b) | !empty($declare->q4c) | !empty($declare->q4d) == 'Y') 
+                                                                    YES
+                                                                    <br>
+                                                                    <b> Done Your Own COVID-19 Care Medical Kit ? : </b>
+                                                                        @if ($declare->declare_kit == 'Y') YES @endif
+                                                                        @if ($declare->declare_kit == 'N') NO @endif
+                                                                        <br>
+                                                                        @if($declare->declare_kit == 'Y')
+                                                                            <b> Result : </b>
+                                                                            @if ($declare->declare_result == 'P') POSITIVE (+) @endif
+                                                                            @if ($declare->declare_result == 'N') NEGATIVE (-) @endif
+                                                                        @endif
+                                                                @else 
+                                                                    NO
+                                                                @endif
+                                                            </p>
+                                                        </td>
+                                                    </div>
+                                                </tr>
+                                                {{-- @if(!empty($declare->q4a)) --}}
+                                                    {{-- <tr>
+                                                        <div class="form-group">
+                                                            <td width="3%"><label for="q4a"><li>Fever</li></label></td>
+                                                            <td style="text-align: center">
+                                                                @if ($declare->q4a == 'Y') YES @endif
+                                                                @if ($declare->q4a == 'N') NO @endif
+                                                            </td>
+                                                        </div>
+                                                    </tr> --}}
+                                                {{-- @endif --}}
+                                                {{-- @if(!empty($declare->q4b)) --}}
+                                                    {{-- <tr>
+                                                        <div class="form-group">
+                                                            <td width="3%"><label for="q4b"><li>Cough</li></label></td>
+                                                            <td style="text-align: center">
+                                                                @if ($declare->q4b == 'Y') YES @endif
+                                                                @if ($declare->q4b == 'N') NO @endif
+                                                            </td>
+                                                        </div>
+                                                    </tr> --}}
+                                                {{-- @endif --}}
+                                                {{-- @if(!empty($declare->q4c)) --}}
+                                                    {{-- <tr>
+                                                        <div class="form-group">
+                                                            <td width="3%"><label for="q4c"><li>Flu</li></label></td>
+                                                            <td style="text-align: center">
+                                                                @if ($declare->q4c == 'Y') YES @endif
+                                                                @if ($declare->q4c == 'N') NO @endif
+                                                            </td>
+                                                        </div>
+                                                    </tr> --}}
+                                                {{-- @endif --}}
+                                                {{-- @if(!empty($declare->q4d)) --}}
+                                                    {{-- <tr>
+                                                        <div class="form-group">
+                                                            <td width="3%"><label for="q4d"><li>Difficulty in Breathing</li></label></td>
+                                                            <td style="text-align: center">
+                                                                @if ($declare->q4d == 'Y') YES @endif
+                                                                @if ($declare->q4d == 'N') NO @endif
+                                                            </td>
+                                                        </div>
+                                                    </tr> --}}
+                                                {{-- @endif --}}
+                                            @endif
+                                            <tr>
+                                                <div class="form-group">
+                                                    <td colspan="4">
+                                                        <label for="confirmation" style="margin-left: 55px;"><b> OVERALL RESULT : </b><b style="font-size: 20px">CATEGORY {{$declare->category}}</b> 
+                                                            [ @if ($declare->category == 'A') You are a patient who has been confirmed positive for COVID-19 @endif
+                                                            @if ($declare->category == 'B') You are an individual who has close contact with individuals from category A @endif
+                                                            @if ($declare->category == 'C') You are an individual who has close contact with individuals from category B @endif
+                                                            @if ($declare->category == 'D') No close contact but there are symptoms @endif
+                                                            @if ($declare->category == 'E') No close contact and no symptoms @endif ]
+                                                        </label>
+                                                    </td>
+                                                </div>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                @else 
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
@@ -212,17 +379,19 @@
                                                     <td colspan="4">
                                                         <label for="confirmation" style="margin-left: 55px;"><b> OVERALL RESULT : </b><b style="font-size: 20px">CATEGORY {{$declare->category}}</b> 
                                                             [ @if ($declare->category == 'A') You are a patient who has been confirmed positive for COVID-19 @endif
-                                                              @if ($declare->category == 'B') You are an individual who has close contact with individuals from category A @endif
-                                                              @if ($declare->category == 'C') You are an individual who has close contact with individuals from category B @endif
-                                                              @if ($declare->category == 'D') No close contact but there are symptoms @endif
-                                                              @if ($declare->category == 'E') No close contact and no symptoms @endif ]
+                                                            @if ($declare->category == 'B') You are an individual who has close contact with individuals from category A @endif
+                                                            @if ($declare->category == 'C') You are an individual who has close contact with individuals from category B @endif
+                                                            @if ($declare->category == 'D') No close contact but there are symptoms @endif
+                                                            @if ($declare->category == 'E') No close contact and no symptoms @endif ]
                                                         </label>
                                                     </td>
                                                 </div>
                                             </tr>
                                         </thead>
                                     </table>
-                                    <a style="margin-right:5px" href="{{ URL::previous() }}" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                @endif 
+                                
+                                <a style="margin-right:5px" href="{{ URL::previous() }}" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br>
                             </div>
                         </div>
                     

@@ -6,15 +6,61 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header" style="background-image: url({{asset('img/coronavirus.png')}}); background-size: cover">
                     <div class="d-flex justify-content-center">
                         <div class="p-2">
                             <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;" class="responsive"/></center><br>
+                            <h4 style="text-align: center">
+                                <b>COVID19 RISK SCREENING DAILY DECLARATION FORM</b>
+                            </h4>
+                            <br>
+                            <p style="padding-left: 40px; padding-right: 40px; font-size: 12px">
+                                *<i><b>IMPORTANT!</b></i> : All staff, student and visitor are required to make a daily declaration of COVID-19 risk screening on every working day (whether working in the office or from home) as prevention measures. 
+                                However, you are encouraged to make a declaration on a daily basis including public holidays and other holidays.
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <center>
+                        <div class="col-md-8 mb-4">
+                            {{-- <div class="card d-flex align-items-stretch"> --}}
+                                <div class="card-header text-center">
+                                    <span class="font-weight-bold">RESULT SUMMARY</span>
+                                </div>
+                                <div class="card-body">
+                                    {{-- <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            <tr align="center" class="data-row">
+                                                <table>
+                                                    <tr><td style="background-color:#ff664c; color: white; padding: 10px;">
+                                                    <p class="mb-0 mt-0" style="font-size: 40px">21
+                                                    <sup style="top: -16px; font-size: 20px;">Feb 2022</sup>
+                                                    <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">Monday</p></p>
+                                                    <hr class="mb-0 mt-0">
+                                                    <p align="center" class="mb-0 mt-0" style="font-size: 21px">B</p>
+                                                    </td></tr>
+                                                </table>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <br> --}}
+                                    @if (Session::has('message'))
+                                        <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: # ; width: 100%; font-size: 14px;"> {!! session()->get('message') !!}</div></center>
+                                    @endif
+                                    @if (Session::has('msg'))
+                                        <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: # ; width: 100%; font-size: 14px;"> {!! session()->get('msg') !!}</div></center>
+                                    @endif
+                                    @if (Session::has('msgA'))
+                                        <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: # ; width: 100%; font-size: 14px;"> {!! session()->get('msgA') !!}</div></center>
+                                    @endif
+                                    @if (Session::has('msgB'))
+                                        <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: # ; width: 100%; font-size: 14px;"> {!! session()->get('msgB') !!}</div></center>
+                                    @endif
+                                </div>
+                            {{-- </div> --}}
+                        </div>
+
                         <div class="col-md-8">
                             <div class="card d-flex align-items-stretch">
                                 <div class="card-header text-center">
@@ -109,18 +155,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if (Session::has('message'))
-                                            <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('message') !!}</div></center>
-                                        @endif
-                                        @if (Session::has('msg'))
-                                            <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('msg') !!}</div></center>
-                                        @endif
-                                        @if (Session::has('msgA'))
-                                            <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('msgA') !!}</div></center>
-                                        @endif
-                                        @if (Session::has('msgB'))
-                                            <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('msgB') !!}</div></center>
-                                        @endif
+                                        
                                     </div>
                                 </div>
                             </div>

@@ -33,6 +33,7 @@
                                         <th>QUARANTINE DAY</th>
                                         <th>DATE DECLARE</th>
                                         <th>TIME DECLARE</th>
+                                        <th>DECLARATION</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
@@ -43,6 +44,7 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Day"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Date Created"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Time Created"></td>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                     </tr>
                                 </thead>
@@ -105,6 +107,7 @@
                     { className: 'text-center', data: 'quarantine_day', name: 'quarantine_day' },
                     { className: 'text-center', data: 'date', name: 'declare_date' },
                     { className: 'text-center', data: 'time', name: 'declare_time' },
+                    { className: 'text-center', data: 'declare', name: 'declare', orderable: false, searchable: false},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,

@@ -15,7 +15,8 @@ class Covid extends Model
     protected $fillable = [
         'user_id', 'user_ic', 'user_phone','user_name','user_email','user_position','department_id',
         'form_type', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d', 'confirmation', 'category', 
-        'created_by', 'declare_date', 'declare_time', 'user_category', 'temperature'
+        'created_by', 'declare_date', 'declare_time', 'user_category', 'temperature', 'declare_contact',
+        'declare_kit', 'declare_result'
     ];
 
     public function user()

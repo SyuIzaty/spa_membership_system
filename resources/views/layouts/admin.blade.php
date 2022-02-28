@@ -918,7 +918,7 @@
                                 </a>
                             </li>
                             <li class="open">
-                                <a href="/declareNew/{{ Auth::user()->id }}" title="Declaration"
+                                <a href="/declareNew" title="Declaration"
                                     data-filter-tags="declaration">
                                     <i class="fal fa-user"></i>
                                     <span class="nav-link-text" data-i18n="nav.declaration">Declaration Form</span>

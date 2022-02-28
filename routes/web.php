@@ -212,7 +212,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/history-info/{id}', 'CovidController@historyInfo')->name('historyInfo');
     Route::delete('historyList/{id}', 'CovidController@historyDelete');
     Route::get('/declarationList/{id}', 'CovidController@list')->name('list');
-    Route::get('/declareNew/{id}', 'CovidController@new')->name('new');
+    Route::get('/declareNew', 'CovidController@new')->name('new');
     Route::post('newStore', 'CovidController@newStore');
     Route::get('/selfHistory/{id}', 'CovidController@selfHistory')->name('selfHistory');
     Route::post('historySelf', 'CovidController@data_selfHistory');

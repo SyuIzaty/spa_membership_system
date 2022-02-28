@@ -27,7 +27,7 @@
 
                                 <table class="table table-bordered">
                                     <tr> 
-                                        <td colspan="5"><label class="form-label" for="follow_up">NOTES :</label>
+                                        <td colspan="5" class="bg-primary-50"><label class="form-label" for="follow_up">NOTES :</label>
                                             @error('follow_up')
                                                 <p style="color: red"><strong> * not more than 225 words </strong></p>
                                             @enderror

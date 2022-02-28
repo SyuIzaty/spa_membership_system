@@ -45,7 +45,7 @@
                                                             <option value="">Select Name</option>
                                                             <option>All</option>
                                                             @foreach($name as $names)
-                                                                <option value="{{$names->user_id}}" <?php if($request->name == $names->user_id) echo "selected"; ?> >{{$names->user_name}}</option>
+                                                                <option value="{{$names->user_id}}" <?php if($request->name == $names->user_id) echo "selected"; ?> >{{$names->user_id}} - {{$names->user_name}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -102,13 +102,13 @@
                                                             <th>IC NO</th>
                                                             <th>EMAIL</th>
                                                             <th>PHONE</th>
-                                                            <th>Q1</th>
+                                                            {{-- <th>Q1</th>
                                                             <th>Q2</th>
                                                             <th>Q3</th>
                                                             <th>Q4A</th>
                                                             <th>Q4B</th>
                                                             <th>Q4C</th>
-                                                            <th>Q4D</th>
+                                                            <th>Q4D</th> --}}
                                                             <th>RESULT</th>
                                                             <th>TEMPERATURE</th>
                                                             <th>CATEGORY</th>
@@ -147,7 +147,7 @@
                                                     </div>
                                                     <div class="col-lg-6 col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Position : </label>
+                                                            <label><span class="text-danger">*</span> Position : </label>
                                                             <select class="form-control custom-cates" name="cates" id="cates">
                                                                 <option value="" selected disabled> Please select </option>
                                                                 {{-- <option>All</option> --}}
@@ -264,20 +264,20 @@
             "dom" : "Bltp",
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             iDisplayLength: 10,
-            columnDefs: [{ "visible": false,"targets":[19]}],
+            columnDefs: [{ "visible": false,"targets":[12]}],
             columns: [
                     { data: 'user_id', name: 'user_id' },
                     { data: 'user_name', name: 'user_name' },
                     { data: 'user_ic', name: 'user_ic' },
                     { data: 'user_email', name: 'user_email' },
                     { data: 'user_phone', name: 'user_phone' },
-                    { data: 'q1', name: 'q1' },
-                    { data: 'q2', name: 'q2' },
-                    { data: 'q3', name: 'q3' },
-                    { data: 'q4a', name: 'q4a' },
-                    { data: 'q4b', name: 'q4b' },
-                    { data: 'q4c', name: 'q4c' },
-                    { data: 'q4d', name: 'q4d' },
+                    // { data: 'q1', name: 'q1' },
+                    // { data: 'q2', name: 'q2' },
+                    // { data: 'q3', name: 'q3' },
+                    // { data: 'q4a', name: 'q4a' },
+                    // { data: 'q4b', name: 'q4b' },
+                    // { data: 'q4c', name: 'q4c' },
+                    // { data: 'q4d', name: 'q4d' },
                     { data: 'category', name: 'category' },
                     { data: 'temperature', name: 'temperature' },
                     { data: 'user_category', name: 'user_category' },
@@ -288,7 +288,7 @@
                     { data: 'created_at', name: 'created_at' },
                 ],
                 orderCellsTop: true,
-                "order": [[ 18, "desc" ]],
+                "order": [[ 11, "desc" ]],
                 "initComplete": function(settings, json) {
                 },
                 select : true,

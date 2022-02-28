@@ -28,7 +28,7 @@
 
                                 <table class="table table-bordered">
                                     <tr> 
-                                        <td colspan="5"><label class="form-label" for="follow_up">NOTES :</label>
+                                        <td colspan="5" class="bg-primary-50"><label class="form-label" for="follow_up">NOTES :</label>
                                             @error('follow_up')
                                                 <p style="color: red"><strong> * not more than 225 words </strong></p>
                                             @enderror
@@ -78,8 +78,8 @@
                                                 <td align="center">{{ $el->user->name }}</td>
                                                 <td align="center">{{ date('d-m-Y | h:i A', strtotime($el->created_at)) }}</td>
                                                 <td align="center">
-                                                    <a href="/followup-edit/{{ $el->id}}" data-cov="{{$el->id}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
-                                                    <a href="{{ action('CovidController@delFollowup', ['id' => $el->id, 'cov_id' => $declare->id]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"> Delete</i></a>
+                                                    <a href="/followup-edit/{{ $el->id}}" data-cov="{{$el->id}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> </a>
+                                                    <a href="{{ action('CovidController@delFollowup', ['id' => $el->id, 'cov_id' => $declare->id]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"> </i></a>
                                                 </td>
                                             </tr>
                                             @endforeach

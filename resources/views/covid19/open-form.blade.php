@@ -11,9 +11,10 @@
                         <div class="p-2">
                             <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;" class="responsive"/></center><br>
                             <h4 style="text-align: center">
-                                <b>INTEC EDUCATION COLLEGE COVID19 RISK SCREENING DAILY DECLARATION FORM</b>
+                                <b>COVID19 RISK SCREENING DAILY DECLARATION FORM</b>
                             </h4>
-                            <p style="padding-left: 40px; padding-right: 40px">
+                            <br>
+                            <p style="padding-left: 40px; padding-right: 40px; font-size: 12px">
                                 *<i><b>IMPORTANT!</b></i> : All staff, student and visitor are required to make a daily declaration of COVID-19 risk screening on every working day (whether working in the office or from home) as prevention measures. 
                                 However, you are encouraged to make a declaration on a daily basis including public holidays and other holidays.
                             </p>
@@ -209,10 +210,41 @@
                                         </tr>
                                         <tr class="declare_date2" style="display: none">
                                             <div class="form-group">
-                                                <td style="text-align: center" width="4%"><label for="declare_date"></label></td>
+                                                <td style="text-align: center" width="4%"><label for="declare_date2"></label></td>
                                                 <td width="80%" style="vertical-align: middle;"><label for="declare_date2"><span class="text-danger">*</span> Date Confirmed Contact : </label>@error('declare_date2')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                                 <td colspan="2" style="text-align: center">
                                                     <input class="form-control" type="datetime-local" name="declare_date2" id="declare_date2" value="{{ old('declare_date2') }}">
+                                                </td>
+                                            </div>
+                                        </tr>
+                                        <tr class="declare_date2" style="display: none">
+                                            <div class="form-group">
+                                                <td style="text-align: center" width="4%"><label for="declare_contact2"></label></td>
+                                                <td width="80%" style="vertical-align: middle;"><label for="declare_contact2"><span class="text-danger">*</span> Who's The Close Contact (eg: parents/siblings/friend) ? : </label>@error('declare_contact2')<b style="color: red"><strong> required </strong></b>@enderror</td>
+                                                <td colspan="2" style="text-align: center">
+                                                    <input class="form-control" name="declare_contact2" id="declare_contact2" value="{{ old('declare_contact2') }}">
+                                                </td>
+                                            </div>
+                                        </tr>
+                                        <tr class="declare_date2" style="display: none">
+                                            <div class="form-group">
+                                                <td style="text-align: center" width="4%"><label for="declare_kit2"></label></td>
+                                                <td width="80%" style="vertical-align: middle;"><label for="declare_kit2"><span class="text-danger">*</span> Done Your Own COVID-19 Care Medical Kit ? : </label>@error('declare_kit2')<b style="color: red"><strong> required </strong></b>@enderror</td>
+                                                <td style="text-align: center"><input type="radio" name="declare_kit2" id="declare_kit2" value="Y" {{ (old('declare_kit2') && old('declare_kit2') == 'Y') ? 'checked' : '' }}></td>
+                                                <td style="text-align: center"><input type="radio" name="declare_kit2" id="declare_kit2" value="N" {{ (old('declare_kit2') && old('declare_kit2') == 'N') ? 'checked' : '' }}></td>
+                                            </div>
+                                        </tr>
+                                        <tr class="declare_result2" style="display: none">
+                                            <div class="form-group">
+                                                <td style="text-align: center" width="4%"><label for="declare_result2"></label></td>
+                                                <td width="80%" style="vertical-align: middle;"><label for="declare_result2"><span class="text-danger">*</span> Result : </label>@error('declare_result2')<b style="color: red"><strong> required </strong></b>@enderror</td>
+                                                <td colspan="2" style="text-align: center">
+                                                    {{-- <input class="form-control" name="declare_result2" id="declare_result2" value="{{ old('declare_result2') }}"> --}}
+                                                    <select class="form-control deres2" id="declare_result2" name="declare_result2">
+                                                        <option value="">Please Select</option>
+                                                        <option value="P" {{ old('declare_result2') == 'P' ? 'selected':''}} >Positive (+)</option>
+                                                        <option value="N" {{ old('declare_result2') == 'N' ? 'selected':''}} >Negative (-)</option>
+                                                    </select>
                                                 </td>
                                             </div>
                                         </tr>
@@ -220,8 +252,8 @@
                                             <div class="form-group">
                                                 <td style="text-align: center" width="4%"><label for="q3">3.</label></td>
                                                 <td><label for="q3">
-                                                    Have you had close contact with any individual on question 2 within 10 days <br><br> OR <br><br>
-                                                    Have you ever attended an event or visited any place involving suspected or positive COVID-19 case within 10 days <br><br> OR <br><br>
+                                                    Are you categorized as Casual Contact in MySejahtera ? <br><br> OR <br><br>
+                                                    Have you ever attended an event or visited any place involving suspected or positive COVID-19 case ? <br><br> OR <br><br>
                                                     Are you from an area of Enhanced Movement Control Order (EMCO) in period of 10 days ? @error('q3')<b style="color: red"><strong> required </strong></b>@enderror</label></td>
                                                 <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="Y" {{ (old('q3') && old('q3') == 'Y') ? 'checked' : '' }}></td>
                                                 <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="N" {{ (old('q3') && old('q3') == 'N') ? 'checked' : '' }}></td>
@@ -230,12 +262,35 @@
                                         
                                         <tr class="q4" style="display: none">
                                             <div class="form-group">
-                                                <td style="text-align: center" width="3%" rowspan="5"><label for="q4">4.</label></td>
-                                                <td><label for="q4">Do you experience the following symptoms:</label></td>
-                                                <td colspan="2"></td>
+                                                <td style="text-align: center" width="4%"><label for="q3">4.</label></td>
+                                                <td><label for="q4">Do you have any symptom of Covid-19 (Fever/Cough/Flu/Sore Throat) ?</label></td>
+                                                <td style="text-align: center; vertical-align: middle"><input type="radio" name="q4" id="q4" value="Y" {{ (old('q4') && old('q4') == 'Y') ? 'checked' : '' }}></td>
+                                                <td style="text-align: center; vertical-align: middle"><input type="radio" name="q4" id="q4" value="N" {{ (old('q4') && old('q4') == 'N') ? 'checked' : '' }}></td>
                                             </div>
                                         </tr>
-                                        <tr class="q4" style="display: none">
+                                        <tr class="q4_kit" style="display: none">
+                                            <div class="form-group">
+                                                <td style="text-align: center" width="4%"><label for="q4_kit"></label></td>
+                                                <td width="80%" style="vertical-align: middle;"><label for="q4_kit"><span class="text-danger">*</span> Done Your Own COVID-19 Care Medical Kit ? : </label>@error('declare_kit2')<b style="color: red"><strong> required </strong></b>@enderror</td>
+                                                <td style="text-align: center"><input type="radio" name="q4_kit" id="q4_kit" value="Y" {{ (old('q4_kit') && old('q4_kit') == 'Y') ? 'checked' : '' }}></td>
+                                                <td style="text-align: center"><input type="radio" name="q4_kit" id="q4_kit" value="N" {{ (old('q4_kit') && old('q4_kit') == 'N') ? 'checked' : '' }}></td>
+                                            </div>
+                                        </tr>
+                                        <tr class="q4_result" style="display: none">
+                                            <div class="form-group">
+                                                <td style="text-align: center" width="4%"><label for="q4_result"></label></td>
+                                                <td width="80%" style="vertical-align: middle;"><label for="q4_result"><span class="text-danger">*</span> Result : </label>@error('q4_result')<b style="color: red"><strong> required </strong></b>@enderror</td>
+                                                <td colspan="2" style="text-align: center">
+                                                    {{-- <input class="form-control" name="q4_result" id="q4_result" value="{{ old('q4_result') }}"> --}}
+                                                    <select class="form-control q4res" id="q4_result" name="q4_result">
+                                                        <option value="">Please Select</option>
+                                                        <option value="P" {{ old('q4_result') == 'P' ? 'selected':''}} >Positive (+)</option>
+                                                        <option value="N" {{ old('q4_result') == 'N' ? 'selected':''}} >Negative (-)</option>
+                                                    </select>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                        {{-- <tr class="q4" style="display: none">
                                             <div class="form-group">
                                                 <td width="3%"><label for="q4a"><li>Fever</li></label>@error('q4a')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                                 <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="Y" {{ (old('q4a') && old('q4a') == 'Y') ? 'checked' : '' }}></td>
@@ -262,8 +317,7 @@
                                                 <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="Y" {{ (old('q4d') && old('q4d') == 'Y') ? 'checked' : '' }}></td>
                                                 <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="N" {{ (old('q4d') && old('q4d') == 'N') ? 'checked' : '' }}></td>
                                             </div>
-                                        </tr>
-                                        
+                                        </tr> --}}
                                         <tr>
                                             <div class="form-group">
                                                 <td colspan="4"><label class="form-label" for="confirmation">
@@ -287,215 +341,257 @@
 @endsection
 @section('script')
     <script>
-    $(document).ready( function() {
-        $('.department_id, .user_position, .user_category, .department_stf').select2();
+        $(document).ready( function() {
+            $('.department_id, .user_position, .user_category, .department_stf, .deres2, .q4res').select2();
 
-        if($('.user_id').val()!=''){
-            updateCr($('.user_id'));
-        }
-        $(document).on('change','.user_id',function(){
-            updateCr($(this));
-        });
+            if($('.user_id').val()!=''){
+                updateCr($('.user_id'));
+            }
+            $(document).on('change','.user_id',function(){
+                updateCr($(this));
+            });
 
-        function updateCr(elem){
-            var user_id=elem.val();   
+            function updateCr(elem){
+                var user_id=elem.val();   
 
-            $.ajax({
-                type:'get',
-                url:'{!!URL::to('findUser')!!}',
-                data:{'id':user_id},
-                success:function(data)
-                {
-                    $('#user_id').html(data.id);
-                    $('#user_name').val(data.name);
-                    $('#name').val(data.name);
-                    $('#user_email').val(data.email);
-                    $('#email').val(data.email);
+                $.ajax({
+                    type:'get',
+                    url:'{!!URL::to('findUser')!!}',
+                    data:{'id':user_id},
+                    success:function(data)
+                    {
+                        $('#user_id').html(data.id);
+                        $('#user_name').val(data.name);
+                        $('#name').val(data.name);
+                        $('#user_email').val(data.email);
+                        $('#email').val(data.email);
+                    }
+                });
+            }
+
+            $("input[name=q1]").change(function () {        
+                if ($(this).val() == "Y") {
+                $(".q2").hide();
+                $(".q3").hide();
+                $(".q4").hide();
+                $(".declare_date2").hide();
+                $(".declare_date1").show();
+                }
+                else {
+                $(".q2").show();
+                $(".declare_date1").hide();
                 }
             });
-        }
 
-      $("input[name=q1]").change(function () {        
-        if ($(this).val() == "Y") {
-          $(".q2").hide();
-          $(".q3").hide();
-          $(".q4").hide();
-          $(".declare_date2").hide();
-          $(".declare_date1").show();
-        }
-        else {
-          $(".q2").show();
-          $(".declare_date1").hide();
-        }
-      });
+            $("input[name=q2]").change(function () {        
+                if ($(this).val() == "Y") {
+                    $(".q3").hide();
+                    $(".q4").hide();
+                    $(".declare_date1").hide();
+                    $(".declare_date2").show();
+                    $(".declare_contact2").show();
+                    $(".declare_kit2").show();
+                }
+                else {
+                    $(".q3").show();
+                    $(".declare_date2").hide();
+                    $(".declare_result2").hide();
+                }
+            });
 
-      $("input[name=q2]").change(function () {        
-        if ($(this).val() == "Y") {
-          $(".q3").hide();
-          $(".q4").hide();
-          $(".declare_date1").hide();
-          $(".declare_date2").show();
-        }
-        else {
-          $(".q3").show();
-          $(".declare_date2").hide();
-        }
-      });
+            $("input[name=declare_kit2]").change(function () {        
+                if ($(this).val() == "Y") {
+                    $(".q3").hide();
+                    $(".q4").hide();
+                    $(".declare_date1").hide();
+                    $(".declare_date2").show();
+                    $(".declare_result2").show();
+                }
+                else {
+                    $(".declare_result2").hide();
+                }
+            });
 
-      $("input[name=q3]").change(function () {        
-        if ($(this).val() == "Y") {
-          $(".q4").hide();
-        }
-        else {
-          $(".q4").show();
-        }
-      });
+            $("input[name=q3]").change(function () {        
+                if ($(this).val() == "Y") {
+                $(".q4").hide();
+                }
+                else {
+                $(".q4").show();
+                }
+            });
 
+            $("input[name=q4]").change(function () {        
+                if ($(this).val() == "Y") {
+                $(".q4_kit").show();
+                $(".q4_result").hide();
+                }
+                else {
+                $(".q4_kit").hide();
+                $(".q4_result").hide();
+                }
+            });
 
-      $(".select-depart").hide();
+            $("input[name=q4_kit]").change(function () {        
+                if ($(this).val() == "Y") {
+                $(".q4_result").show();
+                }
+                else {
+                $(".q4_result").hide();
+                }
+            });
 
-      $( "#user_category" ).change(function() {
-        var val = $("#user_category").val();
-        if(val=="WFO"){
-            $(".select-depart").show();
-        } else {
             $(".select-depart").hide();
-        }
-      });
-      
 
-      $(".intec").hide();
-
-      $( "#user_position" ).change(function() {
-        var val = $("#user_position").val();
-        if(val=="STF" || val=="STD"){
-            $(".intec").show();
-        } else {
+            $( "#user_category" ).change(function() {
+                var val = $("#user_category").val();
+                if(val=="WFO"){
+                    $(".select-depart").show();
+                } else {
+                    $(".select-depart").hide();
+                }
+            });
+        
             $(".intec").hide();
-        }
-      });
 
-      $(".visitor").hide();
+            $( "#user_position" ).change(function() {
+                var val = $("#user_position").val();
+                if(val=="STF" || val=="STD"){
+                    $(".intec").show();
+                } else {
+                    $(".intec").hide();
+                }
+            });
 
-      $( "#user_position" ).change(function() {
-        var val = $("#user_position").val();
-        if(val=="VSR"){
-            $(".visitor").show();
-        } else {
             $(".visitor").hide();
-        }
-      });
 
-      $(".intecStf").hide();
+            $( "#user_position" ).change(function() {
+                var val = $("#user_position").val();
+                if(val=="VSR"){
+                    $(".visitor").show();
+                } else {
+                    $(".visitor").hide();
+                }
+            });
 
-      $( "#user_position" ).change(function() {
-        var val = $("#user_position").val();
-        if(val=="STF"){
-            $(".intecStf").show();
-        } else {
             $(".intecStf").hide();
-        }
-      });
 
-      $(".intecStd").hide();
+            $( "#user_position" ).change(function() {
+                var val = $("#user_position").val();
+                if(val=="STF"){
+                    $(".intecStf").show();
+                } else {
+                    $(".intecStf").hide();
+                }
+            });
 
-      $( "#user_position" ).change(function() {
-        var val = $("#user_position").val();
-        if(val=="STD"){
-            $(".intecStd").show();
-        } else {
             $(".intecStd").hide();
-        }
-      });
 
-      $(".intecVsr").hide();
+            $( "#user_position" ).change(function() {
+                var val = $("#user_position").val();
+                if(val=="STD"){
+                    $(".intecStd").show();
+                } else {
+                    $(".intecStd").hide();
+                }
+            });
 
-      $( "#user_position" ).change(function() {
-        var val = $("#user_position").val();
-        if(val=="VSR"){
-            $(".intecVsr").show();
-        } else {
             $(".intecVsr").hide();
-        }
-      });
 
-      $(".stdVsr").hide();
+            $( "#user_position" ).change(function() {
+                var val = $("#user_position").val();
+                if(val=="VSR"){
+                    $(".intecVsr").show();
+                } else {
+                    $(".intecVsr").hide();
+                }
+            });
 
-      $( "#user_position" ).change(function() {
-        var val = $("#user_position").val();
-        if(val=="STD" || val=="VSR"){
-            $(".stdVsr").show();
-        } else {
+            $( "#user_category" ).change(function() {
+                var val = $("#user_category").val();
+                if(val=="WFO"){
+                    document.getElementById("department_stf").required = true;
+                } 
+            });
+
             $(".stdVsr").hide();
-        }
-      });
+
+            $( "#user_position" ).change(function() {
+                var val = $("#user_position").val();
+                if(val=="STD" || val=="VSR"){
+                    $(".stdVsr").show();
+                } else {
+                    $(".stdVsr").hide();
+                }
+            });
 
 
-      $(".all").hide();
-
-      $( "#user_position" ).change(function() {
-        var val = $("#user_position").val();
-        if(val=="STD" || val=="STF" || val=="VSR"){
-            $(".all").show();
-        } else {
             $(".all").hide();
+
+            $( "#user_position" ).change(function() {
+                var val = $("#user_position").val();
+                if(val=="STD" || val=="STF" || val=="VSR"){
+                    $(".all").show();
+                } else {
+                    $(".all").hide();
+                }
+            });
+
+            $("#user_position").change(function() {
+                    $("#user_name").val("");
+                    $("#user_email").val("");
+                    $("#vsr_name").val("");
+                    $("#vsr_email").val("");
+                    $("#user_id").val("");
+                    $("#user_phone").val("");
+                    $("#department_id").val(""); 
+                    $("#department_stf").val(""); 
+                    $("#temperature").val("");
+                    $("#temperature_stf").val("");
+            });
+
+            $('.user_position').val('{{ old('user_position') }}'); 
+            $(".user_position").change(); 
+            $('.user_id').val('{{ old('user_id') }}');
+            $(".user_id").change(); 
+            $('.user_category').val('{{ old('user_category') }}'); 
+            $(".user_category").change(); 
+            $('.user_phone').val('{{ old('user_phone') }}');
+            $('.department_id').val('{{ old('department_id') }}');
+            $('.temperature').val('{{ old('temperature') }}');
+            $('.department_stf').val('{{ old('department_stf') }}');
+            $('.temperature_stf').val('{{ old('temperature_stf') }}');
+            $('#vsr_name').val('{{ old('vsr_name') }}');
+            $('#vsr_email').val('{{ old('vsr_email') }}');
+
+            $('input[name="q1"]:checked').val('{{ old('q1') }}');
+            $('input[name="q1"]:checked').change(); 
+            $('#declare_date1').val('{{ old('declare_date1') }}');
+            $('input[name="q2"]:checked').val('{{ old('q2') }}');
+            $('input[name="q2"]:checked').change(); 
+            $('#declare_date2').val('{{ old('declare_date2') }}');
+            $('#declare_contact2').val('{{ old('declare_contact2') }}');
+            $('input[name="declare_kit2"]:checked').val('{{ old('declare_kit2') }}');
+            $('input[name="declare_kit2"]:checked').change(); 
+            $('#declare_result2').val('{{ old('declare_result2') }}');
+            $('input[name="q3"]:checked').val('{{ old('q3') }}');
+            $('input[name="q3"]:checked').change(); 
+            $('input[name="q4"]:checked').val('{{ old('q4') }}');
+            $('input[name="q4"]:checked').change(); 
+            $('input[name="q4_kit"]:checked').val('{{ old('q4_kit') }}');
+            $('input[name="q4_kit"]:checked').change(); 
+            $('#q4_result').val('{{ old('q4_result') }}');
+        });
+
+        function btn()
+        {
+            var chk = document.getElementById("chk")
+            var submit = document.getElementById("submit");
+            submit.disabled = chk.checked ? false : true;
+            if(!submit.disabled){
+                submit.focus();
+            }
         }
-      });
-
-      $("#user_position").change(function() {
-            $("#user_name").val("");
-            $("#user_email").val("");
-            $("#vsr_name").val("");
-            $("#vsr_email").val("");
-            $("#user_id").val("");
-            $("#user_phone").val("");
-            $("#department_id").val(""); 
-            $("#department_stf").val(""); 
-            $("#temperature").val("");
-            $("#temperature_stf").val("");
-      });
-
-        $('.user_position').val('{{ old('user_position') }}'); 
-        $(".user_position").change(); 
-        $('.user_id').val('{{ old('user_id') }}');
-        $(".user_id").change(); 
-        $('.user_category').val('{{ old('user_category') }}'); 
-        $(".user_category").change(); 
-        $('.user_phone').val('{{ old('user_phone') }}');
-        $('.department_id').val('{{ old('department_id') }}');
-        $('.temperature').val('{{ old('temperature') }}');
-        $('.department_stf').val('{{ old('department_stf') }}');
-        $('.temperature_stf').val('{{ old('temperature_stf') }}');
-        $('#vsr_name').val('{{ old('vsr_name') }}');
-        $('#vsr_email').val('{{ old('vsr_email') }}');
-
-        $('input[name="q1"]:checked').val('{{ old('q1') }}');
-        $('input[name="q1"]:checked').change(); 
-        $('#declare_date1').val('{{ old('declare_date1') }}');
-        $('input[name="q2"]:checked').val('{{ old('q2') }}');
-        $('input[name="q2"]:checked').change(); 
-        $('#declare_date2').val('{{ old('declare_date2') }}');
-        $('input[name="q3"]:checked').val('{{ old('q3') }}');
-        $('input[name="q3"]:checked').change(); 
-        $('input[name="q4a"]:checked').val('{{ old('q4a') }}');
-        $('input[name="q4a"]:checked').change(); 
-        $('input[name="q4b"]:checked').val('{{ old('q4b') }}');
-        $('input[name="q4b"]:checked').change(); 
-        $('input[name="q4c"]:checked').val('{{ old('q4c') }}');
-        $('input[name="q4c"]:checked').change(); 
-        $('input[name="q4d"]:checked').val('{{ old('q4d') }}');
-        $('input[name="q4d"]:checked').change(); 
-    });
-
-    function btn()
-    {
-        var chk = document.getElementById("chk")
-        var submit = document.getElementById("submit");
-        submit.disabled = chk.checked ? false : true;
-        if(!submit.disabled){
-            submit.focus();
-        }
-    }
 
     </script>
 @endsection

@@ -74,34 +74,50 @@ class CovidController extends Controller
             {
                 if($request->q3 == 'N')
                 {
-                    if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
+                    // if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
+                    if($request->q4 == 'Y')
                     {
                         $category = 'D';
                         $date = Carbon::now()->toDateString();
                         $time = Carbon::now()->toTimeString();
+                        $contact = '';
+                        $kit = '';
+                        $result = '';
                     }
                     else {
                         $category = 'E';
-                        $date = Carbon::now()->toDateString();
+                        $date = Carbon::now()->toDateTimeString();
                         $time = Carbon::now()->toTimeString();
+                        $contact = '';
+                        $kit = $request->q4_kit;
+                        $result = $request->q4_result;
                     }
                 }
-                else{
+                else {
                     $category = 'C';
-                    $date = Carbon::now()->toDateString();
+                    $date = Carbon::now()->toDateTimeString();
                     $time = Carbon::now()->toTimeString();
+                    $contact = '';
+                    $kit = '';
+                    $result = '';
                 }
             }
             else {
                 $category = 'B';
                 $date = $request->declare_date2;
                 $time = date("H:i:s", strtotime( $request->declare_date2 ));
+                $contact = $request->declare_contact2;
+                $kit = $request->declare_kit2;
+                $result = $request->declare_result2;
             }
         }
-        else{
+        else {
             $category = 'A';
             $date = $request->declare_date1;
             $time = date("H:i:s", strtotime( $request->declare_date1 ));
+            $contact = '';
+            $kit = '';
+            $result = '';
         }
 
         $validate = [
@@ -109,6 +125,9 @@ class CovidController extends Controller
             'user_category'   => 'required',
         ];
 
+        if($request->user_category == 'WFO') {
+            $validate['department_id'] = 'required'; 
+        }
         if($request->q1 == 'N') 
         {
             $validate['q2'] = 'required'; 
@@ -124,40 +143,86 @@ class CovidController extends Controller
         if($request->q2 == 'Y')  
         {
             $validate['declare_date2'] = 'required'; 
+            $validate['declare_contact2'] = 'required';  
+            $validate['declare_kit2'] = 'required';  
+        }
+        if($request->declare_kit2 == 'Y')  
+        {
+            $validate['declare_result2'] = 'required'; 
         }
         if($request->q3 == 'N') 
         {
-            $validate['q4a'] = 'required';
-            $validate['q4b'] = 'required';
-            $validate['q4c'] = 'required';
-            $validate['q4d'] = 'required';
+            $validate['q4'] = 'required';
+        }
+        if($request->q4 == 'Y')  
+        {
+            $validate['q4_kit'] = 'required'; 
+        }
+        if($request->q4_kit == 'Y')  
+        {
+            $validate['q4_result'] = 'required'; 
         }
 
         $request->validate($validate);
 
-        $declare = Covid::create([
-            'user_id'         => $id->id,
-            'user_name'       => $id->name,
-            'user_email'      => $id->email,
-            'user_phone'      => $request->user_phone,
-            'user_position'   => $id->category,
-            'q1'              => $request->q1,
-            'q2'              => $request->q2,
-            'q3'              => $request->q3, 
-            'q4a'             => $request->q4a, 
-            'q4b'             => $request->q4b,
-            'q4c'             => $request->q4c,
-            'q4d'             => $request->q4d, 
-            'confirmation'    => 'Y',
-            'category'        => $category,
-            'created_by'      => $id->id,
-            'form_type'       => 'PF',
-            'declare_date'    => $date,
-            'declare_time'    => $time,
-            'department_id'   => $request->department_id,
-            'user_category'   => $request->user_category,
-            'temperature'     => $request->temperature,
-        ]);
+        
+
+        if($request->q4 == 'Y' || $request->q4 != null) {
+            $declare = Covid::create([
+                'user_id'         => $id->id,
+                'user_name'       => $id->name,
+                'user_email'      => $id->email,
+                'user_phone'      => $request->user_phone,
+                'user_position'   => $id->category,
+                'q1'              => $request->q1,
+                'q2'              => $request->q2,
+                'q3'              => $request->q3, 
+                'q4a'             => 'Y', 
+                'q4b'             => 'Y', 
+                'q4c'             => 'Y', 
+                'q4d'             => 'Y', 
+                'confirmation'    => 'Y',
+                'category'        => $category,
+                'declare_date'    => $date,
+                'declare_time'    => $time,
+                'declare_contact' => strtoupper($contact),
+                'declare_kit'     => $kit,
+                'declare_result'  => $result,
+                'form_type'       => 'PF',
+                'created_by'      => $id->id,
+                'department_id'   => $request->department_id,
+                'user_category'   => $request->user_category,
+                'temperature'     => $request->temperature,
+            ]);
+        } else {
+             
+            $declare = Covid::create([
+                'user_id'         => $id->id,
+                'user_name'       => $id->name,
+                'user_email'      => $id->email,
+                'user_phone'      => $request->user_phone,
+                'user_position'   => $id->category,
+                'q1'              => $request->q1,
+                'q2'              => $request->q2,
+                'q3'              => $request->q3, 
+                'q4a'             => '', 
+                'q4b'             => '', 
+                'q4c'             => '', 
+                'q4d'             => '', 
+                'confirmation'    => 'Y',
+                'category'        => $category,
+                'declare_date'    => $date,
+                'declare_time'    => $time,
+                'declare_contact' => strtoupper($contact),
+                'declare_kit'     => $kit,
+                'declare_result'  => $result,
+                'form_type'       => 'PF',
+                'created_by'      => $id->id,
+                'department_id'   => $request->department_id,
+                'user_category'   => $request->user_category,
+                'temperature'     => $request->temperature,
+            ]);
+        }
             
        return redirect('/declarationForm');
     }
@@ -167,11 +232,13 @@ class CovidController extends Controller
         return view('covid19.form-list');
     }
 
-    public function new($id)
+    public function new()
     {
+        $id = Auth::user()->id;
+
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $user = User::whereHas('roles', function($query){
+            $user = User::where('active', 'Y')->whereHas('roles', function($query){
                 $query->where('category', 'STF');
             })->orderBy('name')->get();
         }
@@ -202,109 +269,713 @@ class CovidController extends Controller
     public function newStore(Request $request)
     {
         $id = Auth::user()->id;
-
+        $datas = User::where('id', $request->user_id)->orWhere('id', $request->user_ids)->first();
+       
         if($request->q1 == 'N')
+        {
+            if($request->q2 == 'N')
             {
-                if($request->q2 == 'N')
+                if($request->q3 == 'N')
                 {
-                    if($request->q3 == 'N')
+                    if($request->q4 == 'Y')
                     {
-                        if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
-                        {
-                            $category = 'D';
-                            $date = Carbon::now()->toDateString();
-                            $time = Carbon::now()->toTimeString();
-                        }
-                        else {
-                            $category = 'E';
-                            $date = Carbon::now()->toDateString();
-                            $time = Carbon::now()->toTimeString();
-                        }
-                    }
-                    else {
-                        $category = 'C';
+                        $category = 'D';
                         $date = Carbon::now()->toDateString();
                         $time = Carbon::now()->toTimeString();
+                        $contact = '';
+                        $kit = '';
+                        $result = '';
+                    }
+                    else {
+                        $category = 'E';
+                        $date = Carbon::now()->toDateTimeString();
+                        $time = Carbon::now()->toTimeString();
+                        $contact = '';
+                        $kit = $request->q4_kit;
+                        $result = $request->q4_result;
                     }
                 }
                 else {
-                    $category = 'B';
-                    $date = $request->declare_date2;
-                    $time = date("H:i:s", strtotime( $request->declare_date2 ));
+                    $category = 'C';
+                    $date = Carbon::now()->toDateTimeString();
+                    $time = Carbon::now()->toTimeString();
+                    $contact = '';
+                    $kit = '';
+                    $result = '';
                 }
             }
-            else{
-                $category = 'A';
-                $date = $request->declare_date1;
-                $time = date("H:i:s", strtotime( $request->declare_date1 ));
+            else {
+                $category = 'B';
+                $date = $request->declare_date2;
+                $time = date("H:i:s", strtotime( $request->declare_date2 ));
+                $contact = $request->declare_contact2;
+                $kit = $request->declare_kit2;
+                $result = $request->declare_result2;
             }
-
-        $data = Covid::where('user_id', $request->user_id)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
-        
-        if(isset($data)) {
-
-            Session::flash('notification', 'Declaration Have Been Made');
-        } else {
-
-            $validate = [
-                'q1'              => 'required',
-                'user_category'   => 'required',
-            ];
-            
-            if($request->q1 == 'N') 
-            {
-                $validate['q2'] = 'required'; 
-            } 
-            if($request->q1 == 'Y') 
-            {
-                $validate['declare_date1'] = 'required'; 
-            }
-            if($request->q2 == 'N') 
-            {
-                $validate['q3'] = 'required'; 
-            } 
-            if($request->q2 == 'Y')  
-            {
-                $validate['declare_date2'] = 'required'; 
-            }
-            if($request->q3 == 'N') 
-            {
-                $validate['q4a'] = 'required';
-                $validate['q4b'] = 'required';
-                $validate['q4c'] = 'required';
-                $validate['q4d'] = 'required';
-            }
-
-            $request->validate($validate);
-
-            Covid::create([
-                'user_id'         => $request->user_id,
-                'user_name'       => $request->name,
-                'user_email'      => $request->user_email,
-                'user_phone'      => $request->user_phone,
-                'user_position'   => $request->user_position, 
-                'q1'              => $request->q1,
-                'q2'              => $request->q2,
-                'q3'              => $request->q3, 
-                'q4a'             => $request->q4a, 
-                'q4b'             => $request->q4b,
-                'q4c'             => $request->q4c,
-                'q4d'             => $request->q4d, 
-                'confirmation'    => 'Y',
-                'category'        => $category,
-                'created_by'      => $id,
-                'form_type'       => 'PF',
-                'declare_date'    => $date,
-                'declare_time'    => $time,
-                'department_id'   => $request->department_id,
-                'user_category'   => $request->user_category,
-                'temperature'     => $request->temperature,
-            ]);
-            
-           Session::flash('message', 'New Data Successfully Created');
+        }
+        else {
+            $category = 'A';
+            $date = $request->declare_date1;
+            $time = date("H:i:s", strtotime( $request->declare_date1 ));
+            $contact = '';
+            $kit = '';
+            $result = '';
         }
 
-       return redirect('declareNew/'. $id);
+        $recent = Covid::where('user_id', $request->user_id)->orWhere('user_id', $request->user_ids)->latest('created_at')->first();
+
+        if(isset($recent)){
+        //Data exist in covid_tbl
+            $datenow   = date('d-m-Y');
+            $duedate   = $recent->declare_date->format('d-m-Y');
+            $datetime1 = new DateTime($datenow);
+            $datetime2 = new DateTime($duedate);
+            $difference  = $datetime1->diff($datetime2)->format('%a')+1;
+
+            if($recent->category == 'A' && $difference < 11) {
+                //Recent category A
+                Session::flash('msgA', 'Declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that '.$datas->name.' are under category A on '.date(' j F Y ', strtotime($recent->declare_date)).'. Quarantine Countdown : '.$difference.'/10 Days');
+
+            } elseif($recent->category == 'B' && $difference < 7) {
+                //Recent category B
+                Session::flash('msgB', 'Declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that '.$datas->name.' are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'. Quarantine Countdown : '.$difference.'/7 Days');
+
+            } else {
+                //Recent category C D E
+                $data = Covid::where('user_id', $request->user_id)->orWhere('user_id', $request->user_ids)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
+            
+                if(isset($data)) 
+                //Data exist on declare_date but change to category A B
+                {
+                    if($category == 'A' || $category == 'B')
+                    {
+                        if($datas->category == 'STF')
+                        {
+                            $validate = [
+                                'user_id'         => 'required|regex:/^[\w-]*$/', 
+                                'user_phone'      => 'required|numeric',
+                                'q1'              => 'required',
+                                'user_category'   => 'required',
+                            ];
+
+                            if($request->user_category == 'WFO') {
+                                $validate['department_id'] = 'required'; 
+                            }
+                            if($request->q1 == 'N') 
+                            {
+                                $validate['q2'] = 'required'; 
+                            } 
+                            if($request->q1 == 'Y') 
+                            {
+                                $validate['declare_date1'] = 'required'; 
+                            }
+                            if($request->q2 == 'N') 
+                            {
+                                $validate['q3'] = 'required'; 
+                            } 
+                            if($request->q2 == 'Y')  
+                            {
+                                $validate['declare_date2'] = 'required'; 
+                                $validate['declare_contact2'] = 'required';  
+                                $validate['declare_kit2'] = 'required';  
+                            }
+                            if($request->declare_kit2 == 'Y')  
+                            {
+                                $validate['declare_result2'] = 'required'; 
+                            }
+                            if($request->q3 == 'N') 
+                            {
+                                $validate['q4'] = 'required';
+                            }
+                            if($request->q4 == 'Y')  
+                            {
+                                $validate['q4_kit'] = 'required'; 
+                            }
+                            if($request->q4_kit == 'Y')  
+                            {
+                                $validate['q4_result'] = 'required'; 
+                            }
+
+                            $request->validate($validate);
+
+                            if($request->q4 == 'Y' || $request->q4 != null) {
+                                $declare = Covid::create([
+                                    'user_name'       => $datas->name,
+                                    'user_id'         => $request->user_id,
+                                    'user_email'      => $datas->email,
+                                    'user_phone'      => $request->user_phone,
+                                    'department_id'   => $request->department_id,
+                                    'user_category'   => $request->user_category,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => 'Y', 
+                                    'q4b'             => 'Y', 
+                                    'q4c'             => 'Y', 
+                                    'q4d'             => 'Y', 
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'AF',
+                                    'created_by'      => $id,
+                                    'temperature'     => $request->temperature,
+                                ]);
+                            } else {
+                                $declare = Covid::create([
+                                    'user_name'       => $datas->name,
+                                    'user_id'         => $request->user_id,
+                                    'user_email'      => $datas->email,
+                                    'user_phone'      => $request->user_phone,
+                                    'department_id'   => $request->department_id,
+                                    'user_category'   => $request->user_category,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => '', 
+                                    'q4b'             => '', 
+                                    'q4c'             => '', 
+                                    'q4d'             => '', 
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'AF',
+                                    'created_by'      => $id,
+                                    'temperature'     => $request->temperature,
+                                ]);
+                            }          
+
+                        } else {
+
+                            $validate = [
+                                'user_ids'          => 'required', 
+                                'user_phones'       => 'required|numeric',
+                                'q1'                => 'required',
+                                'departments_id'    => 'required',
+                            ];
+
+                            if($request->q1 == 'N') 
+                            {
+                                $validate['q2'] = 'required'; 
+                            } 
+                            if($request->q1 == 'Y') 
+                            {
+                                $validate['declare_date1'] = 'required'; 
+                            }
+                            if($request->q2 == 'N') 
+                            {
+                                $validate['q3'] = 'required'; 
+                            } 
+                            if($request->q2 == 'Y')  
+                            {
+                                $validate['declare_date2'] = 'required'; 
+                                $validate['declare_contact2'] = 'required';  
+                                $validate['declare_kit2'] = 'required';  
+                            }
+                            if($request->declare_kit2 == 'Y')  
+                            {
+                                $validate['declare_result2'] = 'required'; 
+                            }
+                            if($request->q3 == 'N') 
+                            {
+                                $validate['q4'] = 'required';
+                            }
+                            if($request->q4 == 'Y')  
+                            {
+                                $validate['q4_kit'] = 'required'; 
+                            }
+                            if($request->q4_kit == 'Y')  
+                            {
+                                $validate['q4_result'] = 'required'; 
+                            }
+
+                            $request->validate($validate);
+
+                            if($request->q4 == 'Y' || $request->q4 != null) {
+                                $declare = Covid::create([
+                                    'user_name'       => $datas->name,
+                                    'user_id'         => $request->user_ids,
+                                    'user_email'      => $datas->email,
+                                    'user_phone'      => $request->user_phones,
+                                    'department_id'   => $request->departments_id,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => 'Y',
+                                    'q4b'             => 'Y',
+                                    'q4c'             => 'Y',
+                                    'q4d'             => 'Y',
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'AF',
+                                    'created_by'      => $id,
+                                    'temperature'     => $request->temperatures,
+                                ]);
+                            } else {
+                                $declare = Covid::create([
+                                    'user_name'       => $datas->name,
+                                    'user_id'         => $request->user_ids,
+                                    'user_email'      => $datas->email,
+                                    'user_phone'      => $request->user_phones,
+                                    'department_id'   => $request->departments_id,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => '',
+                                    'q4b'             => '',
+                                    'q4c'             => '',
+                                    'q4d'             => '',
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'AF',
+                                    'created_by'      => $id,
+                                    'temperature'     => $request->temperatures,
+                                ]);
+                            }
+                                
+                        }
+                        
+                        Session::flash('message', 'Declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded. The result for '.$datas->name.' declaration is category '.$category.'.');
+                    
+                    } else {
+                        //Same data exist for C D E
+                        Session::flash('msg', 'Declaration on '.date(' j F Y ', strtotime($date)).' has already been made.');
+                    }
+                } 
+                else 
+                //Data not exist yet on declare_date
+                {
+                    if($datas->category == 'STF')
+                    {
+                        $validate = [
+                            'user_id'         => 'required|regex:/^[\w-]*$/', 
+                            'user_phone'      => 'required|numeric',
+                            'q1'              => 'required',
+                            'user_category'   => 'required',
+                        ];
+
+                        if($request->user_category == 'WFO') {
+                            $validate['department_id'] = 'required'; 
+                        }
+                        if($request->q1 == 'N') 
+                        {
+                            $validate['q2'] = 'required'; 
+                        } 
+                        if($request->q1 == 'Y') 
+                        {
+                            $validate['declare_date1'] = 'required'; 
+                        }
+                        if($request->q2 == 'N') 
+                        {
+                            $validate['q3'] = 'required'; 
+                        } 
+                        if($request->q2 == 'Y')  
+                        {
+                            $validate['declare_date2'] = 'required'; 
+                            $validate['declare_contact2'] = 'required';  
+                            $validate['declare_kit2'] = 'required';  
+                        }
+                        if($request->declare_kit2 == 'Y')  
+                        {
+                            $validate['declare_result2'] = 'required'; 
+                        }
+                        if($request->q3 == 'N') 
+                        {
+                            $validate['q4'] = 'required';
+                        }
+                        if($request->q4 == 'Y')  
+                        {
+                            $validate['q4_kit'] = 'required'; 
+                        }
+                        if($request->q4_kit == 'Y')  
+                        {
+                            $validate['q4_result'] = 'required'; 
+                        }
+
+                        $request->validate($validate);
+
+                        if($request->q4 == 'Y' || $request->q4 != null) {
+                            $declare = Covid::create([
+                                'user_name'       => $datas->name,
+                                'user_id'         => $request->user_id,
+                                'user_email'      => $datas->email,
+                                'user_phone'      => $request->user_phone,
+                                'department_id'   => $request->department_id,
+                                'user_category'   => $request->user_category,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => 'Y', 
+                                'q4b'             => 'Y', 
+                                'q4c'             => 'Y', 
+                                'q4d'             => 'Y', 
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'AF',
+                                'created_by'      => $id,
+                                'temperature'     => $request->temperature,
+                            ]);
+                        } else {
+                            $declare = Covid::create([
+                                'user_name'       => $datas->name,
+                                'user_id'         => $request->user_id,
+                                'user_email'      => $datas->email,
+                                'user_phone'      => $request->user_phone,
+                                'department_id'   => $request->department_id,
+                                'user_category'   => $request->user_category,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => '', 
+                                'q4b'             => '', 
+                                'q4c'             => '', 
+                                'q4d'             => '', 
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'AF',
+                                'created_by'      => $id,
+                                'temperature'     => $request->temperature,
+                            ]);
+                        }   
+                            
+                    } else {
+
+                        $validate = [
+                            'user_ids'          => 'required', 
+                            'user_phones'       => 'required|numeric',
+                            'q1'                => 'required',
+                            'departments_id'    => 'required',
+                        ];
+
+                        if($request->q1 == 'N') 
+                        {
+                            $validate['q2'] = 'required'; 
+                        } 
+                        if($request->q1 == 'Y') 
+                        {
+                            $validate['declare_date1'] = 'required'; 
+                        }
+                        if($request->q2 == 'N') 
+                        {
+                            $validate['q3'] = 'required'; 
+                        } 
+                        if($request->q2 == 'Y')  
+                        {
+                            $validate['declare_date2'] = 'required'; 
+                            $validate['declare_contact2'] = 'required';  
+                            $validate['declare_kit2'] = 'required';  
+                        }
+                        if($request->declare_kit2 == 'Y')  
+                        {
+                            $validate['declare_result2'] = 'required'; 
+                        }
+                        if($request->q3 == 'N') 
+                        {
+                            $validate['q4'] = 'required';
+                        }
+                        if($request->q4 == 'Y')  
+                        {
+                            $validate['q4_kit'] = 'required'; 
+                        }
+                        if($request->q4_kit == 'Y')  
+                        {
+                            $validate['q4_result'] = 'required'; 
+                        }
+
+                        $request->validate($validate);
+
+                        if($request->q4 == 'Y' || $request->q4 != null) {
+                            $declare = Covid::create([
+                                'user_name'       => $datas->name,
+                                'user_id'         => $request->user_ids,
+                                'user_email'      => $datas->email,
+                                'user_phone'      => $request->user_phones,
+                                'department_id'   => $request->departments_id,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => 'Y',
+                                'q4b'             => 'Y',
+                                'q4c'             => 'Y',
+                                'q4d'             => 'Y',
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'AF',
+                                'created_by'      => $id,
+                                'temperature'     => $request->temperatures,
+                            ]);
+                        } else {
+                            $declare = Covid::create([
+                                'user_name'       => $datas->name,
+                                'user_id'         => $request->user_ids,
+                                'user_email'      => $datas->email,
+                                'user_phone'      => $request->user_phones,
+                                'department_id'   => $request->departments_id,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => '',
+                                'q4b'             => '',
+                                'q4c'             => '',
+                                'q4d'             => '',
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'AF',
+                                'created_by'      => $id,
+                                'temperature'     => $request->temperatures,
+                            ]);
+                        }
+                            
+                    }
+                    Session::flash('message', 'Declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded. The result for '.$datas->name.' declaration is category '.$category.'.');
+                }
+            }
+        } else {
+        //Data not exist in covid_tbl
+        
+            if($datas->category == 'STF')
+            {
+                $validate = [
+                    'user_id'         => 'required|regex:/^[\w-]*$/', 
+                    'user_phone'      => 'required|numeric',
+                    'q1'              => 'required',
+                    'user_category'   => 'required',
+                ];
+
+                if($request->user_category == 'WFO') {
+                    $validate['department_id'] = 'required'; 
+                }
+                if($request->q1 == 'N') 
+                {
+                    $validate['q2'] = 'required'; 
+                } 
+                if($request->q1 == 'Y') 
+                {
+                    $validate['declare_date1'] = 'required'; 
+                }
+                if($request->q2 == 'N') 
+                {
+                    $validate['q3'] = 'required'; 
+                } 
+                if($request->q2 == 'Y')  
+                {
+                    $validate['declare_date2'] = 'required'; 
+                    $validate['declare_contact2'] = 'required';  
+                    $validate['declare_kit2'] = 'required';  
+                }
+                if($request->declare_kit2 == 'Y')  
+                {
+                    $validate['declare_result2'] = 'required'; 
+                }
+                if($request->q3 == 'N') 
+                {
+                    $validate['q4'] = 'required';
+                }
+                if($request->q4 == 'Y')  
+                {
+                    $validate['q4_kit'] = 'required'; 
+                }
+                if($request->q4_kit == 'Y')  
+                {
+                    $validate['q4_result'] = 'required'; 
+                }
+
+                $request->validate($validate);
+
+                if($request->q4 == 'Y' || $request->q4 != null) {
+                    $declare = Covid::create([
+                        'user_name'       => $datas->name,
+                        'user_id'         => $request->user_id,
+                        'user_email'      => $datas->email,
+                        'user_phone'      => $request->user_phone,
+                        'department_id'   => $request->department_id,
+                        'user_category'   => $request->user_category,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => 'Y', 
+                        'q4b'             => 'Y', 
+                        'q4c'             => 'Y', 
+                        'q4d'             => 'Y', 
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'AF',
+                        'created_by'      => $id,
+                        'temperature'     => $request->temperature,
+                    ]);
+                } else {
+                    $declare = Covid::create([
+                        'user_name'       => $datas->name,
+                        'user_id'         => $request->user_id,
+                        'user_email'      => $datas->email,
+                        'user_phone'      => $request->user_phone,
+                        'department_id'   => $request->department_id,
+                        'user_category'   => $request->user_category,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => '', 
+                        'q4b'             => '', 
+                        'q4c'             => '', 
+                        'q4d'             => '', 
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'AF',
+                        'created_by'      => $id,
+                        'temperature'     => $request->temperature,
+                    ]);
+                }   
+                    
+            } else {
+
+                $validate = [
+                    'user_ids'          => 'required', 
+                    'user_phones'       => 'required|numeric',
+                    'q1'                => 'required',
+                    'departments_id'    => 'required',
+                ];
+
+                if($request->q1 == 'N') 
+                {
+                    $validate['q2'] = 'required'; 
+                } 
+                if($request->q1 == 'Y') 
+                {
+                    $validate['declare_date1'] = 'required'; 
+                }
+                if($request->q2 == 'N') 
+                {
+                    $validate['q3'] = 'required'; 
+                } 
+                if($request->q2 == 'Y')  
+                {
+                    $validate['declare_date2'] = 'required'; 
+                    $validate['declare_contact2'] = 'required';  
+                    $validate['declare_kit2'] = 'required';  
+                }
+                if($request->declare_kit2 == 'Y')  
+                {
+                    $validate['declare_result2'] = 'required'; 
+                }
+                if($request->q3 == 'N') 
+                {
+                    $validate['q4'] = 'required';
+                }
+                if($request->q4 == 'Y')  
+                {
+                    $validate['q4_kit'] = 'required'; 
+                }
+                if($request->q4_kit == 'Y')  
+                {
+                    $validate['q4_result'] = 'required'; 
+                }
+
+                $request->validate($validate);
+
+                if($request->q4 == 'Y' || $request->q4 != null) {
+                    $declare = Covid::create([
+                        'user_name'       => $datas->name,
+                        'user_id'         => $request->user_ids,
+                        'user_email'      => $datas->email,
+                        'user_phone'      => $request->user_phones,
+                        'department_id'   => $request->departments_id,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => 'Y',
+                        'q4b'             => 'Y',
+                        'q4c'             => 'Y',
+                        'q4d'             => 'Y',
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'AF',
+                        'created_by'      => $id,
+                        'temperature'     => $request->temperatures,
+                    ]);
+                } else {
+                    $declare = Covid::create([
+                        'user_name'       => $datas->name,
+                        'user_id'         => $request->user_ids,
+                        'user_email'      => $datas->email,
+                        'user_phone'      => $request->user_phones,
+                        'department_id'   => $request->departments_id,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => '',
+                        'q4b'             => '',
+                        'q4c'             => '',
+                        'q4d'             => '',
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'AF',
+                        'created_by'      => $id,
+                        'temperature'     => $request->temperatures,
+                    ]);
+                }
+            }
+                    
+            Session::flash('message', 'Declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded.  The result for '.$datas->name.' declaration is category '.$category.'.');
+        }
+       
+       return redirect('/declareNew');
     }
 
     public function declareInfo($id)
@@ -334,13 +1005,16 @@ class CovidController extends Controller
         ->addColumn('action', function ($declare) {
             
             if($declare->category != 'A' && $declare->category != 'B' && $declare->category != 'C') {
-                return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
+                return '<div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> </button></div>';
             } else {
-                return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
-                        <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
-                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
+                return '<div class="btn-group"><a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> </a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> </button></div>';
             }
+        })
+
+        ->editColumn('declare', function ($declare) {
+            
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> </a></div>';
         })
 
         ->editColumn('date', function ($declare) {
@@ -369,7 +1043,7 @@ class CovidController extends Controller
             }
         })
         
-        ->rawColumns(['action', 'date', 'time', 'user_name'])
+        ->rawColumns(['action', 'date', 'time', 'user_name', 'declare'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -403,13 +1077,16 @@ class CovidController extends Controller
         ->addColumn('action', function ($declare) {
 
             if($declare->category != 'A' && $declare->category != 'B' && $declare->category != 'C') {
-                return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
+                return '<div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> </button></div>';
             } else {
-                return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
-                        <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
-                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
+                return '<div class="btn-group"><a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> </a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> </button></div>';
             }
+        })
+
+        ->editColumn('declare', function ($declare) {
+            
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> </a></div>';
         })
 
         ->editColumn('date', function ($declare) {
@@ -438,7 +1115,7 @@ class CovidController extends Controller
             }
         })
         
-        ->rawColumns(['action', 'date', 'time', 'user_name'])
+        ->rawColumns(['action', 'date', 'time', 'user_name', 'declare'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -456,43 +1133,43 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>';
+            return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> </a>';
         })
 
-        ->editColumn('q1', function ($declare) {
+        // ->editColumn('q1', function ($declare) {
 
-            return $declare->q1 ?? '<div style="color:red;" >--</div>';
-        })
+        //     return $declare->q1 ?? '<div style="color:red;" >--</div>';
+        // })
 
-        ->editColumn('q2', function ($declare) {
+        // ->editColumn('q2', function ($declare) {
 
-            return $declare->q2 ?? '<div style="color:red;" >--</div>';
-        })
+        //     return $declare->q2 ?? '<div style="color:red;" >--</div>';
+        // })
 
-        ->editColumn('q3', function ($declare) {
+        // ->editColumn('q3', function ($declare) {
 
-            return $declare->q3 ?? '<div style="color:red;" >--</div>';
-        })
+        //     return $declare->q3 ?? '<div style="color:red;" >--</div>';
+        // })
 
-        ->editColumn('q4a', function ($declare) {
+        // ->editColumn('q4a', function ($declare) {
 
-            return $declare->q4a ?? '<div style="color:red;" >--</div>';
-        })
+        //     return $declare->q4a ?? '<div style="color:red;" >--</div>';
+        // })
 
-        ->editColumn('q4b', function ($declare) {
+        // ->editColumn('q4b', function ($declare) {
 
-            return $declare->q4b ?? '<div style="color:red;" >--</div>';
-        })
+        //     return $declare->q4b ?? '<div style="color:red;" >--</div>';
+        // })
 
-        ->editColumn('q4c', function ($declare) {
+        // ->editColumn('q4c', function ($declare) {
 
-            return $declare->q4c ?? '<div style="color:red;" >--</div>';
-        })
+        //     return $declare->q4c ?? '<div style="color:red;" >--</div>';
+        // })
 
-        ->editColumn('q4d', function ($declare) {
+        // ->editColumn('q4d', function ($declare) {
 
-            return $declare->q4d ?? '<div style="color:red;" >--</div>';
-        })
+        //     return $declare->q4d ?? '<div style="color:red;" >--</div>';
+        // })
 
         ->editColumn('date', function ($declare) {
 
@@ -503,8 +1180,18 @@ class CovidController extends Controller
 
             return date(' h:i:s A', strtotime($declare->created_at) ) ?? '<div style="color:red;" >--</div>';
         })
+
+        ->editColumn('declare_date', function ($declare) {
+
+            return strtoupper(date(' Y-m-d ', strtotime($declare->declare_date) )) ?? '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('declare_time', function ($declare) {
+
+            return date(' h:i:s A', strtotime($declare->declare_time) ) ?? '<div style="color:red;" >--</div>';
+        })
         
-        ->rawColumns(['action', 'date', 'time', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
+        ->rawColumns(['action', 'date', 'time', 'declare_date', 'declare_time'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -536,9 +1223,13 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
-                    <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button></div>';
+            return '<div class="btn-group"><a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> </a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  </button></div>';
+        })
+
+        ->editColumn('declare', function ($declare) {
+            
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> </a></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
@@ -586,7 +1277,7 @@ class CovidController extends Controller
             return date(' h:i:s A', strtotime($declare->declare_time) );
         })
 
-        ->rawColumns(['action', 'date', 'time', 'quarantine_day'])
+        ->rawColumns(['action', 'date', 'time', 'quarantine_day', 'declare'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -611,9 +1302,13 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
-                    <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button></div>';
+            return '<div class="btn-group"><a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> </a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  </button></div>';
+        })
+
+        ->editColumn('declare', function ($declare) {
+            
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> </a></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
@@ -661,7 +1356,7 @@ class CovidController extends Controller
             return date(' h:i:s A', strtotime($declare->declare_time) );
         })
         
-        ->rawColumns(['action', 'date', 'time', 'quarantine_day'])
+        ->rawColumns(['action', 'date', 'time', 'quarantine_day', 'declare'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -740,9 +1435,13 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
-            <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button></div>';
+            return '<div class="btn-group"><a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> </a>
+            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  </button></div>';
+        })
+
+        ->editColumn('declare', function ($declare) {
+            
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> </a></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
@@ -771,7 +1470,7 @@ class CovidController extends Controller
             return date(' h:i:s A', strtotime($declare->declare_time) );
         })
         
-        ->rawColumns(['action', 'date', 'time'])
+        ->rawColumns(['action', 'date', 'time', 'declare'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -796,8 +1495,12 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
+            return '<div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> </button></div>';
+        })
+
+        ->editColumn('declare', function ($declare) {
+            
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> </a></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
@@ -826,7 +1529,7 @@ class CovidController extends Controller
             return date(' h:i:s A', strtotime($declare->declare_time) );
         })
         
-        ->rawColumns(['action', 'date', 'time'])
+        ->rawColumns(['action', 'date', 'time', 'declare'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -851,8 +1554,12 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
+            return '<div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> </button></div>';
+        })
+
+        ->editColumn('declare', function ($declare) {
+            
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> </a></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
@@ -881,7 +1588,7 @@ class CovidController extends Controller
             return date(' h:i:s A', strtotime($declare->declare_time) );
         })
         
-        ->rawColumns(['action', 'date', 'time'])
+        ->rawColumns(['action', 'date', 'time', 'declare'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -908,34 +1615,50 @@ class CovidController extends Controller
             {
                 if($request->q3 == 'N')
                 {
-                    if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
+                    // if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
+                    if($request->q4 == 'Y')
                     {
                         $category = 'D';
                         $date = Carbon::now()->toDateString();
                         $time = Carbon::now()->toTimeString();
+                        $contact = '';
+                        $kit = '';
+                        $result = '';
                     }
                     else {
                         $category = 'E';
                         $date = Carbon::now()->toDateTimeString();
                         $time = Carbon::now()->toTimeString();
+                        $contact = '';
+                        $kit = $request->q4_kit;
+                        $result = $request->q4_result;
                     }
                 }
                 else {
                     $category = 'C';
                     $date = Carbon::now()->toDateTimeString();
                     $time = Carbon::now()->toTimeString();
+                    $contact = '';
+                    $kit = '';
+                    $result = '';
                 }
             }
             else {
                 $category = 'B';
                 $date = $request->declare_date2;
                 $time = date("H:i:s", strtotime( $request->declare_date2 ));
+                $contact = $request->declare_contact2;
+                $kit = $request->declare_kit2;
+                $result = $request->declare_result2;
             }
         }
         else {
             $category = 'A';
             $date = $request->declare_date1;
             $time = date("H:i:s", strtotime( $request->declare_date1 ));
+            $contact = '';
+            $kit = '';
+            $result = '';
         }
 
         $recent = Covid::where('user_id', $request->user_id)->latest('created_at')->first();
@@ -965,190 +1688,339 @@ class CovidController extends Controller
                 {
                     if($category == 'A' || $category == 'B')
                     {
+                        // dd($request);
                         if($request->user_position == 'STF')
-                    {
-                        $validate = [
-                            'user_position'   => 'required',
-                            'user_id'         => 'required|regex:/^[\w-]*$/', 
-                            'user_name'       => 'required', 
-                            'user_phone'      => 'required|numeric',
-                            'user_email'      => 'nullable|email',
-                            'q1'              => 'required',
-                            'user_category'   => 'required',
-                        ];
+                        {
+                            $validate = [
+                                'user_position'   => 'required',
+                                'user_id'         => 'required|regex:/^[\w-]*$/', 
+                                'user_name'       => 'required', 
+                                'user_phone'      => 'required|numeric',
+                                'user_email'      => 'nullable|email',
+                                'q1'              => 'required',
+                                'user_category'   => 'required',
+                                // 'department_stf'  => 'required',
+                            ];
 
-                        if($request->q1 == 'N') 
-                        {
-                            $validate['q2'] = 'required'; 
-                        } 
-                        if($request->q1 == 'Y') 
-                        {
-                            $validate['declare_date1'] = 'required'; 
+                            if($request->user_category == 'WFO') {
+                                $validate['department_stf'] = 'required'; 
+                            }
+                            if($request->q1 == 'N') 
+                            {
+                                $validate['q2'] = 'required'; 
+                            } 
+                            if($request->q1 == 'Y') 
+                            {
+                                $validate['declare_date1'] = 'required'; 
+                            }
+                            if($request->q2 == 'N') 
+                            {
+                                $validate['q3'] = 'required'; 
+                            } 
+                            if($request->q2 == 'Y')  
+                            {
+                                $validate['declare_date2'] = 'required'; 
+                                $validate['declare_contact2'] = 'required';  
+                                $validate['declare_kit2'] = 'required';  
+                            }
+                            if($request->declare_kit2 == 'Y')  
+                            {
+                                $validate['declare_result2'] = 'required'; 
+                            }
+                            if($request->q3 == 'N') 
+                            {
+                                // $validate['q4a'] = 'required';
+                                // $validate['q4b'] = 'required';
+                                // $validate['q4c'] = 'required';
+                                // $validate['q4d'] = 'required';
+                                $validate['q4'] = 'required';
+                            }
+                            if($request->q4 == 'Y')  
+                            {
+                                $validate['q4_kit'] = 'required'; 
+                            }
+                            if($request->q4_kit == 'Y')  
+                            {
+                                $validate['q4_result'] = 'required'; 
+                            }
+
+                            $request->validate($validate);
+
+                            if($request->q4 == 'Y' || $request->q4 != null) {
+                                $declare = Covid::create([
+                                    'user_name'       => $request->name,
+                                    'user_id'         => $request->user_id,
+                                    'user_email'      => $request->email,
+                                    'user_phone'      => $request->user_phone,
+                                    'department_id'   => $request->department_stf,
+                                    'user_category'   => $request->user_category,
+                                    'user_position'   => $request->user_position,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => 'Y', 
+                                    'q4b'             => 'Y', 
+                                    'q4c'             => 'Y', 
+                                    'q4d'             => 'Y', 
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'OF',
+                                    'created_by'      => $request->user_id,
+                                    'temperature'     => $request->temperature_stf,
+                                ]);
+                            } else {
+                                // dd($request);
+                                $declare = Covid::create([
+                                    'user_name'       => $request->name,
+                                    'user_id'         => $request->user_id,
+                                    'user_email'      => $request->email,
+                                    'user_phone'      => $request->user_phone,
+                                    'department_id'   => $request->department_stf,
+                                    'user_category'   => $request->user_category,
+                                    'user_position'   => $request->user_position,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => '', 
+                                    'q4b'             => '', 
+                                    'q4c'             => '', 
+                                    'q4d'             => '', 
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'OF',
+                                    'created_by'      => $request->user_id,
+                                    'temperature'     => $request->temperature_stf,
+                                ]);
+                            }
+                                            
+
+                        } elseif($request->user_position == 'STD') {
+
+                            $validate = [
+                                'user_position'   => 'required',
+                                'user_id'         => 'required|regex:/^[\w-]*$/', 
+                                'user_name'       => 'required', 
+                                'user_phone'      => 'required|numeric',
+                                'user_email'      => 'nullable|email',
+                                'q1'              => 'required',
+                                'department_id'   => 'required',
+                            ];
+
+                            if($request->q1 == 'N') 
+                            {
+                                $validate['q2'] = 'required'; 
+                            } 
+                            if($request->q1 == 'Y') 
+                            {
+                                $validate['declare_date1'] = 'required'; 
+                            }
+                            if($request->q2 == 'N') 
+                            {
+                                $validate['q3'] = 'required'; 
+                            } 
+                            if($request->q2 == 'Y')  
+                            {
+                                $validate['declare_date2'] = 'required'; 
+                                $validate['declare_contact2'] = 'required';  
+                                $validate['declare_kit2'] = 'required';  
+                            }
+                            if($request->declare_kit2 == 'Y')  
+                            {
+                                $validate['declare_result2'] = 'required'; 
+                            }
+                            if($request->q3 == 'N') 
+                            {
+                                // $validate['q4a'] = 'required';
+                                // $validate['q4b'] = 'required';
+                                // $validate['q4c'] = 'required';
+                                // $validate['q4d'] = 'required';
+                                $validate['q4'] = 'required';
+                            }
+                            if($request->q4 == 'Y')  
+                            {
+                                $validate['q4_kit'] = 'required'; 
+                            }
+                            if($request->q4_kit == 'Y')  
+                            {
+                                $validate['q4_result'] = 'required'; 
+                            }
+
+                            $request->validate($validate);
+
+                            if($request->q4 == 'Y') {
+                                $declare = Covid::create([
+                                    'user_name'       => $request->name,
+                                    'user_id'         => $request->user_id,
+                                    'user_email'      => $request->email,
+                                    'user_phone'      => $request->user_phone,
+                                    'department_id'   => $request->department_id,
+                                    'user_position'   => $request->user_position,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => 'Y',
+                                    'q4b'             => 'Y',
+                                    'q4c'             => 'Y',
+                                    'q4d'             => 'Y',
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'OF',
+                                    'created_by'      => $request->user_id,
+                                    'temperature'     => $request->temperature,
+                                ]);
+                            } else {
+                                $declare = Covid::create([
+                                    'user_name'       => $request->name,
+                                    'user_id'         => $request->user_id,
+                                    'user_email'      => $request->email,
+                                    'user_phone'      => $request->user_phone,
+                                    'department_id'   => $request->department_id,
+                                    'user_position'   => $request->user_position,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => '',
+                                    'q4b'             => '',
+                                    'q4c'             => '',
+                                    'q4d'             => '',
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'OF',
+                                    'created_by'      => $request->user_id,
+                                    'temperature'     => $request->temperature,
+                                ]);
+                            }
+                                
+                        } else {
+
+                            $request->validate([
+                                'user_position'   => 'required',
+                                'department_id'   => 'required',
+                                'user_id'         => 'required|min:8|max:12|regex:/^[\w-]*$/', 
+                                'vsr_name'        => 'required',
+                                'user_phone'      => 'required|numeric',
+                                'vsr_email'       => 'nullable|email',
+                                'q1'              => 'required',
+                                'department_id'   => 'required',
+                            ]);
+
+                            if($request->q1 == 'N') 
+                            {
+                                $validate['q2'] = 'required'; 
+                            } 
+                            if($request->q1 == 'Y') 
+                            {
+                                $validate['declare_date1'] = 'required'; 
+                            }
+                            if($request->q2 == 'N') 
+                            {
+                                $validate['q3'] = 'required'; 
+                            } 
+                            if($request->q2 == 'Y')  
+                            {
+                                $validate['declare_date2'] = 'required'; 
+                                $validate['declare_contact2'] = 'required';  
+                                $validate['declare_kit2'] = 'required';  
+                            }
+                            if($request->declare_kit2 == 'Y')  
+                            {
+                                $validate['declare_result2'] = 'required'; 
+                            }
+                            if($request->q3 == 'N') 
+                            {
+                                // $validate['q4a'] = 'required';
+                                // $validate['q4b'] = 'required';
+                                // $validate['q4c'] = 'required';
+                                // $validate['q4d'] = 'required';
+                                $validate['q4'] = 'required';
+                            }
+                            if($request->q4 == 'Y')  
+                            {
+                                $validate['q4_kit'] = 'required'; 
+                            }
+                            if($request->q4_kit == 'Y')  
+                            {
+                                $validate['q4_result'] = 'required'; 
+                            }
+                            
+                            $request->validate($validate);
+                            
+                            if($request->q4 == 'Y') {
+                                $declare = Covid::create([
+                                    'user_name'       => $request->vsr_name,
+                                    'user_id'         => $request->user_id,
+                                    'user_ic'         => $request->user_id,
+                                    'user_email'      => $request->vsr_email,
+                                    'user_phone'      => $request->user_phone,
+                                    'department_id'   => $request->department_id,
+                                    'user_position'   => $request->user_position,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => 'Y',
+                                    'q4b'             => 'Y',
+                                    'q4c'             => 'Y',
+                                    'q4d'             => 'Y',
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'OF',
+                                    'created_by'      => $request->user_id,
+                                    'temperature'     => $request->temperature,
+                                ]);
+                            } else {
+                                $declare = Covid::create([
+                                    'user_name'       => $request->vsr_name,
+                                    'user_id'         => $request->user_id,
+                                    'user_ic'         => $request->user_id,
+                                    'user_email'      => $request->vsr_email,
+                                    'user_phone'      => $request->user_phone,
+                                    'department_id'   => $request->department_id,
+                                    'user_position'   => $request->user_position,
+                                    'q1'              => $request->q1,
+                                    'q2'              => $request->q2,
+                                    'q3'              => $request->q3, 
+                                    'q4a'             => '',
+                                    'q4b'             => '',
+                                    'q4c'             => '',
+                                    'q4d'             => '',
+                                    'confirmation'    => 'Y',
+                                    'category'        => $category,
+                                    'declare_date'    => $date,
+                                    'declare_time'    => $time,
+                                    'declare_contact' => strtoupper($contact),
+                                    'declare_kit'     => $kit,
+                                    'declare_result'  => $result,
+                                    'form_type'       => 'OF',
+                                    'created_by'      => $request->user_id,
+                                    'temperature'     => $request->temperature,
+                                ]);
+                            }
                         }
-                        if($request->q2 == 'N') 
-                        {
-                            $validate['q3'] = 'required'; 
-                        } 
-                        if($request->q2 == 'Y')  
-                        {
-                            $validate['declare_date2'] = 'required'; 
-                        }
-                        if($request->q3 == 'N') 
-                        {
-                            $validate['q4a'] = 'required';
-                            $validate['q4b'] = 'required';
-                            $validate['q4c'] = 'required';
-                            $validate['q4d'] = 'required';
-                        }
-
-                        $request->validate($validate);
-
-                        $declare = Covid::create([
-                            'user_name'       => $request->name,
-                            'user_id'         => $request->user_id,
-                            'user_email'      => $request->email,
-                            'user_phone'      => $request->user_phone,
-                            'department_id'   => $request->department_stf,
-                            'user_category'   => $request->user_category,
-                            'user_position'   => $request->user_position,
-                            'q1'              => $request->q1,
-                            'q2'              => $request->q2,
-                            'q3'              => $request->q3, 
-                            'q4a'             => $request->q4a, 
-                            'q4b'             => $request->q4b,
-                            'q4c'             => $request->q4c,
-                            'q4d'             => $request->q4d, 
-                            'confirmation'    => 'Y',
-                            'category'        => $category,
-                            'declare_date'    => $date,
-                            'declare_time'    => $time,
-                            'form_type'       => 'OF',
-                            'created_by'      => $request->user_id,
-                            'temperature'     => $request->temperature_stf,
-                        ]);
-
-                    } elseif($request->user_position == 'STD') {
-
-                        $validate = [
-                            'user_position'   => 'required',
-                            'user_id'         => 'required|regex:/^[\w-]*$/', 
-                            'user_name'       => 'required', 
-                            'user_phone'      => 'required|numeric',
-                            'user_email'      => 'nullable|email',
-                            'q1'              => 'required',
-                        ];
-
-                        if($request->q1 == 'N') 
-                        {
-                            $validate['q2'] = 'required'; 
-                        } 
-                        if($request->q1 == 'Y') 
-                        {
-                            $validate['declare_date1'] = 'required'; 
-                        }
-                        if($request->q2 == 'N') 
-                        {
-                            $validate['q3'] = 'required'; 
-                        } 
-                        if($request->q2 == 'Y')  
-                        {
-                            $validate['declare_date2'] = 'required'; 
-                        }
-                        if($request->q3 == 'N') 
-                        {
-                            $validate['q4a'] = 'required';
-                            $validate['q4b'] = 'required';
-                            $validate['q4c'] = 'required';
-                            $validate['q4d'] = 'required';
-                        }
-
-                        $request->validate($validate);
-
-                        $declare = Covid::create([
-                            'user_name'       => $request->name,
-                            'user_id'         => $request->user_id,
-                            'user_email'      => $request->email,
-                            'user_phone'      => $request->user_phone,
-                            'department_id'   => $request->department_id,
-                            'user_position'   => $request->user_position,
-                            'q1'              => $request->q1,
-                            'q2'              => $request->q2,
-                            'q3'              => $request->q3, 
-                            'q4a'             => $request->q4a, 
-                            'q4b'             => $request->q4b,
-                            'q4c'             => $request->q4c,
-                            'q4d'             => $request->q4d, 
-                            'confirmation'    => 'Y',
-                            'category'        => $category,
-                            'declare_date'    => $date,
-                            'declare_time'    => $time,
-                            'form_type'       => 'OF',
-                            'created_by'      => $request->user_id,
-                            'temperature'     => $request->temperature,
-                        ]);
-
-                    } else {
-
-                        $request->validate([
-                            'user_position'   => 'required',
-                            'department_id'   => 'required',
-                            'user_id'         => 'required|min:8|max:12|regex:/^[\w-]*$/', 
-                            'vsr_name'        => 'required',
-                            'user_phone'      => 'required|numeric',
-                            'vsr_email'       => 'nullable|email',
-                            'q1'              => 'required',
-                        ]);
-
-                        if($request->q1 == 'N') 
-                        {
-                            $validate['q2'] = 'required'; 
-                        } 
-                        if($request->q1 == 'Y') 
-                        {
-                            $validate['declare_date1'] = 'required'; 
-                        }
-                        if($request->q2 == 'N') 
-                        {
-                            $validate['q3'] = 'required'; 
-                        } 
-                        if($request->q2 == 'Y')  
-                        {
-                            $validate['declare_date2'] = 'required'; 
-                        }
-                        if($request->q3 == 'N') 
-                        {
-                            $validate['q4a'] = 'required';
-                            $validate['q4b'] = 'required';
-                            $validate['q4c'] = 'required';
-                            $validate['q4d'] = 'required';
-                        }
-                        
-                        $request->validate($validate);
-                        
-                        $declare = Covid::create([
-                            'user_name'       => $request->vsr_name,
-                            'user_id'         => $request->user_id,
-                            'user_ic'         => $request->user_id,
-                            'user_email'      => $request->vsr_email,
-                            'user_phone'      => $request->user_phone,
-                            'department_id'   => $request->department_id,
-                            'user_position'   => $request->user_position,
-                            'q1'              => $request->q1,
-                            'q2'              => $request->q2,
-                            'q3'              => $request->q3, 
-                            'q4a'             => $request->q4a, 
-                            'q4b'             => $request->q4b,
-                            'q4c'             => $request->q4c,
-                            'q4d'             => $request->q4d, 
-                            'confirmation'    => 'Y',
-                            'category'        => $category,
-                            'declare_date'    => $date,
-                            'declare_time'    => $time,
-                            'form_type'       => 'OF',
-                            'created_by'      => $request->user_id,
-                            'temperature'     => $request->temperature,
-                        ]);
-                    }
                         
                     Session::flash('message', 'Your declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded.<br>  The result for your declaration is category <b>'.$category.'</b>.<br> Please make sure to abide the SOP when you are in INTEC premise. <br> Thank you for your cooperation.');
                     
@@ -1162,6 +2034,7 @@ class CovidController extends Controller
                 {
                     if($request->user_position == 'STF')
                     {
+                        // dd($category);
                         $validate = [
                             'user_position'   => 'required',
                             'user_id'         => 'required|regex:/^[\w-]*$/', 
@@ -1170,8 +2043,12 @@ class CovidController extends Controller
                             'user_email'      => 'nullable|email',
                             'q1'              => 'required',
                             'user_category'   => 'required',
+                            // 'department_stf'  => 'required',
                         ];
 
+                        if($request->user_category == 'WFO') {
+                            $validate['department_stf'] = 'required'; 
+                        }
                         if($request->q1 == 'N') 
                         {
                             $validate['q2'] = 'required'; 
@@ -1187,41 +2064,88 @@ class CovidController extends Controller
                         if($request->q2 == 'Y')  
                         {
                             $validate['declare_date2'] = 'required'; 
+                            $validate['declare_contact2'] = 'required';  
+                            $validate['declare_kit2'] = 'required';  
+                        }
+                        if($request->declare_kit2 == 'Y')  
+                        {
+                            $validate['declare_result2'] = 'required'; 
                         }
                         if($request->q3 == 'N') 
                         {
-                            $validate['q4a'] = 'required';
-                            $validate['q4b'] = 'required';
-                            $validate['q4c'] = 'required';
-                            $validate['q4d'] = 'required';
+                            // $validate['q4a'] = 'required';
+                            // $validate['q4b'] = 'required';
+                            // $validate['q4c'] = 'required';
+                            // $validate['q4d'] = 'required';
+                            $validate['q4'] = 'required';
+                        }
+                        if($request->q4 == 'Y')  
+                        {
+                            $validate['q4_kit'] = 'required'; 
+                        }
+                        if($request->q4_kit == 'Y')  
+                        {
+                            $validate['q4_result'] = 'required'; 
                         }
 
                         $request->validate($validate);
 
-                        $declare = Covid::create([
-                            'user_name'       => $request->name,
-                            'user_id'         => $request->user_id,
-                            'user_email'      => $request->email,
-                            'user_phone'      => $request->user_phone,
-                            'department_id'   => $request->department_stf,
-                            'user_category'   => $request->user_category,
-                            'user_position'   => $request->user_position,
-                            'q1'              => $request->q1,
-                            'q2'              => $request->q2,
-                            'q3'              => $request->q3, 
-                            'q4a'             => $request->q4a, 
-                            'q4b'             => $request->q4b,
-                            'q4c'             => $request->q4c,
-                            'q4d'             => $request->q4d, 
-                            'confirmation'    => 'Y',
-                            'category'        => $category,
-                            'declare_date'    => $date,
-                            'declare_time'    => $time,
-                            'form_type'       => 'OF',
-                            'created_by'      => $request->user_id,
-                            'temperature'     => $request->temperature_stf,
-                        ]);
-
+                        if($request->q4 == 'Y') {
+                            $declare = Covid::create([
+                                'user_name'       => $request->name,
+                                'user_id'         => $request->user_id,
+                                'user_email'      => $request->email,
+                                'user_phone'      => $request->user_phone,
+                                'department_id'   => $request->department_stf,
+                                'user_category'   => $request->user_category,
+                                'user_position'   => $request->user_position,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => 'Y',
+                                'q4b'             => 'Y',
+                                'q4c'             => 'Y',
+                                'q4d'             => 'Y',
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'OF',
+                                'created_by'      => $request->user_id,
+                                'temperature'     => $request->temperature_stf,
+                            ]);
+                        } else {
+                            $declare = Covid::create([
+                                'user_name'       => $request->name,
+                                'user_id'         => $request->user_id,
+                                'user_email'      => $request->email,
+                                'user_phone'      => $request->user_phone,
+                                'department_id'   => $request->department_stf,
+                                'user_category'   => $request->user_category,
+                                'user_position'   => $request->user_position,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => '',
+                                'q4b'             => '',
+                                'q4c'             => '',
+                                'q4d'             => '',
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'OF',
+                                'created_by'      => $request->user_id,
+                                'temperature'     => $request->temperature_stf,
+                            ]);
+                        }
+                            
                     } elseif($request->user_position == 'STD') {
 
                         $validate = [
@@ -1231,6 +2155,7 @@ class CovidController extends Controller
                             'user_phone'      => 'required|numeric',
                             'user_email'      => 'nullable|email',
                             'q1'              => 'required',
+                            'department_id'   => 'required',
                         ];
 
                         if($request->q1 == 'N') 
@@ -1248,40 +2173,86 @@ class CovidController extends Controller
                         if($request->q2 == 'Y')  
                         {
                             $validate['declare_date2'] = 'required'; 
+                            $validate['declare_contact2'] = 'required';  
+                            $validate['declare_kit2'] = 'required';  
+                        }
+                        if($request->declare_kit2 == 'Y')  
+                        {
+                            $validate['declare_result2'] = 'required'; 
                         }
                         if($request->q3 == 'N') 
                         {
-                            $validate['q4a'] = 'required';
-                            $validate['q4b'] = 'required';
-                            $validate['q4c'] = 'required';
-                            $validate['q4d'] = 'required';
+                            // $validate['q4a'] = 'required';
+                            // $validate['q4b'] = 'required';
+                            // $validate['q4c'] = 'required';
+                            // $validate['q4d'] = 'required';
+                            $validate['q4'] = 'required';
+                        }
+                        if($request->q4 == 'Y')  
+                        {
+                            $validate['q4_kit'] = 'required'; 
+                        }
+                        if($request->q4_kit == 'Y')  
+                        {
+                            $validate['q4_result'] = 'required'; 
                         }
 
                         $request->validate($validate);
 
-                        $declare = Covid::create([
-                            'user_name'       => $request->name,
-                            'user_id'         => $request->user_id,
-                            'user_email'      => $request->email,
-                            'user_phone'      => $request->user_phone,
-                            'department_id'   => $request->department_id,
-                            'user_position'   => $request->user_position,
-                            'q1'              => $request->q1,
-                            'q2'              => $request->q2,
-                            'q3'              => $request->q3, 
-                            'q4a'             => $request->q4a, 
-                            'q4b'             => $request->q4b,
-                            'q4c'             => $request->q4c,
-                            'q4d'             => $request->q4d, 
-                            'confirmation'    => 'Y',
-                            'category'        => $category,
-                            'declare_date'    => $date,
-                            'declare_time'    => $time,
-                            'form_type'       => 'OF',
-                            'created_by'      => $request->user_id,
-                            'temperature'     => $request->temperature,
-                        ]);
-
+                        if($request->q4 == 'Y'){
+                            $declare = Covid::create([
+                                'user_name'       => $request->name,
+                                'user_id'         => $request->user_id,
+                                'user_email'      => $request->email,
+                                'user_phone'      => $request->user_phone,
+                                'department_id'   => $request->department_id,
+                                'user_position'   => $request->user_position,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => 'Y',
+                                'q4b'             => 'Y',
+                                'q4c'             => 'Y',
+                                'q4d'             => 'Y',
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'OF',
+                                'created_by'      => $request->user_id,
+                                'temperature'     => $request->temperature,
+                            ]);
+                        } else {
+                            $declare = Covid::create([
+                                'user_name'       => $request->name,
+                                'user_id'         => $request->user_id,
+                                'user_email'      => $request->email,
+                                'user_phone'      => $request->user_phone,
+                                'department_id'   => $request->department_id,
+                                'user_position'   => $request->user_position,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => '',
+                                'q4b'             => '',
+                                'q4c'             => '',
+                                'q4d'             => '',
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'OF',
+                                'created_by'      => $request->user_id,
+                                'temperature'     => $request->temperature,
+                            ]);
+                        }
+                            
                     } else {
 
                         $request->validate([
@@ -1292,6 +2263,7 @@ class CovidController extends Controller
                             'user_phone'      => 'required|numeric',
                             'vsr_email'       => 'nullable|email',
                             'q1'              => 'required',
+                            'department_id'   => 'required',
                         ]);
 
                         if($request->q1 == 'N') 
@@ -1309,45 +2281,90 @@ class CovidController extends Controller
                         if($request->q2 == 'Y')  
                         {
                             $validate['declare_date2'] = 'required'; 
+                            $validate['declare_contact2'] = 'required';  
+                            $validate['declare_kit2'] = 'required';  
+                        }
+                        if($request->declare_kit2 == 'Y')  
+                        {
+                            $validate['declare_result2'] = 'required'; 
                         }
                         if($request->q3 == 'N') 
                         {
-                            $validate['q4a'] = 'required';
-                            $validate['q4b'] = 'required';
-                            $validate['q4c'] = 'required';
-                            $validate['q4d'] = 'required';
+                            // $validate['q4a'] = 'required';
+                            // $validate['q4b'] = 'required';
+                            // $validate['q4c'] = 'required';
+                            // $validate['q4d'] = 'required';
+                            $validate['q4'] = 'required';
+                        }
+                        if($request->q4 == 'Y')  
+                        {
+                            $validate['q4_kit'] = 'required'; 
+                        }
+                        if($request->q4_kit == 'Y')  
+                        {
+                            $validate['q4_result'] = 'required'; 
                         }
                         
                         $request->validate($validate);
                         
-                        $declare = Covid::create([
-                            'user_name'       => $request->vsr_name,
-                            'user_id'         => $request->user_id,
-                            'user_ic'         => $request->user_id,
-                            'user_email'      => $request->vsr_email,
-                            'user_phone'      => $request->user_phone,
-                            'department_id'   => $request->department_id,
-                            'user_position'   => $request->user_position,
-                            'q1'              => $request->q1,
-                            'q2'              => $request->q2,
-                            'q3'              => $request->q3, 
-                            'q4a'             => $request->q4a, 
-                            'q4b'             => $request->q4b,
-                            'q4c'             => $request->q4c,
-                            'q4d'             => $request->q4d, 
-                            'confirmation'    => 'Y',
-                            'category'        => $category,
-                            'declare_date'    => $date,
-                            'declare_time'    => $time,
-                            'form_type'       => 'OF',
-                            'created_by'      => $request->user_id,
-                            'temperature'     => $request->temperature,
-                        ]);
+                        if($request->q4 == 'Y'){
+                            $declare = Covid::create([
+                                'user_name'       => $request->vsr_name,
+                                'user_id'         => $request->user_id,
+                                'user_ic'         => $request->user_id,
+                                'user_email'      => $request->vsr_email,
+                                'user_phone'      => $request->user_phone,
+                                'department_id'   => $request->department_id,
+                                'user_position'   => $request->user_position,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => 'Y', 
+                                'q4b'             => 'Y',
+                                'q4c'             => 'Y',
+                                'q4d'             => 'Y',
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'OF',
+                                'created_by'      => $request->user_id,
+                                'temperature'     => $request->temperature,
+                            ]);
+                        } else {
+                            $declare = Covid::create([
+                                'user_name'       => $request->vsr_name,
+                                'user_id'         => $request->user_id,
+                                'user_ic'         => $request->user_id,
+                                'user_email'      => $request->vsr_email,
+                                'user_phone'      => $request->user_phone,
+                                'department_id'   => $request->department_id,
+                                'user_position'   => $request->user_position,
+                                'q1'              => $request->q1,
+                                'q2'              => $request->q2,
+                                'q3'              => $request->q3, 
+                                'q4a'             => '', 
+                                'q4b'             => '',
+                                'q4c'             => '',
+                                'q4d'             => '',
+                                'confirmation'    => 'Y',
+                                'category'        => $category,
+                                'declare_date'    => $date,
+                                'declare_time'    => $time,
+                                'declare_contact' => strtoupper($contact),
+                                'declare_kit'     => $kit,
+                                'declare_result'  => $result,
+                                'form_type'       => 'OF',
+                                'created_by'      => $request->user_id,
+                                'temperature'     => $request->temperature,
+                            ]);
+                        }
                     }
-                        
                     Session::flash('message', 'Your declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded.<br>  The result for your declaration is category <b>'.$category.'</b>.<br> Please make sure to abide the SOP when you are in INTEC premise. <br> Thank you for your cooperation.');
                 }
-
             }
         } else {
         //Data not exist in covid_tbl
@@ -1362,8 +2379,12 @@ class CovidController extends Controller
                     'user_email'      => 'nullable|email',
                     'q1'              => 'required',
                     'user_category'   => 'required',
+                    // 'department_stf'  => 'required',
                 ];
 
+                if($request->user_category == 'WFO') {
+                    $validate['department_stf'] = 'required'; 
+                }
                 if($request->q1 == 'N') 
                 {
                     $validate['q2'] = 'required'; 
@@ -1379,41 +2400,88 @@ class CovidController extends Controller
                 if($request->q2 == 'Y')  
                 {
                     $validate['declare_date2'] = 'required'; 
+                    $validate['declare_contact2'] = 'required';  
+                    $validate['declare_kit2'] = 'required';  
+                }
+                if($request->declare_kit2 == 'Y')  
+                {
+                    $validate['declare_result2'] = 'required'; 
                 }
                 if($request->q3 == 'N') 
                 {
-                    $validate['q4a'] = 'required';
-                    $validate['q4b'] = 'required';
-                    $validate['q4c'] = 'required';
-                    $validate['q4d'] = 'required';
+                    // $validate['q4a'] = 'required';
+                    // $validate['q4b'] = 'required';
+                    // $validate['q4c'] = 'required';
+                    // $validate['q4d'] = 'required';
+                    $validate['q4'] = 'required';
+                }
+                if($request->q4 == 'Y')  
+                {
+                    $validate['q4_kit'] = 'required'; 
+                }
+                if($request->q4_kit == 'Y')  
+                {
+                    $validate['q4_result'] = 'required'; 
                 }
 
                 $request->validate($validate);
 
-                $declare = Covid::create([
-                    'user_name'       => $request->name,
-                    'user_id'         => $request->user_id,
-                    'user_email'      => $request->email,
-                    'user_phone'      => $request->user_phone,
-                    'department_id'   => $request->department_stf,
-                    'user_category'   => $request->user_category,
-                    'user_position'   => $request->user_position,
-                    'q1'              => $request->q1,
-                    'q2'              => $request->q2,
-                    'q3'              => $request->q3, 
-                    'q4a'             => $request->q4a, 
-                    'q4b'             => $request->q4b,
-                    'q4c'             => $request->q4c,
-                    'q4d'             => $request->q4d, 
-                    'confirmation'    => 'Y',
-                    'category'        => $category,
-                    'declare_date'    => $date,
-                    'declare_time'    => $time,
-                    'form_type'       => 'OF',
-                    'created_by'      => $request->user_id,
-                    'temperature'     => $request->temperature_stf,
-                ]);
-
+                if($request->q4 == 'Y'){
+                    $declare = Covid::create([
+                        'user_name'       => $request->name,
+                        'user_id'         => $request->user_id,
+                        'user_email'      => $request->email,
+                        'user_phone'      => $request->user_phone,
+                        'department_id'   => $request->department_stf,
+                        'user_category'   => $request->user_category,
+                        'user_position'   => $request->user_position,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => 'Y', 
+                        'q4b'             => 'Y',
+                        'q4c'             => 'Y',
+                        'q4d'             => 'Y',
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'OF',
+                        'created_by'      => $request->user_id,
+                        'temperature'     => $request->temperature_stf,
+                    ]);
+                } else {
+                    $declare = Covid::create([
+                        'user_name'       => $request->name,
+                        'user_id'         => $request->user_id,
+                        'user_email'      => $request->email,
+                        'user_phone'      => $request->user_phone,
+                        'department_id'   => $request->department_stf,
+                        'user_category'   => $request->user_category,
+                        'user_position'   => $request->user_position,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => '', 
+                        'q4b'             => '',
+                        'q4c'             => '',
+                        'q4d'             => '',
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'OF',
+                        'created_by'      => $request->user_id,
+                        'temperature'     => $request->temperature_stf,
+                    ]);
+                }
+                    
             } elseif($request->user_position == 'STD') {
 
                 $validate = [
@@ -1423,6 +2491,7 @@ class CovidController extends Controller
                     'user_phone'      => 'required|numeric',
                     'user_email'      => 'nullable|email',
                     'q1'              => 'required',
+                    'department_id'   => 'required',
                 ];
 
                 if($request->q1 == 'N') 
@@ -1440,39 +2509,86 @@ class CovidController extends Controller
                 if($request->q2 == 'Y')  
                 {
                     $validate['declare_date2'] = 'required'; 
+                    $validate['declare_contact2'] = 'required';  
+                    $validate['declare_kit2'] = 'required';  
+                }
+                if($request->declare_kit2 == 'Y')  
+                {
+                    $validate['declare_result2'] = 'required'; 
                 }
                 if($request->q3 == 'N') 
                 {
-                    $validate['q4a'] = 'required';
-                    $validate['q4b'] = 'required';
-                    $validate['q4c'] = 'required';
-                    $validate['q4d'] = 'required';
+                    // $validate['q4a'] = 'required';
+                    // $validate['q4b'] = 'required';
+                    // $validate['q4c'] = 'required';
+                    // $validate['q4d'] = 'required';
+                    $validate['q4'] = 'required';
+                }
+                if($request->q4 == 'Y')  
+                {
+                    $validate['q4_kit'] = 'required'; 
+                }
+                if($request->q4_kit == 'Y')  
+                {
+                    $validate['q4_result'] = 'required'; 
                 }
 
                 $request->validate($validate);
 
-                $declare = Covid::create([
-                    'user_name'       => $request->name,
-                    'user_id'         => $request->user_id,
-                    'user_email'      => $request->email,
-                    'user_phone'      => $request->user_phone,
-                    'department_id'   => $request->department_id,
-                    'user_position'   => $request->user_position,
-                    'q1'              => $request->q1,
-                    'q2'              => $request->q2,
-                    'q3'              => $request->q3, 
-                    'q4a'             => $request->q4a, 
-                    'q4b'             => $request->q4b,
-                    'q4c'             => $request->q4c,
-                    'q4d'             => $request->q4d, 
-                    'confirmation'    => 'Y',
-                    'category'        => $category,
-                    'declare_date'    => $date,
-                    'declare_time'    => $time,
-                    'form_type'       => 'OF',
-                    'created_by'      => $request->user_id,
-                    'temperature'     => $request->temperature,
-                ]);
+                if($request->q4 == 'Y'){
+                    $declare = Covid::create([
+                        'user_name'       => $request->name,
+                        'user_id'         => $request->user_id,
+                        'user_email'      => $request->email,
+                        'user_phone'      => $request->user_phone,
+                        'department_id'   => $request->department_id,
+                        'user_position'   => $request->user_position,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => 'Y',
+                        'q4b'             => 'Y',
+                        'q4c'             => 'Y',
+                        'q4d'             => 'Y', 
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'OF',
+                        'created_by'      => $request->user_id,
+                        'temperature'     => $request->temperature,
+                    ]);
+                } else {
+                    $declare = Covid::create([
+                        'user_name'       => $request->name,
+                        'user_id'         => $request->user_id,
+                        'user_email'      => $request->email,
+                        'user_phone'      => $request->user_phone,
+                        'department_id'   => $request->department_id,
+                        'user_position'   => $request->user_position,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => '',
+                        'q4b'             => '',
+                        'q4c'             => '',
+                        'q4d'             => '', 
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'OF',
+                        'created_by'      => $request->user_id,
+                        'temperature'     => $request->temperature,
+                    ]);
+                }
+                    
 
             } else {
 
@@ -1484,6 +2600,7 @@ class CovidController extends Controller
                     'user_phone'      => 'required|numeric',
                     'vsr_email'       => 'nullable|email',
                     'q1'              => 'required',
+                    'department_id'   => 'required',
                 ]);
 
                 if($request->q1 == 'N') 
@@ -1501,45 +2618,91 @@ class CovidController extends Controller
                 if($request->q2 == 'Y')  
                 {
                     $validate['declare_date2'] = 'required'; 
+                    $validate['declare_contact2'] = 'required';  
+                    $validate['declare_kit2'] = 'required';  
+                }
+                if($request->declare_kit2 == 'Y')  
+                {
+                    $validate['declare_result2'] = 'required'; 
                 }
                 if($request->q3 == 'N') 
                 {
-                    $validate['q4a'] = 'required';
-                    $validate['q4b'] = 'required';
-                    $validate['q4c'] = 'required';
-                    $validate['q4d'] = 'required';
+                    // $validate['q4a'] = 'required';
+                    // $validate['q4b'] = 'required';
+                    // $validate['q4c'] = 'required';
+                    // $validate['q4d'] = 'required';
+                    $validate['q4'] = 'required';
+                }
+                if($request->q4 == 'Y')  
+                {
+                    $validate['q4_kit'] = 'required'; 
+                }
+                if($request->q4_kit == 'Y')  
+                {
+                    $validate['q4_result'] = 'required'; 
                 }
                 
                 $request->validate($validate);
                 
-                $declare = Covid::create([
-                    'user_name'       => $request->vsr_name,
-                    'user_id'         => $request->user_id,
-                    'user_ic'         => $request->user_id,
-                    'user_email'      => $request->vsr_email,
-                    'user_phone'      => $request->user_phone,
-                    'department_id'   => $request->department_id,
-                    'user_position'   => $request->user_position,
-                    'q1'              => $request->q1,
-                    'q2'              => $request->q2,
-                    'q3'              => $request->q3, 
-                    'q4a'             => $request->q4a, 
-                    'q4b'             => $request->q4b,
-                    'q4c'             => $request->q4c,
-                    'q4d'             => $request->q4d, 
-                    'confirmation'    => 'Y',
-                    'category'        => $category,
-                    'declare_date'    => $date,
-                    'declare_time'    => $time,
-                    'form_type'       => 'OF',
-                    'created_by'      => $request->user_id,
-                    'temperature'     => $request->temperature,
-                ]);
+                if($request->q4 == 'Y'){
+                    $declare = Covid::create([
+                        'user_name'       => $request->vsr_name,
+                        'user_id'         => $request->user_id,
+                        'user_ic'         => $request->user_id,
+                        'user_email'      => $request->vsr_email,
+                        'user_phone'      => $request->user_phone,
+                        'department_id'   => $request->department_id,
+                        'user_position'   => $request->user_position,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => 'Y',
+                        'q4b'             => 'Y',
+                        'q4c'             => 'Y',
+                        'q4d'             => 'Y',
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'OF',
+                        'created_by'      => $request->user_id,
+                        'temperature'     => $request->temperature,
+                    ]);
+                } else {
+                    $declare = Covid::create([
+                        'user_name'       => $request->vsr_name,
+                        'user_id'         => $request->user_id,
+                        'user_ic'         => $request->user_id,
+                        'user_email'      => $request->vsr_email,
+                        'user_phone'      => $request->user_phone,
+                        'department_id'   => $request->department_id,
+                        'user_position'   => $request->user_position,
+                        'q1'              => $request->q1,
+                        'q2'              => $request->q2,
+                        'q3'              => $request->q3, 
+                        'q4a'             => '',
+                        'q4b'             => '',
+                        'q4c'             => '',
+                        'q4d'             => '',
+                        'confirmation'    => 'Y',
+                        'category'        => $category,
+                        'declare_date'    => $date,
+                        'declare_time'    => $time,
+                        'declare_contact' => strtoupper($contact),
+                        'declare_kit'     => $kit,
+                        'declare_result'  => $result,
+                        'form_type'       => 'OF',
+                        'created_by'      => $request->user_id,
+                        'temperature'     => $request->temperature,
+                    ]);
+                }
             }
                     
             Session::flash('message', 'Your declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded.<br>  The result for your declaration is category <b>'.$category.'</b>.<br> Please make sure to abide the SOP when you are in INTEC premise. <br> Thank you for your cooperation.');
         }
-
        return redirect('covid-result');
     }
 
@@ -1568,7 +2731,7 @@ class CovidController extends Controller
             }
 
             $department = Department::select('id', 'department_name')->orderBy('department_name')->get();
-            $date = Covid::select('declare_date')->groupBy('declare_date')->orderBy('declare_date', 'desc')->get();
+            $date = Covid::select('declare_date')->groupBy('declare_date')->orderBy('declare_date', 'desc')->where( DB::raw('YEAR(declare_date)'), '=', Carbon::now()->format('Y') )->get();
         
             $cond = "1"; // 1 = selected
 
@@ -1584,7 +2747,7 @@ class CovidController extends Controller
             $req_date = $request->datek;
             $req_cate = $request->cates;
 
-            $datek = Covid::select('declare_date')->groupBy('declare_date')->orderBy('declare_date', 'desc')->get();
+            $datek = Covid::select('declare_date')->groupBy('declare_date')->orderBy('declare_date', 'desc')->where( DB::raw('YEAR(declare_date)'), '=', Carbon::now()->format('Y') )->get();
 
             if( Auth::user()->hasRole('HR Admin') )
             {
@@ -1687,40 +2850,40 @@ class CovidController extends Controller
             return $covid->user_phone ?? '<div style="color:red;" > -- </div>';
         })
 
-        ->editColumn('q1', function ($covid) {
+        // ->editColumn('q1', function ($covid) {
 
-            return $covid->q1 ?? '<div style="color:red;" > -- </div>';
-        })
+        //     return $covid->q1 ?? '<div style="color:red;" > -- </div>';
+        // })
 
-        ->editColumn('q2', function ($covid) {
+        // ->editColumn('q2', function ($covid) {
 
-            return $covid->q2 ?? '<div style="color:red;" > -- </div>';
-        })
+        //     return $covid->q2 ?? '<div style="color:red;" > -- </div>';
+        // })
 
-        ->editColumn('q3', function ($covid) {
+        // ->editColumn('q3', function ($covid) {
 
-            return $covid->q3 ?? '<div style="color:red;" > -- </div>';
-        })
+        //     return $covid->q3 ?? '<div style="color:red;" > -- </div>';
+        // })
 
-        ->editColumn('q4a', function ($covid) {
+        // ->editColumn('q4a', function ($covid) {
 
-            return $covid->q4a ?? '<div style="color:red;" > -- </div>';
-        })
+        //     return $covid->q4a ?? '<div style="color:red;" > -- </div>';
+        // })
 
-        ->editColumn('q4b', function ($covid) {
+        // ->editColumn('q4b', function ($covid) {
 
-            return $covid->q4b ?? '<div style="color:red;" > -- </div>';
-        })
+        //     return $covid->q4b ?? '<div style="color:red;" > -- </div>';
+        // })
 
-        ->editColumn('q4c', function ($covid) {
+        // ->editColumn('q4c', function ($covid) {
 
-            return $covid->q4c ?? '<div style="color:red;" > -- </div>';
-        })
+        //     return $covid->q4c ?? '<div style="color:red;" > -- </div>';
+        // })
 
-        ->editColumn('q4d', function ($covid) {
+        // ->editColumn('q4d', function ($covid) {
 
-            return $covid->q4d ?? '<div style="color:red;" > -- </div>';
-        })
+        //     return $covid->q4d ?? '<div style="color:red;" > -- </div>';
+        // })
 
         ->editColumn('user_position', function ($covid) {
 
@@ -1729,7 +2892,7 @@ class CovidController extends Controller
 
         ->editColumn('temperature', function ($covid) {
 
-            return $covid->temperature.' °C'  ?? '<div style="color:red;" > -- </div>';
+            return isset($covid->temperature) ? $covid->temperature.' °C'  : '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('department_id', function ($covid) {
@@ -1743,6 +2906,7 @@ class CovidController extends Controller
         })
 
         ->editColumn('form_type', function ($covid) {
+
             if($covid->form_type == 'OF'){
                 return 'Open Form';
             } else {
@@ -1753,28 +2917,22 @@ class CovidController extends Controller
         ->editColumn('declare_date', function ($covid) {
 
             if(isset($covid->declare_date)) {
-
                 return date(' Y-m-d ', strtotime($covid->declare_date) ).' | '.date(' H:i A ', strtotime($covid->declare_time) );
             } else {
-
                 return 'Not Declared';
             }
-            
         })
 
         ->editColumn('created_at', function ($covid) {
 
             if(isset($covid->created_at)) {
-
                 return date(' Y-m-d | H:i A', strtotime($covid->created_at) );
             } else {
-
                 return 'No Created Date';
             }
-            
         })
     
-       ->rawColumns(['user_category', 'user_position', 'department_id', 'declare_date', 'created_at', 'user_name', 'temperature', 'user_ic', 'user_phone', 'user_email', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
+       ->rawColumns(['user_category', 'user_position', 'department_id', 'declare_date', 'created_at', 'user_name', 'temperature', 'user_ic', 'user_phone', 'user_email'])
        ->make(true);
     }
 

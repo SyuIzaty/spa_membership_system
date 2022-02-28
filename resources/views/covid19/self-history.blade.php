@@ -27,28 +27,34 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                         <th style="width:25px">NO</th>
-                                        <th>Q1</th>
+                                        {{-- <th>Q1</th>
                                         <th>Q2</th>
                                         <th>Q3</th>
                                         <th>Q4(i)</th>
                                         <th>Q4(ii)</th>
                                         <th>Q4(iii)</th>
-                                        <th>Q4(iv)</th>
+                                        <th>Q4(iv)</th> --}}
                                         <th>CATEGORY</th>
+                                        <th>TYPE</th>
+                                        <th>DATE DECLARE</th>
+                                        <th>TIME DECLARE</th>
                                         <th>DATE CREATED</th>
                                         <th>TIME CREATED</th>
-                                        <th>ACTION</th>
+                                        <th>DECLARATION</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Q1"></td>
+                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Q1"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Q2"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Q3"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Fever"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Cough"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Flu"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Breathing Difficulty"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Breathing Difficulty"></td> --}}
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Type"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Date Declare"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Time Declare"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Date Created"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Time Created"></td>
                                         <td class="hasinput"></td>
@@ -107,20 +113,16 @@
             },
             columns: [
                     { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                    { className: 'text-center', data: 'q1', name: 'q1' },
-                    { className: 'text-center', data: 'q2', name: 'q2' },
-                    { className: 'text-center', data: 'q3', name: 'q3' },
-                    { className: 'text-center', data: 'q4a', name: 'q4a' },
-                    { className: 'text-center', data: 'q4b', name: 'q4b' },
-                    { className: 'text-center', data: 'q4c', name: 'q4c' },
-                    { className: 'text-center', data: 'q4d', name: 'q4d' },
                     { className: 'text-center', data: 'category', name: 'category' },
+                    { className: 'text-center', data: 'user_category', name: 'user_category' },
+                    { className: 'text-center', data: 'declare_date', name: 'declare_date' },
+                    { className: 'text-center', data: 'declare_time', name: 'declare_time' },
                     { className: 'text-center', data: 'date', name: 'created_at' },
                     { className: 'text-center', data: 'time', name: 'created_at' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 9, "desc" ]], 
+                "order": [[ 3, "desc" ]], 
                 "initComplete": function(settings, json) {
 
                 } 

@@ -33,6 +33,7 @@
                                         <th>CATEGORY</th>
                                         <th>DATE CREATED</th>
                                         <th>TIME CREATED</th>
+                                        <th>DECLARATION</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
@@ -43,6 +44,7 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Date"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Time"></td>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                     </tr>
                                 </thead>
@@ -106,6 +108,7 @@
                     { className: 'text-center', data: 'category', name: 'category' },
                     { className: 'text-center', data: 'date', name: 'created_at' },
                     { className: 'text-center', data: 'time', name: 'created_at' },
+                    { className: 'text-center', data: 'declare', name: 'declare', orderable: false, searchable: false},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
