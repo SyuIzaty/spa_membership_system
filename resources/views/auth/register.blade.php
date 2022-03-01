@@ -135,7 +135,7 @@
         </div>
 
         <div class="bg-blue py-4">
-            <div class="row px-3"> <small class="ml-4 ml-sm-5 mb-2">Copyright © 2020 INTEC Education College. All Rights Reserved</small>
+            <div class="row px-3"> <small class="ml-4 ml-sm-5 mb-2">Copyright © {{ \Carbon\Carbon::now()->format('Y') }} INTEC Education College. All Rights Reserved</small>
             </div>
         </div>
     </div>

@@ -54,7 +54,7 @@
             </div>
 
             <div class="bg-blue py-3">
-                <div class="row px-3"> <small class="ml-4 ml-sm-4 mb-1">Copyright © 2020 INTEC Education College. All Rights Reserved</small>
+                <div class="row px-3"> <small class="ml-4 ml-sm-4 mb-1">Copyright © {{ \Carbon\Carbon::now()->format('Y') }} INTEC Education College. All Rights Reserved</small>
                 </div>
             </div>
         </div>

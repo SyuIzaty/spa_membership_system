@@ -100,8 +100,12 @@
                                             <button class="btn btn-xs btn-outline-primary pl-4 pr-4"><small>CATEGORY E : <b>{{ $categoryE }}</b></small></button>
                                         </div>
                                     </div>
-                                     
-                                    
+                                    <br><br>
+                                    <center>
+                                        <a data-fancybox="gallery" class="btn btn-primary btn-pills btn-block waves-effect waves-themed w-25" href="{{asset('img/cvd_category.png')}}">
+                                            >> Category Description <<
+                                        </a>
+                                    </center>
                                 </div>
                             </div>
                             <div style="height:400px">
