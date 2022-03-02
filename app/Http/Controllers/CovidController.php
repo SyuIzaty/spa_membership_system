@@ -74,7 +74,6 @@ class CovidController extends Controller
             {
                 if($request->q3 == 'N')
                 {
-                    // if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
                     if($request->q4 == 'Y')
                     {
                         $category = 'D';
@@ -164,8 +163,6 @@ class CovidController extends Controller
         }
 
         $request->validate($validate);
-
-        
 
         if($request->q4 == 'Y' || $request->q4 != null) {
             $declare = Covid::create([
@@ -338,7 +335,7 @@ class CovidController extends Controller
 
             } elseif($recent->category == 'B' && $difference < 7) {
                 //Recent category B
-                Session::flash('msgB', 'Declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that '.$datas->name.' are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'. Quarantine Countdown : '.$difference.'/7 Days');
+                Session::flash('msgB', 'Declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that '.$datas->name.' are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'. Please contact HR for confirmation of quarantine process. Thank you for your cooperation.');
 
             } else {
                 //Recent category C D E
@@ -1615,7 +1612,6 @@ class CovidController extends Controller
             {
                 if($request->q3 == 'N')
                 {
-                    // if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
                     if($request->q4 == 'Y')
                     {
                         $category = 'D';
@@ -1677,7 +1673,7 @@ class CovidController extends Controller
 
             } elseif($recent->category == 'B' && $difference < 7) {
                 //Recent category B
-                Session::flash('msgB', 'Your declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that you are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'.<br>Please Quarantine Yourself For 7 Days. Thank you for your cooperation.<br>Quarantine Countdown : <b>'.$difference.'/7 Days</b>');
+                Session::flash('msgB', 'Your declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that you are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'.<br>Please contact HR for confirmation of quarantine process. Thank you for your cooperation.');
 
             } else {
                 //Recent category C D E
@@ -1688,7 +1684,6 @@ class CovidController extends Controller
                 {
                     if($category == 'A' || $category == 'B')
                     {
-                        // dd($request);
                         if($request->user_position == 'STF')
                         {
                             $validate = [
@@ -1699,7 +1694,6 @@ class CovidController extends Controller
                                 'user_email'      => 'nullable|email',
                                 'q1'              => 'required',
                                 'user_category'   => 'required',
-                                // 'department_stf'  => 'required',
                             ];
 
                             if($request->user_category == 'WFO') {
@@ -1729,10 +1723,6 @@ class CovidController extends Controller
                             }
                             if($request->q3 == 'N') 
                             {
-                                // $validate['q4a'] = 'required';
-                                // $validate['q4b'] = 'required';
-                                // $validate['q4c'] = 'required';
-                                // $validate['q4d'] = 'required';
                                 $validate['q4'] = 'required';
                             }
                             if($request->q4 == 'Y')  
@@ -1774,7 +1764,7 @@ class CovidController extends Controller
                                     'temperature'     => $request->temperature_stf,
                                 ]);
                             } else {
-                                // dd($request);
+                                
                                 $declare = Covid::create([
                                     'user_name'       => $request->name,
                                     'user_id'         => $request->user_id,
@@ -1840,10 +1830,6 @@ class CovidController extends Controller
                             }
                             if($request->q3 == 'N') 
                             {
-                                // $validate['q4a'] = 'required';
-                                // $validate['q4b'] = 'required';
-                                // $validate['q4c'] = 'required';
-                                // $validate['q4d'] = 'required';
                                 $validate['q4'] = 'required';
                             }
                             if($request->q4 == 'Y')  
@@ -1948,10 +1934,6 @@ class CovidController extends Controller
                             }
                             if($request->q3 == 'N') 
                             {
-                                // $validate['q4a'] = 'required';
-                                // $validate['q4b'] = 'required';
-                                // $validate['q4c'] = 'required';
-                                // $validate['q4d'] = 'required';
                                 $validate['q4'] = 'required';
                             }
                             if($request->q4 == 'Y')  
@@ -2034,7 +2016,6 @@ class CovidController extends Controller
                 {
                     if($request->user_position == 'STF')
                     {
-                        // dd($category);
                         $validate = [
                             'user_position'   => 'required',
                             'user_id'         => 'required|regex:/^[\w-]*$/', 
@@ -2043,7 +2024,6 @@ class CovidController extends Controller
                             'user_email'      => 'nullable|email',
                             'q1'              => 'required',
                             'user_category'   => 'required',
-                            // 'department_stf'  => 'required',
                         ];
 
                         if($request->user_category == 'WFO') {
@@ -2073,10 +2053,6 @@ class CovidController extends Controller
                         }
                         if($request->q3 == 'N') 
                         {
-                            // $validate['q4a'] = 'required';
-                            // $validate['q4b'] = 'required';
-                            // $validate['q4c'] = 'required';
-                            // $validate['q4d'] = 'required';
                             $validate['q4'] = 'required';
                         }
                         if($request->q4 == 'Y')  
@@ -2182,10 +2158,6 @@ class CovidController extends Controller
                         }
                         if($request->q3 == 'N') 
                         {
-                            // $validate['q4a'] = 'required';
-                            // $validate['q4b'] = 'required';
-                            // $validate['q4c'] = 'required';
-                            // $validate['q4d'] = 'required';
                             $validate['q4'] = 'required';
                         }
                         if($request->q4 == 'Y')  
@@ -2290,10 +2262,6 @@ class CovidController extends Controller
                         }
                         if($request->q3 == 'N') 
                         {
-                            // $validate['q4a'] = 'required';
-                            // $validate['q4b'] = 'required';
-                            // $validate['q4c'] = 'required';
-                            // $validate['q4d'] = 'required';
                             $validate['q4'] = 'required';
                         }
                         if($request->q4 == 'Y')  
@@ -2379,7 +2347,6 @@ class CovidController extends Controller
                     'user_email'      => 'nullable|email',
                     'q1'              => 'required',
                     'user_category'   => 'required',
-                    // 'department_stf'  => 'required',
                 ];
 
                 if($request->user_category == 'WFO') {
@@ -2409,10 +2376,6 @@ class CovidController extends Controller
                 }
                 if($request->q3 == 'N') 
                 {
-                    // $validate['q4a'] = 'required';
-                    // $validate['q4b'] = 'required';
-                    // $validate['q4c'] = 'required';
-                    // $validate['q4d'] = 'required';
                     $validate['q4'] = 'required';
                 }
                 if($request->q4 == 'Y')  
@@ -2518,10 +2481,6 @@ class CovidController extends Controller
                 }
                 if($request->q3 == 'N') 
                 {
-                    // $validate['q4a'] = 'required';
-                    // $validate['q4b'] = 'required';
-                    // $validate['q4c'] = 'required';
-                    // $validate['q4d'] = 'required';
                     $validate['q4'] = 'required';
                 }
                 if($request->q4 == 'Y')  
@@ -2588,7 +2547,6 @@ class CovidController extends Controller
                         'temperature'     => $request->temperature,
                     ]);
                 }
-                    
 
             } else {
 
@@ -2627,10 +2585,6 @@ class CovidController extends Controller
                 }
                 if($request->q3 == 'N') 
                 {
-                    // $validate['q4a'] = 'required';
-                    // $validate['q4b'] = 'required';
-                    // $validate['q4c'] = 'required';
-                    // $validate['q4d'] = 'required';
                     $validate['q4'] = 'required';
                 }
                 if($request->q4 == 'Y')  

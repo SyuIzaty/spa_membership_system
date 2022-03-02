@@ -29,22 +29,6 @@
                                     <span class="font-weight-bold">RESULT SUMMARY</span>
                                 </div>
                                 <div class="card-body">
-                                    {{-- <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                        <thead>
-                                            <tr align="center" class="data-row">
-                                                <table>
-                                                    <tr><td style="background-color:#ff664c; color: white; padding: 10px;">
-                                                    <p class="mb-0 mt-0" style="font-size: 40px">21
-                                                    <sup style="top: -16px; font-size: 20px;">Feb 2022</sup>
-                                                    <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">Monday</p></p>
-                                                    <hr class="mb-0 mt-0">
-                                                    <p align="center" class="mb-0 mt-0" style="font-size: 21px">B</p>
-                                                    </td></tr>
-                                                </table>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                    <br> --}}
                                     @if (Session::has('message'))
                                         <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: # ; width: 100%; font-size: 14px;"> {!! session()->get('message') !!}</div></center>
                                     @endif

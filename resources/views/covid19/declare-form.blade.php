@@ -75,8 +75,8 @@
                                                 <tr align="center" class="data-row">
                                                     <td valign="top" colspan="4" class="dataTables_empty">
                                                         <p style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"><b> ' YOU MADE SELF DECLARATION ON {{ date(' d/m/Y ', strtotime($declare->declare_date) )}} ' </b></p>
-                                                        <p style="font-size: 20px; color: black">Please Quarantine Yourself For 7 Days</p>
-                                                        <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/7 Days</p>
+                                                        <p style="font-size: 20px; color: black">Please Contact HR For Confirmation of Quarantine Process.</p>
+                                                        {{-- <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/7 Days</p> --}}
                                                         <table>
                                                             <tr><td style="background-color:orange; color: white;">
                                                             <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
