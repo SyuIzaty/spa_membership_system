@@ -54,22 +54,22 @@
                                             <div class="p-3 bg-warning-300 rounded overflow-hidden position-relative text-white  ">
                                                 <div class="">
                                                     <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                        {{ $activeB }}
-                                                        <small class="m-0 l-h-n">TOTAL ACTIVE CATEGORY B</small>
+                                                        {{ $all }}
+                                                        <small class="m-0 l-h-n">TOTAL OF TODAY DECLARATION</small>
                                                     </h3>
                                                 </div>
-                                                <i class="fal fa-cubes position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                                                <i class="fal fa-archive position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-xl-4 mb-1">
                                             <div class="p-3 bg-danger-300 rounded overflow-hidden position-relative text-white  ">
                                                 <div class="">
                                                     <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                        {{ $all }}
-                                                        <small class="m-0 l-h-n">TOTAL OF TODAY DECLARATION </small>
+                                                        {{-- {{ $activeB }} --}} {{ $data }}
+                                                        <small class="m-0 l-h-n">TOTAL OF TODAY UNDECLARED<sub class="ml-3"> (STAFF & STUDENT) </sub></small>
                                                     </h3>
                                                 </div>
-                                                <i class="fal fa-archive position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                                                <i class="fal fa-cubes position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
                                             </div>
                                         </div>
                                     </div>

@@ -47,10 +47,18 @@ class CovidController extends Controller
         $line->labels = (array_keys($apply));
         $line->dataset = (array_values($apply));
 
-        $activeA = Covid::where('category', 'A')->whereDate( 'declare_date', '>', Carbon::now()->subDays(10))->count();
-        $activeB = Covid::where('category', 'B')->whereDate( 'declare_date', '>', Carbon::now()->subDays(7))->count();
+        $result = new User();
+        $new_date = date('Y-m-d', strtotime(Carbon::now()));
+        $quarantineA = Covid::select('user_id')->where('category', 'A')->whereRaw("DATEDIFF('$new_date',declare_date) < 10")->get();
+        $datas = Covid::select('user_id')->whereDate( 'declare_date', '=', Carbon::now())->distinct()->get();
+        $datass = array_unique(array_merge(array_column($quarantineA->toArray(), 'user_id'), array_column($datas->toArray(), 'user_id')));
+        $result = $result->whereNotIn('id',$datass);
+        $data = $result->whereNotNull('email')->where('active', 'Y')->count();
 
-        return view('covid19.dashboard', compact('all','categoryA','categoryB','categoryC','categoryD','categoryE','percentA','percentB','percentC','percentD','percentE','line','activeA','activeB'));
+        $activeA = Covid::where('category', 'A')->whereDate( 'declare_date', '>', Carbon::now()->subDays(10))->count();
+        $activeB = Covid::where('category', 'B')->whereDate( 'declare_date', '=', Carbon::now())->count();
+
+        return view('covid19.dashboard', compact('all','categoryA','categoryB','categoryC','categoryD','categoryE','percentA','percentB','percentC','percentD','percentE','line','activeA','activeB','data'));
     }
 
     public function form()
