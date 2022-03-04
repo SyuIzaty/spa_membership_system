@@ -335,10 +335,9 @@ class CovidController extends Controller
 
             } 
             // elseif($recent->category == 'B' && $difference < 7) {
-            elseif($recent->category == 'B') {
-                //Recent category B
-                Session::flash('msgB', 'Declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that '.$datas->name.' are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'. Please contact HR for confirmation of quarantine process. Thank you for your cooperation.');
-            } 
+            //     //Recent category B
+            //     Session::flash('msgB', 'Declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that '.$datas->name.' are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'. Please contact HR for confirmation of quarantine process. Thank you for your cooperation.');
+            // } 
             else {
                 //Recent category C D E
                 $data = Covid::where('user_id', $request->user_id)->orWhere('user_id', $request->user_ids)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
@@ -1676,10 +1675,9 @@ class CovidController extends Controller
                 Session::flash('msgA', 'Your declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that you are under category A on '.date(' j F Y ', strtotime($recent->declare_date)).'.<br>Please Quarantine Yourself For 10 Days. Thank you for your cooperation.<br>Quarantine Countdown : <b>'.$difference.'/10 Days</b>');
             } 
             // elseif($recent->category == 'B' && $difference < 7) {
-            elseif($recent->category == 'B') {
-                //Recent category B
-                Session::flash('msgB', 'Your declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that you are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'.<br>Please contact HR for confirmation of quarantine process. Thank you for your cooperation.');
-            } 
+            //     //Recent category B
+            //     Session::flash('msgB', 'Your declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that you are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'.<br>Please contact HR for confirmation of quarantine process. Thank you for your cooperation.');
+            // } 
             else {
                 //Recent category C D E
                 $data = Covid::where('user_id', $request->user_id)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
