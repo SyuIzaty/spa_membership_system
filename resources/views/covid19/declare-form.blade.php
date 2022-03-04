@@ -68,7 +68,7 @@
                                         </table>
                                     @endif
                                 @elseif($declare->category == 'B')
-                                    @if($bakihari<8)
+                                    {{-- @if($bakihari<8) --}}
                                         @php $display = false; @endphp
                                         <table id="info" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
@@ -91,7 +91,7 @@
                                                 </tr>
                                             </thead>
                                         </table>
-                                    @endif
+                                    {{-- @endif --}}
                                 @else
                                     @if($exist)
                                         @php $display = false; @endphp

@@ -333,11 +333,13 @@ class CovidController extends Controller
                 //Recent category A
                 Session::flash('msgA', 'Declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that '.$datas->name.' are under category A on '.date(' j F Y ', strtotime($recent->declare_date)).'. Quarantine Countdown : '.$difference.'/10 Days');
 
-            } elseif($recent->category == 'B' && $difference < 7) {
+            } 
+            // elseif($recent->category == 'B' && $difference < 7) {
+            elseif($recent->category == 'B') {
                 //Recent category B
                 Session::flash('msgB', 'Declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that '.$datas->name.' are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'. Please contact HR for confirmation of quarantine process. Thank you for your cooperation.');
-
-            } else {
+            } 
+            else {
                 //Recent category C D E
                 $data = Covid::where('user_id', $request->user_id)->orWhere('user_id', $request->user_ids)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
             
@@ -1289,11 +1291,13 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(7))->select('cdd_covid_declarations.*');
+            // $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(7))->select('cdd_covid_declarations.*');
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'B')->whereDate('declare_date', '=', Carbon::now()->toDateString())->select('cdd_covid_declarations.*');
         }
         else
         {
-           $declare = Covid::where('user_position', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(7))->select('cdd_covid_declarations.*');
+        //    $declare = Covid::where('user_position', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(7))->select('cdd_covid_declarations.*');
+           $declare = Covid::where('user_position', 'STD')->where('category', 'B')->whereDate('declare_date', '=', Carbon::now()->toDateString())->select('cdd_covid_declarations.*');
         }
 
         return datatables()::of($declare)
@@ -1324,24 +1328,24 @@ class CovidController extends Controller
             }
         })
 
-        ->editColumn('quarantine_day', function ($declare) {
+        // ->editColumn('quarantine_day', function ($declare) {
 
-            $remaining_days = Carbon::parse($declare->declare_date)->diffInDays(Carbon::now());
+        //     $remaining_days = Carbon::parse($declare->declare_date)->diffInDays(Carbon::now());
 
-            if($remaining_days >= 7){
-                $days = '<div style="color:red;" >ENDED</div>'; 
-            }
-            else{
-                $days = Carbon::parse($declare->declare_date)->diffInDays(Carbon::now())+1;
-                if($days != 1){
-                    return $days . ' days';
-                } else {
-                    return $days . ' day';
-                }
-            }
+        //     if($remaining_days >= 7){
+        //         $days = '<div style="color:red;" >ENDED</div>'; 
+        //     }
+        //     else{
+        //         $days = Carbon::parse($declare->declare_date)->diffInDays(Carbon::now())+1;
+        //         if($days != 1){
+        //             return $days . ' days';
+        //         } else {
+        //             return $days . ' day';
+        //         }
+        //     }
           
-            return $days;
-        })
+        //     return $days;
+        // })
 
         ->editColumn('date', function ($declare) {
 
@@ -1353,7 +1357,7 @@ class CovidController extends Controller
             return date(' h:i:s A', strtotime($declare->declare_time) );
         })
         
-        ->rawColumns(['action', 'date', 'time', 'quarantine_day', 'declare'])
+        ->rawColumns(['action', 'date', 'time', 'declare'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -1670,12 +1674,13 @@ class CovidController extends Controller
             if($recent->category == 'A' && $difference < 11) {
                 //Recent category A
                 Session::flash('msgA', 'Your declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that you are under category A on '.date(' j F Y ', strtotime($recent->declare_date)).'.<br>Please Quarantine Yourself For 10 Days. Thank you for your cooperation.<br>Quarantine Countdown : <b>'.$difference.'/10 Days</b>');
-
-            } elseif($recent->category == 'B' && $difference < 7) {
+            } 
+            // elseif($recent->category == 'B' && $difference < 7) {
+            elseif($recent->category == 'B') {
                 //Recent category B
                 Session::flash('msgB', 'Your declaration on '.date(' j F Y ', strtotime($recent->created_at)).' show that you are under category B on '.date(' j F Y ', strtotime($recent->declare_date)).'.<br>Please contact HR for confirmation of quarantine process. Thank you for your cooperation.');
-
-            } else {
+            } 
+            else {
                 //Recent category C D E
                 $data = Covid::where('user_id', $request->user_id)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
             

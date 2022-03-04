@@ -30,7 +30,7 @@
                                         <th>ID</th>
                                         <th>NAME</th>
                                         <th>POSITION</th>
-                                        <th>QUARANTINE DAY</th>
+                                        {{-- <th>QUARANTINE DAY</th> --}}
                                         <th>DATE DECLARE</th>
                                         <th>TIME DECLARE</th>
                                         <th>DECLARATION</th>
@@ -41,7 +41,7 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Position"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Day"></td>
+                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Day"></td> --}}
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Date Created"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Time Created"></td>
                                         <td class="hasinput"></td>
@@ -104,7 +104,7 @@
                     { className: 'text-center', data: 'user_id', name: 'user_id' },
                     { className: 'text-center', data: 'user_name', name: 'user_name' },
                     { className: 'text-center', data: 'user_position', name: 'user_position' },
-                    { className: 'text-center', data: 'quarantine_day', name: 'quarantine_day' },
+                    // { className: 'text-center', data: 'quarantine_day', name: 'quarantine_day' },
                     { className: 'text-center', data: 'date', name: 'declare_date' },
                     { className: 'text-center', data: 'time', name: 'declare_time' },
                     { className: 'text-center', data: 'declare', name: 'declare', orderable: false, searchable: false},
