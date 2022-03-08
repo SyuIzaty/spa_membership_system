@@ -66,9 +66,10 @@ class CovidController extends Controller
         $id = Auth::user()->id;
         $user = User::where('id',$id)->first();
         $declare = Covid::where('user_id', $id)->latest('declare_date')->first();
-        $exist = Covid::with(['user'])->where('user_id', $id)->whereDate('created_at', '=', now()->toDateString())->first();
+        $exist = Covid::with(['user'])->where('user_id', $id)->whereDate('created_at', '=', Carbon::now()->toDateString())->first();
         $department = Department::orderBy('department_name')->get();
         $category = UserCategory::orderBy('category_name')->get();
+
         return view('covid19.declare-form', compact('user', 'declare', 'exist', 'department', 'category'));
     }
 
