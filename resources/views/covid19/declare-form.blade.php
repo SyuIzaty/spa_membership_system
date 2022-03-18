@@ -193,7 +193,7 @@
                                                 <tr class="q1">
                                                     <div class="form-group">
                                                         <td style="text-align: center" width="4%"><label for="q1">1.</label></td>
-                                                        <td width="80%;"><label for="q1">Have you been confirmed positive with COVID-19 within 14 days? </label>@error('q1')<b style="color: red"><strong> required </strong></b>@enderror</td>
+                                                        <td width="80%;"><label for="q1">Have you been confirmed positive with COVID-19 within 10 days? </label>@error('q1')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                                         <td style="text-align: center"><input type="radio" name="q1" id="q1" value="Y" {{ (old('q1') && old('q1') == 'Y') ? 'checked' : '' }}></td>
                                                         <td style="text-align: center"><input type="radio" name="q1" id="q1" value="N" {{ (old('q1') && old('q1') == 'N') ? 'checked' : '' }}></td>
                                                     </div>
@@ -210,7 +210,7 @@
                                                 <tr class="q2" style="display: none">
                                                     <div class="form-group">
                                                         <td style="text-align: center" width="4%"><label for="q2">2.</label></td>
-                                                        <td><label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days? </label>@error('q2')<b style="color: red"><strong> required </strong></b>@enderror</td>
+                                                        <td><label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 5 days? </label>@error('q2')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                                         <td style="text-align: center"><input type="radio" name="q2" id="q2" value="Y" {{ (old('q2') && old('q2') == 'Y') ? 'checked' : '' }}></td>
                                                         <td style="text-align: center"><input type="radio" name="q2" id="q2" value="N" {{ (old('q2') && old('q2') == 'N') ? 'checked' : '' }}></td>
                                                     </div>

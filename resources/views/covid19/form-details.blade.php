@@ -121,7 +121,7 @@
                                                 <div class="form-group">
                                                     <td style="text-align: center" width="4%"><label for="q1">1.</label></td>
                                                     <td width="80%">
-                                                        <label for="q1">Have you been confirmed positive with COVID-19 within 14 days ?</label><br>
+                                                        <label for="q1">Have you been confirmed positive with COVID-19 within 10 days ?</label><br>
                                                         <p style="line-height: 25px">
                                                             <b>Answer : </b>
                                                             @if ($declare->q1 == 'Y') YES @endif
@@ -141,7 +141,7 @@
                                                 <div class="form-group">
                                                     <td style="text-align: center" width="4%"><label for="q2">2.</label></td>
                                                     <td>
-                                                        <label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days?</label><br>
+                                                        <label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 5 days?</label><br>
                                                         <p style="line-height: 25px">
                                                             <b>Answer : </b>
                                                             @if ($declare->q2 == 'Y') YES @endif
@@ -286,7 +286,7 @@
                                             <tr class="q1">
                                                 <div class="form-group">
                                                     <td style="text-align: center" width="4%"><label for="q1">1.</label></td>
-                                                    <td width="80%"><label for="q1">Have you been confirmed positive with COVID-19 within 14 days?</label></td>
+                                                    <td width="80%"><label for="q1">Have you been confirmed positive with COVID-19 within 10 days?</label></td>
                                                     <td style="text-align: center">
                                                         @if ($declare->q1 == 'Y') YES @endif
                                                         @if ($declare->q1 == 'N') NO @endif
@@ -298,7 +298,7 @@
                                             <tr class="q2">
                                                 <div class="form-group">
                                                     <td style="text-align: center" width="4%"><label for="q2">2.</label></td>
-                                                    <td><label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days?</label></td>
+                                                    <td><label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 5 days?</label></td>
                                                     <td style="text-align: center">
                                                         @if ($declare->q2 == 'Y') YES @endif
                                                         @if ($declare->q2 == 'N') NO @endif
