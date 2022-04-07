@@ -1637,7 +1637,7 @@ class TrainingController extends Controller
                 ->orderBy('date', 'desc')
                 ->get();
         
-        $type = TrainingType::select('id','type_name')->groupBy('id')->orderBy('type_name')->get();
+        $type = TrainingType::all();
   
         $data = $data2 = $data3 =  '';
     
