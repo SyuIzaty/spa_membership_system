@@ -118,7 +118,7 @@
                                     <span class="nav-link-text" data-i18n="nav.form">i-Complaint</span>
                                 </a>
                             </li>
-                           
+
                             @can('assign department')
                                 <li>
                                     <a href="/dashboard-icomplaint" title="Dashboard i-Complaint" data-filter-tags="dashboard">
@@ -126,7 +126,7 @@
                                         <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
                                     </a>
                                 </li>
-                           
+
                                 <li>
                                     <a href="/reports" title="Report" data-filter-tags="report">
                                         <i class="fal fa-clipboard-list"></i>
@@ -850,7 +850,8 @@
                                         </li>
                                     </ul>
                                 </li>
-
+                            @endrole
+                            @role('Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
                                 <li>
                                     <a href="/report/all" title="Grant Report" data-filter-tags="report">
                                         <i class="fal fa-clipboard-list"></i>
