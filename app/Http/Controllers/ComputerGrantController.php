@@ -452,7 +452,7 @@ class ComputerGrantController extends Controller
             })
 
             ->addColumn('log', function ($data) {
-                return '<a href="/log/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
+                return '<a href="/log-computer-grant/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
             })
 
             ->rawColumns(['staff_name','details','type','amount','purchase','action','remainingPeriod', 'penalty','log'])
