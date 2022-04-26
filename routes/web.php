@@ -422,7 +422,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/getFAQ', 'ComputerGrantController@getFAQ');
     Route::post('/add-FAQ', 'ComputerGrantController@addFAQ');
     Route::post('/edit-FAQ', 'ComputerGrantController@editFAQ');
-    Route::get('/log/{id}', 'ComputerGrantController@log');
+    Route::get('/log-computer-grant/{id}', 'ComputerGrantController@log');
     Route::post('/loglist/{id}', 'ComputerGrantController@logList');
     Route::get('/all-log', 'ComputerGrantController@allLog');
     Route::post('/allloglist', 'ComputerGrantController@allLogList');
