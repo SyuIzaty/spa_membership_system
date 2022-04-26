@@ -35,7 +35,6 @@ Route::post('/data_moduleauth', 'ModuleAuthController@data_moduleauth');
 Route::get('/test', 'ApplicantController@test');
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::get('home', 'DashboardController@index');
     // Aduan
     Route::get('/borang-aduan', 'AduanController@borangAduan')->name('borangAduan');
@@ -159,8 +158,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/export-individual-asset', 'AssetController@exportIndividualAsset');
     Route::get('/asset-info/{id}', 'AssetController@assetInfo');
     Route::get('/asset-upload', 'AssetController@bulkUpload');
-    Route::post('import-asset','AssetController@importAsset');
-    Route::get('/assetTemplates','AssetController@assetTemplate');
+    Route::post('import-asset', 'AssetController@importAsset');
+    Route::get('/assetTemplates', 'AssetController@assetTemplate');
     Route::get('/asset-trail/{id}', 'AssetController@assetTrail');
     Route::get('/asset-dashboard', 'AssetController@dashboard');
     Route::post('printBarcode', 'AssetController@printBarcode');
@@ -411,12 +410,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('reject-purchase', 'ComputerGrantController@rejectPurchase');
     Route::post('/verify-reimbursement', 'ComputerGrantController@verifyReimbursement');
     Route::post('/cancel-reimbursement', 'ComputerGrantController@undoReimbursement');
-    Route::get('get-receipt/{receipt}','ComputerGrantController@getReceipt');
-    Route::get('get-image/{image}','ComputerGrantController@getImage');
-    Route::get('get-file/{file}','ComputerGrantController@getFile');
-    Route::get('get-declaration/{id}','ComputerGrantController@getDeclarationFile');
-    Route::get('Grant-Reimbursement-Form','ComputerGrantController@getFinanceForm');
-    Route::get('/applicationPDF/{id}','ComputerGrantController@applicationPDF');
+    Route::get('get-receipt/{receipt}', 'ComputerGrantController@getReceipt');
+    Route::get('get-image/{image}', 'ComputerGrantController@getImage');
+    Route::get('get-file/{file}', 'ComputerGrantController@getFile');
+    Route::get('get-declaration/{id}', 'ComputerGrantController@getDeclarationFile');
+    Route::get('Grant-Reimbursement-Form', 'ComputerGrantController@getFinanceForm');
+    Route::get('Grant-System-Flow-Chart', 'ComputerGrantController@getSystemFlowchart');
+    Route::get('/applicationPDF/{id}', 'ComputerGrantController@applicationPDF');
     Route::get('/faq', 'ComputerGrantController@faq');
     Route::get('/faq-list', 'ComputerGrantController@faqList');
     Route::post('/getFAQ', 'ComputerGrantController@getFAQ');
@@ -430,17 +430,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/quota-list', 'ComputerGrantController@quotaList');
     Route::post('/add-quota', 'ComputerGrantController@addQuota');
     Route::post('/edit-quota', 'ComputerGrantController@editQuota');
-    Route::delete('/delete-faq/{id}','ComputerGrantController@deleteFAQ');
-    Route::get('/agreementPDF/{id}','ComputerGrantController@agreementPDF');
+    Route::delete('/delete-faq/{id}', 'ComputerGrantController@deleteFAQ');
+    Route::get('/agreementPDF/{id}', 'ComputerGrantController@agreementPDF');
     Route::post('/declaration', 'ComputerGrantController@declaration');
     Route::post('/upload-declaration', 'ComputerGrantController@uploadAgreement');
     Route::post('requestCancellation', 'ComputerGrantController@requestCancellation');
     Route::post('/verifyCancellation', 'ComputerGrantController@verifyCancellation');
-    Route::get('/report/{all}','ComputerGrantController@report');
-    Route::post('/reportList/{all}','ComputerGrantController@reportList');
-    Route::get('/report/{month}','ComputerGrantController@reportbyMonth');
-    Route::get('/Computer-Grant-Report-{my}','ComputerGrantController@getReportbyMonth');
-    Route::get('/Computer-Grant-Report','ComputerGrantController@getReport');
+    Route::get('/report/{all}', 'ComputerGrantController@report');
+    Route::post('/reportList/{all}', 'ComputerGrantController@reportList');
+    Route::get('/report/{month}', 'ComputerGrantController@reportbyMonth');
+    Route::get('/Computer-Grant-Report-{my}', 'ComputerGrantController@getReportbyMonth');
+    Route::get('/Computer-Grant-Report', 'ComputerGrantController@getReport');
 
     //Engagement Management System
     Route::get('/list/{id}', 'EngagementManagementController@index');
@@ -459,27 +459,27 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/add-status', 'EngagementManagementController@addStatus');
     Route::post('/edit-status', 'EngagementManagementController@editStatus');
     Route::get('/engagement-detail/{id}', 'EngagementManagementController@details');
-    Route::delete('/delete-status/{id}','EngagementManagementController@deleteStatus');
-    Route::delete('/delete-todolist/{id}','EngagementManagementController@deleteToDoList');
+    Route::delete('/delete-status/{id}', 'EngagementManagementController@deleteStatus');
+    Route::delete('/delete-todolist/{id}', 'EngagementManagementController@deleteToDoList');
     Route::get('/new-progress/{id}', 'EngagementManagementController@newProgress');
     Route::get('/edit-progress/{id}', 'EngagementManagementController@progress');
     Route::post('/store-files', 'EngagementManagementController@storeFile');
-    Route::get('get-uploaded-file/{file}','EngagementManagementController@getFile');
-    Route::delete('/delete-file/{id}','EngagementManagementController@deleteFile');
-    Route::delete('/delete-progress/{id}','EngagementManagementController@deleteProgress');
+    Route::get('get-uploaded-file/{file}', 'EngagementManagementController@getFile');
+    Route::delete('/delete-file/{id}', 'EngagementManagementController@deleteFile');
+    Route::delete('/delete-progress/{id}', 'EngagementManagementController@deleteProgress');
 
     //eDocument Management System
     Route::resource('/index', 'DocumentManagementController');
-    Route::get('get-doc/{file}','DocumentManagementController@getDoc');
-    Route::get('upload','DocumentManagementController@upload');
-    Route::get('upload/{id}','DocumentManagementController@getUpload');
+    Route::get('get-doc/{file}', 'DocumentManagementController@getDoc');
+    Route::get('upload', 'DocumentManagementController@upload');
+    Route::get('upload/{id}', 'DocumentManagementController@getUpload');
     Route::post('/store-doc', 'DocumentManagementController@storeDoc');
-    Route::delete('/delete-doc/{id}','DocumentManagementController@deleteDoc');
+    Route::delete('/delete-doc/{id}', 'DocumentManagementController@deleteDoc');
     Route::post('/update-title', 'DocumentManagementController@updateTitle');
     Route::post('/edit', 'DocumentManagementController@edit');
-    Route::get('department-list','DocumentManagementController@departmentList');
+    Route::get('department-list', 'DocumentManagementController@departmentList');
     Route::post('/getDeptList', 'DocumentManagementController@getDepartment');
-    Route::get('update-admin/{id}','DocumentManagementController@adminList');
+    Route::get('update-admin/{id}', 'DocumentManagementController@adminList');
     Route::delete('destroy/{id}', 'DocumentManagementController@destroy')->name('destroy');
     Route::post('/store', 'DocumentManagementController@store');
 
@@ -505,24 +505,24 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/year-month-dashboard', 'AduanKorporatController@getDashboard');
     Route::get('/admin-list', 'AduanKorporatController@admin');
     Route::post('/departmentList', 'AduanKorporatController@departmentLists');
-    Route::get('/admin-list/{id}','AduanKorporatController@adminList');
+    Route::get('/admin-list/{id}', 'AduanKorporatController@adminList');
     Route::post('/store-admin', 'AduanKorporatController@storeAdmin');
     Route::delete('/delete-admin/{id}', 'AduanKorporatController@deleteAdmin');
     Route::get('/status-list', 'AduanKorporatController@status');
     Route::post('/get-status-list', 'AduanKorporatController@getStatus');
     Route::post('/store-status', 'AduanKorporatController@addStatus');
     Route::post('/update-status', 'AduanKorporatController@updateStatus');
-    Route::delete('/delete-status/{id}','AduanKorporatController@destroyStatus');
+    Route::delete('/delete-status/{id}', 'AduanKorporatController@destroyStatus');
     Route::get('category-lists', 'AduanKorporatController@category');
     Route::post('/get-category-list', 'AduanKorporatController@getCategory');
     Route::post('/storeCategories', 'AduanKorporatController@addCategory');
     Route::post('/update-categories', 'AduanKorporatController@updateCategory');
-    Route::delete('/delete-categories/{id}','AduanKorporatController@destroyCategory');
+    Route::delete('/delete-categories/{id}', 'AduanKorporatController@destroyCategory');
     Route::get('user-category-list', 'AduanKorporatController@userCategory');
     Route::post('get-usercategory-list', 'AduanKorporatController@getUserCategory');
     Route::post('/store-usercategory', 'AduanKorporatController@addUserCategory');
     Route::post('/update-usercategory', 'AduanKorporatController@updateUserCategory');
-    Route::delete('/delete-usercategory/{id}','AduanKorporatController@destroyUserCategory');
+    Route::delete('/delete-usercategory/{id}', 'AduanKorporatController@destroyUserCategory');
     Route::get('subcategory-list', 'AduanKorporatController@subCategory');
     Route::post('/getSubCat', 'AduanKorporatController@getSubCat');
     Route::post('/addSubCat', 'AduanKorporatController@addSubCategory');
@@ -538,7 +538,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('update-training', 'TrainingController@updateTraining');
     Route::delete('delete-training/{id}', 'TrainingController@deleteTraining')->name('deleteTraining');
     Route::get('/training-info/{id}', 'TrainingController@trainingInfo');
-    Route::get('/training-pdf/{id}','TrainingController@trainingPdf');
+    Route::get('/training-pdf/{id}', 'TrainingController@trainingPdf');
     Route::get('/training-evaluation/{id}/{staff}', 'TrainingController@trainingEvaluation');
 
     // Training : Type
@@ -572,29 +572,29 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('data-pending-claim', 'TrainingController@data_pending_claim');
     Route::post('approve-claim', 'TrainingController@approveClaim');
     Route::post('reject-claim', 'TrainingController@rejectClaim');
-    Route::post('/get-attachment','TrainingController@getAttachment');
-    Route::get('getClaimAttachment/{id}','TrainingController@getClaimAttachment');
+    Route::post('/get-attachment', 'TrainingController@getAttachment');
+    Route::get('getClaimAttachment/{id}', 'TrainingController@getClaimAttachment');
     Route::delete('delete-claim/{id}', 'TrainingController@deleteClaim')->name('deleteClaim');
     Route::get('/claim-info/{id}', 'TrainingController@claimInfo');
-    Route::get('claim/{filename}/{type}','TrainingController@claimAttachment');
+    Route::get('claim/{filename}/{type}', 'TrainingController@claimAttachment');
     Route::post('data-approve-claim', 'TrainingController@data_approve_claim');
     Route::post('data-reject-claim', 'TrainingController@data_reject_claim');
     Route::get('/claim-record', 'TrainingController@claimRecord')->name('claimRecord');
-    Route::get('/claim-slip/{id?}/{year?}/{type?}','TrainingController@claimSlip');
+    Route::get('/claim-slip/{id?}/{year?}/{type?}', 'TrainingController@claimSlip');
     Route::get('/export-claim', 'TrainingController@exportClaim');
     Route::get('/export-latest-claim/{year?}', 'TrainingController@exportLatestClaim');
     Route::get('/findTraining', 'TrainingController@findTraining');
-    Route::post('store-file','TrainingController@fileStore');
-    Route::post('delete-file','TrainingController@fileDestroy');
+    Route::post('store-file', 'TrainingController@fileStore');
+    Route::post('delete-file', 'TrainingController@fileDestroy');
     Route::get('deleteFile/{id}', 'TrainingController@deleteFile')->name('deleteFile');
 
     // Training : Bulk Claim
     Route::get('/bulk-claim-form', 'TrainingController@bulkClaimForm');
     Route::post('store-bulk-claim', 'TrainingController@bulkClaimStore');
-    Route::get('/bulkClaimTemplate','TrainingController@bulkClaimTemplate');
+    Route::get('/bulkClaimTemplate', 'TrainingController@bulkClaimTemplate');
 
     // Training : Record
-    Route::get('/claim-all-slip/{id?}/{year?}','TrainingController@claimAll');
+    Route::get('/claim-all-slip/{id?}/{year?}', 'TrainingController@claimAll');
     Route::get('/record-staff', 'TrainingController@recordStaff');
     Route::post('data-record-staff', 'TrainingController@data_record_staff');
     Route::get('/record-info/{id}', 'TrainingController@recordInfo')->name('recordInfo');
@@ -608,11 +608,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('update-evaluation', 'TrainingController@updateEvaluation');
     Route::delete('delete-evaluation/{id}', 'TrainingController@deleteEvaluation')->name('deleteEvaluation');
     Route::get('/question-info/{id}', 'TrainingController@questionInfo');
-    Route::post('store-question-header','TrainingController@storeHeader')->name('storeHeader');
-    Route::post('update-question-header','TrainingController@updateHeader')->name('updateHeader');
+    Route::post('store-question-header', 'TrainingController@storeHeader')->name('storeHeader');
+    Route::post('update-question-header', 'TrainingController@updateHeader')->name('updateHeader');
     Route::post('reorder-question-header', 'TrainingController@reorderHeader')->name('reorderHeader');
-    Route::post('store-question','TrainingController@storeQuestion')->name('storeQuestion');
-    Route::post('update-question','TrainingController@updateQuestion')->name('updateQuestion');
+    Route::post('store-question', 'TrainingController@storeQuestion')->name('storeQuestion');
+    Route::post('update-question', 'TrainingController@updateQuestion')->name('updateQuestion');
     Route::post('reorder-question', 'TrainingController@reorderQuestion')->name('reorderQuestion');
     Route::get('/question-pdf/{id}', 'TrainingController@questionPdf')->name('questionPdf');
 
@@ -620,14 +620,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/evaluation-report', 'TrainingController@reportList');
     Route::post('data-evaluation-report', 'TrainingController@data_evaluation_report');
     Route::get('/report-info/{id}', 'TrainingController@reportInfo');
-    Route::get('/report-response/{id}/{head}/{eval}','TrainingController@reportResponse');
+    Route::get('/report-response/{id}/{head}/{eval}', 'TrainingController@reportResponse');
     Route::get('/report-response-pdf/{id}/{head}/{eval}', 'TrainingController@reportResponsePdf')->name('reportResponsePdf');
-    Route::get('/report-pdf/{id}','TrainingController@reportPdf');
+    Route::get('/report-pdf/{id}', 'TrainingController@reportPdf');
 
     // Training : Evaluation Form
     Route::get('/evaluation-form/{id}', 'TrainingController@evaluationForm');
-    Route::post('store-evaluation-form','TrainingController@storeEvaluationForm');
-    Route::post('update-evaluation-form','TrainingController@updateEvaluationForm');
+    Route::post('store-evaluation-form', 'TrainingController@storeEvaluationForm');
+    Route::post('update-evaluation-form', 'TrainingController@updateEvaluationForm');
 
     // Training : Dashboard
     Route::get('/training-dashboard', 'TrainingController@dashboard')->name('dashList');
@@ -639,8 +639,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/candidate-relevant/update', 'API\eVoting\CandidateController@update');
     Route::post('/candidate-relevant/add', 'API\eVoting\CandidateController@store');
     Route::delete('/candidate-relevant/{student_id}/{voting_session_id}', 'API\eVoting\CandidateController@destroy');
-    Route::delete('/candidate-category-programme-category/{candidate_category_id}/{programme_category_id}',
-    'API\eVoting\CandidateCategoryProgrammeCategoryController@destroy');
+    Route::delete(
+        '/candidate-category-programme-category/{candidate_category_id}/{programme_category_id}',
+        'API\eVoting\CandidateCategoryProgrammeCategoryController@destroy'
+    );
     Route::get('/vote-status', 'API\eVoting\VoteController@voteStatus');
     Route::get('/categorical-statistics', 'API\eVoting\VoteController@categoricalStatistics');
     Route::get('/categorical-report/{voting_session_id}', 'API\eVoting\VoteController@categoricalReport');
@@ -675,18 +677,17 @@ Route::group(['middleware' => 'auth'], function () {
         return view('e-voting/management');
     });
 
-    Route::get('/vote-platform/{vue_capture?}',function () {
+    Route::get('/vote-platform/{vue_capture?}', function () {
         return view('e-voting/platform');
     })->where('vue_capture', '[\/\w\.-]*');
 
-    Route::get('/vote-report/{vue_capture?}',function () {
+    Route::get('/vote-report/{vue_capture?}', function () {
         return view('e-voting/report');
     })->where('vue_capture', '[\/\w\.-]*');
 
-    Route::get('/vote-management/{vue_capture?}',function () {
+    Route::get('/vote-management/{vue_capture?}', function () {
         return view('e-voting/management');
     })->where('vue_capture', '[\/\w\.-]*');
-
 });
 
 //SCM - Public View
@@ -745,4 +746,3 @@ Route::get('/lists', 'AduanKorporatController@publicList');
 Route::post('/get-lists/{id}', 'AduanKorporatController@getPublicList');
 Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
 Route::get('/get-files/{id}', 'AduanKorporatController@file');
-
