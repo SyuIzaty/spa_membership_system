@@ -31,47 +31,53 @@
                         <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
                     </div>
                 </div>
-            
+
                 <div class="panel-container show">
                     <div class="panel-content">
-                        
                         <div class="card">
                             <div class="card-header">
-                            <div class="card-tools">
-                                <ul class="nav nav-pills ml-auto">
-                                <li class="nav-item">
-                                    <a style="border: solid 1px; border-radius: 0" class="nav-link active test" href="#pie-chart" data-toggle="tab">Carta Pie</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a style="border: solid 1px; border-radius: 0" class="nav-link" href="#bar-chart" data-toggle="tab">Carta Bar</a>
-                                </li>
-                                    <a href="/export_aduan" class="btn btn-sm btn-danger ml-auto float-right" style="color: white; padding-top: 8px"><i class="fal fa-eye"></i> Lihat Laporan</a>
-                                </ul>
-                            </div>
+                                <div class="card-tools">
+                                    <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item">
+                                        <a style="border: solid 1px; border-radius: 0" class="nav-link active test" href="#pie-chart" data-toggle="tab">Carta Pie</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a style="border: solid 1px; border-radius: 0" class="nav-link" href="#bar-chart" data-toggle="tab">Carta Bar</a>
+                                    </li>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="tab-content p-0">
-
                                     <div class="chart tab-pane active" id="pie-chart" >
                                         <div class="row">
                                             @role('Operation Admin')
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="table-responsive">
-                                                    <div id="chart1" style="height: 500px"></div>
+                                                <div class="col-md-6 col-sm-12 mb-4">
+                                                    <div class="card">
+                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
+                                                        <div class="card-body">
+                                                            <div id="chart1" style="height: 500px"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="table-responsive">
-                                                    <div id="chart2" style="height: 500px"></div>
+                                                <div class="col-md-6 col-sm-12 mb-4">
+                                                    <div class="card">
+                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI</div>
+                                                        <div class="card-body">
+                                                            <div id="chart2" style="height: 500px"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @endrole
+
                                             @role('Technical Staff')
-                                            <div class="col-md-12 col-sm-12">
-                                                <div class="table-responsive">
-                                                    <div id="chart5" style="height: 500px"></div>
+                                                <div class="col-md-6 col-sm-12 mb-4">
+                                                    <div class="card">
+                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> </div>
+                                                        <div class="card-body">
+                                                            <div id="chart5" style="height: 500px"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @endrole
                                         </div>
                                     </div>
@@ -79,99 +85,144 @@
                                     <div class="chart tab-pane" id="bar-chart" >
                                         <div class="row">
                                             @role('Operation Admin')
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="table-responsive">
-                                                    <div id="chart3" style="height: 500px"></div>
+                                                <div class="col-md-6 col-sm-12 mb-4">
+                                                    <div class="card">
+                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
+                                                        <div class="card-body">
+                                                            <div id="chart3" style="height: 500px"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="table-responsive">
-                                                    <div id="chart4" style="height: 500px"></div>
+                                                <div class="col-md-6 col-sm-12 mb-4">
+                                                    <div class="card">
+                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI</div>
+                                                        <div class="card-body">
+                                                            <div id="chart4" style="height: 500px"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @endrole
+
                                             @role('Technical Staff')
-                                            <div class="col-md-12 col-sm-12">
-                                                <div class="table-responsive">
-                                                    <div id="chart6" style="height: 500px"></div>
+                                                <div class="col-md-6 col-sm-12 mb-4">
+                                                    <div class="card">
+                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> </div>
+                                                        <div class="card-body">
+                                                            <div id="chart6" style="height: 500px"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @endrole
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @role('Operation Admin')
+                    <div class="panel-container show">
+                        <div class="panel-content">
+                            
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="accordion accordion-outline" id="js_demo_accordion-3">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <a href="javascript:void(0);" class="card-title" data-toggle="collapse" data-target="#dJ" aria-expanded="true">
+                                                    <i class="fal fa-users width-2 fs-xl"></i>
+                                                    SENARAI JURUTEKNIK
+                                                    <span class="ml-auto">
+                                                        <span class="collapsed-reveal">
+                                                            <i class="fal fa-minus fs-xl"></i>
+                                                        </span>
+                                                        <span class="collapsed-hidden">
+                                                            <i class="fal fa-plus fs-xl"></i>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div id="dJ" class="collapse show" data-parent="#dJ">
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered" style="width: 100%" id="dJ_list">
+                                                            <thead class="text-center">
+                                                                <tr class="bg-primary-50">
+                                                                    <td>ID</td>
+                                                                    <td>NAMA</td>
+                                                                    <td>NO TELEFON</td>
+                                                                    <td>EMEL</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
+                                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
+                                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Emel"></td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($senarai as $dJ)
+                                                                    <tr>
+                                                                        <td class="text-center">{{ $dJ->id }}</td>
+                                                                        <td>{{ $dJ->name }}</td>
+                                                                        <td>{{ isset($dJ->staff->staff_phone) ? $dJ->staff->staff_phone : '--'}}</td>
+                                                                        <td>{{ isset($dJ->staff->staff_email) ? $dJ->staff->staff_email : '--'}}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                     
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <i class="fal fa-adjust width-2 fs-xl"></i>
+                                                JUMLAH STATUS TERKINI
+                                            </div>
+                                             
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered" style="width: 100%" >
+                                                            <thead>
+                                                                <tr class="text-center bg-primary-50">
+                                                                    <td>STATUS</td>
+                                                                    <td>JUMLAH TERKUMPUL</td>
+                                                                </tr>
+                                                                @foreach(\App\StatusAduan::all() as $all)
+                                                                    <tr @if($all->kod_status == 'BS' || $all->kod_status == 'DJ') style="background-color: red; color:white" @endif>
+                                                                        <td>{{ $all->kod_status }} - {{ $all->nama_status}}</td>
+                                                                        <td class="text-center">{{ \App\Aduan::where('status_aduan', $all->kod_status)->count() }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                                <tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                             
+                                        </div>
                                     
                                 </div>
                             </div>
-                        </div>
-
-                    </div>
-                </div>
-                @role('Operation Admin')
-                <div class="col-md-12 mt-5">
-                    <div class="panel-content">
-                        <div class="accordion accordion-outline" id="js_demo_accordion-3">
-                            <div class="card">
-                                <div class="card-header">
-                                    <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#dJ" aria-expanded="false">
-                                        <i class="fal fa-users width-2 fs-xl"></i>
-                                        Senarai Juruteknik
-                                        <span class="ml-auto">
-                                            <span class="collapsed-reveal">
-                                                <i class="fal fa-minus fs-xl"></i>
-                                            </span>
-                                            <span class="collapsed-hidden">
-                                                <i class="fal fa-plus fs-xl"></i>
-                                            </span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div id="dJ" class="collapse" data-parent="#dJ">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" style="width: 100%" id="dJ_list">
-                                                <thead class="text-center">
-                                                    <tr class="bg-primary-50">
-                                                        <td>NO.</td>
-                                                        <td>ID</td>
-                                                        <td>NAMA</td>
-                                                        <td>NO TELEFON</td>
-                                                        <td>EMEL</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="hasinput"></td>
-                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
-                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
-                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
-                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Emel"></td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($senarai as $dJ)
-                                                        <tr>
-                                                            <td class="text-center">{{ $no++ }}</td>
-                                                            <td class="text-center">{{ $dJ->id }}</td>
-                                                            <td>{{ $dJ->name }}</td>
-                                                            <td>{{ isset($dJ->staff->staff_phone) ? $dJ->staff->staff_phone : 'No Data'}}</td>
-                                                            <td>{{ isset($dJ->staff->staff_email) ? $dJ->staff->staff_email : 'No Data'}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        
                         </div>
                     </div>
-                </div>
                 @endrole
+
                 @role('Technical Staff')
                 <div class="col-md-12 mt-5">
                     <div class="panel-content">
                         <div class="accordion accordion-outline" id="js_demo_accordion-3">
                             <div class="card">
                                 <div class="card-header">
-                                    <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#dJ" aria-expanded="false" style="color: maroon">
+                                    <a href="javascript:void(0);" class="card-title" data-toggle="collapse" data-target="#dJ" aria-expanded="true" style="color: maroon">
                                         <i class="fal fa-users width-2 fs-xl"></i>
                                         Senarai Admin Operasi
                                         <span class="ml-auto">
@@ -184,20 +235,18 @@
                                         </span>
                                     </a>
                                 </div>
-                                <div id="dJ" class="collapse" data-parent="#dJ">
+                                <div id="dJ" class="collapse show" data-parent="#dJ">
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-bordered" style="width: 100%" id="dJ_list">
                                                 <thead class="text-center">
                                                     <tr style="background-color: #880000; color:white">
-                                                        <td>NO.</td>
                                                         <td>ID</td>
                                                         <td>NAMA</td>
                                                         <td>NO TELEFON</td>
                                                         <td>EMEL</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="hasinput"></td>
                                                         <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
                                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
                                                         <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
@@ -207,7 +256,6 @@
                                                 <tbody>
                                                     @foreach ($senaraiAdmin as $sA)
                                                         <tr>
-                                                            <td class="text-center">{{ $no++ }}</td>
                                                             <td class="text-center">{{ $sA->id }}</td>
                                                             <td>{{ $sA->name }}</td>
                                                             <td>{{ isset($sA->staff->staff_phone) ? $sA->staff->staff_phone : 'No Data'}}</td>
@@ -280,7 +328,7 @@
         function drawChart1() {
             var data = google.visualization.arrayToDataTable(aduan);
             var options = {
-            title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
+            // title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
             titleTextStyle: {
                 color: '333333',
                 fontName: 'Arial',
@@ -307,7 +355,7 @@
         function drawChart2() {
             var data = google.visualization.arrayToDataTable(list);
             var options = {
-            title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
+            // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
             titleTextStyle: {
                 color: '333333',
                 fontName: 'Arial',
@@ -330,7 +378,7 @@
         function drawChart5() {
             var data = google.visualization.arrayToDataTable(juruteknik);
             var options = {
-            title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',
+            // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',
             titleTextStyle: {
                 color: '333333',
                 fontName: 'Arial',
@@ -353,7 +401,7 @@
         function drawChart3() {
             var data = google.visualization.arrayToDataTable(aduan);
             var options = {
-            title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
+            // title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
             titleTextStyle: {
                 color: '333333',
                 fontName: 'Arial',
@@ -378,7 +426,7 @@
         function drawChart4() {
             var data = google.visualization.arrayToDataTable(list);
             var options = {
-            title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
+            // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
             titleTextStyle: {
                 color: '333333',
                 fontName: 'Arial',
@@ -400,7 +448,7 @@
         function drawChart6() {
             var data = google.visualization.arrayToDataTable(juruteknik);
             var options = {
-            title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',
+            // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',
             titleTextStyle: {
                 color: '333333',
                 fontName: 'Arial',

@@ -63,7 +63,6 @@ class AduanExport implements FromCollection, WithHeadings
                 'Id'                    => "",
                 'Nama'                  => "",
                 'Emel'                  => "",
-                'Id_pelapor'            => "",
                 'No_telefon'            => "",
                 'Tarikh_laporan'        => "",
                 'Bilik'                 => "",
@@ -88,6 +87,8 @@ class AduanExport implements FromCollection, WithHeadings
                 'Catatan'               => "",
                 'Pengesahan_pembaikan'  => "",
                 'Status'                => "",
+                'Sebab_pembatalan'      => "",
+                'Penukaran_status'      => "",
                 'Juruteknik'            => "",
             ];
             foreach($item as $ikey => $ivalue)
@@ -97,7 +98,6 @@ class AduanExport implements FromCollection, WithHeadings
                     $data['Id'] =$ivalue->id;
                     $data['Nama'] =$ivalue->nama_pelapor;
                     $data['Emel'] =$ivalue->emel_pelapor;
-                    $data['Id_pelapor'] =$ivalue->id_pelapor;
                     $data['No_telefon'] =$ivalue->no_tel_pelapor;
                     $data['Tarikh_laporan'] =$ivalue->tarikh_laporan;
                     $data['Bilik'] =$ivalue->nama_bilik;
@@ -122,6 +122,8 @@ class AduanExport implements FromCollection, WithHeadings
                     $data['Catatan'] =$ivalue->catatan_pembaikan;
                     $data['Pengesahan_pembaikan'] =$ivalue->pengesahan_pembaikan;
                     $data['Status'] =$ivalue->status_aduan;
+                    $data['Sebab_pembatalan'] =$ivalue->sebab_pembatalan;
+                    $data['Penukaran_status'] =$ivalue->tukar_status;
                     $data['Juruteknik'] =$ivalue->status_aduan;
                 }
 
@@ -163,6 +165,8 @@ class AduanExport implements FromCollection, WithHeadings
             'CATATAN PEMBAIKAN',
             'PENGESAHAN PEMBAIKAN',
             'STATUS TERKINI',
+            'SEBAB PEMBATALAN',
+            'PENUKARAN STATUS',
             'JURUTEKNIK BERTUGAS',
         ];
     }

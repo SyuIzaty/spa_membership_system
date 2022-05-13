@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-list'></i>ADUAN DALAM TINDAKAN
+        <i class='subheader-icon fal fa-list'></i>PENGURUSAN ADUAN DALAM TINDAKAN
         </h1>
     </div>
     <div class="row">
@@ -22,26 +22,31 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
+                        @if (Session::has('status'))
+                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('status') }}</div>
+                        @endif
                         <div class="table-responsive">
                             <table id="senarai" class="table table-bordered table-hover table-striped w-100" style="white-space: nowrap">
                                 <thead>
                                     <tr class="text-center bg-primary-50">
-                                        <th style="width:30px">ID</th>
-                                        <th>NAMA PELAPOR</th>
-                                         <th style="text-align: center; width: 170px">LOKASI</th>
-                                        <th style="width: 200px">ADUAN</th>
-                                        <th style="width: 140px">TARIKH ADUAN</th>
-                                        <th>TEMPOH ADUAN</th>
-                                        <th style="width: 165px">STATUS</th>
-                                        <th style="width: 145px">TAHAP</th>
+                                        <th>#TIKET</th>
+                                        <th>PELAPOR</th>
+                                        <th>LOKASI</th>
+                                        <th>ADUAN</th>
+                                        <th>TARIKH</th>
+                                        <th>MASA</th>
+                                        <th>TEMPOH KELEWATAN</th>
+                                        <th>STATUS</th>
+                                        <th>TAHAP</th>
                                         <th>TINDAKAN</th> 
                                     </tr>
                                     <tr>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                        <td class="hasinput"></td> 
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
                                          <td class="hasinput"><input type="text" class="form-control" placeholder="Lokasi"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Kategori"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh Aduan"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Masa"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Tempoh Kelewatan"></td>
                                         <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
                                             <option value="">Semua</option>
@@ -59,6 +64,41 @@
                                     </tr>
                                 </thead>
                             </table>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="crud-modals" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>PENUKARAN STATUS</h5>
+                                </div>
+                                <div class="modal-body">
+                                    {!! Form::open(['action' => 'AduanController@tukarStatus', 'method' => 'POST']) !!}
+                                    <input type="hidden" name="status_id" id="id">
+                                    <i><b>PERHATIAN!</b></i> : Pastikan maklumat disahkan benar sebelum membuat sebarang penukaran status.
+                                    <br><br>
+                                    <p><span class="text-danger">*</span> Wajib diisi</p>
+                                    <div class="form-group int">
+                                        <td width="15%"><label class="form-label" for="kod_status"><span class="text-danger">*</span> Status :</label></td>
+                                        <td colspan="7">
+                                            <select class="form-control kod_status" name="kod_status" id="kod_status" required>
+                                                <option value="" disabled selected> Please select </option>
+                                                @foreach ($status as $stat) 
+                                                    <option value="{{ $stat->kod_status }}" {{ old('kod_status') ==  $stat->kod_status  ? 'selected' : '' }}>{{ $stat->nama_status }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('kod_status')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="footer">
+                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
+                                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -102,6 +142,17 @@
     {
         $('#status_aduan, #tahap_kategori').select2();
 
+        $('#kod_status').select2({ 
+            dropdownParent: $('#crud-modals') 
+        }); 
+
+        $('#crud-modals').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget) 
+            var id = button.data('id') 
+
+            $('.modal-body #id').val(id); 
+        });
+
         $('#senarai thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
@@ -138,10 +189,11 @@
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { className: 'text-center', data: 'nama_pelapor', name: 'nama_pelapor' },
+                    { data: 'nama_pelapor', name: 'nama_pelapor' },
                     { data: 'lokasi_aduan', name: 'lokasi_aduan' },
                     { data: 'kategori_aduan', name: 'kategori_aduan' },
-                    { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
+                    { className: 'text-center', data: 'tarikh', name: 'tarikh_laporan' },
+                    { className: 'text-center', data: 'masa', name: 'tarikh_laporan' },
                     { className: 'text-center', data: 'tempoh', name: 'tempoh' },
                     { className: 'text-center', data: 'status_aduan', name: 'status_aduan' },
                     { className: 'text-center', data: 'tahap_kategori', name: 'tahap_kategori' },

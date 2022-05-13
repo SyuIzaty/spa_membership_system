@@ -21,25 +21,48 @@
                     <div class="panel-content">
                         <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
                         <h4 style="text-align: center">
-                            <b>BORANG E-ADUAN INTEC EDUCATION COLLEGE</b>
+                            <b>BORANG E-ADUAN</b>
                         </h4>
                         <div>
-                            <p style="padding-left: 40px; padding-right: 40px">
-                                *<i><b>PERHATIAN!</b></i> : Sebarang aduan kerosakkan akan diambil tindakan di dalam tempoh <b>tiga (3)</b> hari bekerja. Sekiranya tiada tindakan dibuat sila rujuk kepada <b>Pegawai Fasiliti (Ahmad Yusri/ Mohd Norshah)</b> untuk laporan/semakan. Sebarang aduan adalah diwajibkan secara online. Laporan secara manual atau pun emel adalah tidak akan diproses. 
+                            <p style="padding-left: 30px; padding-right: 30px">
+                                <i><b>PERHATIAN!</b></i> : Sebarang aduan kerosakkan akan diambil tindakan di dalam tempoh <b>tiga (3)</b> hari bekerja. Sekiranya tiada tindakan dibuat sila rujuk kepada <b>Pegawai Fasiliti</b> untuk laporan/semakan. Sebarang aduan adalah diwajibkan secara online. Laporan secara manual atau pun emel adalah tidak akan diproses. 
                             </p>
                         </div>
                         <div class="panel-container show">
                             <div class="panel-content">
 
-                                {!! Form::open(['action' => 'AduanController@simpanAduan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                {!! Form::open(['action' => 'AduanController@simpanAduan', 'method' => 'POST', 'id' => 'data', 'enctype' => 'multipart/form-data']) !!}
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    @if(Session::has('message'))
+                                        <script type="text/javascript">
+
+                                        function massage() {
+                                        Swal.fire(
+                                                    'Berjaya!',
+                                                    'Aduan anda telah berjaya dihantar dan direkodkan. Sebarang info akan dimaklumkan kemudian. Sila rujuk bahagian Aduan untuk melihat aduan yang dibuat.',
+                                                    'success'
+                                                );
+                                        }
+
+                                        window.onload = massage;
+                                        </script>
+                                    @endif
                                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                                     <div class="table-responsive">
+                                        <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
+                                            <li>
+                                                <a href="#" disabled style="pointer-events: none">
+                                                    <i class="fal fa-user"></i>
+                                                    <span class=""> INFO PENGADU</span>
+                                                </a>
+                                            </li>
+                                            <p></p>
+                                        </ol>
                                         <table id="info" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
-                                                <tr>
+                                                {{-- <tr>
                                                     <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
-                                                </tr>
+                                                </tr> --}}
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
                                                     <td colspan="2" style="vertical-align: middle">{{ strtoupper($user->name)}}</td>
@@ -57,11 +80,20 @@
                                     </div>
 
                                     <div class="table-responsive">
+                                        <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
+                                            <li>
+                                                <a href="#" disabled style="pointer-events: none">
+                                                    <i class="fal fa-info"></i>
+                                                    <span class=""> BUTIRAN ADUAN</span>
+                                                </a>
+                                            </li>
+                                            <p></p>
+                                        </ol>
                                         <table id="aduan" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
-                                                <tr>
+                                                {{-- <tr>
                                                     <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> BUTIRAN ADUAN</label></td>
-                                                </tr>
+                                                </tr> --}}
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Pejabat/Bahagian/ Fakulti/Kolej : </th>
                                                     <td colspan="2"><input class="form-control" id="lokasi_aduan" name="lokasi_aduan"  value="{{ old('lokasi_aduan') }}" placeholder="Pejabat/Bahagian/Fakulti/Kolej">
@@ -162,11 +194,20 @@
                                     </div>
 
                                     <div class="table-responsive">
+                                        <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
+                                            <li>
+                                                <a href="#" disabled style="pointer-events: none">
+                                                    <i class="fal fa-upload"></i>
+                                                    <span class=""> MUATNAIK BUKTI</span>
+                                                </a>
+                                            </li>
+                                            <p></p>
+                                        </ol>
                                         <table id="muatnaik" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
-                                                <tr>
+                                                {{-- <tr>
                                                     <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-upload"></i> MUATNAIK BUKTI</label></td>
-                                                </tr>
+                                                </tr> --}}
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle"> Gambar : </th>
                                                     <td colspan="2">
@@ -189,17 +230,27 @@
                                     </div>
 
                                     <div class="table-responsive">
+                                        <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
+                                            <li>
+                                                <a href="#" disabled style="pointer-events: none">
+                                                    <i class="fal fa-check-square"></i>
+                                                    <span class=""> PERAKUAN DAN PENGESAHAN PELAPOR</span>
+                                                </a>
+                                            </li>
+                                            <p></p>
+                                        </ol>
                                         <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
-                                                <tr>
+                                                {{-- <tr>
                                                     <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-check-square"></i> PERAKUAN DAN PENGESAHAN PELAPOR</label></td>
-                                                </tr>
+                                                </tr> --}}
                                                 <tr>
                                                     <div class="form-group">
                                                         <td colspan="4"><p class="form-label" for="pengesahan_aduan">
                                                         <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="pengesahan_aduan" id="chk" onclick="btn()"/>
-                                                        SAYA, <b><u>{{ strtoupper($user->name) }}</u></b> MENGESAHKAN BUTIRAN PERIBADI DAN ADUAN DIBERIKAN ADALAH BENAR. SAYA BERSETUJU UNTUK DIHUBUNGI BAGI SEBARANG PERTANYAAN LANJUT BERKAITAN ADUAN YANG DIBUAT.</p> 
-                                                        <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Hantar Aduan</button></td>
+                                                        {{-- SAYA, <b><u>{{ strtoupper($user->name) }}</u></b> MENGESAHKAN BUTIRAN PERIBADI DAN ADUAN DIBERIKAN ADALAH BENAR. SAYA BERSETUJU UNTUK DIHUBUNGI BAGI SEBARANG PERTANYAAN LANJUT BERKAITAN ADUAN YANG DIBUAT.</p>  --}}
+                                                        BUTIRAN PERIBADI DAN ADUAN YANG DIBERIKAN ADALAH BENAR. SAYA BERSETUJU UNTUK DIHUBUNGI BAGI SEBARANG PERTANYAAN LANJUT BERKAITAN ADUAN YANG DIBUAT
+                                                        <button style="margin-top: 5px;" class="btn btn-danger float-right" type="submit" id="submit" name="submit" disabled><i class="fal fa-check"></i> Hantar Aduan</button></td>
                                                     </div>
                                                 </tr>
                                             </thead>
@@ -294,75 +345,82 @@
     })
 
     $(document).ready(function() {
-            $('.kategori, .jenis, .sebab').select2();
+        $('.kategori, .jenis, .sebab').select2();
 
-            if($('.kategori').val()!=''){
-                    updateJenis($('.kategori'));
-                }
-                $(document).on('change','.kategori',function(){
-                    updateJenis($(this));
-                });
-
-                function updateJenis(elem){
-                var katid=elem.val();
-                var op=" "; 
-
-                $.ajax({
-                    type:'get',
-                    url:'{!!URL::to('cariJenis')!!}',
-                    data:{'id':katid},
-                    success:function(data)
-                    {
-                        console.log(data)
-                        op+='<option value="">Pilih Jenis Kerosakan</option>';
-                        for (var i=0; i<data.length; i++)
-                        {
-                            var selected = (data[i].id=="{{old('jenis_kerosakan', $aduan->jenis_kerosakan)}}") ? "selected='selected'" : '';
-                            op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].jenis_kerosakan+'</option>';
-                        }
-
-                        $('.jenis').html(op);
-                    },
-                    error:function(){
-                        console.log('success');
-                    },
-                });
+        if($('.kategori').val()!=''){
+                updateJenis($('.kategori'));
             }
+            $(document).on('change','.kategori',function(){
+                updateJenis($(this));
+            });
 
-            if($('.kategori').val()!=''){
-                    updateSebab($('.kategori'));
-                }
-                $(document).on('change','.kategori',function(){
-                    updateSebab($(this));
-                });
+            function updateJenis(elem){
+            var katid=elem.val();
+            var op=" "; 
 
-                function updateSebab(elem){
-                var kateid=elem.val();
-                var op=" "; 
-
-                $.ajax({
-                    type:'get',
-                    url:'{!!URL::to('cariSebab')!!}',
-                    data:{'id':kateid},
-                    success:function(data2)
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('cariJenis')!!}',
+                data:{'id':katid},
+                success:function(data)
+                {
+                    console.log(data)
+                    op+='<option value="">Pilih Jenis Kerosakan</option>';
+                    for (var i=0; i<data.length; i++)
                     {
-                        console.log(data2)
-                        op+='<option value="">Pilih Sebab Kerosakan</option>';
-                        for (var i=0; i<data2.length; i++)
-                        {
-                            var selected = (data2[i].id=="{{old('sebab_kerosakan', $aduan->sebab_kerosakan)}}") ? "selected='selected'" : '';
-                            op+='<option value="'+data2[i].id+'" '+selected+'>'+data2[i].sebab_kerosakan+'</option>';
-                        }
+                        var selected = (data[i].id=="{{old('jenis_kerosakan', $aduan->jenis_kerosakan)}}") ? "selected='selected'" : '';
+                        op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].jenis_kerosakan+'</option>';
+                    }
 
-                        $('.sebab').html(op);
-                    },
-                    error:function(){
-                        console.log('success');
-                    },
-                });
+                    $('.jenis').html(op);
+                },
+                error:function(){
+                    console.log('success');
+                },
+            });
+        }
+
+        if($('.kategori').val()!=''){
+                updateSebab($('.kategori'));
             }
+            $(document).on('change','.kategori',function(){
+                updateSebab($(this));
+            });
 
+            function updateSebab(elem){
+            var kateid=elem.val();
+            var op=" "; 
+
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('cariSebab')!!}',
+                data:{'id':kateid},
+                success:function(data2)
+                {
+                    console.log(data2)
+                    op+='<option value="">Pilih Sebab Kerosakan</option>';
+                    for (var i=0; i<data2.length; i++)
+                    {
+                        var selected = (data2[i].id=="{{old('sebab_kerosakan', $aduan->sebab_kerosakan)}}") ? "selected='selected'" : '';
+                        op+='<option value="'+data2[i].id+'" '+selected+'>'+data2[i].sebab_kerosakan+'</option>';
+                    }
+
+                    $('.sebab').html(op);
+                },
+                error:function(){
+                    console.log('success');
+                },
+            });
+        }
+
+    });
+
+    $(document).ready(function () {
+        $("#data").submit(function () {
+            $("#submit").attr("disabled", true);
+            return true;
         });
+    });
 
 </script>
 @endsection

@@ -43,13 +43,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/cariSebab', 'AduanController@cariSebab');
     Route::get('/aduan', 'AduanController@aduan')->name('aduan');
     Route::post('data_aduan', 'AduanController@data_aduan');
+    Route::post('batalAduan', 'AduanController@batalAduan');
     Route::get('/maklumat-aduan/{id}', 'AduanController@maklumatAduan')->name('maklumatAduan');
     Route::get('resit/{filename}/{type}', 'AduanController@failResit');
     Route::get('get-file-resit/{filename}', 'AduanController@getImej');
     Route::post('simpanPengesahan', 'AduanController@simpanPengesahan');
     Route::post('/aduan/editDeleteJuruteknik', 'AduanController@editDeleteJuruteknik')->name('aduan.editDeleteJuruteknik');
-    Route::post('updateTahap', 'AduanController@updateTahap');
+    Route::post('kemaskiniTahap', 'AduanController@kemaskiniTahap');
     Route::get('padamAlatan/{id}/{id_aduan}', 'AduanController@padamAlatan')->name('padamAlatan');
+    Route::get('padamJuruteknik/{id}/{id_aduan}', 'AduanController@padamJuruteknik')->name('padamJuruteknik');
+    Route::post('tukarStatus', 'AduanController@tukarStatus');
     Route::get('get-file-gambar/{filename}', 'AduanController@getGambar');
     Route::get('/senarai-aduan', 'AduanController@senaraiAduan')->name('senarai');
     Route::post('senaraiAduan', 'AduanController@data_senarai');
@@ -67,6 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('senaraiBertindih', 'AduanController@data_bertindih');
     Route::get('/pdfAduan/{id}', 'AduanController@pdfAduan')->name('pdfAduan');
     Route::get('/export_aduan', 'AduanController@aduan_all')->name('exportAduan');
+    Route::get('/export_aduan_staf', 'AduanController@aduan_all_staff')->name('exportAduanStaf');
     Route::post('/data_aduanexport', 'AduanController@data_aduanexport');
     Route::get('/aduanExport', 'AduanController@aduans');
     Route::post('/aduanExport', 'AduanController@aduans');

@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-list'></i>ADUAN BERTINDIH
+        <i class='subheader-icon fal fa-list'></i>PENGURUSAN ADUAN BERTINDIH
         </h1>
     </div>
     <div class="row">
@@ -26,21 +26,23 @@
                             <table id="tindih" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr class="text-center bg-primary-50" style="white-space: nowrap">
-                                        <th style="width:30px">ID</th>
-                                        <th>NAMA PELAPOR</th>
-                                         <th style="text-align: center; width: 170px">LOKASI</th>
-                                        <th style="width: 200px">ADUAN</th>
-                                        <th style="width: 140px">TARIKH ADUAN</th>
-                                        <th style="width: 165px">STATUS</th>
-                                        <th style="width: 145px">TAHAP</th>
+                                        <th>#TIKET</th>
+                                        <th>PELAPOR</th>
+                                        <th>LOKASI</th>
+                                        <th>ADUAN</th>
+                                        <th>TARIKH</th>
+                                        <th>MASA</th>
+                                        <th>STATUS</th>
+                                        <th>TAHAP</th>
                                         <th>TINDAKAN</th> 
                                     </tr>
                                     <tr>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                        <td class="hasinput"></td> 
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
                                          <td class="hasinput"><input type="text" class="form-control" placeholder="Lokasi"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Kategori"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh Aduan"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Masa"></td>
                                         <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
                                             <option value="">Semua</option>
                                             <option value="Bertindih">Bertindih</option>
@@ -137,7 +139,8 @@
                     { className: 'text-center', data: 'nama_pelapor', name: 'nama_pelapor' },
                     { data: 'lokasi_aduan', name: 'lokasi_aduan' },
                     { data: 'kategori_aduan', name: 'kategori_aduan' },
-                    { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
+                    { className: 'text-center', data: 'tarikh', name: 'tarikh_laporan' },
+                    { className: 'text-center', data: 'masa', name: 'tarikh_laporan' },
                     { className: 'text-center', data: 'status_aduan', name: 'status_aduan' },
                     { className: 'text-center', data: 'tahap_kategori', name: 'tahap_kategori' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
