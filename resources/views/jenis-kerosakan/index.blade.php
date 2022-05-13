@@ -58,8 +58,8 @@
     <div class="modal fade" id="crud-modal" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="card-header bg-primary-50">
-                    <h5 class="card-title w-100">JENIS KEROSAKAN BARU</h5>
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> JENIS KEROSAKAN BARU</h5>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'JenisKerosakanController@tambahJenis', 'method' => 'POST']) !!}
@@ -101,8 +101,8 @@
     <div class="modal fade" id="crud-modals" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="card-header bg-primary-50">
-                    <h5 class="card-title w-100">EDIT JENIS KEROSAKAN</h5>
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT JENIS KEROSAKAN</h5>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'JenisKerosakanController@kemaskiniJenis', 'method' => 'POST']) !!}

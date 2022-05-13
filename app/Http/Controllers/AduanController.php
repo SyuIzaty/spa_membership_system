@@ -44,7 +44,7 @@ class AduanController extends Controller
         $sebab = SebabKerosakan::all();
 
         $aduan = new Aduan();
-        
+
         $user = Auth::user();
 
         return view('aduan.borang-aduan', compact('kategori', 'jenis', 'sebab', 'aduan', 'user'));
@@ -619,43 +619,43 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function updateJuruteknik(Request $request) 
-    {
-        $aduan = Aduan::where('id', $request->id)->first();
+    // public function updateJuruteknik(Request $request) 
+    // {
+    //     $aduan = Aduan::where('id', $request->id)->first();
 
-        $aduan->update([
-            'tahap_kategori'         => $request->tahap_kategori,
-            'status_aduan'           => 'DJ',
-            'caj_kerosakan'          => $request->caj_kerosakan,
-            'tarikh_serahan_aduan'   => Carbon::now()->toDateTimeString(),
-        ]);
+    //     $aduan->update([
+    //         'tahap_kategori'         => $request->tahap_kategori,
+    //         'status_aduan'           => 'DJ',
+    //         'caj_kerosakan'          => $request->caj_kerosakan,
+    //         'tarikh_serahan_aduan'   => Carbon::now()->toDateTimeString(),
+    //     ]);
 
-        foreach($request->input('juruteknik_bertugas') as $key => $value) {
-            $juruteknik = JuruteknikBertugas::create([
-                'id_aduan'              => $request->id,
-                'juruteknik_bertugas'   => $value,
-                'jenis_juruteknik'      => $request->jenis_juruteknik[$key],
-            ]);
+    //     foreach($request->input('juruteknik_bertugas') as $key => $value) {
+    //         $juruteknik = JuruteknikBertugas::create([
+    //             'id_aduan'              => $request->id,
+    //             'juruteknik_bertugas'   => $value,
+    //             'jenis_juruteknik'      => $request->jenis_juruteknik[$key],
+    //         ]);
 
-            //hantar emel kpd juruteknik
+    //         //hantar emel kpd juruteknik
 
-            $data = [
-                'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $juruteknik->juruteknik->name,
-                'penerangan' => 'Anda telah menerima aduan baru pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
-            ];
+    //         $data = [
+    //             'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $juruteknik->juruteknik->name,
+    //             'penerangan' => 'Anda telah menerima aduan baru pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
+    //         ];
 
-            $email = $juruteknik->juruteknik->email;
+    //         $email = $juruteknik->juruteknik->email;
 
-            Mail::send('aduan.emel-aduan', $data, function ($message) use ($email, $juruteknik) {
-                $message->subject('Aduan Baru ID : ' . $juruteknik->id_aduan);
-                $message->from(Auth::user()->email);
-                $message->to($email);
-            });
-        }
+    //         Mail::send('aduan.emel-aduan', $data, function ($message) use ($email, $juruteknik) {
+    //             $message->subject('Aduan Baru ID : ' . $juruteknik->id_aduan);
+    //             $message->from(Auth::user()->email);
+    //             $message->to($email);
+    //         });
+    //     }
         
-        Session::flash('message', 'Aduan Telah Berjaya Dihantar kepada Juruteknik');
-        return redirect('info-aduan/'.$aduan->id);
-    }
+    //     Session::flash('message', 'Aduan Telah Berjaya Dihantar kepada Juruteknik');
+    //     return redirect('info-aduan/'.$aduan->id);
+    // }
 
     public function infoAduan($id)
     {
@@ -752,80 +752,80 @@ class AduanController extends Controller
         return redirect('/senarai-aduan');
     }
 
-    public function simpanPenambahbaikan(Request $request) 
-    {
+    // public function simpanPenambahbaikan(Request $request) 
+    // {
         
-        $aduan = Aduan::where('id', $request->id)->first();
+    //     $aduan = Aduan::where('id', $request->id)->first();
 
-        $request->validate([
-            'laporan_pembaikan'       => 'required',
-            'tarikh_selesai_aduan'    => 'required',
-            'status_aduan'            => 'required',
-        ]);
+    //     $request->validate([
+    //         'laporan_pembaikan'       => 'required',
+    //         'tarikh_selesai_aduan'    => 'required',
+    //         'status_aduan'            => 'required',
+    //     ]);
 
-        $aduan->update([
-            'laporan_pembaikan'       => $request->laporan_pembaikan,
-            'ak_upah'                 => $request->ak_upah,
-            'ak_bahan_alat'           => $request->ak_bahan_alat, 
-            'jumlah_kos'              => $request->jumlah_kos, 
-            'tarikh_selesai_aduan'    => $request->tarikh_selesai_aduan,
-            'status_aduan'            => $request->status_aduan,
-        ]);
+    //     $aduan->update([
+    //         'laporan_pembaikan'       => $request->laporan_pembaikan,
+    //         'ak_upah'                 => $request->ak_upah,
+    //         'ak_bahan_alat'           => $request->ak_bahan_alat, 
+    //         'jumlah_kos'              => $request->jumlah_kos, 
+    //         'tarikh_selesai_aduan'    => $request->tarikh_selesai_aduan,
+    //         'status_aduan'            => $request->status_aduan,
+    //     ]);
 
-        if (isset($request->bahan_alat)) { 
-            foreach($request->bahan_alat as $value) {
-                $fields = [
-                    'id_aduan' => $aduan->id,
-                    'alat_ganti' => $value
-                ];
+    //     if (isset($request->bahan_alat)) { 
+    //         foreach($request->bahan_alat as $value) {
+    //             $fields = [
+    //                 'id_aduan' => $aduan->id,
+    //                 'alat_ganti' => $value
+    //             ];
 
-                AlatanPembaikan::create($fields);
-            }
-        }
+    //             AlatanPembaikan::create($fields);
+    //         }
+    //     }
 
-        if (isset($request->upload_image)) { 
-            $image = $request->upload_image;
-            $paths = storage_path()."/pembaikan/";
+    //     if (isset($request->upload_image)) { 
+    //         $image = $request->upload_image;
+    //         $paths = storage_path()."/pembaikan/";
 
-            for($y = 0; $y < count($image); $y++)
-            {
-                $originalsName = $image[$y]->getClientOriginalName();
-                $fileSizes = $image[$y]->getSize();
-                $fileNames = $originalsName;
-                $image[$y]->storeAs('/pembaikan', $fileNames);
-                ImejPembaikan::create([
-                    'id_aduan'  => $aduan->id,
-                    'upload_image' => $originalsName,
-                    'web_path'  => "app/pembaikan/".$fileNames,
-                ]);
-            }
-        }
+    //         for($y = 0; $y < count($image); $y++)
+    //         {
+    //             $originalsName = $image[$y]->getClientOriginalName();
+    //             $fileSizes = $image[$y]->getSize();
+    //             $fileNames = $originalsName;
+    //             $image[$y]->storeAs('/pembaikan', $fileNames);
+    //             ImejPembaikan::create([
+    //                 'id_aduan'  => $aduan->id,
+    //                 'upload_image' => $originalsName,
+    //                 'web_path'  => "app/pembaikan/".$fileNames,
+    //             ]);
+    //         }
+    //     }
 
-        $admin = User::whereHas('roles', function($query){
-            $query->where('id', 'CMS001');
-        })->get();
+    //     $admin = User::whereHas('roles', function($query){
+    //         $query->where('id', 'CMS001');
+    //     })->get();
 
-        foreach($admin as $value)
-        {
-            $admin_email = $value->email;
+    //     foreach($admin as $value)
+    //     {
+    //         $admin_email = $value->email;
 
-            $data = [
-                'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $value->name,
-                'penerangan'    => 'Aduan yang dilaporkan pada '.date(' j F Y ', strtotime($aduan->tarikh_laporan)).
-                                    ' telah dilaksanakan pembaikan oleh juruteknik bertarikh '.date(' j F Y ', strtotime($aduan->tarikh_selesai_aduan)).
-                                    'Sila log masuk sistem IDS untuk tindakan selanjutnya',
-            ];
+    //         $data = [
+    //             'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $value->name,
+    //             'penerangan'    => 'Aduan yang dilaporkan pada '.date(' j F Y ', strtotime($aduan->tarikh_laporan)).
+    //                                 ' telah dilaksanakan pembaikan oleh juruteknik bertarikh '.date(' j F Y ', strtotime($aduan->tarikh_selesai_aduan)).
+    //                                 'Sila log masuk sistem IDS untuk tindakan selanjutnya',
+    //         ];
 
-            Mail::send('aduan.emel-pembaikan', $data, function ($message) use ($admin_email) {
-                $message->subject('Perlaksanaan Pembaikan Aduan');
-                $message->from(Auth::user()->email);
-                $message->to($admin_email);
-            });
-        }
+    //         Mail::send('aduan.emel-pembaikan', $data, function ($message) use ($admin_email) {
+    //             $message->subject('Perlaksanaan Pembaikan Aduan');
+    //             $message->from(Auth::user()->email);
+    //             $message->to($admin_email);
+    //         });
+    //     }
 
-        Session::flash('simpanPembaikan', 'Pembaikan aduan telah berjaya dihantar.');
-        return redirect('info-aduan/'.$aduan->id);
-    }
+    //     Session::flash('simpanPembaikan', 'Pembaikan aduan telah berjaya dihantar.');
+    //     return redirect('info-aduan/'.$aduan->id);
+    // }
 
     public function kemaskiniPenambahbaikan(Request $request) 
     {
@@ -969,13 +969,13 @@ class AduanController extends Controller
         return redirect()->back()->with('messageJr', 'Juruteknik Berjaya Dipadam');
     }
 
-    public function padamAduan($id)
-    {
-        $exist = Aduan::find($id);
-        $exist->delete();
+    // public function padamAduan($id)
+    // {
+    //     $exist = Aduan::find($id);
+    //     $exist->delete();
 
-        return response()->json(['success'=>'Aduan Berjaya Dipadam.']);
-    }
+    //     return response()->json(['success'=>'Aduan Berjaya Dipadam.']);
+    // }
 
     public function getGambar($file)
     {

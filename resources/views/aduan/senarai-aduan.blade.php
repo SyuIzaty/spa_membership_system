@@ -71,7 +71,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="card-header bg-primary text-white">
-                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>PENUKARAN STATUS</h5>
+                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> PENUKARAN STATUS</h5>
                                 </div>
                                 <div class="modal-body">
                                     {!! Form::open(['action' => 'AduanController@tukarStatus', 'method' => 'POST']) !!}
