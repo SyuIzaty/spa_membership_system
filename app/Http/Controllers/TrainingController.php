@@ -1899,9 +1899,9 @@ class TrainingController extends Controller
             $query->orderby('sequence','ASC');
         }, 'trainingEvaluation'])->orderby('sequence','ASC')->get();
 
-        $result = $this->trainingEvaluationResult->checkResult($id);
+        // $result = $this->trainingEvaluationResult->checkResult($id);
 
-        return view('training.evaluation.question-info', compact('evaluate','evaluation','id','result'));
+        return view('training.evaluation.question-info', compact('evaluate','evaluation','id'));
     }
 
     public function storeHeader(Request $request)

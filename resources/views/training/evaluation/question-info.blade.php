@@ -31,7 +31,7 @@
                                         <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i> NEW HEADER </h5>
                                     </div>
                                     <div class="card-body m-3">
-                                        @if ($result < 1)
+                                        {{-- @if ($result < 1) --}}
                                             {!! Form::open(['action' => 'TrainingController@storeHeader', 'method' => 'POST'])!!}
                                                 <table class="table table-bordered text-center" id="head_field">
                                                     <tr class="bg-primary-50">
@@ -52,7 +52,7 @@
                                                 </div>
                                                 <br><br>
                                             {!! Form::close() !!}
-                                        @endif
+                                        {{-- @endif --}}
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                                     <td class="question">{{ $eval->question_head }}</td>
                                                     <td style="display:none" id={{ $eval->sequence }}>{{ $eval->sequence }}</td>
                                                     <td style="display:none">{{ $eval->trainingEvaluationQuestions->count() }}</td>
-                                                    <td style="display:none">{{ $result }}</td>
+                                                    <td style="display:none"> </td>
                                                     <td class="category_color" data-selected="{{ $eval->color }}"></td>
                                                 </tr>
                                                 @endforeach
@@ -116,7 +116,7 @@
                                         </div>
                                         <div id="org{{$eval->sequence}}" class="collapse {{ ($eval->sequence == '1' ? 'show' : '') }}" data-parent="#org{{$eval->sequence}}">
                                             <div class="card-body">
-                                                @if($result < 1)
+                                                {{-- @if($result < 1) --}}
                                                     {!! Form::open(['action' => 'TrainingController@storeQuestion', 'method' => 'POST'])!!}
                                                         <table class="table table-bordered text-center" id="question_field{{ $eval->id }}">
                                                             <tr class="bg-primary-50 text-center">
@@ -143,7 +143,7 @@
                                                         </div>
                                                         <br><br>
                                                     {!! Form::close() !!}
-                                                @endif
+                                                {{-- @endif --}}
                                                 <table class="table table-bordered editable mt-5 w-100" id="editable">
                                                     <thead class="bg-primary-50">
                                                         <tr>
@@ -161,7 +161,7 @@
                                                                 <td style="display:none" id={{ $question->sequence }}>{{ $question->sequence }}</td>
                                                                 <td class="eval_rate_select" data-selected="{{ $question->eval_rate }}"></td>
                                                                 <td style="display:none">{{ $question->trainingEvaluationResults->count() }}</td>
-                                                                <td style="display:none">{{ $result }}</td>
+                                                                <td style="display:none"> </td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>

@@ -1019,15 +1019,14 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            // if( Auth::user()->hasRole('Operation Admin') )
-            // { 
-            //     return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
-            //             <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai-aduan/' . $list->id . '"><i class="fal fa-trash"></i></button></div>';
-            // }
-            // else
-            // {
+            if( Auth::user()->hasRole('Operation Admin') )
+            { 
+                return '<a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>';
+            }
+            else
+            {
                 return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
-            // }
+            }
             
         })
 
@@ -1181,15 +1180,14 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            // if( Auth::user()->hasRole('Operation Admin') )
-            // { 
-            //     return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
-            //             <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai-aduan/' . $list->id . '"><i class="fal fa-trash"></i></button></div>';
-            // }
-            // else
-            // {
+            if( Auth::user()->hasRole('Operation Admin') )
+            { 
+                return '<a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>';
+            }
+            else
+            {
                 return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
-            // }
+            }
             
         })
 
@@ -1335,15 +1333,14 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            // if( Auth::user()->hasRole('Operation Admin') )
-            // { 
-            //     return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
-            //             <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai-aduan/' . $list->id . '"><i class="fal fa-trash"></i></button></div>';
-            // }
-            // else
-            // {
+            if( Auth::user()->hasRole('Operation Admin') )
+            { 
+                return '<a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>';
+            }
+            else
+            {
                 return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
-            // }
+            }
             
         })
 
