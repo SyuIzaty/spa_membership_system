@@ -170,7 +170,9 @@ class AduanController extends Controller
 
     public function aduan()
     {
-        return view('aduan.aduan');
+        $status = StatusAduan::all();
+
+        return view('aduan.aduan', compact('status'));
     }
 
     public function data_aduan()

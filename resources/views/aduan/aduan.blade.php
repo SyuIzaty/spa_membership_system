@@ -43,7 +43,14 @@
                                         <td class="hasinput"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Lokasi"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Aduan"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Status"></td>
+                                        <td class="hasinput">
+                                            <select id="status_aduan" name="status_aduan" class="form-control">
+                                                <option value="" selected> Semua</option>
+                                                @foreach ($status as $stat) 
+                                                    <option value="{{ $stat->kod_status }}">{{ $stat->nama_status }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Juruteknik"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Pengesahan"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
@@ -121,6 +128,8 @@
 <script>
     $(document).ready(function()
     {
+        $('#status_aduan').select2();
+
         $('#crud-modal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget) 
             var id = button.data('id') 
