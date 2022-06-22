@@ -79,7 +79,7 @@ class TrainingController extends Controller
             ->select('types.type_name','claims.type', DB::raw('COUNT(claims.type) as count'))
             ->leftJoin('trm_claim as claims','types.id','=','claims.type')
             ->where(DB::raw('YEAR(claims.start_date)'), '=', $selectedYear)
-            ->groupBy('types.id','claims.type')
+            ->groupBy('types.id', 'types.type_name', 'claims.type')
             ->get();
 
             $result[] = ['Type','Total'];
@@ -93,7 +93,7 @@ class TrainingController extends Controller
             ->select('categories.category_name','claims.category', DB::raw('COUNT(claims.category) as count'))
             ->leftJoin('trm_claim as claims','categories.id','=','claims.category')
             ->where(DB::raw('YEAR(claims.start_date)'), '=', $selectedYear)
-            ->groupBy('categories.id','claims.category')
+            ->groupBy('categories.id', 'categories.category_name', 'claims.category')
             ->get();
 
             $results[] = ['Category','Total Training'];

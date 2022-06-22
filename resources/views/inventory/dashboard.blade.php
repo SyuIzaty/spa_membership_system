@@ -16,7 +16,7 @@
                 <i class="subheader-icon fal fa-chart-area"></i> Inventory <span class="fw-300">Dashboard</span>
             </h1>
         </div>
-         
+
         <div class="row">
             <div class="col-md-12">
                 <div class="accordion accordion-outline" id="js_demo_accordion-3">
@@ -64,13 +64,13 @@
                                                                     $query->where('id', $ids );
                                                                 });
                                                             })->count();
-                                            
+
                                             $assetAll = \App\Asset::whereHas('type', function($query) use ($ids){
                                                                 $query->whereHas('department', function($query) use ($ids){
                                                                     $query->where('id', $ids );
                                                                 });
-                                                            })->count();   
-                                            
+                                                            })->count();
+
                                             $percentActive = $assetAll == 0 ? 0 : ($assetCountActive / $assetAll * 100);
                                             $percentInactive = $assetAll == 0 ? 0 : ($assetCountInactive / $assetAll * 100);
                                             $department = \App\AssetDepartment::where('id', $ids)->first();
@@ -80,7 +80,7 @@
                                                                 $query->whereHas('department', function($query) use ($ids){
                                                                     $query->where('id', $ids );
                                                                 });
-                                                            })->sum('total_price'); 
+                                                            })->sum('total_price');
                                         ?>
                                         <div class="tab-pane {{ $loop->first ? 'active in' : '' }}" id="nav-home-{{$department->id}}" role="tabpanel">
                                             <div class="row col-md-12">
@@ -121,7 +121,7 @@
                                             <br>
                                             <div class="row col-md-12">
                                                 {{-- Start Status --}}
-                                                <div class="card ml-2 mr-6 mb-4 col-sm-12 col-xl-3">
+                                                <div class="card ml-2 mr-4 mb-4 col-sm-12 col-xl-3">
                                                     <div class="card-body">
                                                         <div class="panel-hdr">
                                                             <h2>
@@ -174,7 +174,7 @@
                                                         <br>
                                                         <a class="d-flex flex-row align-items-center">
                                                             @foreach($assetStatus as $stats)
-                                                            <?php 
+                                                            <?php
                                                                 // Reason
                                                                 $data2 = \App\Asset::where('inactive_reason', $stats->id)->whereHas('type', function($query) use ($ids){
                                                                         $query->whereHas('department', function($query) use ($ids){
@@ -182,7 +182,7 @@
                                                                         });
                                                                     })->get()->count();
 
-                                                                $percentReason = $assetCountInactive == 0 ? 0 : ($data2 / $assetCountInactive * 100);     
+                                                                $percentReason = $assetCountInactive == 0 ? 0 : ($data2 / $assetCountInactive * 100);
                                                             ?>
                                                             <div class="col-md-6 align-items-center" style="margin-right: -60px">
                                                                 <div class="panel-container show">
@@ -199,7 +199,7 @@
                                                                 </div>
                                                             </div>
                                                             @endforeach
-                                                            
+
                                                         </a>
                                                     </div>
                                                 </div>
@@ -216,7 +216,7 @@
                                                         <br>
                                                         <a class="d-flex flex-row align-items-center">
                                                             @foreach($assetAcquisition as $acq)
-                                                            <?php 
+                                                            <?php
                                                                 // Acquisition
                                                                 $acqs2 = \App\Asset::where('acquisition_type', $acq->id)->whereHas('type', function($query) use ($ids){
                                                                         $query->whereHas('department', function($query) use ($ids){
@@ -224,7 +224,7 @@
                                                                         });
                                                                     })->get()->count();
 
-                                                                $percentAcquisition = $assetAll == 0 ? 0 : ($acqs2 / $assetAll * 100);     
+                                                                $percentAcquisition = $assetAll == 0 ? 0 : ($acqs2 / $assetAll * 100);
                                                             ?>
                                                             <div class="col-md-6 align-items-center" style="margin-right: -60px">
                                                                 <div class="panel-container show">
@@ -241,7 +241,7 @@
                                                                 </div>
                                                             </div>
                                                             @endforeach
-                                                            
+
                                                         </a>
                                                     </div>
                                                 </div>
@@ -260,7 +260,7 @@
                                                                 <div class="d-inline-block align-middle status status-success status-sm mr-2">
                                                                     <span class="profile-image-md rounded-circle d-block" style="width: 5rem">
                                                                         <h5 style="font-size: 25px">
-                                                                            {{ $types }} 
+                                                                            {{ $types }}
                                                                         </h5>
                                                                     </span>
                                                                 </div>
@@ -283,7 +283,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-12">
                 <div class="accordion accordion-outline" id="js_demo_accordion-3">
                     <div class="card">
@@ -320,17 +320,17 @@
                                         <?php
                                             // Status
                                             $stockCountActive = \App\Stock::where('status', '1')->whereHas('departments', function($query) use ($ids){
-                                                                    $query->where('id', $ids ); 
+                                                                    $query->where('id', $ids );
                                                             })->get()->count();
 
                                             $stockCountInactive = \App\Stock::where('status', '0')->whereHas('departments', function($query) use ($ids){
                                                                     $query->where('id', $ids );
                                                             })->get()->count();
-                                            
+
                                             $stockAll = \App\Stock::whereHas('departments', function($query) use ($ids){
                                                                     $query->where('id', $ids );
-                                                            })->get()->count();   
-                                            
+                                                            })->get()->count();
+
                                             $stockActive = $stockAll == 0 ? 0 : ($stockCountActive / $stockAll * 100);
                                             $stockInactive = $stockAll == 0 ? 0 : ($stockCountInactive / $stockAll * 100);
                                             $dprt = \App\AssetDepartment::where('id', $ids)->first();
@@ -384,8 +384,8 @@
                                                         $stock = \App\Stock::select('id', 'stock_name')->groupBy('id')->whereHas('departments', function($query) use($ids) {
                                                                 $query->where('id', $ids );
                                                         })->pluck('id', 'stock_name')->toArray();
-                                                        
-                                                        $stocks = \App\Stock::select('id', 'stock_name')->groupBy('id')->whereHas('departments', function($query) use($ids) {
+
+                                                        $stocks = \App\Stock::select('id', 'stock_name')->groupBy('id', 'stock_name')->whereHas('departments', function($query) use($ids) {
                                                                 $query->where('id', $ids );
                                                         })->get();
 
@@ -394,8 +394,8 @@
 
                                                         // $integerIDs = collect([]);
                                                         foreach($stocks as $key => $stockss) {
-                                                            $data = \App\Stock::where('id', $stockss['id'])->first(); 
-                                                            
+                                                            $data = \App\Stock::where('id', $stockss['id'])->first();
+
                                                             $total_bal = 0;
                                                             foreach($data->transaction as $list){
                                                                 $total_bal += ($list->stock_in - $list->stock_out);
@@ -405,7 +405,7 @@
 
                                                         $chart = new \App\Stock;
                                                         $chart->labels = (array_keys($stock));
-                                                        $chart->dataset = (array_values($listBal)); 
+                                                        $chart->dataset = (array_values($listBal));
                                                     ?>
                                                     <canvas id="charts{{$ids}}" class="rounded shadow"></canvas>
                                                     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
