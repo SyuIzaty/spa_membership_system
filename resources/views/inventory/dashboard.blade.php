@@ -381,7 +381,7 @@
                                                 <div class="mb-4 col-sm-12 col-xl-10">
                                                     <?php
 
-                                                        $stock = \App\Stock::select('id', 'stock_name')->groupBy('id')->whereHas('departments', function($query) use($ids) {
+                                                        $stock = \App\Stock::select('id', 'stock_name')->groupBy('id', 'stock_name')->whereHas('departments', function($query) use($ids) {
                                                                 $query->where('id', $ids );
                                                         })->pluck('id', 'stock_name')->toArray();
 

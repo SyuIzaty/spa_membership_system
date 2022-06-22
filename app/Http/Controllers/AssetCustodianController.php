@@ -26,7 +26,7 @@ class AssetCustodianController extends Controller
                 ->orderBy('a.department_name')
                 ->whereNull('a.deleted_at')
                 ->whereNull('b.deleted_at')
-                ->groupBy('a.id','a.department_name')
+                ->groupBy('a.id','a.department_name','b.department_id')
                 ->get();
          
         return view('inventory.asset-custodian.index', compact('department'))->with('no', 1);
