@@ -344,7 +344,6 @@
         $("#training_id").change(); 
         $('#title').val('{{ old('title') }}');
 
-        // Add Custodian
         $('#addhead').click(function(){
             i++;
             $('#head_field').append(`

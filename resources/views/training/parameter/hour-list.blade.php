@@ -88,7 +88,7 @@
                                 @enderror
                             </td>
                         </div>
-                     
+
                     <div class="footer">
                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -109,7 +109,7 @@
                     {!! Form::open(['action' => 'TrainingController@updateHour', 'method' => 'POST']) !!}
                     <input type="hidden" name="hour_id" id="training">
                     <p><span class="text-danger">*</span> Required fields</p>
-                    
+
                     <div class="form-group">
                         <td width="15%"><label class="form-label" for="years"><span class="text-danger">*</span> Year :</label></td>
                         <td colspan="5"><input type="number" class="form-control" id="year" name="years" required>
@@ -154,7 +154,7 @@
                                     @foreach ($data_years as $data_year)
                                         <option value="{{ $data_year->year }}"  {{ old('year') ==  $data_year->year  ? 'selected' : '' }}>{{ $data_year->year }}</option>
                                     @endforeach
-                                </select> 
+                                </select>
                             </td>
                         </div>
 
@@ -195,7 +195,7 @@
 
         function updateStaff(elem){
         var eduid=elem.val();
-        var op=" "; 
+        var op=" ";
 
             $.ajax({
                 type:'get',
@@ -227,19 +227,19 @@
             $('#crud-modal-assign').modal('show');
         });
 
-        $('.staff_id, .data_year').select2({ 
-            dropdownParent: $("#crud-modal-assign") 
-        }); 
+        $('.staff_id, .data_year').select2({
+            dropdownParent: $("#crud-modal-assign")
+        });
 
         $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var training = button.data('training') 
-            var year = button.data('year') 
+            var button = $(event.relatedTarget)
+            var training = button.data('training')
+            var year = button.data('year')
             var hour = button.data('hour')
 
-            $('.modal-body #training').val(training); 
-            $('.modal-body #year').val(year); 
-            $('.modal-body #hour').val(hour); 
+            $('.modal-body #training').val(training);
+            $('.modal-body #year').val(year);
+            $('.modal-body #hour').val(hour);
         })
 
         $('#hour thead tr .hasinput').each(function(i)
@@ -286,7 +286,7 @@
                 "order": [[ 1, "desc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#hour').on('click', '.btn-delete[data-remote]', function (e) {
@@ -331,7 +331,7 @@
             }
         });
         var url = $(this).data('remote');
-         
+
         Swal.fire({
             title: 'CONFIRM ASSIGNATION ?',
             text: " ASSIGN THIS TRAINING HOUR TO ALL STAFF.",
@@ -348,11 +348,12 @@
                     type: 'POST',
                     dataType: 'json',
                     data: {method: 'POST', submit: true},
-                    success: function() {   
-                        location.reload();  
+                    success: function() {
+                        location.reload();
                     }
                 }).always(function (data) {
-                    $('#hour').DataTable().draw(false);
+                    // $('#hour').DataTable().draw(false);
+                    location.reload();
                 });
             }
         })
