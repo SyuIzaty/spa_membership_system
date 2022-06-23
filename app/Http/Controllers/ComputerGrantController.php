@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
-use DateTime;
-use App\User;
-use App\Staff;
-use App\ComputerGrant;
-use App\ComputerGrantPurchaseProof;
-use App\ComputerGrantStatus;
-use App\ComputerGrantType;
-use App\ComputerGrantFile;
-use App\ComputerGrantLog;
-use App\ComputerGrantQuota;
-use App\ComputerGrantFAQ;
-use App\ComputerGrantActivityLog;
-use Carbon\Carbon;
 use File;
+use App\Bank;
+
+use App\User;
+use DateTime;
 use Response;
+use App\Staff;
+use Carbon\Carbon;
+use App\ComputerGrant;
+use App\ComputerGrantFAQ;
+use App\ComputerGrantLog;
+use App\ComputerGrantFile;
+use App\ComputerGrantType;
+use App\ComputerGrantQuota;
+use App\ComputerGrantStatus;
+use Illuminate\Http\Request;
+use App\ComputerGrantPurchaseProof;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class ComputerGrantController extends Controller
@@ -51,7 +51,9 @@ class ComputerGrantController extends Controller
 
         $dateNow = now()->format('Y-m-d H:i:s');
 
-        return view('computer-grant.grant-form', compact('user', 'user_details', 'ticket', 'newApplication', 'quota', 'start_date', 'end_date', 'totalApplication', 'quota', 'getData', 'dateNow'));
+        $bank = Bank::all();
+
+        return view('computer-grant.grant-form', compact('user', 'user_details', 'ticket', 'newApplication', 'quota', 'start_date', 'end_date', 'totalApplication', 'quota', 'getData', 'dateNow', 'bank'));
     }
 
     public function grantList()
@@ -215,16 +217,18 @@ class ComputerGrantController extends Controller
 
         $dateNow = new DateTime('now');
         $ticket = $dateNow->format('dmY') . str_pad($user->id, STR_PAD_LEFT);
-
         $newApplication               = new ComputerGrant();
         $newApplication->ticket_no    = $ticket;
         $newApplication->staff_id     = $user->id;
         $newApplication->hp_no        = $request->hp_no;
         $newApplication->office_no    = $request->office_no;
+        $newApplication->name_acc_holder = $request->acc_name;
+        $newApplication->bank    = $request->bank;
+        $newApplication->acc_no    = $request->acc_no;
         $newApplication->status       = '1';
         $newApplication->grant_amount = '1500.00';
         $newApplication->active       = 'Y';
-        $newApplication->grant_id        = $quota->id;
+        $newApplication->grant_id     = $quota->id;
         $newApplication->created_by   = Auth::user()->id;
         $newApplication->updated_by   = Auth::user()->id;
         $newApplication->save();
@@ -274,6 +278,7 @@ class ComputerGrantController extends Controller
             'brand'     =>$request->brand,
             'model'     =>$request->model,
             'price'     =>$request->price,
+            'invoice_no'   =>$request->invoice,
             'status'    =>'3'
         ]);
 
@@ -571,6 +576,7 @@ class ComputerGrantController extends Controller
             'brand'     => null,
             'model'     => null,
             'price'     => null,
+            'invoice_no'=> null,
             'status'    =>'2',
             'remark'    => $request->remark,
             'updated_by' => Auth::user()->id
@@ -1062,7 +1068,7 @@ class ComputerGrantController extends Controller
     {
         $updateApplication = ComputerGrant::where('id', $request->id)->first();
         $updateApplication->update([
-            'status'      => 5,
+            'status'      => 4,
             'updated_by' => Auth::user()->id
         ]);
 

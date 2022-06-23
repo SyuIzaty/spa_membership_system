@@ -12,80 +12,82 @@ class ComputerGrant extends Model
     protected $primarykey = 'id';
     protected $fillable = [
         'ticket_no', 'staff_id', 'hp_no', 'office_no', 'status', 'grant_amount', 'type',
-        'price', 'brand', 'model', 'serial_no', 'active', 'grant_id', 'remark', 'expiry_date', 'approved_by', 'approved_at', 'created_by', 'updated_by', 'deleted_by'
+        'price', 'brand', 'model', 'serial_no', 'name_acc_holder','bank','acc_no','invoice_no', 'active', 'grant_id', 'remark', 'expiry_date', 'approved_by', 'approved_at', 'created_by', 'updated_by', 'deleted_by'
     ];
     protected $dates = ['approved_at'];
 
     public function getStatus()
     {
-        return $this->hasOne('App\ComputerGrantStatus','id','status');
+        return $this->hasOne('App\ComputerGrantStatus', 'id', 'status');
     }
 
     public function getType()
     {
-        return $this->hasOne('App\ComputerGrantType','id','type');
+        return $this->hasOne('App\ComputerGrantType', 'id', 'type');
     }
 
     public function staff()
     {
-        return $this->hasOne('App\Staff','staff_id','staff_id');
+        return $this->hasOne('App\Staff', 'staff_id', 'staff_id');
     }
 
-    public function getProof(){
+    public function getProof()
+    {
         return $this->hasMany('App\ComputerGrantPurchaseProof', 'permohonan_id', 'id');
     }
 
-    public function getFail(){
+    public function getFail()
+    {
         return $this->hasMany('App\ComputerGrantFile', 'permohonan_id', 'id');
     }
 
-    public function getLog(){
+    public function getLog()
+    {
         return $this->hasMany('App\ComputerGrantLog', 'permohonan_id', 'id');
     }
 
     public function getQuota()
     {
-        return $this->hasOne('App\ComputerGrantQuota','id','grant_id');
+        return $this->hasOne('App\ComputerGrantQuota', 'id', 'grant_id');
+    }
+
+    public function getBankName()
+    {
+        return $this->hasOne('App\Bank', 'id', 'bank');
     }
 
     public function countPending()
     {
-        return $this->where('status',1)->count();
+        return $this->where('status', 1)->count();
     }
 
     public function countPurchase()
     {
-        return $this->where('status',2)->count();
+        return $this->where('status', 2)->count();
     }
 
     public function countPendingVerifyPurchase()
     {
-        return $this->where('status',3)->count();
+        return $this->where('status', 3)->count();
     }
 
     public function countPurchaseVerified()
     {
-        return $this->where('status',4)->count();
-    }
-
-    public function countSigned()
-    {
-        return $this->where('status',5)->count();
+        return $this->where('status', 4)->count();
     }
 
     public function countReimbursement()
     {
-        return $this->where('status',6)->count();
+        return $this->where('status', 6)->count();
     }
 
     public function countRequestCancel()
     {
-        return $this->where('status',7)->count();
+        return $this->where('status', 7)->count();
     }
 
     public function countCancelVerified()
     {
-        return $this->where('status',8)->count();
+        return $this->where('status', 8)->count();
     }
 }
-

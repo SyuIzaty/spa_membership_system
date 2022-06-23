@@ -14,7 +14,6 @@
         .table-bordered>tfoot>tr>td {
             border: 0.5px solid #000000;
         }
-
     </style>
 
     <main id="js-page-content" role="main" class="page-content">
@@ -41,7 +40,8 @@
                                 <th width="20%" style="vertical-align: middle">Ticket No : </th>
                                 <td colspan="2" style="vertical-align: middle">{{ $application->ticket_no }}</td>
                                 <th width="20%" style="vertical-align: middle">Staff Email : </th>
-                                <td colspan="2" style="vertical-align: middle">{{ $application->staff->staff_email }}</td>
+                                <td colspan="2" style="vertical-align: middle">{{ $application->staff->staff_email }}
+                                </td>
                             </tr>
 
                             <tr>
@@ -53,9 +53,11 @@
                             </tr>
                             <tr>
                                 <th width="20%" style="vertical-align: middle">Staff Department : </th>
-                                <td colspan="2" style="vertical-align: middle">{{ $application->staff->staff_dept }}</td>
+                                <td colspan="2" style="vertical-align: middle">{{ $application->staff->staff_dept }}
+                                </td>
                                 <th width="20%" style="vertical-align: middle">Staff Designation : </th>
-                                <td colspan="2" style="vertical-align: middle">{{ $application->staff->staff_position }}
+                                <td colspan="2" style="vertical-align: middle">
+                                    {{ $application->staff->staff_position }}
                                 </td>
                             </tr>
                             <tr>
@@ -65,6 +67,28 @@
                                 <td colspan="2" style="vertical-align: middle">
                                     {{ isset($application->office_no) ? $application->office_no : '-' }}</td>
                             </tr>
+                            <tr>
+                                <th width="20%" style="vertical-align: middle"></span> Name of
+                                    Account Holder
+                                    : </th>
+                                <td colspan="4" style="vertical-align: middle">
+                                    {{ isset($application->name_acc_holder) ? $application->name_acc_holder : 'N/A' }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th width="20%" style="vertical-align: middle"></span> Bank Name
+                                    : </th>
+                                <td colspan="2" style="vertical-align: middle">
+                                    {{ isset($application->getBankName->bank_description) ? $application->getBankName->bank_description : 'N/A' }}
+                                </td>
+                                <th width="20%" style="vertical-align: middle"></span> Account Number
+                                    No. : </th>
+                                <td colspan="2" style="vertical-align: middle">
+                                    {{ isset($application->acc_no) ? $application->acc_no : 'N/A' }}
+                                </td>
+                            </tr>
+
                             <tr>
                                 <th width="20%" style="vertical-align: middle">Grant Period Eligibility : </th>
                                 <td colspan="2" style="vertical-align: middle; text-transform: capitalize;">5 Years (60

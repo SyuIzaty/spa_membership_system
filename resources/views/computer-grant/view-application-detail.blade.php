@@ -2,10 +2,7 @@
 
 @section('content')
 
-    <script>
-
-
-    </script>
+    <script></script>
 
     <main id="js-page-content" role="main" class="page-content"
         style="background-image: url({{ asset('img/bg-form.jpg') }}); background-size: cover">
@@ -93,11 +90,13 @@
                                                         {{ $user_details->staff_id }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th width="20%" style="vertical-align: middle">Staff Department : </th>
+                                                    <th width="20%" style="vertical-align: middle">Staff Department :
+                                                    </th>
                                                     <td colspan="2" style="vertical-align: middle">
                                                         {{ isset($user_details->staff_dept) ? $user_details->staff_dept : '-' }}
                                                     </td>
-                                                    <th width="20%" style="vertical-align: middle">Staff Designation : </th>
+                                                    <th width="20%" style="vertical-align: middle">Staff Designation :
+                                                    </th>
                                                     <td colspan="2" style="vertical-align: middle">
                                                         {{ isset($user_details->staff_position) ? $user_details->staff_position : '-' }}
                                                     </td>
@@ -108,20 +107,44 @@
                                                     <td colspan="2" style="vertical-align: middle">
                                                         {{ $activeData->hp_no }}
                                                     </td>
-                                                    <th width="20%" style="vertical-align: middle"></span> Staff Office No.
+                                                    <th width="20%" style="vertical-align: middle"></span> Staff Office
+                                                        No.
                                                         : </th>
                                                     <td colspan="2" style="vertical-align: middle">
                                                         {{ isset($activeData->office_no) ? $activeData->office_no : '-' }}
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th width="20%" style="vertical-align: middle">Grant Period Eligibility
+                                                    <th width="20%" style="vertical-align: middle"></span> Name of
+                                                        Account Holder
+                                                        : </th>
+                                                    <td colspan="4" style="vertical-align: middle">
+                                                        {{ isset($activeData->name_acc_holder) ? $activeData->name_acc_holder : 'N/A' }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle"></span> Bank Name
+                                                        : </th>
+                                                    <td colspan="2" style="vertical-align: middle">
+                                                        {{ isset($activeData->getBankName->bank_description) ? $activeData->getBankName->bank_description : 'N/A' }}
+                                                    </td>
+                                                    <th width="20%" style="vertical-align: middle"></span> Account Number
+                                                        No. : </th>
+                                                    <td colspan="2" style="vertical-align: middle">
+                                                        {{ isset($activeData->acc_no) ? $activeData->acc_no : 'N/A' }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle">Grant Period
+                                                        Eligibility
                                                         : </th>
                                                     <td colspan="2"
                                                         style="vertical-align: middle; color: red; text-transform: uppercase;">
                                                         <b>5 Years (60 Months)</b>
                                                     </td>
-                                                    <th width="20%" style="vertical-align: middle">Grant Amount Eligibility
+                                                    <th width="20%" style="vertical-align: middle">Grant Amount
+                                                        Eligibility
                                                         : </th>
                                                     <td colspan="2" style="vertical-align: middle; color: red;"><b>RM
                                                             1,500</b></td>
@@ -129,56 +152,42 @@
                                             </thead>
                                         </table>
                                     </div>
-
-                                    @if ($activeData->status == 1 || $activeData->status == 2 || $activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
-                                        @role('Computer Grant (IT Admin)')
-                                            <a class="btn btn-info ml-auto float-right"
-                                                data-page="/applicationPDF/{{ $activeData->id }}" onclick="Print(this)"
-                                                style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
-                                                <i class="fal fa-download"></i> Application Doc
-                                            </a>
-                                        @endrole
-                                    @endif
-
                                     @role('Computer Grant (IT Admin)')
-                                        @if ($activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
-                                            <a class="btn btn-primary mr-2 float-right"
-                                                data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)"
-                                                style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
-                                                <i class="fal fa-download"></i> Declaration Doc
-                                            </a>
-                                        @endif
-                                    @endrole
+                                        <div class="table-responsive">
+                                            <table id="info"
+                                                class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i
+                                                                    class="fal fa-user"></i> DOCUMENTS</label>
+                                                        </td>
+                                                    </tr>
+                                                    <td colspan="4">
+                                                        @if ($activeData->status == 1 || $activeData->status == 2 || $activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
+                                                            <a class="btn btn-info waves-effect waves-themed"
+                                                                data-page="/applicationPDF/{{ $activeData->id }}"
+                                                                onclick="Print(this)" style="color: rgb(0, 0, 0);">
+                                                                <i class="fal fa-download"></i> Application Doc
+                                                            </a>
+                                                        @endif
 
+                                                        @if ($activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
+                                                            <a class="btn btn-success waves-effect waves-themed"
+                                                                data-page="/agreementPDF/{{ $activeData->id }}"
+                                                                onclick="Print(this)" style="color: rgb(0, 0, 0);">
+                                                                <i class="fal fa-download"></i> Declaration Doc
+                                                            </a>
+                                                        @endif
+                                                    </td>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    @endrole
                                     @if ($activeData->status == 1)
                                         @role('Computer Grant (IT Admin)')
                                             {!! Form::open(['action' => 'ComputerGrantController@verifyApplication', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                            <input type="hidden" id="id" name="id" value="{{ $activeData->id }}">
-
-                                            <div class="table-responsive">
-                                                <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                                    <thead>
-                                                        <tr>
-                                                            <td colspan="5" class="bg-primary-50"><label
-                                                                    class="form-label"><i class="fal fa-user"></i> IT
-                                                                    ADMIN & CE APPROVAL</label></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th width="20%" style="vertical-align: top"><span
-                                                                    class="text-danger">*</span> Upload Signed Application :
-                                                            </th>
-                                                            <td colspan="4"><input type="file" class="form-control"
-                                                                    accept=".pdf" id="upload_image" name="upload_image">
-
-                                                                @error('upload_image')
-                                                                    <p style="color: red">{{ $message }}</p>
-                                                                @enderror
-                                                            </td>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
-
+                                            <input type="hidden" id="id" name="id"
+                                                value="{{ $activeData->id }}">
                                             <div class="table-responsive">
                                                 <div class="form-group">
                                                     <button style="margin-top: 5px;" class="btn btn-danger float-right"
@@ -190,41 +199,13 @@
                                         @endrole
                                     @endif
 
-                                    @if ($activeData->status == 2 || $activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
-                                        <div class="table-responsive">
-                                            <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <td colspan="5" class="bg-primary-50"><label
-                                                                class="form-label"><i class="fal fa-user"></i> IT
-                                                                ADMIN & CE APPROVAL</label></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="4">
-                                                            @if (isset($verified_doc))
-                                                                <a class="btn btn-info" target="_blank"
-                                                                    href="/get-file/{{ $verified_doc->id }}">
-                                                                    <i class="fal fa-download"></i> Application Form
-                                                                </a>
-                                                            @endif
-
-                                                            <a class="btn btn-success" target="_blank"
-                                                                href="/Grant-Reimbursement-Form">
-                                                                <i class="fal fa-download"></i> Grant Reimbursement Form
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    @endif
-
                                     @if ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5' || $activeData->status == '6')
                                         <div class="table-responsive">
-                                            <table id="upload" class="table table-bordered table-hover table-striped w-100">
+                                            <table id="upload"
+                                                class="table table-bordered table-hover table-striped w-100">
                                                 <thead>
-                                                    <input type="hidden" id="id" name="id" value="{{ $activeData->id }}"
-                                                        required>
+                                                    <input type="hidden" id="id" name="id"
+                                                        value="{{ $activeData->id }}" required>
                                                     <tr>
                                                         <td colspan="5" class="bg-primary-50"><label
                                                                 class="form-label"><i class="fal fa-file"></i>
@@ -236,7 +217,8 @@
                                                         </th>
                                                         <td colspan="2" style="vertical-align: middle">
                                                             {{ $activeData->getType->first()->description }}</td>
-                                                        <th width="20%" style="vertical-align: middle">Serial No : </th>
+                                                        <th width="20%" style="vertical-align: middle">Serial No :
+                                                        </th>
                                                         <td colspan="2" style="vertical-align: middle">
                                                             {{ $activeData->serial_no }}</td>
                                                     </tr>
@@ -249,7 +231,8 @@
                                                             {{ $activeData->model }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <th width="20%" style="vertical-align: middle">Purchase Receipt :
+                                                        <th width="20%" style="vertical-align: middle">Purchase Receipt
+                                                            :
                                                         </th>
                                                         <td colspan="2">
                                                             @if ($proof->isNotEmpty())
@@ -257,7 +240,8 @@
                                                                     href="/get-receipt/{{ $proof->where('type', 1)->first()->id }}">{{ $proof->where('type', 1)->first()->upload }}</a>
                                                             @endif
                                                         </td>
-                                                        <th width="20%" style="vertical-align: middle">Device Image : </th>
+                                                        <th width="20%" style="vertical-align: middle">Device Image :
+                                                        </th>
                                                         <td colspan="2">
                                                             @if ($proof->isNotEmpty())
                                                                 <a target="_blank"
@@ -267,15 +251,19 @@
                                                     </tr>
                                                     <tr>
                                                         <th width="20%" style="vertical-align: top">Price :</th>
-                                                        <td colspan="4" style="vertical-align: middle"> RM
+                                                        <td colspan="2" style="vertical-align: middle"> RM
                                                             {{ $activeData->price }}</td>
+                                                        <th width="20%" style="vertical-align: top">Invoice No. :</th>
+                                                        <td colspan="2" style="vertical-align: middle">
+                                                            {{ isset($activeData->invoice_no) ? $activeData->invoice_no : 'N/A' }}
+                                                        </td>
                                                     </tr>
                                                 </thead>
                                             </table>
                                         </div>
                                     @endif
 
-                                    @if ($activeData->status == '5' || $activeData->status == '6')
+                                    @if ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5' || $activeData->status == '6')
                                         <div class="table-responsive">
                                             <table id="verifikasi"
                                                 class="table table-bordered table-hover table-striped w-100">
@@ -304,8 +292,8 @@
                                         @role('Computer Grant (IT Admin)')
                                             @if (!isset($declaration_doc))
                                                 {!! Form::open(['action' => 'ComputerGrantController@uploadAgreement', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                                <input type="hidden" id="id" name="id" value="{{ $activeData->id }}"
-                                                    required>
+                                                <input type="hidden" id="id" name="id"
+                                                    value="{{ $activeData->id }}" required>
 
                                                 <div class="table-responsive">
                                                     <table id="info"
@@ -352,7 +340,8 @@
                                                                         SIGNED DECLARATION FORM</label></td>
                                                             </tr>
                                                             <tr>
-                                                                <th width="20%" style="vertical-align: top">Verified Declaration
+                                                                <th width="20%" style="vertical-align: top">Verified
+                                                                    Declaration
                                                                     : </th>
                                                                 <td colspan="4">
                                                                     <a class="btn btn-primary" target="_blank"
@@ -372,7 +361,8 @@
                                         @role('Computer Grant (IT Admin)')
                                             <button
                                                 class="btn btn-warning ml-auto float-right mr-2 waves-effect waves-themed click"
-                                                style="margin-bottom:10px;"><i class="fal fa-times-circle"></i> Reject</button>
+                                                style="margin-bottom:10px;"><i class="fal fa-times-circle"></i>
+                                                Reject</button>
 
                                             <div class="remark">
                                                 {!! Form::open(['action' => 'ComputerGrantController@rejectPurchase', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
@@ -396,8 +386,8 @@
                                                                 <th width="20%" style="vertical-align: top"><span
                                                                         class="text-danger">*</span> Reason : </th>
                                                                 <td colspan="4" style="vertical-align: middle">
-                                                                    <textarea class="form-control max" id="example-textarea" rows="3" placeholder="Please fill in rejection reason"
-                                                                        name="remark" required></textarea>
+                                                                    <textarea class="form-control max" id="example-textarea" rows="3"
+                                                                        placeholder="Please fill in rejection reason" name="remark" required></textarea>
                                                                     <span style="font-size: 10px; color: red;"><i>*Limit to 150
                                                                             characters only</i></span>
                                                                 </td>
@@ -406,30 +396,32 @@
                                                     </table>
                                                 </div>
                                                 @csrf
-                                                <input type="hidden" id="id" name="id" value="{{ $activeData->id }}"
-                                                    required>
+                                                <input type="hidden" id="id" name="id"
+                                                    value="{{ $activeData->id }}" required>
                                                 <button type="submit"
                                                     class="btn btn-warning ml-auto float-right mr-2 waves-effect waves-themed"
-                                                    id="reject" style="margin-bottom:10px;"><i class="fal fa-times-circle"></i>
+                                                    id="reject" style="margin-bottom:10px;"><i
+                                                        class="fal fa-times-circle"></i>
                                                     Submit</button>
                                                 {!! Form::close() !!}
                                             </div>
 
 
                                             {!! Form::open(['action' => 'ComputerGrantController@verifyPurchase', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                            <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
+                                            <input type="hidden" id="id" name="id"
+                                                value="{{ $activeData->id }}" required>
                                             <button type="submit"
                                                 class="btn btn-primary ml-auto float-right mr-2 waves-effect waves-themed"
                                                 style="margin-bottom:10px;"><i class="fal fa-check"></i> Verify
                                                 Purchase</button>
                                             {!! Form::close() !!}
                                         @endrole
-                                    @elseif ($activeData->status == 5)
+                                    @elseif ($activeData->status == 4)
                                         @role('Computer Grant (Finance Admin)')
                                             <form id="reimburse">
                                                 @csrf
-                                                <input type="hidden" id="id" name="id" value="{{ $activeData->id }}"
-                                                    required>
+                                                <input type="hidden" id="id" name="id"
+                                                    value="{{ $activeData->id }}" required>
 
                                                 <div class="table-responsive">
                                                     <div class="form-group">
@@ -444,8 +436,8 @@
                                         @role('Computer Grant (Finance Admin)')
                                             <form id="cancelreimburse">
                                                 @csrf
-                                                <input type="hidden" id="id" name="id" value="{{ $activeData->id }}"
-                                                    required>
+                                                <input type="hidden" id="id" name="id"
+                                                    value="{{ $activeData->id }}" required>
 
                                                 <div class="table-responsive">
                                                     <div class="form-group">
@@ -461,8 +453,8 @@
                                     @if ($activeData->status == 7)
                                         <form id="formId">
                                             @csrf
-                                            <input type="hidden" id="id" name="id" value="{{ $activeData->id }}"
-                                                required>
+                                            <input type="hidden" id="id" name="id"
+                                                value="{{ $activeData->id }}" required>
                                             <button type="submit"
                                                 class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed"
                                                 id="cancel" style="margin-bottom: 20px;"><i
