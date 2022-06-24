@@ -147,8 +147,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <th width="20%" style="vertical-align: middle"><span
-                                                                        class="text-danger">*</span> Account Number</th>
-
+                                                                        class="text-danger">*</span> Account No.</th>
                                                                 <td colspan="2"><input class="form-control"
                                                                         id="acc_no" name="acc_no"
                                                                         value="{{ old('acc_no') }}">
@@ -288,7 +287,7 @@
                                                             </select>
                                                         </td>
                                                         <th width="20%" style="vertical-align: middle"><span
-                                                                class="text-danger">*</span> Account Number</th>
+                                                                class="text-danger">*</span> Account No.</th>
 
                                                         <td colspan="2"><input class="form-control" id="acc_no"
                                                                 name="acc_no" value="{{ old('acc_no') }}">

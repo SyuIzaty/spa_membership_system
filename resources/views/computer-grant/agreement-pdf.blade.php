@@ -132,7 +132,7 @@
                                 <td colspan="2" style="vertical-align: middle">
                                     {{ isset($application->getBankName->bank_description) ? $application->getBankName->bank_description : '' }}
                                 </td>
-                                <th width="20%" style="vertical-align: middle">Account Number : </th>
+                                <th width="20%" style="vertical-align: middle">Account No. : </th>
                                 <td colspan="2" style="vertical-align: middle">
                                     {{ isset($application->acc_no) ? $application->acc_no : '' }}</td>
                             </tr>

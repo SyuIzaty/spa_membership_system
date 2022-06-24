@@ -129,8 +129,7 @@
                                                     <td colspan="2" style="vertical-align: middle">
                                                         {{ isset($activeData->getBankName->bank_description) ? $activeData->getBankName->bank_description : 'N/A' }}
                                                     </td>
-                                                    <th width="20%" style="vertical-align: middle"></span> Account Number
-                                                        No. : </th>
+                                                    <th width="20%" style="vertical-align: middle"></span> Account No. : </th>
                                                     <td colspan="2" style="vertical-align: middle">
                                                         {{ isset($activeData->acc_no) ? $activeData->acc_no : 'N/A' }}
                                                     </td>
