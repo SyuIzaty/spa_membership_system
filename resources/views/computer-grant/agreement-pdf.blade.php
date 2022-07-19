@@ -2,15 +2,6 @@
 
 @section('content')
     <style>
-        .flex-container {
-            display: flex;
-        }
-
-        .flex-container>div {
-            /* margin: 10px; */
-            padding: 20px;
-        }
-
         .table {
             border: 0.5px solid #000000;
         }
@@ -45,6 +36,14 @@
             left: 0;
             right: 0;
             font-size: 10px;
+        }
+
+        #container {
+            display: flex;
+            /* establish flex container */
+            justify-content: space-between;
+            /* switched from default (flex-start, see below) */
+            margin-top: 350px;
         }
     </style>
     <main id="js-page-content" role="main" class="page-content">
@@ -212,54 +211,86 @@
                     <li>Device can be purchased from any supplier, including online.</li>
                     <li>Type of device that can be purchased are Laptop or Tablet only.</li>
                 </ol>
-
-                <div class="table-responsive">
-                    <table class="table table-bordered" style="float: left; width: 45%; margin-top: 100px;">
-                        <thead>
-                            <tr class="text-center" style="background-color: rgb(216, 215, 215); vertical-align: middle;">
-                                <th>Requestor</th>
-                            </tr>
-                            <tr height="100">
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Name: {{ strtoupper($application->staff->staff_name) }}</td>
-                            </tr>
-                            <tr>
-                                <td>Position: {{ $application->staff->staff_position }}</td>
-                            </tr>
-                            <tr>
-                                <td>Date:</td>
-                            </tr>
-                        </thead>
-                    </table>
-                    <table class="table table-bordered" style="float: right; width: 45%; margin-top: 100px;">
-                        <thead>
-                            <tr class="text-center" style="background-color: rgb(216, 215, 215); vertical-align: middle;">
-                                <th>Approved</th>
-                            </tr>
-                            <tr height="100">
-                                <td class="text-center">
-                                    <div class="square"></div>
-                                    <div class="description">Approved</div>
-                                    <div style="margin-left: 10px;" class="square"></div>
-                                    <div class="description"> Not Approved</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Name: NORHANA BINTI NAWAWI</td>
-                            </tr>
-                            <tr>
-                                <td>Position: SENIOR EXECUTIVE</td>
-                            </tr>
-                            <tr>
-                                <td>Date:</td>
-                            </tr>
-                        </thead>
-                    </table>
+                <div id="container">
+                    <div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="text-center"
+                                    style="background-color: rgb(216, 215, 215); vertical-align: middle;">
+                                    <th>Requestor</th>
+                                </tr>
+                                <tr height="100">
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Name: {{ strtoupper($application->staff->staff_name) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Position: {{ $application->staff->staff_position }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date:</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="text-center"
+                                    style="background-color: rgb(216, 215, 215); vertical-align: middle;">
+                                    <th>Approved by IT</th>
+                                </tr>
+                                <tr height="100">
+                                    <td class="text-center">
+                                        <div class="square"></div>
+                                        <div class="description">Approved</div>
+                                        <div style="margin-left: 10px;" class="square"></div>
+                                        <div class="description"> Not Approved</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Name: NORHANA BINTI NAWAWI</td>
+                                </tr>
+                                <tr>
+                                    <td>Position: SENIOR EXECUTIVE</td>
+                                </tr>
+                                <tr>
+                                    <td>Date:</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="text-center"
+                                    style="background-color: rgb(216, 215, 215); vertical-align: middle;">
+                                    <th>Approved by Finance</th>
+                                </tr>
+                                <tr height="100">
+                                    <td class="text-center">
+                                        <div class="square"></div>
+                                        <div class="description">Approved</div>
+                                        <div style="margin-left: 10px;" class="square"></div>
+                                        <div class="description"> Not Approved</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Name: </td>
+                                </tr>
+                                <tr>
+                                    <td>Position: </td>
+                                </tr>
+                                <tr>
+                                    <td>Date:</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="info" class="table table-bordered w-100" style="margin-top: 20px;">
+                    <table id="info" class="table table-bordered w-100" style="margin-top: 50px;">
                         <thead>
                             <tr>
                                 <th colspan="5" style="background-color: rgb(216, 215, 215)">D. Finance & Accounts
@@ -290,12 +321,8 @@
                             <tr class="text-center" style="background-color: rgb(216, 215, 215); vertical-align: middle;">
                                 <th>Payment Voucher No</th>
                                 <th>Amount</th>
-                                <th>Approved By</th>
-                                <th>Date</th>
                             </tr>
                             <tr height="100">
-                                <td></td>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>
