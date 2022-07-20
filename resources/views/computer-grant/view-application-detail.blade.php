@@ -48,6 +48,23 @@
 
                             <div class="panel-container show">
                                 <div class="panel-content">
+                                    @role('Computer Grant (IT Admin)')
+                                        @if ($activeData->status == 1 ||
+                                            $activeData->status == 2 ||
+                                            $activeData->status == 3 ||
+                                            $activeData->status == 4 ||
+                                            $activeData->status == 5)
+                                            <form id="form-id">
+                                                @csrf
+                                                <input type="hidden" id="id" name="id"
+                                                    value="{{ $activeData->id }}" required>
+                                                <button type="submit"
+                                                    class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed"
+                                                    id="cancelApplication" style="margin-bottom:10px;"><i
+                                                        class="fal fa-times-circle"></i> Cancel Application</button>
+                                            </form>
+                                        @endif
+                                    @endrole
                                     <div class="table-responsive">
                                         <table id="info" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
@@ -129,7 +146,8 @@
                                                     <td colspan="2" style="vertical-align: middle">
                                                         {{ isset($activeData->getBankName->bank_description) ? $activeData->getBankName->bank_description : 'N/A' }}
                                                     </td>
-                                                    <th width="20%" style="vertical-align: middle"></span> Account No. : </th>
+                                                    <th width="20%" style="vertical-align: middle"></span> Account No.
+                                                        : </th>
                                                     <td colspan="2" style="vertical-align: middle">
                                                         {{ isset($activeData->acc_no) ? $activeData->acc_no : 'N/A' }}
                                                     </td>
@@ -162,7 +180,12 @@
                                                         </td>
                                                     </tr>
                                                     <td colspan="4">
-                                                        @if ($activeData->status == 1 || $activeData->status == 2 || $activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
+                                                        @if ($activeData->status == 1 ||
+                                                            $activeData->status == 2 ||
+                                                            $activeData->status == 3 ||
+                                                            $activeData->status == 4 ||
+                                                            $activeData->status == 5 ||
+                                                            $activeData->status == 6)
                                                             <a class="btn btn-info waves-effect waves-themed"
                                                                 data-page="/applicationPDF/{{ $activeData->id }}"
                                                                 onclick="Print(this)" style="color: rgb(0, 0, 0);">
@@ -184,7 +207,11 @@
                                     @endrole
                                     @if ($activeData->status == 1)
                                         @role('Computer Grant (IT Admin)')
-                                            {!! Form::open(['action' => 'ComputerGrantController@verifyApplication', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                            {!! Form::open([
+                                                'action' => 'ComputerGrantController@verifyApplication',
+                                                'method' => 'POST',
+                                                'enctype' => 'multipart/form-data',
+                                            ]) !!}
                                             <input type="hidden" id="id" name="id"
                                                 value="{{ $activeData->id }}">
                                             <div class="table-responsive">
@@ -198,7 +225,10 @@
                                         @endrole
                                     @endif
 
-                                    @if ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5' || $activeData->status == '6')
+                                    @if ($activeData->status == '3' ||
+                                        $activeData->status == '4' ||
+                                        $activeData->status == '5' ||
+                                        $activeData->status == '6')
                                         <div class="table-responsive">
                                             <table id="upload"
                                                 class="table table-bordered table-hover table-striped w-100">
@@ -262,7 +292,10 @@
                                         </div>
                                     @endif
 
-                                    @if ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5' || $activeData->status == '6')
+                                    @if ($activeData->status == '3' ||
+                                        $activeData->status == '4' ||
+                                        $activeData->status == '5' ||
+                                        $activeData->status == '6')
                                         <div class="table-responsive">
                                             <table id="verifikasi"
                                                 class="table table-bordered table-hover table-striped w-100">
@@ -290,7 +323,11 @@
                                     @if ($activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
                                         @role('Computer Grant (IT Admin)')
                                             @if (!isset($declaration_doc))
-                                                {!! Form::open(['action' => 'ComputerGrantController@uploadAgreement', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                                {!! Form::open([
+                                                    'action' => 'ComputerGrantController@uploadAgreement',
+                                                    'method' => 'POST',
+                                                    'enctype' => 'multipart/form-data',
+                                                ]) !!}
                                                 <input type="hidden" id="id" name="id"
                                                     value="{{ $activeData->id }}" required>
 
@@ -364,7 +401,11 @@
                                                 Reject</button>
 
                                             <div class="remark">
-                                                {!! Form::open(['action' => 'ComputerGrantController@rejectPurchase', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                                {!! Form::open([
+                                                    'action' => 'ComputerGrantController@rejectPurchase',
+                                                    'method' => 'POST',
+                                                    'enctype' => 'multipart/form-data',
+                                                ]) !!}
                                                 <div class="table-responsive">
                                                     <table id="upload"
                                                         class="table table-bordered table-hover table-striped w-100">
@@ -406,7 +447,11 @@
                                             </div>
 
 
-                                            {!! Form::open(['action' => 'ComputerGrantController@verifyPurchase', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                            {!! Form::open([
+                                                'action' => 'ComputerGrantController@verifyPurchase',
+                                                'method' => 'POST',
+                                                'enctype' => 'multipart/form-data',
+                                            ]) !!}
                                             <input type="hidden" id="id" name="id"
                                                 value="{{ $activeData->id }}" required>
                                             <button type="submit"
@@ -482,6 +527,51 @@
                 printWindow.print();
             }, true);
         }
+
+        $("#cancelApplication").on('click', function(e) {
+            e.preventDefault();
+
+            var datas = $('#form-id').serialize();
+
+            Swal.fire({
+                title: 'Are you sure you want to cancel this application?',
+                text: "Data cannot be restored!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Cancel!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+
+                if (result.value) {
+                    Swal.fire({
+                        title: 'Loading..',
+                        text: 'Please wait..',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        onOpen: () => {
+                            Swal.showLoading()
+                        }
+                    })
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('cancel-application') }}",
+                        data: datas,
+                        dataType: "json",
+                        success: function(response) {
+                            console.log(response);
+                            if (response) {
+                                Swal.fire(response.success);
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            })
+        });
 
         $("#cancel").on('click', function(e) {
             e.preventDefault();

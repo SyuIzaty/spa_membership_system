@@ -1064,6 +1064,48 @@ class ComputerGrantController extends Controller
         return response() ->json(['success' => 'Successfully verified cancellation!']);
     }
 
+    public function cancelApplication(Request $request)
+    {
+        $updateApplication = ComputerGrant::where('id', $request->id)->first();
+        $updateApplication->update([
+            'status'     =>'8',
+            'active'     =>'N',
+            'updated_by' => Auth::user()->id
+        ]);
+
+        ComputerGrantLog::create([
+            'permohonan_id'  => $request->id,
+            'activity'  => 'Application cancelled',
+            'created_by' => Auth::user()->id
+        ]);
+
+        $purchase = ComputerGrantPurchaseProof::where('permohonan_id', $request->id)->get();
+
+        if (isset($purchase)) {
+            foreach ($purchase as $p) {
+                $p->delete();
+                $p->update(['deleted_by' => Auth::user()->id]);
+            }
+        }
+
+        $user = Staff::where('staff_id', $updateApplication->staff_id)->first();
+        $user_email = $user->staff_email;
+
+        $data = [
+            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user->staff_name,
+            'emel'     => 'Your Computer Grant application has been cancelled on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log-in into IDS system to re-apply for the computer grant.',
+        ];
+
+        Mail::send('computer-grant.email', $data, function ($message) use ($user_email) {
+            $message->subject('Computer Grant Application: Application Cancelled');
+            $message->from('ITadmin@intec.edu.my');
+            $message->to($user_email);
+        });
+
+        return response() ->json(['success' => 'Application cancelled!']);
+    }
+
+
     public function undoReimbursement(Request $request)
     {
         $updateApplication = ComputerGrant::where('id', $request->id)->first();

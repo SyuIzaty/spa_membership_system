@@ -37,17 +37,17 @@ Route::get('/test', 'ApplicantController@test');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home', 'DashboardController@index');
     // Aduan
-    Route::get('/borang-aduan', 'AduanController@borangAduan')->name('borangAduan'); 
+    Route::get('/borang-aduan', 'AduanController@borangAduan')->name('borangAduan');
     Route::post('simpanAduan', 'AduanController@simpanAduan');
-    Route::get('/cariJenis', 'AduanController@cariJenis'); 
-    Route::get('/cariSebab', 'AduanController@cariSebab'); 
-    Route::get('/aduan', 'AduanController@aduan')->name('aduan'); 
-    Route::post('data_aduan', 'AduanController@data_aduan'); 
-    Route::post('batalAduan', 'AduanController@batalAduan'); 
-    Route::get('/maklumat-aduan/{id}', 'AduanController@maklumatAduan')->name('maklumatAduan'); 
-    Route::get('resit/{filename}/{type}', 'AduanController@failResit'); 
-    Route::get('get-file-resit/{filename}', 'AduanController@getImej'); 
-    Route::post('simpanPengesahan', 'AduanController@simpanPengesahan'); 
+    Route::get('/cariJenis', 'AduanController@cariJenis');
+    Route::get('/cariSebab', 'AduanController@cariSebab');
+    Route::get('/aduan', 'AduanController@aduan')->name('aduan');
+    Route::post('data_aduan', 'AduanController@data_aduan');
+    Route::post('batalAduan', 'AduanController@batalAduan');
+    Route::get('/maklumat-aduan/{id}', 'AduanController@maklumatAduan')->name('maklumatAduan');
+    Route::get('resit/{filename}/{type}', 'AduanController@failResit');
+    Route::get('get-file-resit/{filename}', 'AduanController@getImej');
+    Route::post('simpanPengesahan', 'AduanController@simpanPengesahan');
     Route::post('kemaskiniTahap', 'AduanController@kemaskiniTahap');
     Route::get('padamAlatan/{id}/{id_aduan}', 'AduanController@padamAlatan')->name('padamAlatan');
     Route::get('padamJuruteknik/{id}/{id_aduan}', 'AduanController@padamJuruteknik')->name('padamJuruteknik');
@@ -56,7 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/senarai-aduan', 'AduanController@senaraiAduan')->name('senarai');
     Route::post('senaraiAduan', 'AduanController@data_senarai');
     // Route::post('updateJuruteknik', 'AduanController@updateJuruteknik');
-    // Route::delete('senarai-aduan/{id}', 'AduanController@padamAduan'); 
+    // Route::delete('senarai-aduan/{id}', 'AduanController@padamAduan');
     Route::get('/info-aduan/{id}', 'AduanController@infoAduan')->name('info');
     // Route::post('simpanPenambahbaikan', 'AduanController@simpanPenambahbaikan');
     Route::post('kemaskiniPenambahbaikan', 'AduanController@kemaskiniPenambahbaikan');
@@ -439,6 +439,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/upload-declaration', 'ComputerGrantController@uploadAgreement');
     Route::post('requestCancellation', 'ComputerGrantController@requestCancellation');
     Route::post('/verifyCancellation', 'ComputerGrantController@verifyCancellation');
+    Route::post('cancel-application', 'ComputerGrantController@cancelApplication');
     Route::get('/report/{all}', 'ComputerGrantController@report');
     Route::post('/reportList/{all}', 'ComputerGrantController@reportList');
     Route::get('/report/{month}', 'ComputerGrantController@reportbyMonth');
