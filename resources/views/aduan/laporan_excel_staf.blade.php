@@ -24,7 +24,7 @@
 
                             <div class="row">
                                 <div class="col">
-                                    @role('Operation Admin')
+                                    @role('Technical Admin')
                                         <div class="tab-pane" role="tabpanel" style="margin-top: -30px"><br>
                                             <form action="{{ route('exportAduanStaf') }}" method="GET" id="form_find">
                                                 <div class="row"><br>

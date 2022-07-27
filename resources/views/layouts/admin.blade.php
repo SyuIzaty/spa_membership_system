@@ -488,7 +488,7 @@
                                     <i class="fal fa-file-excel"></i>
                                     <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
                                 </a>
-                                @can('view operation admin')
+                                @can('view technical admin')
                                     <ul>
                                         <li>
                                             <a href="/export_aduan" title="Kategori" data-filter-tags="kategori">

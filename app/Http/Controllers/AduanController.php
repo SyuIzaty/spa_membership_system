@@ -90,8 +90,8 @@ class AduanController extends Controller
             'id_pelapor'                => $user->id,
             'no_tel_pelapor'            => $request->no_tel_pelapor,
             'lokasi_aduan'              => $request->lokasi_aduan,
-            'blok_aduan'                => $request->blok_aduan, 
-            'aras_aduan'                => $request->aras_aduan, 
+            'blok_aduan'                => $request->blok_aduan,
+            'aras_aduan'                => $request->aras_aduan,
             'nama_bilik'                => $request->nama_bilik,
             'kategori_aduan'            => $request->kategori_aduan,
             'jenis_kerosakan'           => $request->jenis_kerosakan,
@@ -109,7 +109,7 @@ class AduanController extends Controller
         $image = $request->upload_image;
         $paths = storage_path()."/aduan/";
 
-        if (isset($image)) { 
+        if (isset($image)) {
             for($y = 0; $y < count($image); $y++)
             {
                 $originalsName = $image[$y]->getClientOriginalName();
@@ -127,7 +127,7 @@ class AduanController extends Controller
         $file = $request->resit_file;
         $path=storage_path()."/resit/";
 
-        if (isset($file)) { 
+        if (isset($file)) {
 
             for($x = 0; $x < count($file) ; $x ++)
             {
@@ -143,7 +143,7 @@ class AduanController extends Controller
                 ]);
             }
         }
-            
+
         $admin = User::whereHas('roles', function($query){
             $query->where('id', 'CMS001');
         })->get();
@@ -181,10 +181,10 @@ class AduanController extends Controller
 
         return datatables()::of($aduan)
         ->addColumn('action', function ($aduan) {
-            
+
             if($aduan->status_aduan != 'AB' && $aduan->status_aduan == 'BS'){
                 return '<div class="btn-group"><a href="/maklumat-aduan/' . $aduan->id.'" class="btn btn-sm btn-primary mr-2"><i class="fal fa-eye"></i></a>
-                <a href="" data-target="#crud-modal" data-toggle="modal" data-id="'.$aduan->id.'" class="btn btn-sm btn-danger mr-1"><i class="fal fa-trash"></i></a></div>'; 
+                <a href="" data-target="#crud-modal" data-toggle="modal" data-id="'.$aduan->id.'" class="btn btn-sm btn-danger mr-1"><i class="fal fa-trash"></i></a></div>';
             } else {
                 return '<div class="btn-group"><a href="/maklumat-aduan/' . $aduan->id.'" class="btn btn-sm btn-primary mr-2"><i class="fal fa-eye"></i></a></div>';
             }
@@ -193,17 +193,17 @@ class AduanController extends Controller
 
         ->addColumn('id', function ($aduan) {
 
-            return '#'.$aduan->id; 
+            return '#'.$aduan->id;
         })
 
         ->addColumn('tarikh', function ($aduan) {
 
-            return date(' Y/m/d ', strtotime($aduan->tarikh_laporan)); 
+            return date(' Y/m/d ', strtotime($aduan->tarikh_laporan));
         })
 
         ->addColumn('masa', function ($aduan) {
 
-            return date(' h:i:s A ', strtotime($aduan->tarikh_laporan)); 
+            return date(' h:i:s A ', strtotime($aduan->tarikh_laporan));
         })
 
         ->editColumn('lokasi_aduan', function ($aduan) {
@@ -232,7 +232,7 @@ class AduanController extends Controller
 
                 return '<div style="color:red">TIADA JURUTEKNIK DITUGASKAN</div>';
             }
-            
+
         })
 
         ->editColumn('status_aduan', function ($aduan) {
@@ -253,11 +253,11 @@ class AduanController extends Controller
                 {
                     return '<span class="badge badge-success">' . strtoupper($aduan->status->nama_status) . '</span>';
                 }
-                elseif($aduan->status_aduan=='LK') 
+                elseif($aduan->status_aduan=='LK')
                 {
                     return '<span class="badge badge-success2">' . strtoupper($aduan->status->nama_status) . '</span>';
                 }
-                elseif($aduan->status_aduan=='LU') 
+                elseif($aduan->status_aduan=='LU')
                 {
                     return '<span class="badge badge-success2">' . strtoupper($aduan->status->nama_status) . '</span>';
                 }
@@ -282,7 +282,7 @@ class AduanController extends Controller
                 return '<span class="high" data-toggle="tooltip" data-placement="top" title="BELUM DISAHKAN">' . '</span>';
             }
         })
-        
+
         ->rawColumns(['action', 'status_aduan', 'lokasi_aduan', 'kategori_aduan', 'juruteknik_bertugas', 'tarikh', 'masa', 'pengesahan_pembaikan', 'id', 'pdf'])
         ->make(true);
     }
@@ -299,7 +299,7 @@ class AduanController extends Controller
             'sebab_pembatalan'         => $request->sebab_pembatalan,
             'status_aduan'             => 'AB',
         ]);
-            
+
         $admin = User::whereHas('roles', function($query){
             $query->where('id', 'CMS001');
         })->get();
@@ -329,7 +329,7 @@ class AduanController extends Controller
         $aduan = Aduan::where('id', $id)->first();
         $resit = ResitAduan::where('id_aduan', $id)->get();
         $imej = ImejAduan::where('id_aduan', $id)->get();
-        
+
         return view('aduan.maklumat-aduan', compact('aduan', 'resit', 'imej'));
     }
 
@@ -414,9 +414,9 @@ class AduanController extends Controller
 
     public function data_senarai()
     {
-       
-        if( Auth::user()->hasRole('Operation Admin') )
-        { 
+
+        if( Auth::user()->hasRole('Technical Admin') )
+        {
             $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->select('cms_aduan.*');
         }
         else
@@ -425,12 +425,12 @@ class AduanController extends Controller
                 $query->whereIn('status_aduan', ['DJ','TD']);
             })->get();
         }
-            
+
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 if($list->status_aduan == 'DJ') {
                     return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                             <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
@@ -449,12 +449,12 @@ class AduanController extends Controller
                     return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
                 }
             }
-            
+
         })
 
         ->editColumn('id', function ($list) {
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '#'.$list->id;
             } else {
                 return '#'.$list->id_aduan;
@@ -463,8 +463,8 @@ class AduanController extends Controller
 
         ->editColumn('nama_pelapor', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return $list->nama_pelapor;
             } else {
                 return strtoupper($list->aduan->nama_pelapor);
@@ -473,8 +473,8 @@ class AduanController extends Controller
 
         ->editColumn('tarikh', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return date(' Y/m/d ', strtotime($list->tarikh_laporan) );
             } else {
                 return date(' Y/m/d ', strtotime($list->aduan->tarikh_laporan) );
@@ -483,8 +483,8 @@ class AduanController extends Controller
 
         ->editColumn('masa', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return date(' H:i A', strtotime($list->tarikh_laporan) );
             } else {
                 return date(' H:i A', strtotime($list->aduan->tarikh_laporan) );
@@ -493,8 +493,8 @@ class AduanController extends Controller
 
         ->editColumn('lokasi_aduan', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<div>' .strtoupper($list->nama_bilik). ', ARAS ' .strtoupper($list->aras_aduan). ', BLOK ' .strtoupper($list->blok_aduan). ', ' .strtoupper($list->lokasi_aduan).'</div>' ;
             } else {
                 return '<div>' .strtoupper($list->aduan->nama_bilik). ', ARAS ' .strtoupper($list->aduan->aras_aduan). ', BLOK ' .strtoupper($list->aduan->blok_aduan). ', ' .strtoupper($list->aduan->lokasi_aduan).'</div>' ;
@@ -503,8 +503,8 @@ class AduanController extends Controller
 
         ->editColumn('kategori_aduan', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<div> Kategori : <b>' .strtoupper($list->kategori->nama_kategori). '</b></div word-break: break-all><div> Jenis : <b>' .strtoupper($list->jenis->jenis_kerosakan). '</b></div word-break: break-all><div> Sebab : <b>' .strtoupper($list->sebab->sebab_kerosakan). '</b></div>' ;
             } else {
                 return '<div> Kategori : <b>' .strtoupper($list->aduan->kategori->nama_kategori). '</b></div word-break: break-all><div> Jenis : <b>' .strtoupper($list->aduan->jenis->jenis_kerosakan). '</b></div word-break: break-all><div> Sebab : <b>' .strtoupper($list->aduan->sebab->sebab_kerosakan). '</b></div>' ;
@@ -512,21 +512,21 @@ class AduanController extends Controller
         })
 
         ->editColumn('status_aduan', function ($list) {
-           
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 if($list->status_aduan=='BS')
                 {
                     return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
                     <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-                    
+
                 }
                 if($list->status_aduan=='DJ')
                 {
                     return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
                     <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
                 }
-                else 
+                else
                 {
                     return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
                     <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
@@ -544,7 +544,7 @@ class AduanController extends Controller
                 {
                     return '<span class="badge badge-sent">' . strtoupper($list->aduan->status->nama_status) . '</span>';
                 }
-                else 
+                else
                 {
                     return '<span class="badge badge-done">' . strtoupper($list->aduan->status->nama_status) . '</span>';
                 }
@@ -553,9 +553,9 @@ class AduanController extends Controller
         })
 
         ->editColumn('tempoh', function ($list) {
-        
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 if(isset($list->tarikh_selesai_aduan))
                 {
                     $tempoh = Carbon::parse($list->tarikh_laporan)->diffInDays($list->tarikh_selesai_aduan);
@@ -564,7 +564,7 @@ class AduanController extends Controller
 
                     $tempoh = Carbon::parse($list->tarikh_laporan)->diffInDays(Carbon::now());
                 }
-                
+
                 return $tempoh.' hari';
             }
             else
@@ -577,15 +577,15 @@ class AduanController extends Controller
 
                     $tempoh = Carbon::parse($list->aduan->tarikh_laporan)->diffInDays(Carbon::now());
                 }
-                
+
                 return $tempoh.' hari';
-                
+
             }
         })
-        
+
         ->editColumn('tahap_kategori', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
+            if( Auth::user()->hasRole('Technical Admin') )
             {
                 if($list->tahap_kategori=='B')
                 {
@@ -616,12 +616,12 @@ class AduanController extends Controller
                 }
             }
         })
-        
+
         ->rawColumns(['lokasi_aduan', 'id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tempoh', 'tarikh', 'masa'])
         ->make(true);
     }
 
-    // public function updateJuruteknik(Request $request) 
+    // public function updateJuruteknik(Request $request)
     // {
     //     $aduan = Aduan::where('id', $request->id)->first();
 
@@ -654,14 +654,14 @@ class AduanController extends Controller
     //             $message->to($email);
     //         });
     //     }
-        
+
     //     Session::flash('message', 'Aduan Telah Berjaya Dihantar kepada Juruteknik');
     //     return redirect('info-aduan/'.$aduan->id);
     // }
 
     public function infoAduan($id)
     {
-        $aduan = Aduan::where('id', $id)->first(); 
+        $aduan = Aduan::where('id', $id)->first();
 
         $tahap = TahapKategori::all();
 
@@ -678,7 +678,7 @@ class AduanController extends Controller
         $imej = ImejAduan::where('id_aduan', $id)->get();
 
         $gambar = ImejPembaikan::where('id_aduan', $id)->get();
-        
+
         $alatan = AlatGanti::orderBy('alat_ganti')->get();
 
         $alatan_ganti = AlatanPembaikan::where('id_aduan', $id)->get();
@@ -694,7 +694,7 @@ class AduanController extends Controller
         return view('aduan.info-aduan', compact('aduan', 'juru', 'tahap', 'juruteknik', 'status', 'tukarStatus', 'resit', 'imej', 'senarai_juruteknik', 'alatan', 'alatan_ganti', 'senarai_alat', 'gambar'))->with('no', 1)->with('urutan', 1);
     }
 
-    public function kemaskiniTahap(Request $request) 
+    public function kemaskiniTahap(Request $request)
     {
         $aduan = Aduan::where('id', $request->id)->first();
 
@@ -713,7 +713,7 @@ class AduanController extends Controller
                 'caj_kerosakan'          => $request->caj_kerosakan,
             ]);
         }
-            
+
         foreach($request->input('juruteknik_bertugas') as $key => $value) {
 
             $juruteknik = JuruteknikBertugas::create([
@@ -746,17 +746,17 @@ class AduanController extends Controller
 
         $aduan = Aduan::where('id', $request->status_id)->update([
             'status_aduan'          => $request->kod_status,
-            'tukar_status'          => $id, 
+            'tukar_status'          => $id,
             'tarikh_selesai_aduan'  => Carbon::now()->toDateTimeString(),
         ]);
-        
+
         Session::flash('status', 'Status aduan telah berjaya ditukar. Sila semak aduan dibahagian Pengurusan Aduan > Selesai');
         return redirect('/senarai-aduan');
     }
 
-    // public function simpanPenambahbaikan(Request $request) 
+    // public function simpanPenambahbaikan(Request $request)
     // {
-        
+
     //     $aduan = Aduan::where('id', $request->id)->first();
 
     //     $request->validate([
@@ -768,13 +768,13 @@ class AduanController extends Controller
     //     $aduan->update([
     //         'laporan_pembaikan'       => $request->laporan_pembaikan,
     //         'ak_upah'                 => $request->ak_upah,
-    //         'ak_bahan_alat'           => $request->ak_bahan_alat, 
-    //         'jumlah_kos'              => $request->jumlah_kos, 
+    //         'ak_bahan_alat'           => $request->ak_bahan_alat,
+    //         'jumlah_kos'              => $request->jumlah_kos,
     //         'tarikh_selesai_aduan'    => $request->tarikh_selesai_aduan,
     //         'status_aduan'            => $request->status_aduan,
     //     ]);
 
-    //     if (isset($request->bahan_alat)) { 
+    //     if (isset($request->bahan_alat)) {
     //         foreach($request->bahan_alat as $value) {
     //             $fields = [
     //                 'id_aduan' => $aduan->id,
@@ -785,7 +785,7 @@ class AduanController extends Controller
     //         }
     //     }
 
-    //     if (isset($request->upload_image)) { 
+    //     if (isset($request->upload_image)) {
     //         $image = $request->upload_image;
     //         $paths = storage_path()."/pembaikan/";
 
@@ -829,7 +829,7 @@ class AduanController extends Controller
     //     return redirect('info-aduan/'.$aduan->id);
     // }
 
-    public function kemaskiniPenambahbaikan(Request $request) 
+    public function kemaskiniPenambahbaikan(Request $request)
     {
         $aduan = Aduan::where('id', $request->id)->first();
 
@@ -844,13 +844,13 @@ class AduanController extends Controller
             $aduan->update([
                 'laporan_pembaikan'       => $request->laporan_pembaikan,
                 'ak_upah'                 => $request->ak_upah,
-                'ak_bahan_alat'           => $request->ak_bahan_alat, 
-                'jumlah_kos'              => $request->jumlah_kos, 
+                'ak_bahan_alat'           => $request->ak_bahan_alat,
+                'jumlah_kos'              => $request->jumlah_kos,
                 'tarikh_selesai_aduan'    => $request->tarikh_selesai_aduan,
                 'status_aduan'            => $request->status_aduan,
             ]);
 
-            if (isset($request->bahan_alat)) { 
+            if (isset($request->bahan_alat)) {
                 foreach($request->bahan_alat as $value) {
                     $fields = [
                         'id_aduan' => $aduan->id,
@@ -861,7 +861,7 @@ class AduanController extends Controller
                 }
             }
 
-            if (isset($request->upload_image)) { 
+            if (isset($request->upload_image)) {
                 $image = $request->upload_image;
                 $paths = storage_path()."/pembaikan/";
 
@@ -886,31 +886,31 @@ class AduanController extends Controller
                 'tarikh_selesai_aduan'    => 'required',
                 'status_aduan'            => 'required',
             ]);
-    
+
             $aduan->update([
                 'laporan_pembaikan'       => $request->laporan_pembaikan,
                 'ak_upah'                 => $request->ak_upah,
-                'ak_bahan_alat'           => $request->ak_bahan_alat, 
-                'jumlah_kos'              => $request->jumlah_kos, 
+                'ak_bahan_alat'           => $request->ak_bahan_alat,
+                'jumlah_kos'              => $request->jumlah_kos,
                 'tarikh_selesai_aduan'    => $request->tarikh_selesai_aduan,
                 'status_aduan'            => $request->status_aduan,
             ]);
-    
-            if (isset($request->bahan_alat)) { 
+
+            if (isset($request->bahan_alat)) {
                 foreach($request->bahan_alat as $value) {
                     $fields = [
                         'id_aduan' => $aduan->id,
                         'alat_ganti' => $value
                     ];
-    
+
                     AlatanPembaikan::create($fields);
                 }
             }
-    
-            if (isset($request->upload_image)) { 
+
+            if (isset($request->upload_image)) {
                 $image = $request->upload_image;
                 $paths = storage_path()."/pembaikan/";
-    
+
                 for($y = 0; $y < count($image); $y++)
                 {
                     $originalsName = $image[$y]->getClientOriginalName();
@@ -924,22 +924,22 @@ class AduanController extends Controller
                     ]);
                 }
             }
-    
+
             $admin = User::whereHas('roles', function($query){
                 $query->where('id', 'CMS001');
             })->get();
-    
+
             foreach($admin as $value)
             {
                 $admin_email = $value->email;
-    
+
                 $data = [
                     'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $value->name,
                     'penerangan'    => 'Aduan yang dilaporkan pada '.date(' j F Y ', strtotime($aduan->tarikh_laporan)).
                                         ' telah dilaksanakan pembaikan oleh juruteknik bertarikh '.date(' j F Y ', strtotime($aduan->tarikh_selesai_aduan)).
                                         'Sila log masuk sistem IDS untuk tindakan selanjutnya',
                 ];
-    
+
                 Mail::send('aduan.emel-pembaikan', $data, function ($message) use ($admin_email) {
                     $message->subject('Perlaksanaan Pembaikan Aduan');
                     $message->from(Auth::user()->email);
@@ -1005,9 +1005,9 @@ class AduanController extends Controller
 
     public function data_selesai()
     {
-       
-        if( Auth::user()->hasRole('Operation Admin') )
-        { 
+
+        if( Auth::user()->hasRole('Technical Admin') )
+        {
             $list = Aduan::whereIn('status_aduan', ['AS','LK','LU'])->select('cms_aduan.*');
         }
         else
@@ -1015,26 +1015,26 @@ class AduanController extends Controller
             $list = JuruteknikBertugas::where('juruteknik_bertugas', Auth::user()->id)->whereHas('aduan', function($query) {
                 $query->whereIn('status_aduan', ['AS','LK','LU']);
             })->get();
-            
+
         }
 
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>';
             }
             else
             {
                 return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
             }
-            
+
         })
 
         ->editColumn('id', function ($list) {
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '#'.$list->id;
             } else {
                 return '#'.$list->id_aduan;
@@ -1043,68 +1043,68 @@ class AduanController extends Controller
 
         ->editColumn('nama_pelapor', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return $list->nama_pelapor;
             } else {
                 return strtoupper($list->aduan->nama_pelapor) ?? '';
             }
-            
+
         })
 
         ->editColumn('tarikh', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return date(' Y/m/d ', strtotime($list->tarikh_laporan) );
             } else {
                 return date(' Y/m/d ', strtotime($list->aduan->tarikh_laporan) ) ?? '';
             }
-            
+
         })
 
         ->editColumn('masa', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return date(' H:i A', strtotime($list->tarikh_laporan) );
             } else {
                 return date(' H:i A', strtotime($list->aduan->tarikh_laporan) ) ?? '';
             }
-            
+
         })
 
         ->editColumn('lokasi_aduan', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<div>' .strtoupper($list->nama_bilik). ', ARAS ' .strtoupper($list->aras_aduan). ', BLOK ' .strtoupper($list->blok_aduan). ', ' .strtoupper($list->lokasi_aduan).'</div>' ;
             } else {
                 return '<div>' .strtoupper($list->aduan->nama_bilik). ', ARAS ' .strtoupper($list->aduan->aras_aduan). ', BLOK ' .strtoupper($list->aduan->blok_aduan). ', ' .strtoupper($list->aduan->lokasi_aduan).'</div>' ;
             }
-            
+
         })
 
         ->editColumn('kategori_aduan', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<div> Kategori : <b>' .strtoupper($list->kategori->nama_kategori). '</b></div word-break: break-all><div> Jenis : <b>' .strtoupper($list->jenis->jenis_kerosakan). '</b></div word-break: break-all><div> Sebab : <b>' .strtoupper($list->sebab->sebab_kerosakan). '</b></div>' ;
             } else {
                 return '<div> Kategori : <b>' .strtoupper($list->aduan->kategori->nama_kategori). '</b></div word-break: break-all><div> Jenis : <b>' .strtoupper($list->aduan->jenis->jenis_kerosakan). '</b></div word-break: break-all><div> Sebab : <b>' .strtoupper($list->aduan->sebab->sebab_kerosakan). '</b></div>' ;
             }
-            
+
         })
 
         ->editColumn('status_aduan', function ($list) {
-           
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 if($list->status_aduan=='AS')
                 {
                     return '<span class="badge badge-success">' . strtoupper($list->status->nama_status) . '</span>';
                 }
-                else 
+                else
                 {
                     return '<span class="badge badge-success2">' . strtoupper($list->status->nama_status) . '</span>';
                 }
@@ -1115,17 +1115,17 @@ class AduanController extends Controller
                 {
                     return '<span class="badge badge-success">' . strtoupper($list->aduan->status->nama_status) . '</span>';
                 }
-                else 
+                else
                 {
                     return '<span class="badge badge-success2">' . strtoupper($list->aduan->status->nama_status) . '</span>';
                 }
             }
 
         })
-        
+
         ->editColumn('tahap_kategori', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
+            if( Auth::user()->hasRole('Technical Admin') )
             {
                 if($list->tahap_kategori=='B')
                 {
@@ -1156,7 +1156,7 @@ class AduanController extends Controller
                 }
             }
         })
-        
+
         ->rawColumns(['lokasi_aduan', 'id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tarikh', 'masa'])
         ->make(true);
     }
@@ -1168,8 +1168,8 @@ class AduanController extends Controller
 
     public function data_kiv()
     {
-        if( Auth::user()->hasRole('Operation Admin') )
-        { 
+        if( Auth::user()->hasRole('Technical Admin') )
+        {
             $list = Aduan::whereIn('status_aduan', ['AK'])->select('cms_aduan.*');
         }
         else
@@ -1182,20 +1182,20 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>';
             }
             else
             {
                 return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
             }
-            
+
         })
 
         ->editColumn('id', function ($list) {
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '#'.$list->id;
             } else {
                 return '#'.$list->id_aduan;
@@ -1204,62 +1204,62 @@ class AduanController extends Controller
 
         ->editColumn('nama_pelapor', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return $list->nama_pelapor;
             } else {
                 return strtoupper($list->aduan->nama_pelapor);
             }
-            
+
         })
 
         ->editColumn('tarikh', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return date(' Y/m/d ', strtotime($list->tarikh_laporan) );
             } else {
                 return date(' Y/m/d ', strtotime($list->aduan->tarikh_laporan) );
             }
-            
+
         })
 
         ->editColumn('masa', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return date(' H:i A', strtotime($list->tarikh_laporan) );
             } else {
                 return date(' H:i A', strtotime($list->aduan->tarikh_laporan) );
             }
-            
+
         })
 
         ->editColumn('lokasi_aduan', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<div>' .strtoupper($list->nama_bilik). ', ARAS ' .strtoupper($list->aras_aduan). ', BLOK ' .strtoupper($list->blok_aduan). ', ' .strtoupper($list->lokasi_aduan).'</div>' ;
             } else {
                 return '<div>' .strtoupper($list->aduan->nama_bilik). ', ARAS ' .strtoupper($list->aduan->aras_aduan). ', BLOK ' .strtoupper($list->aduan->blok_aduan). ', ' .strtoupper($list->aduan->lokasi_aduan).'</div>' ;
             }
-            
+
         })
 
         ->editColumn('kategori_aduan', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<div> Kategori : <b>' .strtoupper($list->kategori->nama_kategori). '</b></div word-break: break-all><div> Jenis : <b>' .strtoupper($list->jenis->jenis_kerosakan). '</b></div word-break: break-all><div> Sebab : <b>' .strtoupper($list->sebab->sebab_kerosakan). '</b></div>' ;
             } else {
                 return '<div> Kategori : <b>' .strtoupper($list->aduan->kategori->nama_kategori). '</b></div word-break: break-all><div> Jenis : <b>' .strtoupper($list->aduan->jenis->jenis_kerosakan). '</b></div word-break: break-all><div> Sebab : <b>' .strtoupper($list->aduan->sebab->sebab_kerosakan). '</b></div>' ;
             }
-            
+
         })
 
         ->editColumn('status_aduan', function ($list) {
-           
-            if( Auth::user()->hasRole('Operation Admin') )
+
+            if( Auth::user()->hasRole('Technical Admin') )
             {
                 if($list->status_aduan=='AK')
                 {
@@ -1275,10 +1275,10 @@ class AduanController extends Controller
             }
 
         })
-        
+
         ->editColumn('tahap_kategori', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
+            if( Auth::user()->hasRole('Technical Admin') )
             {
                 if($list->tahap_kategori=='B')
                 {
@@ -1309,7 +1309,7 @@ class AduanController extends Controller
                 }
             }
         })
-        
+
         ->rawColumns(['lokasi_aduan', 'id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tarikh', 'masa'])
         ->make(true);
     }
@@ -1321,8 +1321,8 @@ class AduanController extends Controller
 
     public function data_bertindih()
     {
-        if( Auth::user()->hasRole('Operation Admin') )
-        { 
+        if( Auth::user()->hasRole('Technical Admin') )
+        {
             $list = Aduan::whereIn('status_aduan', ['DP'])->select('cms_aduan.*');
         }
         else
@@ -1335,20 +1335,20 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>';
             }
             else
             {
                 return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
             }
-            
+
         })
 
         ->editColumn('id', function ($list) {
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '#'.$list->id;
             } else {
                 return '#'.$list->id_aduan;
@@ -1357,63 +1357,63 @@ class AduanController extends Controller
 
         ->editColumn('nama_pelapor', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return $list->nama_pelapor;
             } else {
                 return strtoupper($list->aduan->nama_pelapor);
             }
-            
+
         })
 
         ->editColumn('tarikh', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return date(' Y/m/d ', strtotime($list->tarikh_laporan) );
             } else {
                 return date(' Y/m/d ', strtotime($list->aduan->tarikh_laporan) );
             }
-            
+
         })
 
         ->editColumn('masa', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return date(' H:i A', strtotime($list->tarikh_laporan) );
             } else {
                 return date(' H:i A', strtotime($list->aduan->tarikh_laporan) );
             }
-            
+
         })
 
         ->editColumn('lokasi_aduan', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<div>' .strtoupper($list->nama_bilik). ', ARAS ' .strtoupper($list->aras_aduan). ', BLOK ' .strtoupper($list->blok_aduan). ', ' .strtoupper($list->lokasi_aduan).'</div>' ;
             } else {
                 return '<div>' .strtoupper($list->aduan->nama_bilik). ', ARAS ' .strtoupper($list->aduan->aras_aduan). ', BLOK ' .strtoupper($list->aduan->blok_aduan). ', ' .strtoupper($list->aduan->lokasi_aduan).'</div>' ;
             }
-            
+
         })
 
         ->editColumn('kategori_aduan', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 return '<div> Kategori : <b>' .strtoupper($list->kategori->nama_kategori). '</b></div word-break: break-all><div> Jenis : <b>' .strtoupper($list->jenis->jenis_kerosakan). '</b></div word-break: break-all><div> Sebab : <b>' .strtoupper($list->sebab->sebab_kerosakan). '</b></div>' ;
             } else {
                 return '<div> Kategori : <b>' .strtoupper($list->aduan->kategori->nama_kategori). '</b></div word-break: break-all><div> Jenis : <b>' .strtoupper($list->aduan->jenis->jenis_kerosakan). '</b></div word-break: break-all><div> Sebab : <b>' .strtoupper($list->aduan->sebab->sebab_kerosakan). '</b></div>' ;
             }
-            
+
         })
 
         ->editColumn('status_aduan', function ($list) {
-           
-            if( Auth::user()->hasRole('Operation Admin') )
-            { 
+
+            if( Auth::user()->hasRole('Technical Admin') )
+            {
                 if($list->status_aduan=='DP')
                 {
                     return '<span class="badge badge-duplicate">' . strtoupper($list->status->nama_status) . '</span>';
@@ -1428,10 +1428,10 @@ class AduanController extends Controller
             }
 
         })
-        
+
         ->editColumn('tahap_kategori', function ($list) {
 
-            if( Auth::user()->hasRole('Operation Admin') )
+            if( Auth::user()->hasRole('Technical Admin') )
             {
                 if($list->tahap_kategori=='B')
                 {
@@ -1462,11 +1462,11 @@ class AduanController extends Controller
                 }
             }
         })
-        
+
         ->rawColumns(['lokasi_aduan', 'id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tarikh', 'masa'])
         ->make(true);
     }
-    
+
     public function simpanStatus(Request $request)
     {
         $aduan = Aduan::where('id', $request->id)->first();
@@ -1521,24 +1521,24 @@ class AduanController extends Controller
         return view('aduan.aduanPdf', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik','alatan_ganti'));
     }
 
-    public function aduan_all(Request $request) 
+    public function aduan_all(Request $request)
     {
         $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
         $status = StatusAduan::select('kod_status', 'nama_status')->get();
         $tahap = TahapKategori::select('kod_tahap', 'jenis_tahap')->get();
         $bulan = Aduan::select('bulan_laporan')->groupBy('bulan_laporan')->orderBy('bulan_laporan', 'ASC')->get();
-        
+
         $cond = "1"; // 1 = selected
 
         $selectedkategori = $request->kategori;
         $selectedstatus = $request->status;
-        $selectedtahap = $request->tahap; 
+        $selectedtahap = $request->tahap;
         $selectedbulan = $request->bulan;
 
         return view('aduan.laporan_excel', compact( 'tahap', 'kategori', 'status', 'bulan', 'request', 'selectedtahap', 'selectedkategori', 'selectedstatus', 'selectedbulan'));
     }
 
-    public function aduan_all_staff(Request $request) 
+    public function aduan_all_staff(Request $request)
     {
         $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
 
@@ -1562,7 +1562,7 @@ class AduanController extends Controller
         if($request->juruteknik || $request->stat || $request->kate || $request->bul)
         {
             $result = new JuruteknikBertugas();
-            
+
             if($request->juruteknik != "")
             {
                 $result = $result->where('juruteknik_bertugas', $request->juruteknik);
@@ -1622,14 +1622,14 @@ class AduanController extends Controller
                     $query->where('bulan_laporan', $request->sel_bul);
                 });
             }
-            
+
             $dat = $res->where('juruteknik_bertugas', Auth::user()->id)->get();
         }
 
         $this->jurutekniks($request->juruteknik,$request->stat,$request->kate,$request->bul);
         $this->individu($request->sel_stat,$request->sel_kate,$request->sel_bul);
 
-        return view('aduan.laporan_excel_staf', compact('juruteknik', 'req_juruteknik', 'req_bulan', 'req_kategori', 'req_status', 'data', 'tahap', 'kategori', 
+        return view('aduan.laporan_excel_staf', compact('juruteknik', 'req_juruteknik', 'req_bulan', 'req_kategori', 'req_status', 'data', 'tahap', 'kategori',
         'status', 'bulan', 'request', 'req_stat', 'req_kate', 'req_bul'));
     }
 
@@ -1638,7 +1638,7 @@ class AduanController extends Controller
         return Excel::download(new AduanExport($kategori,$status,$tahap,$bulan),'Laporan Aduan.xlsx');
     }
 
-    public function data_aduanexport(Request $request) 
+    public function data_aduanexport(Request $request)
     {
         $cond = "1";
         if($request->kategori && $request->kategori != "All")
@@ -1660,9 +1660,9 @@ class AduanController extends Controller
         {
             $cond .= " AND bulan_laporan = '".$request->bulan."' ";
         }
-        
-        if( Auth::user()->hasRole('Operation Admin') )
-        { 
+
+        if( Auth::user()->hasRole('Technical Admin') )
+        {
             $aduan = Aduan::whereRaw($cond);
 
         } else {
@@ -1827,11 +1827,11 @@ class AduanController extends Controller
             foreach($data as $datas){
                 $juru .= '<div>'.$datas->juruteknik_bertugas.' : '.$datas->juruteknik->name.', </div word-break>';
             }
-    
+
             return isset($juru) ? strtoupper($juru) : '<div style="color:red;" > -- </div>';
         })
 
-        ->rawColumns(['nama_pelapor', 'tarikh_laporan', 'nama_bilik', 'aras_aduan', 'blok_aduan', 'lokasi_aduan', 'kategori_aduan', 'jenis_kerosakan', 'sebab_kerosakan', 'maklumat_tambahan', 'tahap_kategori', 
+        ->rawColumns(['nama_pelapor', 'tarikh_laporan', 'nama_bilik', 'aras_aduan', 'blok_aduan', 'lokasi_aduan', 'kategori_aduan', 'jenis_kerosakan', 'sebab_kerosakan', 'maklumat_tambahan', 'tahap_kategori',
                       'tarikh_serahan_aduan', 'laporan_pembaikan', 'bahan', 'ak_upah', 'ak_bahan_alat', 'jumlah_kos', 'tarikh_selesai_aduan', 'catatan_pembaikan', 'status_aduan', 'juruteknik', 'pengesahan_pembaikan',
                       'pengesahan_aduan', 'caj_kerosakan', 'id', 'sebab_pembatalan', 'tukar_status'])
         ->make(true);
@@ -1894,7 +1894,7 @@ class AduanController extends Controller
         ->get();
 
         $juruteknik = $data->where('juruteknik_bertugas', Auth::user()->id)->toArray();
-        
+
         $result[] = ['Status','Jumlah'];
         foreach ($aduan as $key => $value) {
             $result[++$key] = [$value->kod_status, (int)$value->count];
@@ -1917,7 +1917,7 @@ class AduanController extends Controller
         $senaraiAdmin = User::whereHas('roles', function($query){
             $query->where('id', 'CMS001');
         })->with(['staff'])->get();
-        
+
         return view('aduan.dashboard', compact('senarai','senaraiAdmin'))->with('aduan',json_encode($result))->with('list',json_encode($results))->with('juruteknik',json_encode($res))->with('no', '1');
     }
 

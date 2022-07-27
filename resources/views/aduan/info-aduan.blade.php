@@ -14,7 +14,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        
+
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -22,14 +22,14 @@
                         <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
                     </div>
                 </div>
-                 
+
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="row">
                             @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK' || $aduan->status_aduan == 'LU')
-                                <div class="col-md-12"> 
+                                <div class="col-md-12">
                             @else
-                                <div class="@if(Auth::user()->hasRole('Operation Admin') || $juru->jenis_juruteknik == 'K' ) col-md-7 @else col-md-12 @endif "> 
+                                <div class="@if(Auth::user()->hasRole('Technical Admin') || $juru->jenis_juruteknik == 'K' ) col-md-7 @else col-md-12 @endif ">
                             @endif
                                 <div class="card card-primary card-outline p-4">
                                     <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
@@ -54,11 +54,11 @@
                                             {
                                                 <span class="badge badge-success">{{ strtoupper($aduan->status->nama_status) }}</span>
                                             }
-                                            @elseif($aduan->status_aduan=='LK') 
+                                            @elseif($aduan->status_aduan=='LK')
                                             {
                                                 <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                                             }
-                                            @elseif($aduan->status_aduan=='LU') 
+                                            @elseif($aduan->status_aduan=='LU')
                                             {
                                                 <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                                             }
@@ -66,7 +66,7 @@
                                             {
                                                 <span class="badge badge-kiv">{{ strtoupper($aduan->status->nama_status) }}</span>
                                             }
-                                            @else 
+                                            @else
                                             {
                                                 <span class="badge badge-duplicate">{{ strtoupper($aduan->status->nama_status) }}</span>
                                             }
@@ -141,9 +141,9 @@
                                                             <th width="20%" style="vertical-align: middle">Jenis Kerosakan : </th>
                                                             <td colspan="2" style="vertical-align: middle">
                                                                 <div>{{ strtoupper($aduan->jenis->jenis_kerosakan) }}</div word-break: break-all>
-                                                                @if($aduan->jenis->jenis_kerosakan == 'Lain-lain') 
+                                                                @if($aduan->jenis->jenis_kerosakan == 'Lain-lain')
                                                                     <div> Penerangan : {{ strtoupper($aduan->jk_penerangan ?? '--') }}</div>
-                                                                @endif 
+                                                                @endif
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -200,7 +200,7 @@
                                                                 @endif
                                                             </td>
                                                         </tr>
-                                                        
+
                                                     </thead>
                                                 </table>
                                             </div>
@@ -233,13 +233,13 @@
                                                                 @if(isset($senarai_juruteknik->first()->juruteknik_bertugas))
                                                                     <ol style="margin-bottom: 0rem">
                                                                         @foreach($senarai_juruteknik as $senarai)
-                                                                            <li style="line-height: 30px"> {{ $senarai->juruteknik->name}} 
+                                                                            <li style="line-height: 30px"> {{ $senarai->juruteknik->name}}
                                                                                 ( @if ($senarai->jenis_juruteknik == 'K') KETUA @endif
                                                                                     @if ($senarai->jenis_juruteknik == 'P') PEMBANTU @endif )
                                                                             </li>
                                                                         @endforeach
                                                                     </ol>
-                                                                @else 
+                                                                @else
                                                                     --
                                                                 @endif
                                                             </td>
@@ -315,7 +315,7 @@
                                                                 </td>
                                                                 <td colspan="4" style="background-color: #ddd; cursor: not-allowed;">
                                                                     RM {{ $aduan->jumlah_kos ?? '--'   }}
-                                                                </td> 
+                                                                </td>
                                                             </div>
                                                         </tr>
 
@@ -330,7 +330,7 @@
                                                                     <span>TIADA GAMBAR SOKONGAN</span>
                                                                 @endif
                                                             </td>
-                                                        </tr> 
+                                                        </tr>
 
                                                         <tr>
                                                             <div class="form-group">
@@ -391,7 +391,7 @@
                                                             <td colspan="2" style="text-transform: uppercase"><b>
                                                                 @if($aduan->pengesahan_pembaikan == 'Y')
                                                                     <b>TELAH DISAHKAN</b>
-                                                                @else 
+                                                                @else
                                                                     --
                                                                 @endif
                                                             </td>
@@ -405,8 +405,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5 col-sm-12"> 
-                                @can('view operation admin')
+                            <div class="col-md-5 col-sm-12">
+                                @can('view technical admin')
                                     @if($aduan->status_aduan == 'BS' || $aduan->status_aduan == 'DJ')
                                         <div class="card card-primary card-outline">
                                             <div class="card-header">
@@ -428,7 +428,7 @@
                                                                         <td colspan="2" style="vertical-align: middle">
                                                                             <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori">
                                                                                 <option value="">Pilih Tahap Aduan</option>
-                                                                                @foreach ($tahap as $thp) 
+                                                                                @foreach ($tahap as $thp)
                                                                                     <option value="{{ $thp->kod_tahap }}" {{ $aduan->tahap_kategori == $thp->kod_tahap ? 'selected="selected"' : '' }}>{{ $thp->jenis_tahap }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -471,7 +471,7 @@
                                                                                             <td>
                                                                                                 <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" required>
                                                                                                     <option value="">Pilih Juruteknik</option>
-                                                                                                    @foreach ($juruteknik as $juru) 
+                                                                                                    @foreach ($juruteknik as $juru)
                                                                                                     <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
                                                                                                             {{ $juru->name }}</option>
                                                                                                     @endforeach
@@ -575,7 +575,7 @@
                                                                                         @foreach ($senarai_alat as $alats)
                                                                                             <option value="{{ $alats->id }}">{{ $alats->alat_ganti }}</option>
                                                                                         @endforeach
-                                                                                </select>                                           
+                                                                                </select>
                                                                                 @error('bahan_alat')
                                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                 @enderror
@@ -672,8 +672,8 @@
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror<br>
                                                                             </td>
-                                                                            
-                                                                            
+
+
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
@@ -711,7 +711,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td colspan="2"> 
+                                                                            <td colspan="2">
                                                                                 <select class="form-control status_aduan" name="status_aduan" id="status_aduan" >
                                                                                 <option value="">Pilih Status Aduan</option>
                                                                                     @foreach($status as $stt)
@@ -724,7 +724,7 @@
                                                                             </td>
                                                                         </div>
                                                                     </tr>
-                                                                    
+
 
                                                                 </thead>
                                                             </table>
@@ -738,7 +738,7 @@
                                         @endif
                                     @endif
                                 @endcan
-                                @can('view operation admin')
+                                @can('view technical admin')
                                     @if($aduan->status_aduan == 'TD' && $aduan->pengesahan_pembaikan != 'Y')
                                         <div class="card card-primary card-outline">
                                             <div class="card-header">
@@ -775,7 +775,7 @@
                                                                     <td colspan="2">
                                                                         <select class="form-control status_adu" name="status_aduan" id="status_aduan" >
                                                                             <option value="">Pilih Status Aduan</option>
-                                                                            @foreach ($tukarStatus as $stats) 
+                                                                            @foreach ($tukarStatus as $stats)
                                                                             <option value="{{ $stats->kod_status }}" {{ old('status_aduan') ? 'selected' : '' }}>
                                                                                     {{ $stats->nama_status }}</option>
                                                                             @endforeach
@@ -791,7 +791,7 @@
                                                     </table>
                                                 </div>
                                                     <button type="submit" class="btn btn-danger float-right"><i class="fal fa-save"></i> Simpan Pengesahan</button>
-                                                {!! Form::close() !!}     
+                                                {!! Form::close() !!}
                                             </div>
                                         </div>
                                         <br><br>
@@ -801,7 +801,7 @@
                         </div>
                     </div>
                 </div>
-                     
+
             </div>
 
 </main>
@@ -809,7 +809,7 @@
 
 @section('script')
     <script>
-        
+
         $(document).ready(function() {
             $('.tahap_kategori, .juruteknik_bertugas, .status_aduan, .status_adu, .tukar_status, .jenis_juruteknik, .bahan_alat').select2();
 
@@ -826,7 +826,7 @@
                 <td>
                     <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" required>
                         <option value="">Pilih Juruteknik</option>
-                        @foreach ($juruteknik as $juru) 
+                        @foreach ($juruteknik as $juru)
                         <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
                                 {{ $juru->name }}</option>
                         @endforeach

@@ -50,7 +50,7 @@
                                 <div class="tab-content p-0">
                                     <div class="chart tab-pane active" id="pie-chart" >
                                         <div class="row">
-                                            @role('Operation Admin')
+                                            @role('Technical Admin')
                                                 <div class="col-md-6 col-sm-12 mb-4">
                                                     <div class="card">
                                                         <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
@@ -84,7 +84,7 @@
 
                                     <div class="chart tab-pane" id="bar-chart" >
                                         <div class="row">
-                                            @role('Operation Admin')
+                                            @role('Technical Admin')
                                                 <div class="col-md-6 col-sm-12 mb-4">
                                                     <div class="card">
                                                         <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
@@ -121,7 +121,7 @@
                     </div>
                 </div>
 
-                @role('Operation Admin')
+                @role('Technical Admin')
                     <div class="panel-container show">
                         <div class="panel-content">
                             
