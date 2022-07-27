@@ -512,7 +512,7 @@
                                     </ul>
                                 @endcan
                             </li>
-                            @can('view parameter')
+                            @can('view complaint parameter')
                                 <li>
                                     <a href="#" title="Parameter" data-filter-tags="parameter">
                                         <i class="fal fa-list-alt"></i>
