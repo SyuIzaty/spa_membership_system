@@ -69,7 +69,7 @@
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="jenis_kerosakan"><span class="text-danger">*</span> Kategori Aduan :</label></td>
                             <td colspan="4">
-                                <select name="kategori_aduan" id="kategori_aduan" class="kategori form-control">
+                                <select name="kategori_aduan" id="kategori_aduan" class="kategori form-control" required>
                                     <option value="">Pilih Kategori Aduan</option>
                                     @foreach ($kategori as $kat) 
                                         <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
@@ -94,7 +94,7 @@
 
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="sebab_kerosakan"><span class="text-danger">*</span> Sebab Kerosakan :</label></td>
-                            <td colspan="4"><input value="{{ old('sebab_kerosakan') }}" class="form-control" id="sebab_kerosakan" name="sebab_kerosakan">
+                            <td colspan="4"><input value="{{ old('sebab_kerosakan') }}" class="form-control" id="sebab_kerosakan" name="sebab_kerosakan" required>
                                 @error('sebab_kerosakan')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
@@ -154,7 +154,7 @@
 
                     <div class="form-group">
                         <td width="10%"><label class="form-label" for="sebab_kerosakan"><span class="text-danger">*</span> Sebab Kerosakan :</label></td>
-                        <td colspan="4"><input class="form-control" id="sebabs" name="sebab_kerosakan">
+                        <td colspan="4"><input class="form-control" id="sebabs" name="sebab_kerosakan" required>
                             @error('sebab_kerosakan')
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
@@ -298,7 +298,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, padam sebab!',
+                confirmButtonText: 'Ya, Padam Sebab!',
                 cancelButtonText: 'Tidak'
             }).then((result) => {
                 if (result.value) {

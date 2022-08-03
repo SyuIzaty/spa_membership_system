@@ -65,7 +65,7 @@
                         
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="alat_ganti"><span class="text-danger">*</span> Bahan/Alat Ganti :</label></td>
-                            <td colspan="4"><input value="{{ old('alat_ganti') }}" class="form-control" id="alat_ganti" name="alat_ganti">
+                            <td colspan="4"><input value="{{ old('alat_ganti') }}" class="form-control" id="alat_ganti" name="alat_ganti" required>
                                 @error('alat_ganti')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
@@ -95,7 +95,7 @@
 
                     <div class="form-group">
                         <td width="10%"><label class="form-label" for="alat_ganti"><span class="text-danger">*</span> Bahan/Alat Ganti :</label></td>
-                        <td colspan="4"><input class="form-control" id="alat" name="alat_ganti">
+                        <td colspan="4"><input class="form-control" id="alat" name="alat_ganti" required>
                             @error('alat_ganti')
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
@@ -196,7 +196,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, padam alat!',
+                confirmButtonText: 'Ya, Padam Alat!',
                 cancelButtonText: 'Tidak'
             }).then((result) => {
                 if (result.value) {

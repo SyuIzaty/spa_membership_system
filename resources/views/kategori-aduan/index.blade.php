@@ -66,7 +66,7 @@
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="kod_kategori"><span class="text-danger">*</span> Kod Kategori :</label></td>
-                            <td colspan="4"><input value="{{ old('kod_kategori') }}" class="form-control" id="kod_kategori" name="kod_kategori">
+                            <td colspan="4"><input value="{{ old('kod_kategori') }}" class="form-control" id="kod_kategori" name="kod_kategori" required>
                                 @error('kod_kategori')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
@@ -75,13 +75,13 @@
 
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="nama_kategori"><span class="text-danger">*</span> Nama Kategori :</label></td>
-                            <td colspan="4"><input value="{{ old('nama_kategori') }}" class="form-control" id="nama_kategori" name="nama_kategori">
+                            <td colspan="4"><input value="{{ old('nama_kategori') }}" class="form-control" id="nama_kategori" name="nama_kategori" required>
                                 @error('nama_kategori')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
                             </td>
                         </div>
-                     
+
                     <div class="footer">
                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
@@ -104,7 +104,7 @@
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                     <div class="form-group">
                         <td width="15%"><label class="form-label" for="kod_kategori"><span class="text-danger">*</span> Kod Kategori :</label></td>
-                        <td colspan="5"><input class="form-control" id="kod" name="kod_kategori">
+                        <td colspan="5"><input class="form-control" id="kod" name="kod_kategori" required>
                             @error('kod_kategori')
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
@@ -113,13 +113,13 @@
 
                     <div class="form-group">
                         <td width="15%"><label class="form-label" for="nama_kategori"><span class="text-danger">*</span> Nama Kategori :</label></td>
-                        <td colspan="5"><input class="form-control" id="nama" name="nama_kategori">
+                        <td colspan="5"><input class="form-control" id="nama" name="nama_kategori" required>
                             @error('nama_kategori')
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
                         </td>
                     </div>
-                    
+
                     <div class="footer">
                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Kemaskini</button>
                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
@@ -145,14 +145,14 @@
         });
 
         $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var kategori = button.data('kategori') 
+            var button = $(event.relatedTarget)
+            var kategori = button.data('kategori')
             var kod = button.data('kod')
             var nama = button.data('nama')
 
-            $('.modal-body #kategori').val(kategori); // # for id in form 
-            $('.modal-body #nama').val(nama); 
-            $('.modal-body #kod').val(kod); 
+            $('.modal-body #kategori').val(kategori); // # for id in form
+            $('.modal-body #nama').val(nama);
+            $('.modal-body #kod').val(kod);
         });
 
         $('#kategori thead tr .hasinput').each(function(i)
@@ -199,7 +199,7 @@
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#kategori').on('click', '.btn-delete[data-remote]', function (e) {
@@ -218,7 +218,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, padam kategori!',
+                confirmButtonText: 'Ya, Padam Kategori!',
                 cancelButtonText: 'Tidak'
             }).then((result) => {
                 if (result.value) {

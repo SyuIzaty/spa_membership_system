@@ -67,9 +67,9 @@
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="kategori_aduan"><span class="text-danger">*</span> Kategori Aduan :</label></td>
                             <td colspan="4">
-                                <select name="kategori_aduan" id="kategori_aduan" class="kategori form-control">
+                                <select name="kategori_aduan" id="kategori_aduan" class="kategori form-control" required>
                                     <option value="">-- Pilih Kategori Aduan --</option>
-                                    @foreach ($kategori as $kat) 
+                                    @foreach ($kategori as $kat)
                                         <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
                                     @endforeach
                                  </select>
@@ -81,13 +81,13 @@
 
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="jenis_kerosakan"><span class="text-danger">*</span> Jenis Kerosakan :</label></td>
-                            <td colspan="4"><input value="{{ old('jenis_kerosakan') }}" class="form-control" id="jenis_kerosakan" name="jenis_kerosakan">
+                            <td colspan="4"><input value="{{ old('jenis_kerosakan') }}" class="form-control" id="jenis_kerosakan" name="jenis_kerosakan" required>
                                 @error('jenis_kerosakan')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
                             </td>
                         </div>
-                     
+
                     <div class="footer">
                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
@@ -125,7 +125,7 @@
 
                     <div class="form-group">
                         <td width="15%"><label class="form-label" for="jenis_kerosakan"><span class="text-danger">*</span> Jenis Kerosakan :</label></td>
-                        <td colspan="5"><input class="form-control" id="kerosakan" name="jenis_kerosakan">
+                        <td colspan="5"><input class="form-control" id="kerosakan" name="jenis_kerosakan" required>
                             @error('jenis_kerosakan')
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
@@ -151,23 +151,23 @@
 <script>
     $(document).ready(function()
     {
-        $('.kategori').select2({ 
-            dropdownParent: $('#crud-modal') 
-        }); 
+        $('.kategori').select2({
+            dropdownParent: $('#crud-modal')
+        });
 
         $('#new').click(function () {
             $('#crud-modal').modal('show');
         });
 
         $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var jenis = button.data('jenis') 
+            var button = $(event.relatedTarget)
+            var jenis = button.data('jenis')
             var kategori = button.data('kategori')
             var kerosakan = button.data('kerosakan')
 
-            $('.modal-body #jenis').val(jenis); // # for id in form  
+            $('.modal-body #jenis').val(jenis); // # for id in form
             $('.modal-body #aduan').val(kategori); // $("#aduan")
-            $('.modal-body #kerosakan').val(kerosakan); 
+            $('.modal-body #kerosakan').val(kerosakan);
         })
 
         $('#jenis thead tr .hasinput').each(function(i)
@@ -214,7 +214,7 @@
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#jenis').on('click', '.btn-delete[data-remote]', function (e) {
@@ -233,7 +233,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, padam jenis!',
+                confirmButtonText: 'Ya, Padam Jenis!',
                 cancelButtonText: 'Tidak'
             }).then((result) => {
                 if (result.value) {

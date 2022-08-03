@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreKategoriRequest;
 use Illuminate\Http\Request;
 use App\KategoriAduan;
 use App\Aduan;
@@ -33,7 +32,7 @@ class KategoriAduanController extends Controller
             $exist = Aduan::where('kategori_aduan', $kategori->kod_kategori)->first();
 
             if(isset($exist)) {
-            
+
                 return '
                 <a href="" data-target="#crud-modals" data-toggle="modal" data-kategori="'.$kategori->id.'" data-nama="'.$kategori->nama_kategori.'" data-kod="'.$kategori->kod_kategori.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
 
@@ -44,32 +43,32 @@ class KategoriAduanController extends Controller
                 <button class="btn btn-sm btn-danger btn-delete" data-remote="/kategori-aduan/' . $kategori->id . '"><i class="fal fa-trash"></i></button>';
             }
         })
-            
+
         ->make(true);
     }
 
-    public function tambahKategori(StoreKategoriRequest $request)
+    public function tambahKategori(Request $request)
     {
         $kategori = KategoriAduan::where('id', $request->id)->first();
 
         KategoriAduan::create([
                 'kod_kategori'     => $request->kod_kategori,
-                'nama_kategori'    => $request->nama_kategori, 
+                'nama_kategori'    => $request->nama_kategori,
             ]);
-        
+
         Session::flash('message', 'Data Kategori Berjaya Ditambah');
         return redirect('kategori-aduan');
     }
 
-    public function kemaskiniKategori(StoreKategoriRequest $request) 
+    public function kemaskiniKategori(Request $request)
     {
         $kategori = KategoriAduan::where('id', $request->kategori_id)->first();
-        
+
         $kategori->update([
             'kod_kategori'     => $request->kod_kategori,
-            'nama_kategori'    => $request->nama_kategori, 
+            'nama_kategori'    => $request->nama_kategori,
         ]);
-        
+
         Session::flash('notification', 'Data Kategori Berjaya Dikemaskini');
         return redirect('kategori-aduan');
     }
