@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\KategoriAduan;
+use App\JenisKerosakan;
+use App\SebabKerosakan;
 use App\Aduan;
 use Session;
 
@@ -136,8 +138,16 @@ class KategoriAduanController extends Controller
      */
     public function destroy($id)
     {
-        $exist = KategoriAduan::find($id);
+        // $exist = KategoriAduan::find($id);
+
+        $exist = KategoriAduan::where('id', $id)->first();
+
+        $jenis = JenisKerosakan::where('kategori_aduan', $exist->kod_kategori)->delete();
+
+        $sebab = SebabKerosakan::where('kategori_aduan', $exist->kod_kategori)->delete();
+
         $exist->delete();
+
         return response()->json(['success'=>'Data Kategori Aduan Berjaya Dipadam.']);
     }
 }
