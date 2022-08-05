@@ -67,7 +67,7 @@ class KategoriAduanController extends Controller
         $kategori = KategoriAduan::where('id', $request->kategori_id)->first();
 
         $kategori->update([
-            'kod_kategori'     => $request->kod_kategori,
+            // 'kod_kategori'     => $request->kod_kategori,
             'nama_kategori'    => $request->nama_kategori,
         ]);
 

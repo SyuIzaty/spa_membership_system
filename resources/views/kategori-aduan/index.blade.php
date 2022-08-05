@@ -104,7 +104,7 @@
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                     <div class="form-group">
                         <td width="15%"><label class="form-label" for="kod_kategori"><span class="text-danger">*</span> Kod Kategori :</label></td>
-                        <td colspan="5"><input class="form-control" id="kod" name="kod_kategori" required>
+                        <td colspan="5"><input class="form-control" id="kod" name="kod_kategori" disabled>
                             @error('kod_kategori')
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
