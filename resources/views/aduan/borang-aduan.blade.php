@@ -25,7 +25,7 @@
                         </h4>
                         <div>
                             <p style="padding-left: 30px; padding-right: 30px">
-                                <i><b>PERHATIAN!</b></i> : Sebarang aduan kerosakkan akan diambil tindakan di dalam tempoh <b>tiga (3)</b> hari bekerja. Sekiranya tiada tindakan dibuat sila rujuk kepada <b>Pegawai Fasiliti</b> untuk laporan/semakan. Sebarang aduan adalah diwajibkan secara online. Laporan secara manual atau pun emel adalah tidak akan diproses. 
+                                <i><b>PERHATIAN!</b></i> : Sebarang aduan kerosakkan akan diambil tindakan di dalam tempoh <b>tiga (3)</b> hari bekerja. Sekiranya tiada tindakan dibuat sila rujuk kepada <b>Pegawai Fasiliti</b> untuk laporan/semakan. Sebarang aduan adalah diwajibkan secara online. Laporan secara manual atau pun emel adalah tidak akan diproses.
                             </p>
                         </div>
                         <div class="panel-container show">
@@ -96,12 +96,12 @@
                                                 </tr> --}}
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Pejabat/Bahagian/ Fakulti/Kolej : </th>
-                                                    <td colspan="2"><input class="form-control" id="lokasi_aduan" name="lokasi_aduan"  value="{{ old('lokasi_aduan') }}" placeholder="Pejabat/Bahagian/Fakulti/Kolej">
+                                                    <td colspan="2"><input class="form-control" id="lokasi_aduan" name="lokasi_aduan"  value="{{ old('lokasi_aduan') }}" required placeholder="Pejabat/Bahagian/Fakulti/Kolej">
                                                         @error('lokasi_aduan')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror</td>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Blok : </th>
-                                                    <td colspan="2"><input class="form-control" id="blok_aduan" name="blok_aduan"  value="{{ old('blok_aduan') }}" placeholder="Blok">
+                                                    <td colspan="2"><input class="form-control" id="blok_aduan" name="blok_aduan"  value="{{ old('blok_aduan') }}" required placeholder="Blok">
                                                         @error('blok_aduan')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -109,13 +109,13 @@
                                                 </tr>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Tingkat/Aras : </th>
-                                                    <td colspan="2"><input class="form-control" id="aras_aduan" name="aras_aduan"  value="{{ old('aras_aduan') }}" placeholder="Tingkat/Aras">
+                                                    <td colspan="2"><input class="form-control" id="aras_aduan" name="aras_aduan"  value="{{ old('aras_aduan') }}" required placeholder="Tingkat/Aras">
                                                         @error('aras_aduan')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                     </td>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Nama Bilik/No. Bilik : </th>
-                                                    <td colspan="2"><input class="form-control" id="nama_bilik" name="nama_bilik"  value="{{ old('nama_bilik') }}" placeholder="Nama Bilik/No. Bilik">
+                                                    <td colspan="2"><input class="form-control" id="nama_bilik" name="nama_bilik"  value="{{ old('nama_bilik') }}" required placeholder="Nama Bilik/No. Bilik">
                                                         @error('nama_bilik')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -125,9 +125,9 @@
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Kategori Aduan : </th>
                                                     <td colspan="2">
-                                                        <select class="form-control kategori" name="kategori_aduan" id="kategori_aduan" >
+                                                        <select class="form-control kategori" name="kategori_aduan" id="kategori_aduan" required>
                                                             <option value="">Pilih Kategori Aduan</option>
-                                                            @foreach ($kategori as $kat) 
+                                                            @foreach ($kategori as $kat)
                                                                 <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ==  $kat->kod_kategori  ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
                                                             @endforeach
                                                         </select>
@@ -137,7 +137,7 @@
                                                     </td>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Jenis Kerosakan : </th>
                                                     <td colspan="2">
-                                                        <select class="form-control jenis" name="jenis_kerosakan" id="jenis_kerosakan" >
+                                                        <select class="form-control jenis" name="jenis_kerosakan" id="jenis_kerosakan" required>
                                                         </select>
                                                         @error('jenis_kerosakan')
                                                             <p style="color: red">{{ $message }}</p>
@@ -148,7 +148,7 @@
                                                 <tr>
                                                     <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Sebab Kerosakan : </th>
                                                     <td colspan="2">
-                                                        <select class="form-control sebab" name="sebab_kerosakan" id="sebab_kerosakan" >
+                                                        <select class="form-control sebab" name="sebab_kerosakan" id="sebab_kerosakan" required>
                                                         </select>
                                                         @error('sebab_kerosakan')
                                                             <p style="color: red">{{ $message }}</p>
@@ -224,7 +224,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                
+
                                             </thead>
                                         </table>
                                     </div>
@@ -247,7 +247,7 @@
                                                 <tr>
                                                     <div class="form-group">
                                                         <td colspan="4"><p class="form-label" for="pengesahan_aduan">
-                                                        <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="pengesahan_aduan" id="chk" onclick="btn()"/>
+                                                        <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="pengesahan_aduan" required id="chk" onclick="btn()"/>
                                                         {{-- SAYA, <b><u>{{ strtoupper($user->name) }}</u></b> MENGESAHKAN BUTIRAN PERIBADI DAN ADUAN DIBERIKAN ADALAH BENAR. SAYA BERSETUJU UNTUK DIHUBUNGI BAGI SEBARANG PERTANYAAN LANJUT BERKAITAN ADUAN YANG DIBUAT.</p>  --}}
                                                         BUTIRAN PERIBADI DAN ADUAN YANG DIBERIKAN ADALAH BENAR. SAYA BERSETUJU UNTUK DIHUBUNGI BAGI SEBARANG PERTANYAAN LANJUT BERKAITAN ADUAN YANG DIBUAT
                                                         <button style="margin-top: 5px;" class="btn btn-danger float-right" type="submit" id="submit" name="submit" disabled><i class="fal fa-check"></i> Hantar Aduan</button></td>
@@ -283,8 +283,8 @@
         }
     }
 
-    $(function () {          
-        $("input[name=q1]").change(function () {        
+    $(function () {
+        $("input[name=q1]").change(function () {
         if ($(this).val() == "Y") {
           $(".q2").hide();
           $(".q3").hide();
@@ -298,7 +298,7 @@
         }
       });
 
-      $("input[name=q2]").change(function () {        
+      $("input[name=q2]").change(function () {
         if ($(this).val() == "Y") {
           $(".q3").hide();
           $(".q4").hide();
@@ -311,7 +311,7 @@
         }
       });
 
-      $("input[name=q3]").change(function () {        
+      $("input[name=q3]").change(function () {
         if ($(this).val() == "Y") {
           $(".q4").hide();
         }
@@ -335,7 +335,7 @@
 
         $( "#sebab_kerosakan" ).change(function() {
         var val = $("#sebab_kerosakan").val();
-        if(val==65 || val==75 || val==97 || val==106 || val==115){ 
+        if(val==65 || val==75 || val==97 || val==106 || val==115){
             $(".sk_penerangan").show();
         } else {
             $(".sk_penerangan").hide();
@@ -356,7 +356,7 @@
 
             function updateJenis(elem){
             var katid=elem.val();
-            var op=" "; 
+            var op=" ";
 
             $.ajax({
                 type:'get',
@@ -389,7 +389,7 @@
 
             function updateSebab(elem){
             var kateid=elem.val();
-            var op=" "; 
+            var op=" ";
 
             $.ajax({
                 type:'get',

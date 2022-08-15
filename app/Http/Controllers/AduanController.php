@@ -10,6 +10,7 @@ use Response;
 use App\User;
 use App\Aduan;
 use Carbon\Carbon;
+use App\Staff;
 use App\ImejAduan;
 use App\AlatGanti;
 use App\ResitAduan;
@@ -154,15 +155,28 @@ class AduanController extends Controller
 
             $data = [
                 'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $value->name,
-                'penerangan' => 'Anda telah menerima aduan baru daripada '.$aduan->nama_pelapor.' pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
+                'penerangan' => 'Anda telah menerima aduan baru daripada '.$aduan->nama_pelapor.' pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
             ];
 
-            Mail::send('aduan.emel-aduan-baru', $data, function ($message) use ($admin_email) {
-                $message->subject('Aduan Baru');
-                $message->from('ITadmin@intec.edu.my');
+            Mail::send('aduan.emel-aduan', $data, function ($message) use ($admin_email, $user) {
+                $message->subject('Aduan Baru Tiket #'.$aduan->id);
+                // $message->from('ITadmin@intec.edu.my');
+                $message->from($user->email);
                 $message->to($admin_email);
             });
         }
+
+        $datas = [
+            'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $aduan->nama_pelapor,
+            'penerangan' => 'Anda telah membuat aduan pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Tiket aduan anda ialah : #'.$aduan->id.'. Tiket boleh digunakan untuk menyemak maklum balas atau tahap aduan anda diproses
+                             di dalam sistem IDS. Sila log masuk sistem IDS untuk menyemak aduan anda',
+        ];
+
+        Mail::send('aduan.emel-aduan', $datas, function ($message) use ($user) {
+            $message->subject('Aduan Baru Tiket #'.$aduan->id);
+            $message->from('ITadmin@intec.edu.my');
+            $message->to($user->email);
+        });
 
         Session::flash('message');
         return redirect('/borang-aduan');
@@ -223,8 +237,11 @@ class AduanController extends Controller
             if(isset($data->first()->id_aduan))
             {
                 $all = '';
+
                 foreach($data as $test){
-                    $all .= isset($test->juruteknik->name) ? '<div word-break: break-all>'.$test->juruteknik->name.'</div>' : '--';
+                    $staff = Staff::where('staff_id', $test->juruteknik_bertugas)->first();
+
+                    $all .= isset($test->juruteknik->name) ? '<div word-break: break-all>'.$test->juruteknik->name.'<br>'.'- '.$staff->staff_email.'<br>'.'- '.$staff->staff_phone.'</div>' : '--';
                 }
                 return $all;
 
@@ -300,6 +317,8 @@ class AduanController extends Controller
             'status_aduan'             => 'AB',
         ]);
 
+        $aduan = Aduan::where('id', $request->aduan_id)->first();
+
         $admin = User::whereHas('roles', function($query){
             $query->where('id', 'CMS001');
         })->get();
@@ -310,11 +329,11 @@ class AduanController extends Controller
 
             $data = [
                 'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $value->name,
-                'penerangan' => 'Aduan daripada '.$aduan->nama_pelapor.' pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).' telah dibatalkan atas sebab '.$request->sebab_pembatalan,
+                'penerangan' => 'Aduan daripada '.$aduan->nama_pelapor.' pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).' telah dibatalkan atas sebab '.$request->sebab_pembatalan,
             ];
 
-            Mail::send('aduan.emel-aduan-baru', $data, function ($message) use ($admin_email) {
-                $message->subject('Pembatalan Aduan');
+            Mail::send('aduan.emel-aduan', $data, function ($message) use ($admin_email, $aduan) {
+                $message->subject('Pembatalan Aduan Tiket #'.$aduan->id);
                 $message->from('ITadmin@intec.edu.my');
                 $message->to($admin_email);
             });
@@ -643,7 +662,7 @@ class AduanController extends Controller
 
     //         $data = [
     //             'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $juruteknik->juruteknik->name,
-    //             'penerangan' => 'Anda telah menerima aduan baru pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
+    //             'penerangan' => 'Anda telah menerima aduan baru pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
     //         ];
 
     //         $email = $juruteknik->juruteknik->email;
@@ -724,7 +743,7 @@ class AduanController extends Controller
 
             $data = [
                 'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $juruteknik->juruteknik->name,
-                'penerangan' => 'Anda telah menerima aduan baru pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
+                'penerangan' => 'Anda telah ditugaskan dengan aduan baru pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
             ];
 
             $email = $juruteknik->juruteknik->email;
@@ -735,6 +754,18 @@ class AduanController extends Controller
                 $message->to($email);
             });
         }
+
+        $datas = [
+            'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $aduan->nama_pelapor,
+            'penerangan' => 'Aduan anda bertarikh '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).' telah diserahkan kepada juruteknik. Anda boleh berkomunikasi dengan juruteknik yang
+                            ditugaskan untuk sebarang maklumbalas atau pertanyaan. Sila log masuk sistem IDS untuk menyemak status aduan anda',
+        ];
+
+        Mail::send('aduan.emel-aduan', $datas, function ($message) use ($aduan) {
+            $message->subject('Aduan Tiket #' . $aduan->id);
+            $message->from(Auth::user()->email);
+            $message->to($aduan->emel_pelapor);
+        });
 
         Session::flash('kemaskiniTahap', 'Maklumat penyerahan aduan telah berjaya dihantar dan direkodkan.');
         return redirect('info-aduan/'.$request->id);
@@ -813,12 +844,12 @@ class AduanController extends Controller
 
     //         $data = [
     //             'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $value->name,
-    //             'penerangan'    => 'Aduan yang dilaporkan pada '.date(' j F Y ', strtotime($aduan->tarikh_laporan)).
-    //                                 ' telah dilaksanakan pembaikan oleh juruteknik bertarikh '.date(' j F Y ', strtotime($aduan->tarikh_selesai_aduan)).
+    //             'penerangan'    => 'Aduan yang dilaporkan pada '.date(' d/m/Y ', strtotime($aduan->tarikh_laporan)).
+    //                                 ' telah dilaksanakan pembaikan oleh juruteknik bertarikh '.date(' d/m/Y ', strtotime($aduan->tarikh_selesai_aduan)).
     //                                 'Sila log masuk sistem IDS untuk tindakan selanjutnya',
     //         ];
 
-    //         Mail::send('aduan.emel-pembaikan', $data, function ($message) use ($admin_email) {
+    //         Mail::send('aduan.emel-aduan', $data, function ($message) use ($admin_email) {
     //             $message->subject('Perlaksanaan Pembaikan Aduan');
     //             $message->from(Auth::user()->email);
     //             $message->to($admin_email);
@@ -935,13 +966,13 @@ class AduanController extends Controller
 
                 $data = [
                     'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $value->name,
-                    'penerangan'    => 'Aduan yang dilaporkan pada '.date(' j F Y ', strtotime($aduan->tarikh_laporan)).
-                                        ' telah dilaksanakan pembaikan oleh juruteknik bertarikh '.date(' j F Y ', strtotime($aduan->tarikh_selesai_aduan)).
+                    'penerangan'    => 'Aduan yang dilaporkan pada '.date(' d/m/Y ', strtotime($aduan->tarikh_laporan)).
+                                        ' telah dilaksanakan pembaikan oleh juruteknik bertarikh '.date(' d/m/Y ', strtotime($aduan->tarikh_selesai_aduan)).
                                         'Sila log masuk sistem IDS untuk tindakan selanjutnya',
                 ];
 
-                Mail::send('aduan.emel-pembaikan', $data, function ($message) use ($admin_email) {
-                    $message->subject('Perlaksanaan Pembaikan Aduan');
+                Mail::send('aduan.emel-aduan', $data, function ($message) use ($admin_email, $aduan) {
+                    $message->subject('Perlaksanaan Pembaikan Aduan Tiket #'.$aduan->id);
                     $message->from(Auth::user()->email);
                     $message->to($admin_email);
                 });
@@ -1483,8 +1514,8 @@ class AduanController extends Controller
             'penerangan' => 'Aduan yang dilaporkan bertarikh '.$aduan->tarikh_laporan. ' telah selesai dilakukan penambahbaikan. Sila log masuk sistem IDS untuk melakukan pengesahan.',
         ];
 
-        Mail::send('aduan.emel-semakan', $data2, function ($message) use ($emel) {
-            $message->subject('Pengesahan Penambahbaikan Aduan');
+        Mail::send('aduan.emel-aduan', $data2, function ($message) use ($emel) {
+            $message->subject('Pengesahan Penambahbaikan Aduan Tiket #'.$aduan->id);
             $message->from(Auth::user()->email);
             $message->to($emel);
         });

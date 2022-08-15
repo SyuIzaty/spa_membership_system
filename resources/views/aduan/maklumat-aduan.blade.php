@@ -318,7 +318,7 @@
                                                         <tr>
                                                             <div class="form-group">
                                                                 <td colspan="5"><p class="form-label" for="pengesahan_pembaikan">
-                                                                <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="pengesahan_pembaikan" id="chk" onclick="btn()"/>
+                                                                <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="pengesahan_pembaikan" id="chk" required onclick="btn()"/>
                                                                 SAYA, <b><u>{{ strtoupper($aduan->nama_pelapor) }}</u></b> MENGESAHKAN BAHAWA ADUAN YANG DIBUAT TELAH DILAKUKAN PEMBAIKAN. </p> 
                                                                 <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Hantar Pengesahan</button></td>
                                                             </div>
