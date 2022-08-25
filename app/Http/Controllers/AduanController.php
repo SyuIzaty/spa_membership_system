@@ -436,7 +436,13 @@ class AduanController extends Controller
 
         if( Auth::user()->hasRole('Technical Admin') )
         {
-            $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->select('cms_aduan.*');
+            $staff = Staff::where('staff_id', Auth::user()->id)->first();
+            //temporary code
+            if($staff->staff_dept == 'IITU') {
+                $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereIn('kategori_aduan', ['9','10','11','12','13','14','15','16'])->select('cms_aduan.*');
+            } else {
+                $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereIn('kategori_aduan', ['1','2','3','4','5'])->select('cms_aduan.*');
+            }
         }
         else
         {
