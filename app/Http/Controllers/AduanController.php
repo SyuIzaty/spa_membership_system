@@ -438,7 +438,7 @@ class AduanController extends Controller
         {
             $staff = Staff::where('staff_id', Auth::user()->id)->first();
              
-            if($staff->staff_dept == 'IITU') {
+            if($staff->staff_dept == 'INFORMATION TECHNOLOGY') {
                 $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
             } else {
                 $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
