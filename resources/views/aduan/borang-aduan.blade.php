@@ -25,7 +25,7 @@
                         </h4>
                         <div>
                             <p style="padding-left: 30px; padding-right: 30px">
-                                <i><b>PERHATIAN!</b></i> : Sebarang aduan kerosakkan akan diambil tindakan di dalam tempoh <b>tiga (3)</b> hari bekerja. Sekiranya tiada tindakan dibuat sila rujuk kepada <b>Pegawai Fasiliti</b> untuk laporan/semakan. Sebarang aduan adalah diwajibkan secara online. Laporan secara manual atau pun emel adalah tidak akan diproses.
+                                <i><b>PERHATIAN!</b></i> : Sebarang aduan kerosakkan akan diambil tindakan di dalam tempoh <b>lima (5)</b> hari bekerja. Sekiranya tiada tindakan dibuat sila rujuk kepada <b>Pegawai Fasiliti/IITU</b> untuk laporan/semakan. Sebarang aduan adalah diwajibkan secara online. Laporan secara manual atau pun emel adalah tidak akan diproses.
                             </p>
                         </div>
                         <div class="panel-container show">

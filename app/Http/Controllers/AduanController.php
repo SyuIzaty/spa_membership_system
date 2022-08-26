@@ -158,7 +158,7 @@ class AduanController extends Controller
                 'penerangan' => 'Anda telah menerima aduan baru daripada '.$aduan->nama_pelapor.' pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
             ];
 
-            Mail::send('aduan.emel-aduan', $data, function ($message) use ($admin_email, $user) {
+            Mail::send('aduan.emel-aduan', $data, function ($message) use ($aduan, $admin_email, $user) {
                 $message->subject('Aduan Baru Tiket #'.$aduan->id);
                 // $message->from('ITadmin@intec.edu.my');
                 $message->from($user->email);
@@ -172,7 +172,7 @@ class AduanController extends Controller
                              di dalam sistem IDS. Sila log masuk sistem IDS untuk menyemak aduan anda',
         ];
 
-        Mail::send('aduan.emel-aduan', $datas, function ($message) use ($user) {
+        Mail::send('aduan.emel-aduan', $datas, function ($message) use ($aduan, $user) {
             $message->subject('Aduan Baru Tiket #'.$aduan->id);
             $message->from('ITadmin@intec.edu.my');
             $message->to($user->email);
@@ -437,12 +437,14 @@ class AduanController extends Controller
         if( Auth::user()->hasRole('Technical Admin') )
         {
             $staff = Staff::where('staff_id', Auth::user()->id)->first();
-            //temporary code
+             
             if($staff->staff_dept == 'IITU') {
                 $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
             } else {
                 $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
             }
+
+            // $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->select('cms_aduan.*');
         }
         else
         {
@@ -1520,7 +1522,7 @@ class AduanController extends Controller
             'penerangan' => 'Aduan yang dilaporkan bertarikh '.$aduan->tarikh_laporan. ' telah selesai dilakukan penambahbaikan. Sila log masuk sistem IDS untuk melakukan pengesahan.',
         ];
 
-        Mail::send('aduan.emel-aduan', $data2, function ($message) use ($emel) {
+        Mail::send('aduan.emel-aduan', $data2, function ($message) use ($emel, $aduan) {
             $message->subject('Pengesahan Penambahbaikan Aduan Tiket #'.$aduan->id);
             $message->from(Auth::user()->email);
             $message->to($emel);
