@@ -235,7 +235,7 @@
                                                                         @foreach($senarai_juruteknik as $senarai)
                                                                             <li style="line-height: 30px"> {{ $senarai->juruteknik->name}}
                                                                                 ( @if ($senarai->jenis_juruteknik == 'K') KETUA @endif
-                                                                                    @if ($senarai->jenis_juruteknik == 'P') PEMBANTU @endif )
+                                                                                @if ($senarai->jenis_juruteknik == 'P') PEMBANTU @endif )
                                                                             </li>
                                                                         @endforeach
                                                                     </ol>
@@ -413,8 +413,8 @@
                                                 <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>PENYERAHAN ADUAN</h5>
                                             </div>
                                             <div class="card-body">
-                                                {!! Form::open(['action' => 'AduanController@kemaskiniTahap', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                                <input type="hidden" name="id" value="{{ $aduan->id }}">
+                                                {!! Form::open(['action' => 'AduanController@kemaskiniTahap', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'data']) !!}
+                                                <input type="hidden" name="ids" value="{{ $aduan->id }}">
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered table-hover table-striped w-100">
                                                             <thead>
@@ -509,8 +509,13 @@
                                                                                                 <td>{{ $sJ->juruteknik_bertugas }}</td>
                                                                                                 <td>{{ $sJ->juruteknik->name }}</td>
                                                                                                 <td>
-                                                                                                    <option value="K" {{ $sJ->jenis_juruteknik == 'K' ? 'selected="selected"' : '' }}>Ketua</option>
-                                                                                                    <option value="P" {{ $sJ->jenis_juruteknik == 'P' ? 'selected="selected"' : '' }}>Pembantu</option>
+                                                                                                    @if($sJ->jenis_juruteknik == 'K')
+                                                                                                    Ketua
+                                                                                                    @elseif($sJ->jenis_juruteknik == 'P')
+                                                                                                    Pembantu
+                                                                                                    @else
+                                                                                                    --
+                                                                                                    @endif
                                                                                                 </td>
                                                                                                 <td>
                                                                                                     <a href="{{ action('AduanController@padamJuruteknik', ['id' => $sJ->id, 'id_aduan' => $sJ->id_aduan]) }}" class="btn btn-danger btn-sm deleteJr"><i class="fal fa-trash"></i></a>
@@ -543,7 +548,7 @@
                                                     </div>
                                                     <div class="card-body">
                                                         {!! Form::open(['action' => 'AduanController@kemaskiniPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                                        {{Form::hidden('id', $aduan->id)}}
+                                                        {{Form::hidden('idp', $aduan->id)}}
                                                         <div class="table-responsive">
                                                             <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                 <thead>
@@ -746,7 +751,7 @@
                                             </div>
                                             <div class="card-body">
                                                 {!! Form::open(['action' => 'AduanController@simpanStatus', 'method' => 'POST']) !!}
-                                                {{Form::hidden('id', $aduan->id)}}
+                                                {{Form::hidden('ide', $aduan->id)}}
                                                 <div class="table-responsive">
                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
@@ -901,6 +906,13 @@
                 printWindow.print();
             }, true);
         }
+
+        $(document).ready(function () {
+        $("#data").submit(function () {
+            $("#submithead").attr("disabled", true);
+            return true;
+        });
+    });
 
     </script>
 @endsection

@@ -437,7 +437,7 @@ class AduanController extends Controller
         if( Auth::user()->hasRole('Technical Admin') )
         {
             $staff = Staff::where('staff_id', Auth::user()->id)->first();
-             
+
             if($staff->staff_dept == 'INFORMATION TECHNOLOGY') {
                 $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
             } else {
@@ -696,9 +696,13 @@ class AduanController extends Controller
 
         $tukarStatus = StatusAduan::select('*')->whereIn('kod_status', ['AS', 'LK', 'LU'])->get();
 
+        $exist = JuruteknikBertugas::where('id_aduan', $id)->get();
+
+        $juruteknik_exist = array_column($exist->toArray(), 'juruteknik_bertugas');
+
         $juruteknik = User::whereHas('roles', function($query){
             $query->where('id', 'CMS002');
-        })->get();
+        })->whereNotIn('id', $juruteknik_exist)->get();
 
         $resit = ResitAduan::where('id_aduan', $id)->get();
 
@@ -723,7 +727,7 @@ class AduanController extends Controller
 
     public function kemaskiniTahap(Request $request)
     {
-        $aduan = Aduan::where('id', $request->id)->first();
+        $aduan = Aduan::where('id', $request->ids)->first();
 
         if($request->input('juruteknik_bertugas') != null) {
 
@@ -744,7 +748,7 @@ class AduanController extends Controller
         foreach($request->input('juruteknik_bertugas') as $key => $value) {
 
             $juruteknik = JuruteknikBertugas::create([
-                'id_aduan'              => $request->id,
+                'id_aduan'              => $request->ids,
                 'juruteknik_bertugas'   => $value,
                 'jenis_juruteknik'      => $request->jenis_juruteknik[$key],
             ]);
@@ -776,7 +780,7 @@ class AduanController extends Controller
         });
 
         Session::flash('kemaskiniTahap', 'Maklumat penyerahan aduan telah berjaya dihantar dan direkodkan.');
-        return redirect('info-aduan/'.$request->id);
+        return redirect('info-aduan/'.$request->ids);
     }
 
     public function tukarStatus(Request $request)
@@ -870,7 +874,7 @@ class AduanController extends Controller
 
     public function kemaskiniPenambahbaikan(Request $request)
     {
-        $aduan = Aduan::where('id', $request->id)->first();
+        $aduan = Aduan::where('id', $request->idp)->first();
 
         if($request->laporan_pembaikan != null) {
 
@@ -1508,7 +1512,7 @@ class AduanController extends Controller
 
     public function simpanStatus(Request $request)
     {
-        $aduan = Aduan::where('id', $request->id)->first();
+        $aduan = Aduan::where('id', $request->ide)->first();
 
         $aduan->update([
             'status_aduan'           => $request->status_aduan,
