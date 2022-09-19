@@ -11,7 +11,8 @@ class Student extends Model
     use SoftDeletes;
     protected $connection = 'mysql2';
     protected $table = 'students';
-    public function __construct() {
+    public function __construct()
+    {
         $this->table = DB::connection($this->connection)->getDatabaseName() . '.' . $this->table;
     }
     protected $fillable = ['students_name', 'students_ic', 'students_email', 'students_phone', 'students_nationality', 'students_marital',
@@ -21,7 +22,12 @@ class Student extends Model
 
     public function programme()
     {
-        return $this->belongsTo('App\Models\eVoting\Programme','students_programme','code');
+        return $this->belongsTo('App\Models\eVoting\Programme', 'students_programme', 'code');
+    }
+
+    public function programmes()
+    {
+        return $this->hasOne('App\Programmes', 'id', 'students_programme');
     }
 
     public function candidates()
@@ -40,5 +46,4 @@ class Student extends Model
     {
         return $this->belongsTo('App\State', 'students_state', 'state_code');
     }
-
 }

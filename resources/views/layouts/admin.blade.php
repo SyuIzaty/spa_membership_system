@@ -233,6 +233,85 @@
 
                         <!-- End eAduan Korporat System -->
 
+                        <!-- Start eKenderaan Management System -->
+                        <li class="nav-title">e-Kenderaan</li>
+                        <li>
+                            <a href="/eKenderaan-form" title="eKenderaan Form" data-filter-tags="eKenderaan-form">
+                                <i class="fal fa-file-alt"></i>
+                                <span class="nav-link-text" data-i18n="nav.eKenderaan-form">Application</span>
+                            </a>
+                        </li>
+
+                        @role('eKenderaan Admin')
+                            <li class="open">
+                                <a href="#" title="List" data-filter-tags="list">
+                                    <i class="fal fa-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.list">Application List</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        @inject('grant', 'App\eKenderaan')
+                                        <a href="/eKenderaan-list/1" title="Pending HOD/HOP" data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Pending for HOD/HOP
+                                                Approval
+                                                ({{ $grant->countPending() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/eKenderaan-list/2" title="Pending Operation"
+                                            data-filter-tags="hodHopApproved">
+                                            <span class="nav-link-text" data-i18n="nav.hodhopApproved">Pending for
+                                                Operation Approval
+                                                ({{ $grant->countHODHOPApproved() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/eKenderaan-list/3" title="Operation Verified"
+                                            data-filter-tags="adminApproved">
+                                            <span class="nav-link-text" data-i18n="nav.adminApproved">Operation Verified
+                                                ({{ $grant->countAdminVerified() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/eKenderaan-list/5" title="Feedback Submitted"
+                                            data-filter-tags="feedbackSubmitted">
+                                            <span class="nav-link-text" data-i18n="nav.feedbackSubmitted">Feedback
+                                                Submitted
+                                                ({{ $grant->countFeedbackSubmitted() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/eKenderaan-list/4" title="Rejected" data-filter-tags="rejected">
+                                            <span class="nav-link-text" data-i18n="nav.rejected">Rejected
+                                                ({{ $grant->countRejected() }})</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="open">
+                                <a href="#" title="Setting" data-filter-tags="setting">
+                                    <i class="fal fa-cogs"></i>
+                                    <span class="nav-link-text" data-i18n="nav.setting">Setting</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/eKenderaan-status" title="Status" data-filter-tags="ekenderaanStatus">
+                                            <span class="nav-link-text" data-i18n="nav.ekenderaanStatus">Status</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/eKenderaan-vehicle" title="Vehicle"
+                                            data-filter-tags="ekenderaanVehicle">
+                                            <span class="nav-link-text" data-i18n="nav.ekenderaanVehicle">Vehicle</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endrole
+
+                        <!-- End eKenderaan Management System -->
+                        \
                         <!-- Start eDocument Management System -->
                         @role('Staff')
                             <li class="nav-title">eDocument Management</li>
@@ -254,7 +333,7 @@
 
                         <!-- End eDocument Management System -->
 
-                        <!-- Start eDocument Management System -->
+                        <!-- Start eVoting Management System -->
 
                         <li class="nav-title">eVoting</li>
 
@@ -285,7 +364,7 @@
                             </li>
                         @endcan
 
-                        <!-- End eDocument Management System -->
+                        <!-- End eVoting Management System -->
 
 
                         <!-- Start Engagement Management System -->

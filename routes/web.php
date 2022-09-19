@@ -36,6 +36,24 @@ Route::get('/test', 'ApplicantController@test');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home', 'DashboardController@index');
+
+    //eKenderaan
+    Route::resource('/eKenderaan-form', 'EKenderaanController');
+    Route::post('/eKenderaan-application', 'EKenderaanController@store');
+    Route::get('/search-id', 'EKenderaanController@searchID');
+    Route::post('/add-passenger', 'EKenderaanController@addPassenger');
+    Route::get('/search-staff', 'EKenderaanController@searchStaff');
+    Route::get('/eKenderaan-list/{id}', 'EKenderaanController@applicationList');
+    Route::post('/application-list/{id}', 'EKenderaanController@applicationLists');
+    Route::get('/eKenderaan-application/{id}', 'EKenderaanController@show');
+    Route::post('/passenger-details/{id}', 'EKenderaanController@passenger');
+    Route::post('/hop-hod-reject-application', 'EKenderaanController@rejectApplication');
+    Route::post('/hop-hod-verify-application', 'EKenderaanController@verifyApplication');
+    Route::post('/operation-reject-application', 'EKenderaanController@operationRejectApplication');
+    Route::post('/operation-verify-application', 'EKenderaanController@operationVerifyApplication');
+    Route::get('/get-file-attachment/{id}', 'EKenderaanController@file');
+
+
     // Aduan
     Route::get('/borang-aduan', 'AduanController@borangAduan')->name('borangAduan');
     Route::post('simpanAduan', 'AduanController@simpanAduan');
