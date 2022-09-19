@@ -22,9 +22,9 @@ use App\User;
 class StockController extends Controller
 {
     public function stockIndex()
-    {  
+    {
         if( Auth::user()->hasRole('Inventory Admin') )
-        { 
+        {
             $department = AssetDepartment::all();
         }
         else
@@ -50,9 +50,9 @@ class StockController extends Controller
         ]);
 
         $stock = Stock::create([
-            'department_id'         => $request->department_id, 
+            'department_id'         => $request->department_id,
             'stock_code'            => $code,
-            'stock_name'            => strtoupper($request->stock_name), 
+            'stock_name'            => strtoupper($request->stock_name),
             'model'                 => strtoupper($request->model),
             'brand'                 => strtoupper($request->brand),
             'status'                => $request->status,
@@ -62,7 +62,7 @@ class StockController extends Controller
         $image = $request->upload_image;
         $paths = storage_path()."/stock/";
 
-        if (isset($image)) { 
+        if (isset($image)) {
             for($y = 0; $y < count($image); $y++)
             {
                 $originalsName = $image[$y]->getClientOriginalName();
@@ -84,13 +84,13 @@ class StockController extends Controller
     public function data_stockList()
     {
         if( Auth::user()->hasRole('Inventory Admin') )
-        { 
+        {
             $stock = Stock::all();
         }
         else
         {
             $as = AssetCustodian::where('custodian_id', Auth::user()->id)->pluck('department_id');
-            
+
             $stock = Stock::whereHas('departments', function($q) use ($as){
                     $q->whereIn('id', $as);
                  })->get();
@@ -100,12 +100,12 @@ class StockController extends Controller
         ->addColumn('action', function ($stock) {
 
             return '<div class="btn-group"><a href="/stock-detail/' . $stock->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/stock-index/' . $stock->id . '"><i class="fal fa-trash"></i></button></div>'; 
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/stock-index/' . $stock->id . '"><i class="fal fa-trash"></i></button></div>';
         })
 
         ->addColumn('created_at', function ($stock) {
 
-            return date(' d/m/Y ', strtotime($stock->created_at)) ?? '<div style="color:red;" >--</div>'; 
+            return date(' d/m/Y ', strtotime($stock->created_at)) ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('stock_name', function ($stock) {
@@ -120,7 +120,7 @@ class StockController extends Controller
                 $color = '#3CBC3C';
                 return '<div style="text-transform: uppercase; color:' . $color . '"><b>ACTIVE</b></div>';
             }
-            else 
+            else
             {
                 $color = '#CC0000';
                 return '<div style="text-transform: uppercase; color:' . $color . '"><b>INACTIVE</b></div>';
@@ -133,7 +133,7 @@ class StockController extends Controller
         })
 
         ->addColumn('current_balance', function ($stock) {
-            
+
             $total_bal = 0;
             foreach($stock->transaction as $list){
                 $total_bal += ($list->stock_in - $list->stock_out);
@@ -143,7 +143,7 @@ class StockController extends Controller
         })
 
         ->addColumn('balance_status', function ($stock) {
-             
+
             $total_bal = 0;
             foreach($stock->transaction as $list){
                 $total_bal += ($list->stock_in - $list->stock_out);
@@ -171,7 +171,7 @@ class StockController extends Controller
 
     public function stockDetail($id)
     {
-        $stock = Stock::where('id', $id)->first(); 
+        $stock = Stock::where('id', $id)->first();
         $image = StockImage::where('stock_id', $id)->get();
         $transaction = StockTransaction::where('stock_id', $id)->first();
         $department = AssetDepartment::all();
@@ -203,7 +203,7 @@ class StockController extends Controller
         ]);
 
         $stock->update([
-            'stock_name'            => strtoupper($request->stock_name), 
+            'stock_name'            => strtoupper($request->stock_name),
             'model'                 => strtoupper($request->model),
             'brand'                 => strtoupper($request->brand),
             'status'                => $request->status,
@@ -212,7 +212,7 @@ class StockController extends Controller
         $image = $request->upload_image;
         $paths = storage_path()."/stock/";
 
-        if (isset($image)) { 
+        if (isset($image)) {
 
             StockImage::where('stock_id', $request->id)->delete();
 
@@ -250,17 +250,17 @@ class StockController extends Controller
         $balance = $request->stock_in - $request->stock_out;
 
             $request->validate([
-                'lo_no'           => 'required',
-                'io_no'           => 'required',
+                // 'lo_no'           => 'required',
+                // 'io_no'           => 'required',
                 'stock_in'        => 'required',
-                'unit_price'      => 'required',
-                'purchase_date'   => 'required',
+                // 'unit_price'      => 'required',
+                // 'purchase_date'   => 'required',
                 'trans_date'      => 'required',
             ]);
-    
+
             $stockIn = StockTransaction::create([
                 'stock_id'         => $request->id,
-                'lo_no'            => $request->lo_no, 
+                'lo_no'            => $request->lo_no,
                 'io_no'            => $request->io_no,
                 'purchase_date'    => $request->purchase_date,
                 'trans_date'       => $request->trans_date,
@@ -271,7 +271,7 @@ class StockController extends Controller
                 'remark'           => $request->remark,
                 'status'           => '1',
             ]);
-        
+
         Session::flash('msg', 'Transaction In Details Successfully Updated');
         return redirect('stock-detail/'.$request->id);
     }
@@ -279,12 +279,12 @@ class StockController extends Controller
     public function createTransOut(Request $request)
     {
         $user = Auth::user();
-        $stock = Stock::where('id', $request->id)->first(); 
+        $stock = Stock::where('id', $request->id)->first();
         $total_bal = 0;
         foreach($stock->transaction as $list){
             $total_bal += ($list->stock_in - $list->stock_out);
         }
-        
+
         if($request->supply_type == 'INT') {
 
             $request->validate([
@@ -350,7 +350,7 @@ class StockController extends Controller
         ]);
 
         $stock->update([
-                'lo_no'            => $request->lo_no, 
+                'lo_no'            => $request->lo_no,
                 'io_no'            => $request->io_no,
                 'purchase_date'    => $request->purchase_date,
                 'trans_date'       => $request->trans_date,
@@ -386,7 +386,7 @@ class StockController extends Controller
                 'trans_date'       => $request->trans_date,
             ]);
         }
-        
+
         if($stock->supply_type == 'EXT') {
 
             $request->validate([
@@ -419,7 +419,7 @@ class StockController extends Controller
 
     public function stockPdf(Request $request, $id)
     {
-        $stock = Stock::where('id', $id)->first(); 
+        $stock = Stock::where('id', $id)->first();
         $image = StockImage::where('stock_id', $id)->first();
         $total_bal = 0;
         foreach($stock->transaction as $list){

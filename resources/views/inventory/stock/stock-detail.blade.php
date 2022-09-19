@@ -24,7 +24,7 @@
 
                     <div class="panel-container show">
                         <div class="panel-content">
-                               
+
                             <div class="row">
 
                                 <div class="col-sm-12 col-md-4 mb-4">
@@ -49,7 +49,7 @@
                                                                     <td colspan="3">
                                                                         <select class="form-control department" name="department_id" id="department_id" disabled>
                                                                             <option value="">Select Department</option>
-                                                                            @foreach ($department as $depart) 
+                                                                            @foreach ($department as $depart)
                                                                                 <option value="{{ $depart->id }}" {{ $stock->department_id == $depart->id ? 'selected="selected"' : '' }}>{{ strtoupper($depart->department_name) }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -140,7 +140,7 @@
                                                                     <td colspan="3" style="vertical-align: middle">
                                                                         @if($total_bal <= 0)
                                                                             <b style="color:red">OUT OF STOCK</b>
-                                                                        @else 
+                                                                        @else
                                                                             <b style="color:green">READY STOCK</b>
                                                                         @endif
                                                                     </td>
@@ -305,10 +305,10 @@
                                                         <td>{{ isset($list->created_at) ? date('Y-m-d |  h:i A', strtotime($list->created_at)) : '--' }}</td>
                                                         <td><div class="btn-group">
                                                             @if($list->status == '1')
-                                                                <a href="" data-target="#crud-modalIn" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_in}}" data-lo="{{$list->lo_no}}" data-io="{{$list->io_no}}" 
+                                                                <a href="" data-target="#crud-modalIn" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_in}}" data-lo="{{$list->lo_no}}" data-io="{{$list->io_no}}"
                                                                     data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success mr-1"><i class="fal fa-pencil"></i></a>
                                                             @else
-                                                                <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}" 
+                                                                <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}"
                                                                     data-extsupply="{{$list->ext_supply_to}}" data-trans="{{$list->trans_date}}" data-type="{{$list->supply_type}}"  class="btn btn-sm btn-danger mr-1"><i class="fal fa-pencil"></i></a>
                                                             @endif
                                                             <a href="{{ action('StockController@deleteTrans', ['id' => $list->id, 'stock_id' => $list->stock_id]) }}" class="btn btn-warning btn-sm"><i class="fal fa-trash"></i></a>
@@ -319,7 +319,7 @@
                                                 </table>
                                             </div><br>
                                             @if(isset($total_bal))
-                                                @if($total_bal > 0) 
+                                                @if($total_bal > 0)
                                                     <a href="javascript:;" data-toggle="modal" id="news" class="btn btn-danger ml-2 float-right"><i class="fal fa-minus-square"></i> Transaction Out</a>
                                                 @else
                                                     <a href="#" data-toggle="modal" class="btn btn-secondary ml-2 float-right disabled"><i class="fal fa-minus-square"></i> Transaction Out</a>
@@ -355,17 +355,21 @@
                                                 @enderror
                                         </div>
                                         <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="unit_price"><span class="text-danger">*</span> Unit Price (RM) :</label></td>
+                                            <td width="15%"><label class="form-label" for="unit_price">
+                                                {{-- <span class="text-danger">*</span> --}}
+                                                Unit Price (RM) :</label></td>
                                             <td colspan="7">
-                                                <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control" id="unit_price" name="unit_price" required>
+                                                <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control" id="unit_price" name="unit_price">
                                                 @error('unit_price')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                         </div>
                                         <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="purchase_date"><span class="text-danger">*</span> Purchase Date :</label></td>
+                                            <td width="15%"><label class="form-label" for="purchase_date">
+                                                {{-- <span class="text-danger">*</span> --}}
+                                                Purchase Date :</label></td>
                                             <td colspan="7">
-                                                <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}" required>
+                                                <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}">
                                                 @error('purchase_date')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -379,17 +383,21 @@
                                                 @enderror
                                         </div>
                                         <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="lo_no"><span class="text-danger">*</span> L.O. Number :</label></td>
+                                            <td width="15%"><label class="form-label" for="lo_no">
+                                                {{-- <span class="text-danger">*</span> --}}
+                                                L.O. Number :</label></td>
                                             <td colspan="7">
-                                                <input value="{{ old('lo_no') }}" class="form-control" id="lo_no" name="lo_no" required>
+                                                <input value="{{ old('lo_no') }}" class="form-control" id="lo_no" name="lo_no">
                                                 @error('lo_no')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                         </div>
                                         <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="io_no"><span class="text-danger">*</span> Invoice Number :</label></td>
+                                            <td width="15%"><label class="form-label" for="io_no">
+                                                {{-- <span class="text-danger">*</span>  --}}
+                                                Invoice Number :</label></td>
                                             <td colspan="7">
-                                                <input value="{{ old('io_no') }}" class="form-control" id="io_no" name="io_no" required>
+                                                <input value="{{ old('io_no') }}" class="form-control" id="io_no" name="io_no">
                                                 @error('io_no')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -455,8 +463,8 @@
                                             <td width="15%"><label class="form-label" for="supply_to"><span class="text-danger">*</span> Supply To :</label></td>
                                             <td colspan="7">
                                                 <select class="form-control supply_to" name="supply_to" id="supply_to">
-                                                    <option value=""> Select User </option>
-                                                    @foreach ($user as $usr) 
+                                                    <option value=""> Please select </option>
+                                                    @foreach ($user as $usr)
                                                         <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->id }} - {{ $usr->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -481,7 +489,7 @@
                                                 @enderror
                                             </td>
                                         </div>
-                                     
+
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -610,7 +618,7 @@
                                         <td colspan="7">
                                             <select class="form-control supply" name="supply" id="supply">
                                                 <option value=""> Please Select </option>
-                                                @foreach ($user as $usr) 
+                                                @foreach ($user as $usr)
                                                     <option value="{{ $usr->id }}" {{ old('supply') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
                                                 @endforeach
                                             </select>
@@ -644,7 +652,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
             </div>
         </div>
     </div>
@@ -667,7 +675,7 @@
                 if(val=="INT"){
                     $(".int").show();
                     $(".ext").hide();
-                } 
+                }
             });
 
             $(".ext").hide();
@@ -677,11 +685,11 @@
                 if(val=="EXT"){
                     $(".ext").show();
                     $(".int").hide();
-                } 
+                }
             });
 
-            $('.supply_type').val('{{ old('supply_type') }}'); 
-            $(".supply_type").change(); 
+            $('.supply_type').val('{{ old('supply_type') }}');
+            $(".supply_type").change();
             $('.supply_to').val('{{ old('supply_to') }}');
             $('.ext_supply_to').val('{{ old('ext_supply_to') }}');
         //
@@ -694,52 +702,52 @@
             $('#crud-modals').modal('show');
         });
 
-        $('.supply_to, .supply_type').select2({ 
-            dropdownParent: $('#crud-modals') 
-        }); 
+        $('.supply_to, .supply_type').select2({
+            dropdownParent: $('#crud-modals')
+        });
 
         $('#crud-modalIn').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var id = button.data('id') 
-            var stock = button.data('stock') 
-            var lo = button.data('lo') 
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+            var stock = button.data('stock')
+            var lo = button.data('lo')
             var io = button.data('io')
             var price = button.data('price')
             var purchase = button.data('purchase')
             var trans = button.data('trans')
             var remark = button.data('remark')
 
-            $('.modal-body #ids').val(id); 
-            $('.modal-body .stock').val(stock); 
-            $('.modal-body .lo').val(lo); 
-            $('.modal-body .io').val(io); 
-            $('.modal-body .price').val(price); 
-            $('.modal-body .purchase').val(purchase); 
-            $('.modal-body .trans').val(trans); 
-            $('.modal-body .remark').val(remark); 
+            $('.modal-body #ids').val(id);
+            $('.modal-body .stock').val(stock);
+            $('.modal-body .lo').val(lo);
+            $('.modal-body .io').val(io);
+            $('.modal-body .price').val(price);
+            $('.modal-body .purchase').val(purchase);
+            $('.modal-body .trans').val(trans);
+            $('.modal-body .remark').val(remark);
 
         });
 
         $('#crud-modalOut').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var id = button.data('id') 
-            var stock = button.data('stock') 
-            var reason = button.data('reason') 
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+            var stock = button.data('stock')
+            var reason = button.data('reason')
             var type = button.data('type')
             var supply = button.data('supply')
             var extsupply = button.data('extsupply')
             var trans = button.data('trans')
 
-            $('.modal-body #ids').val(id); 
-            $('.modal-body .stock').val(stock); 
-            $('.modal-body .reason').val(reason); 
-            $('.modal-body .type').val(type); 
-            $('.modal-body .supply').val(supply); 
-            $('.modal-body .extsupply').val(extsupply); 
-            $('.modal-body .trans').val(trans); 
+            $('.modal-body #ids').val(id);
+            $('.modal-body .stock').val(stock);
+            $('.modal-body .reason').val(reason);
+            $('.modal-body .type').val(type);
+            $('.modal-body .supply').val(supply);
+            $('.modal-body .extsupply').val(extsupply);
+            $('.modal-body .trans').val(trans);
 
-            $('.supply, .type').select2({ 
-                dropdownParent: $('#crud-modalOut') 
+            $('.supply, .type').select2({
+                dropdownParent: $('#crud-modalOut')
             });
 
             $(".ints").hide();
