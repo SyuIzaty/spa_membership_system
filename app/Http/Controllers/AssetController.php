@@ -212,7 +212,7 @@ class AssetController extends Controller
         ]);
 
         $image = $request->upload_image;
-        $paths = storage_path()."/asset/";
+        $paths = storage_path()."/einventory/";
 
         if (isset($image)) {
             for($y = 0; $y < count($image); $y++)
@@ -220,11 +220,11 @@ class AssetController extends Controller
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
                 $fileNames = $originalsName;
-                $image[$y]->storeAs('/asset', date('dmyhi').' - '.$fileNames);
+                $image[$y]->storeAs('/einventory', date('dmyhi').' - '.$fileNames);
                 AssetImage::create([
                     'asset_id'      => $asset->id,
                     'upload_image'  => date('dmyhi').' - '.$originalsName,
-                    'web_path'      => "app/asset/".date('dmyhi').' - '.$fileNames,
+                    'web_path'      => "app/einventory/".date('dmyhi').' - '.$fileNames,
                 ]);
             }
         }
@@ -563,7 +563,7 @@ class AssetController extends Controller
 
     public function getImage($file)
     {
-        return Storage::response('asset/'.$file);
+        return Storage::response('einventory/'.$file);
     }
 
     public function assetUpdate(Request $request)
@@ -768,7 +768,7 @@ class AssetController extends Controller
         }
 
         $image = $request->upload_image;
-        $paths = storage_path()."/asset/";
+        $paths = storage_path()."/einventory/";
 
         if (isset($image)) {
             for($y = 0; $y < count($image); $y++)
@@ -776,11 +776,11 @@ class AssetController extends Controller
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
                 $fileNames = $originalsName;
-                $image[$y]->storeAs('/asset', date('dmyhi').' - '.$fileNames);
+                $image[$y]->storeAs('/einventory', date('dmyhi').' - '.$fileNames);
                 AssetImage::create([
                     'asset_id'      => $asset->id,
                     'upload_image'  => date('dmyhi').' - '.$originalsName,
-                    'web_path'      => "app/asset/".date('dmyhi').' - '.$fileNames,
+                    'web_path'      => "app/einventory/".date('dmyhi').' - '.$fileNames,
                 ]);
             }
         }

@@ -80,7 +80,7 @@ class StockController extends Controller
         ]);
 
         $image = $request->upload_image;
-        $paths = storage_path()."/stock/";
+        $paths = storage_path()."/einventory/";
 
         if (isset($image)) {
             for($y = 0; $y < count($image); $y++)
@@ -88,11 +88,11 @@ class StockController extends Controller
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
                 $fileNames = $originalsName;
-                $image[$y]->storeAs('/stock', date('dmyhi').' - '.$fileNames);
+                $image[$y]->storeAs('/einventory', date('dmyhi').' - '.$fileNames);
                 StockImage::create([
                     'stock_id'      => $stock->id,
                     'upload_image'  => date('dmyhi').' - '.$originalsName,
-                    'web_path'      => "app/stock/".date('dmyhi').' - '.$fileNames,
+                    'web_path'      => "app/einventory/".date('dmyhi').' - '.$fileNames,
                 ]);
             }
         }
@@ -104,7 +104,7 @@ class StockController extends Controller
     public function uploadImages(Request $request)
     {
         $image = $request->upload_image;
-        $paths = storage_path()."/stock/";
+        $paths = storage_path()."/einventory/";
 
         if (isset($image)) {
             for($y = 0; $y < count($image); $y++)
@@ -112,11 +112,11 @@ class StockController extends Controller
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
                 $fileNames = $originalsName;
-                $image[$y]->storeAs('/stock', date('dmyhi').' - '.$fileNames);
+                $image[$y]->storeAs('/einventory', date('dmyhi').' - '.$fileNames);
                 StockImage::create([
                     'stock_id'      => $request->img_id,
                     'upload_image'  => date('dmyhi').' - '.$originalsName,
-                    'web_path'      => "app/stock/".date('dmyhi').' - '.$fileNames,
+                    'web_path'      => "app/einventory/".date('dmyhi').' - '.$fileNames,
                 ]);
             }
         }
@@ -254,7 +254,7 @@ class StockController extends Controller
         ]);
 
         $image = $request->upload_image;
-        $paths = storage_path()."/stock/";
+        $paths = storage_path()."/einventory/";
 
         if (isset($image)) {
 
@@ -263,11 +263,11 @@ class StockController extends Controller
             $originalsName = $image->getClientOriginalName();
             $fileSizes = $image->getSize();
             $fileNames = $originalsName;
-            $image->storeAs('/stock', date('dmyhi').' - '.$fileNames);
+            $image->storeAs('/einventory', date('dmyhi').' - '.$fileNames);
             StockImage::create([
                 'stock_id'      => $stock->id,
                 'upload_image'  => date('dmyhi').' - '.$originalsName,
-                'web_path'      => "app/stock/".date('dmyhi').' - '.$fileNames,
+                'web_path'      => "app/einventory/".date('dmyhi').' - '.$fileNames,
             ]);
 
         }
@@ -278,7 +278,7 @@ class StockController extends Controller
 
     public function getImages($file)
     {
-        return Storage::response('stock/'.$file);
+        return Storage::response('einventory/'.$file);
     }
 
     public function createTransIn(Request $request)
