@@ -11,6 +11,7 @@ use App\AssetDepartment;
 use Carbon\Carbon;
 use App\AssetCustodian;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 use App\Exports\StockExport;
 use App\Imports\StockImport;
 use Session;
@@ -87,17 +88,41 @@ class StockController extends Controller
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
                 $fileNames = $originalsName;
-                $image[$y]->storeAs('/stock', $fileNames);
+                $image[$y]->storeAs('/stock', date('dmyhi').' - '.$fileNames);
                 StockImage::create([
-                    'stock_id'  => $stock->id,
-                    'upload_image' => $originalsName,
-                    'web_path'  => "app/stock/".$fileNames,
+                    'stock_id'      => $stock->id,
+                    'upload_image'  => date('dmyhi').' - '.$originalsName,
+                    'web_path'      => "app/stock/".date('dmyhi').' - '.$fileNames,
                 ]);
             }
         }
 
         Session::flash('message', 'New Stock Data Have Been Successfully Recorded');
         return redirect('/stock-index');
+    }
+
+    public function uploadImages(Request $request)
+    {
+        $image = $request->upload_image;
+        $paths = storage_path()."/stock/";
+
+        if (isset($image)) {
+            for($y = 0; $y < count($image); $y++)
+            {
+                $originalsName = $image[$y]->getClientOriginalName();
+                $fileSizes = $image[$y]->getSize();
+                $fileNames = $originalsName;
+                $image[$y]->storeAs('/stock', date('dmyhi').' - '.$fileNames);
+                StockImage::create([
+                    'stock_id'      => $request->img_id,
+                    'upload_image'  => date('dmyhi').' - '.$originalsName,
+                    'web_path'      => "app/stock/".date('dmyhi').' - '.$fileNames,
+                ]);
+            }
+        }
+
+        Session::flash('messages', 'New Image Have Been Successfully Recorded');
+        return redirect('stock-detail/'.$request->img_id);
     }
 
     public function data_stockList()
@@ -238,12 +263,13 @@ class StockController extends Controller
             $originalsName = $image->getClientOriginalName();
             $fileSizes = $image->getSize();
             $fileNames = $originalsName;
-            $image->storeAs('/stock', $fileNames);
+            $image->storeAs('/stock', date('dmyhi').' - '.$fileNames);
             StockImage::create([
-                'stock_id'  => $stock->id,
-                'upload_image' => $originalsName,
-                'web_path'  => "app/stock/".$fileNames,
+                'stock_id'      => $stock->id,
+                'upload_image'  => date('dmyhi').' - '.$originalsName,
+                'web_path'      => "app/stock/".date('dmyhi').' - '.$fileNames,
             ]);
+
         }
 
         Session::flash('notification', 'Stock Details Successfully Updated');
@@ -252,15 +278,7 @@ class StockController extends Controller
 
     public function getImages($file)
     {
-        $path = storage_path().'/'.'app'.'/stock/'.$file;
-
-        $file = File::get($path);
-        $filetype = File::mimeType($path);
-
-        $response = Response::make($file, 200);
-        $response->header("Content-Type", $filetype);
-
-        return $response;
+        return Storage::response('stock/'.$file);
     }
 
     public function createTransIn(Request $request)

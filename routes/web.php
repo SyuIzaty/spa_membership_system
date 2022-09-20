@@ -205,6 +205,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('store-bulk-stock', 'StockController@bulkStockStore');
     Route::get('/transactionTemplate', 'StockController@transactionTemplate');
     Route::post('store-bulk-transaction', 'StockController@bulkTransactionStore');
+    Route::post('upload-stock-image', 'StockController@uploadImages');
 
     // Borrow
     Route::get('/borrow-index', 'BorrowController@borrowIndex');

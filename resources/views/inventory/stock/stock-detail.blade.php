@@ -183,6 +183,23 @@
                                                             @if (Session::has('messages'))
                                                                 <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
                                                             @endif
+                                                            {!! Form::open(['action' => 'StockController@uploadImages', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                                            {{Form::hidden('img_id', $stock->id)}}
+                                                            <table>
+                                                                <tr>
+                                                                    <td width="10%"><label class="form-label" for="upload_image"> Image :</label></td>
+                                                                    <td colspan="4">
+                                                                        <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required>
+                                                                        @error('upload_image')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </td>
+                                                                    <td>
+                                                                        <button type="submit" class="btn btn-primary float-right"><i class="fal fa-save"></i> Upload</button>
+                                                                    </td>
+                                                                </tr>
+                                                            </table><br>
+                                                            {!! Form::close() !!}
                                                             <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1">
                                                                 <thead>
                                                                     <tr align="center">
@@ -294,7 +311,7 @@
                                                             <td>INTERNAL</td>
                                                         @elseif($list->supply_type == 'EXT')
                                                             <td>EXTERNAL</td>
-                                                        @else 
+                                                        @else
                                                             <td>--</td>
                                                         @endif
                                                         @if($list->supply_type == 'INT')
