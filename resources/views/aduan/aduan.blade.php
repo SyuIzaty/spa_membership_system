@@ -70,7 +70,7 @@
                                 <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>SEBAB PEMBATALAN ADUAN</h5>
                             </div>
                             <div class="modal-body">
-                                {!! Form::open(['action' => 'AduanController@batalAduan', 'method' => 'POST']) !!}
+                                {!! Form::open(['action' => 'Aduan\AduanController@batalAduan', 'method' => 'POST']) !!}
                                 <input type="hidden" name="aduan_id" id="aduan">
                                  
                                     <div class="form-group">

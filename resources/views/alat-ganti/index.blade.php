@@ -60,7 +60,7 @@
                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> BAHAN/ALAT GANTI BARU</h5>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['action' => 'AlatGantiController@tambahAlat', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'Aduan\AlatGantiController@tambahAlat', 'method' => 'POST']) !!}
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                         
                         <div class="form-group">
@@ -89,7 +89,7 @@
                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT BAHAN/ALAT GANTI</h5>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['action' => 'AlatGantiController@kemaskiniALat', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'Aduan\AlatGantiController@kemaskiniALat', 'method' => 'POST']) !!}
                     <input type="hidden" name="alat_id" id="id">
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
 

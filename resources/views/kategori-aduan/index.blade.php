@@ -62,7 +62,7 @@
                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> KATEGORI BARU</h5>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['action' => 'KategoriAduanController@tambahKategori', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'Aduan\KategoriAduanController@tambahKategori', 'method' => 'POST']) !!}
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="kod_kategori"><span class="text-danger">*</span> Kod Kategori :</label></td>
@@ -99,7 +99,7 @@
                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT KATEGORI</h5>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['action' => 'KategoriAduanController@kemaskiniKategori', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'Aduan\KategoriAduanController@kemaskiniKategori', 'method' => 'POST']) !!}
                     <input type="hidden" name="kategori_id" id="kategori">
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                     <div class="form-group">

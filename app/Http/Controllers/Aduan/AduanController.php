@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Aduan;
 
 use DB;
 use Auth;
@@ -31,6 +31,7 @@ use App\Http\Requests\StoreAduanRequest;
 use App\Http\Requests\StoreEditAduanRequest;
 use App\Http\Requests\StorePembaikanRequest;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Controller;
 
 class AduanController extends Controller
 {

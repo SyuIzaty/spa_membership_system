@@ -31,7 +31,7 @@
                         <div class="panel-container show">
                             <div class="panel-content">
 
-                                {!! Form::open(['action' => 'AduanController@simpanAduan', 'method' => 'POST', 'id' => 'data', 'enctype' => 'multipart/form-data']) !!}
+                                {!! Form::open(['action' => 'Aduan\AduanController@simpanAduan', 'method' => 'POST', 'id' => 'data', 'enctype' => 'multipart/form-data']) !!}
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     @if(Session::has('message'))
                                         <script type="text/javascript">

@@ -62,7 +62,7 @@
                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> JENIS KEROSAKAN BARU</h5>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['action' => 'JenisKerosakanController@tambahJenis', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'Aduan\JenisKerosakanController@tambahJenis', 'method' => 'POST']) !!}
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="kategori_aduan"><span class="text-danger">*</span> Kategori Aduan :</label></td>
@@ -105,7 +105,7 @@
                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT JENIS KEROSAKAN</h5>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['action' => 'JenisKerosakanController@kemaskiniJenis', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'Aduan\JenisKerosakanController@kemaskiniJenis', 'method' => 'POST']) !!}
                     <input type="hidden" name="jenis_id" id="jenis">
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                     <div class="form-group">

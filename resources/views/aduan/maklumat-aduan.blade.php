@@ -303,7 +303,7 @@
                                                     @endif
                                                 </td>
                                             </tr>
-                                            {!! Form::open(['action' => 'AduanController@simpanPengesahan', 'method' => 'POST']) !!}
+                                            {!! Form::open(['action' => 'Aduan\AduanController@simpanPengesahan', 'method' => 'POST']) !!}
                                             <input type="hidden" name="id" value="{{ $aduan->id }}">
                                                 @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK'|| $aduan->status_aduan == 'DP')
                                                     @if(isset($aduan->pengesahan_pembaikan))

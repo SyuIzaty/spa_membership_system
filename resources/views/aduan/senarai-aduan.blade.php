@@ -74,7 +74,7 @@
                                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> PENUKARAN STATUS</h5>
                                 </div>
                                 <div class="modal-body">
-                                    {!! Form::open(['action' => 'AduanController@tukarStatus', 'method' => 'POST']) !!}
+                                    {!! Form::open(['action' => 'Aduan\AduanController@tukarStatus', 'method' => 'POST']) !!}
                                     <input type="hidden" name="status_id" id="id">
                                     <i><b>PERHATIAN!</b></i> : Pastikan maklumat disahkan benar sebelum membuat sebarang penukaran status.
                                     <br><br>

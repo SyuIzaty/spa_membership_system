@@ -64,7 +64,7 @@
                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> SEBAB KEROSAKAN BARU</h5>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['action' => 'SebabKerosakanController@tambahSebab', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'Aduan\SebabKerosakanController@tambahSebab', 'method' => 'POST']) !!}
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="jenis_kerosakan"><span class="text-danger">*</span> Kategori Aduan :</label></td>
@@ -118,7 +118,7 @@
                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT SEBAB KEROSAKAN</h5>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['action' => 'SebabKerosakanController@kemaskiniSebab', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'Aduan\SebabKerosakanController@kemaskiniSebab', 'method' => 'POST']) !!}
                     <input type="hidden" name="sebab_id" id="sebab">
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
 

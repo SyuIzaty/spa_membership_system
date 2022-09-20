@@ -413,7 +413,7 @@
                                                 <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>PENYERAHAN ADUAN</h5>
                                             </div>
                                             <div class="card-body">
-                                                {!! Form::open(['action' => 'AduanController@kemaskiniTahap', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'data']) !!}
+                                                {!! Form::open(['action' => 'Aduan\AduanController@kemaskiniTahap', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'data']) !!}
                                                 <input type="hidden" name="ids" value="{{ $aduan->id }}">
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered table-hover table-striped w-100">
@@ -518,7 +518,7 @@
                                                                                                     @endif
                                                                                                 </td>
                                                                                                 <td>
-                                                                                                    <a href="{{ action('AduanController@padamJuruteknik', ['id' => $sJ->id, 'id_aduan' => $sJ->id_aduan]) }}" class="btn btn-danger btn-sm deleteJr"><i class="fal fa-trash"></i></a>
+                                                                                                    <a href="{{ action('Aduan\AduanController@padamJuruteknik', ['id' => $sJ->id, 'id_aduan' => $sJ->id_aduan]) }}" class="btn btn-danger btn-sm deleteJr"><i class="fal fa-trash"></i></a>
                                                                                                 </td>
                                                                                             </tr>
                                                                                         @endforeach
@@ -547,7 +547,7 @@
                                                         <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>BORANG PENAMBAHBAIKAN</h5>
                                                     </div>
                                                     <div class="card-body">
-                                                        {!! Form::open(['action' => 'AduanController@kemaskiniPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                                        {!! Form::open(['action' => 'Aduan\AduanController@kemaskiniPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                                         {{Form::hidden('idp', $aduan->id)}}
                                                         <div class="table-responsive">
                                                             <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
@@ -603,7 +603,7 @@
                                                                                                 <td>{{ $urutan++}}</td>
                                                                                                 <td>{{ $aG->alat->alat_ganti }}</td>
                                                                                                 <td>
-                                                                                                    <a href="{{ action('AduanController@padamAlatan', ['id' => $aG->id, 'id_aduan' => $aG->id_aduan]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"></i></a>
+                                                                                                    <a href="{{ action('Aduan\AduanController@padamAlatan', ['id' => $aG->id, 'id_aduan' => $aG->id_aduan]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"></i></a>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             @endforeach
@@ -642,7 +642,7 @@
                                                                                             <tr align="center">
                                                                                                 <td><a target="_blank" href="{{ url('pembaikan')."/".$imejPembaikan->upload_image }}/Download">{{ $imejPembaikan->upload_image }}</a></td>
                                                                                                 <td style="vertical-align: middle">
-                                                                                                    <a href="{{ action('AduanController@padamGambar', ['id' => $imejPembaikan->id, 'id_aduan' => $imejPembaikan->id_aduan]) }}" class="btn btn-danger btn-sm deleteEg"><i class="fal fa-trash"></i></a>
+                                                                                                    <a href="{{ action('Aduan\AduanController@padamGambar', ['id' => $imejPembaikan->id, 'id_aduan' => $imejPembaikan->id_aduan]) }}" class="btn btn-danger btn-sm deleteEg"><i class="fal fa-trash"></i></a>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             @endforeach
@@ -750,7 +750,7 @@
                                                 <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>PENGESAHAN PENAMBAHBAIKAN</h5>
                                             </div>
                                             <div class="card-body">
-                                                {!! Form::open(['action' => 'AduanController@simpanStatus', 'method' => 'POST']) !!}
+                                                {!! Form::open(['action' => 'Aduan\AduanController@simpanStatus', 'method' => 'POST']) !!}
                                                 {{Form::hidden('ide', $aduan->id)}}
                                                 <div class="table-responsive">
                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
