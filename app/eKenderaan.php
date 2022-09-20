@@ -26,6 +26,11 @@ class eKenderaan extends Model
         return $this->hasOne(eKenderaanVehicles::class, 'id', 'vehicle');
     }
 
+    public function driverList()
+    {
+        return $this->hasOne(eKenderaanDrivers::class, 'id', 'driver');
+    }
+
     public function statusList()
     {
         return $this->hasOne(eKenderaanStatus::class, 'id', 'status');

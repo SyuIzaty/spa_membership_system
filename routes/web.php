@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/operation-reject-application', 'EKenderaanController@operationRejectApplication');
     Route::post('/operation-verify-application', 'EKenderaanController@operationVerifyApplication');
     Route::get('/get-file-attachment/{id}', 'EKenderaanController@file');
-
+    Route::post('/feedback', 'EKenderaanController@feedback');
 
     // Aduan
     Route::get('/borang-aduan', 'Aduan\AduanController@borangAduan')->name('borangAduan');

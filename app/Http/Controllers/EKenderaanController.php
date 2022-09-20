@@ -14,6 +14,7 @@ use App\eKenderaan;
 use App\eKenderaanStatus;
 use App\eKenderaanDrivers;
 use App\eKenderaanRejects;
+use App\eKenderaanFeedback;
 use App\eKenderaanVehicles;
 use Illuminate\Http\Request;
 use App\eKenderaanPassengers;
@@ -213,6 +214,7 @@ class EKenderaanController extends Controller
         $vehicle = eKenderaanVehicles::all();
         $file = eKenderaanAttachments::where('ekn_details_id', $id)->first();
         $remark = eKenderaanRejects::where('ekn_details_id', $id)->first();
+        $feedback = eKenderaanFeedback::where('ekn_details_id', $id)->first();
 
         return view('eKenderaan.details', compact(
             'id',
@@ -227,7 +229,8 @@ class EKenderaanController extends Controller
             'driver',
             'vehicle',
             'file',
-            'remark'
+            'remark',
+            'feedback'
         ));
     }
 
@@ -351,6 +354,24 @@ class EKenderaanController extends Controller
 
         return redirect()->back()->with('message', 'Rejected!');
     }
+
+    public function feedback(Request $request)
+    {
+        $data =EKenderaan::where('id', $request->id)->first();
+        $data->update([
+            'status' => '5',
+            'updated_by' => Auth::user()->id
+        ]);
+
+        eKenderaanFeedback::create([
+            'ekn_details_id' => $request->id,
+            'remark' => $request->feedback,
+            'created_by' => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Feedback Successfully Submitted!');
+    }
+
 
 
     /**

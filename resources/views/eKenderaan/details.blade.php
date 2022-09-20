@@ -252,11 +252,36 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                        @if ($data->operation_approval == 'Y')
+                                            <table class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <td colspan="5" class="bg-primary-50">
+                                                            <label class="form-label"><i class="fal fa-car"></i>
+                                                                Operation</label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th width="20%" style="vertical-align: top">Driver</th>
+                                                        <td colspan="4" style="vertical-align: middle">
+                                                            {{ $data->driverList->name }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th width="20%" style="vertical-align: top">Vehicle</th>
+                                                        <td colspan="4" style="vertical-align: middle">
+                                                            {{ $data->vehicleList->name }} -
+                                                            {{ $data->vehicleList->plate_no }}
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        @endif
                                     </div>
                                     @if ($data->status == '1')
                                         @canany('Verify eKenderaan Application')
+                                            {{-- HOD/HOP REJECT APPLICATION --}}
                                             <button
-                                                class="btn btn-warning ml-auto float-right waves-effect waves-themed click mt-2 mb-2">
+                                                class="btn btn-danger ml-auto float-right waves-effect waves-themed click mt-2 mb-2">
                                                 <i class="fal fa-times-circle"></i>
                                                 Reject
                                             </button>
@@ -298,12 +323,13 @@
                                                 <input type="hidden" id="id" name="id"
                                                     value="{{ $data->id }}">
                                                 <button type="submit"
-                                                    class="btn btn-warning ml-auto float-right mt-2 mb-2 waves-effect waves-themed"
+                                                    class="btn btn-danger ml-auto float-right mt-2 mb-2 waves-effect waves-themed"
                                                     id="reject"><i class="fal fa-times-circle"></i> Submit
                                                 </button>
                                                 {!! Form::close() !!}
                                             </div>
 
+                                            {{-- HOD/HOP VERIFY APPLICATION --}}
                                             {!! Form::open([
                                                 'action' => 'EKenderaanController@verifyApplication',
                                                 'method' => 'POST',
@@ -312,16 +338,17 @@
                                             <input type="hidden" id="id" name="id"
                                                 value="{{ $data->id }}">
                                             <button type="submit"
-                                                class="btn btn-primary ml-auto float-right mr-2 mt-2 mb-4 waves-effect waves-themed">
+                                                class="btn btn-warning ml-auto float-right mr-2 mt-2 mb-4 waves-effect waves-themed">
                                                 <i class="fal fa-check"></i> Verify Application
                                             </button>
                                             {!! Form::close() !!}
                                         @endcanany
                                     @elseif ($data->status == '2')
+                                        {{-- OPERATION REJECT APPLICATION --}}
                                         @canany('Manage and Verify eKenderaan Application')
                                             <button
-                                                class="btn btn-warning ml-auto float-right mt-2 mb-2 waves-effect waves-themed click">
-                                                <i class="fal fa-times-circle"></i> Operation Reject
+                                                class="btn btn-danger ml-auto float-right mt-2 mb-2 waves-effect waves-themed click">
+                                                <i class="fal fa-times-circle"></i>Reject
                                             </button>
                                             <div class="remark mt-2">
                                                 {!! Form::open([
@@ -346,7 +373,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <th width="20%" style="vertical-align: top"><span
-                                                                        class="text-danger">*</span> Reason : </th>
+                                                                        class="text-danger">*</span> Reason</th>
                                                                 <td colspan="4" style="vertical-align: middle">
                                                                     <textarea class="form-control" maxlength="255" id="textarea" rows="3"
                                                                         placeholder="Please fill in rejection reason" name="remark" required></textarea>
@@ -361,18 +388,17 @@
                                                 <input type="hidden" id="id" name="id"
                                                     value="{{ $data->id }}">
                                                 <button type="submit"
-                                                    class="btn btn-warning ml-auto float-right mt-2 mb-2 waves-effect waves-themed"
+                                                    class="btn btn-danger ml-auto float-right mt-2 mb-2 waves-effect waves-themed"
                                                     id="reject"><i class="fal fa-times-circle"></i> Submit
                                                 </button>
                                                 {!! Form::close() !!}
                                             </div>
 
+                                            {{-- OPERATION VERIFY APPLICATION --}}
                                             <button
-                                                class="btn btn-primary ml-auto float-right mr-2 mt-2 mb-4 waves-effect waves-themed operationverify">
-                                                <i class="fal fa-check"></i> Operation Verify
-                                                Application
+                                                class="btn btn-warning ml-auto float-right mr-2 mt-2 mb-4 waves-effect waves-themed operationverify">
+                                                <i class="fal fa-check"></i> Verify Application
                                             </button>
-
                                             <div class="operation mt-2">
                                                 {!! Form::open([
                                                     'action' => 'EKenderaanController@operationVerifyApplication',
@@ -396,7 +422,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <th width="20%" style="vertical-align: top"><span
-                                                                        class="text-danger">*</span> Driver : </th>
+                                                                        class="text-danger">*</span> Driver</th>
                                                                 <td colspan="4" style="vertical-align: middle">
                                                                     <select class="form-control" name="driver"
                                                                         id="driver" required>
@@ -411,7 +437,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <th width="20%" style="vertical-align: top"><span
-                                                                        class="text-danger">*</span> Vehicle : </th>
+                                                                        class="text-danger">*</span> Vehicle</th>
                                                                 <td colspan="4" style="vertical-align: middle">
                                                                     <select class="form-control" name="vehicle"
                                                                         id="vehicle" required>
@@ -420,7 +446,7 @@
                                                                             <option value="{{ $v->id }}"
                                                                                 {{ old('vehicle') == $d->id ? 'selected' : '' }}>
                                                                                 {{ $v->name }} - {{ $v->plate_no }}
-                                                                            </option>
+                                                                            </option>verify application
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -432,12 +458,100 @@
                                                 <input type="hidden" id="id" name="id"
                                                     value="{{ $data->id }}">
                                                 <button type="submit"
-                                                    class="btn btn-primary ml-auto float-right mb-2 waves-effect waves-themed"
+                                                    class="btn btn-warning ml-auto float-right mb-2 waves-effect waves-themed"
                                                     id="verify"><i class="fal fa-check"></i> Verify Application
                                                 </button>
                                                 {!! Form::close() !!}
                                             </div>
                                         @endcanany
+                                    @endif
+
+                                    {{-- SUBMIT FEEDBACK --}}
+                                    @if ($data->status == '3')
+                                        <div class="mt-2">
+                                            {!! Form::open([
+                                                'action' => 'EKenderaanController@feedback',
+                                                'method' => 'POST',
+                                                'enctype' => 'multipart/form-data',
+                                            ]) !!}
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <input type="hidden" id="id" name="id"
+                                                            value="{{ $data->id }}" required>
+                                                        <tr>
+                                                            <td colspan="5" class="bg-primary-50">
+                                                                <label class="form-label"><i class="fal fa-pencil"></i>
+                                                                    APPLICANT FEEDBACK</label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="bg-warning-50">
+                                                                This division is working to improve the quality of service
+                                                                to all student and staff. In order to achieve that goal,
+                                                                we ask for your cooperation in providing feedback and
+                                                                suggestions/comments.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: top"><span
+                                                                    class="text-danger">*</span> Feedback</th>
+                                                            <td colspan="4" style="vertical-align: middle">
+                                                                <textarea class="form-control" id="textarea" rows="3" name="feedback" required></textarea>
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <p class="form-label" for="check">
+                                                                <input type="checkbox" name="check" id="agree"
+                                                                    onclick="agreement()" />
+                                                                Please verify your return to INTEC
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            @csrf
+                                            <input type="hidden" id="id" name="id"
+                                                value="{{ $data->id }}">
+                                            <button type="submit"
+                                                class="btn btn-danger ml-auto float-right mt-2 mb-2 waves-effect waves-themed"
+                                                id="verify" disabled><i class="fal fa-times-circle"></i> Verify
+                                            </button>
+                                            {!! Form::close() !!}
+                                        </div>
+                                    @endif
+                                    @if ($data->status == '5')
+                                        <div class="mt-2">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <td colspan="5" class="bg-primary-50">
+                                                                <label class="form-label"><i class="fal fa-pencil"></i>
+                                                                    APPLICANT FEEDBACK</label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: top">Feedback about
+                                                                the trip/driver</th>
+                                                            <td colspan="4" style="vertical-align: middle">
+                                                                {!! nl2br(isset($feedback->remark) ? $feedback->remark : '') !!}
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            @csrf
+                                            <input type="hidden" id="id" name="id"
+                                                value="{{ $data->id }}">
+                                            <button type="submit"
+                                                class="btn btn-danger ml-auto float-right mt-2 mb-2 waves-effect waves-themed"
+                                                id="verify" disabled><i class="fal fa-times-circle"></i> Verify
+                                            </button>
+                                            {!! Form::close() !!}
+                                        </div>
                                     @endif
                                 </div>
                             </div>
@@ -527,5 +641,14 @@
                 $('.click').show();
             });
         });
+
+        function agreement() {
+            var agree = document.getElementById("agree")
+            var submit = document.getElementById("verify");
+            submit.disabled = agree.checked ? false : true;
+            if (!submit.disabled) {
+                submit.focus();
+            }
+        }
     </script>
 @endsection
