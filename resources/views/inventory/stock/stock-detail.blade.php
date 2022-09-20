@@ -292,8 +292,10 @@
                                                         <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
                                                         @if($list->supply_type == 'INT')
                                                             <td>INTERNAL</td>
-                                                        @else
+                                                        @elseif($list->supply_type == 'EXT')
                                                             <td>EXTERNAL</td>
+                                                        @else 
+                                                            <td>--</td>
                                                         @endif
                                                         @if($list->supply_type == 'INT')
                                                             <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>

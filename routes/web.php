@@ -201,6 +201,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('updateTransin', 'StockController@updateTransin');
     Route::post('updateTransout', 'StockController@updateTransout');
     Route::get('/export-stock', 'StockController@exportStock');
+    Route::get('/stockTemplate', 'StockController@stockTemplate');
+    Route::post('store-bulk-stock', 'StockController@bulkStockStore');
+    Route::get('/transactionTemplate', 'StockController@transactionTemplate');
+    Route::post('store-bulk-transaction', 'StockController@bulkTransactionStore');
 
     // Borrow
     Route::get('/borrow-index', 'BorrowController@borrowIndex');

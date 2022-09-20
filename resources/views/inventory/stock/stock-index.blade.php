@@ -65,7 +65,8 @@
                         </div>
                     </div>
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                        <a class="btn btn-warning ml-auto float-right mr-2" href="/export-stock"><i class="fal fa-file-excel"></i> Export</a>
+                        <a href="javascript:;" data-toggle="modals" id="news" class="btn btn-info float-right mr-2 ml-auto"><i class="fal fa-file-excel"></i> Import</a>
+                        <a class="btn btn-warning float-right mr-2" href="/export-stock"><i class="fal fa-file-excel"></i> Export</a>
                         <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary float-right"><i class="fal fa-plus-square"></i> Add New Stock</a>
                     </div>
                 </div>
@@ -87,7 +88,7 @@
                             <td colspan="4">
                                 <select name="department_id" id="department_id" class="department form-control" required>
                                     <option value="">Select Department</option>
-                                    @foreach ($department as $depart) 
+                                    @foreach ($department as $depart)
                                         <option value="{{ $depart->id }}" {{ old('department_id') ? 'selected' : '' }}>{{ $depart->department_name }}</option>
                                     @endforeach
                                 </select>
@@ -155,6 +156,130 @@
         </div>
     </div>
 
+    <div class="modal fade" id="crud-modals" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>IMPORT STOCK LIST</h5>
+                </div>
+                <div class="modal-body">
+                    {!! Form::open(['action' => 'StockController@bulkStockStore', 'method' => 'POST', 'id' => 'data', 'enctype' => 'multipart/form-data']) !!}
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <table class="table mb-0">
+                            <p><span class="text-danger">*</span> Required fields</p>
+                            <tr>
+                                <div class="form-group">
+                                    <td width="20%"><label class="form-label" for="import_file"><span class="text-danger">*</span> File : </td>
+                                    <td colspan="5"><input type="file" name="import_file" class="form-control mb-3" required> 
+                                        <p style="color:red; font-size: 10px"><span class="text-danger">**</span><i>Note: this upload function is suitable to use for only first time stock entry.</i></p>
+                                    </td>
+                                </div>
+                            </tr>
+                        </table>
+                        <div class="col-md-12">
+                            <div class="panel-content">
+                                <div class="panel-tag">Code List</div>
+                                <div class="accordion accordion-outline" id="js_demo_accordion-3">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#stat" aria-expanded="false">
+                                                <i class="fal fa-clone width-2 fs-xl"></i>
+                                                Status List
+                                                <span class="ml-auto">
+                                                    <span class="collapsed-reveal">
+                                                        <i class="fal fa-minus fs-xl"></i>
+                                                    </span>
+                                                    <span class="collapsed-hidden">
+                                                        <i class="fal fa-plus fs-xl"></i>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div id="stat" class="collapse" data-parent="#stat">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="stat_list" style="width: 100%">
+                                                        <thead>
+                                                            <tr class="bg-primary-50 text-center">
+                                                                <td> ID</td>
+                                                                <td> NAME</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr align="center">
+                                                                <td>0</td>
+                                                                <td>INACTIVE</td>
+                                                            </tr>
+                                                            <tr align="center">
+                                                                <td>1</td>
+                                                                <td>ACTIVE</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#dept" aria-expanded="false">
+                                                <i class="fal fa-clone width-2 fs-xl"></i>
+                                                Department List
+                                                <span class="ml-auto">
+                                                    <span class="collapsed-reveal">
+                                                        <i class="fal fa-minus fs-xl"></i>
+                                                    </span>
+                                                    <span class="collapsed-hidden">
+                                                        <i class="fal fa-plus fs-xl"></i>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div id="dept" class="collapse" data-parent="#dept">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                <table class="table table-bordered" id="dept_list" style="width: 100%">
+                                                    <thead>
+                                                        <tr class="bg-primary-50 text-center">
+                                                            <td>ID</td>
+                                                            <td>NAME</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($department as $departs)
+                                                            <tr align="center">
+                                                                <td>{{ $departs->id ?? '--' }}</td>
+                                                                <td>{{ $departs->department_name ?? '--' }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
+                            <a href="/stockTemplate" class="btn btn-info float-right upload_view mr-2"><i class="fal fa-download"></i> Template</a>
+                            <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                        </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 @endsection
 
@@ -165,12 +290,16 @@
     {
         $('#statuss').select2();
 
-        $('.stat, .department').select2({ 
-            dropdownParent: $('#crud-modal') 
-        }); 
+        $('.stat, .department').select2({
+            dropdownParent: $('#crud-modal')
+        });
 
         $('#new').click(function () {
             $('#crud-modal').modal('show');
+        });
+
+        $('#news').click(function () {
+            $('#crud-modals').modal('show');
         });
 
         $('#stock thead tr .hasinput').each(function(i)
@@ -223,7 +352,7 @@
                 "order": [[ 9, "desc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#stock').on('click', '.btn-delete[data-remote]', function (e) {
@@ -259,6 +388,81 @@
         });
 
     });
+
+    $(document).ready(function() {
+
+        $('#stat_list thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#stat_list').DataTable({
+            columnDefs: [],
+                orderCellsTop: true,
+                "order": [[ 0, "asc" ]],
+                "initComplete": function(settings, json) {
+                }
+        });
+
+    });
+
+    $(document).ready(function() {
+
+        $('#dept_list thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#dept_list').DataTable({
+            columnDefs: [],
+                orderCellsTop: true,
+                "order": [[ 0, "asc" ]],
+                "initComplete": function(settings, json) {
+                }
+        });
+
+    });
+
 
 </script>
 

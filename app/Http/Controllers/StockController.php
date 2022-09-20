@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\AssetCustodian;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StockExport;
+use App\Imports\StockImport;
 use Session;
 use Response;
 use Auth;
@@ -35,6 +36,24 @@ class StockController extends Controller
         }
 
         return view('inventory.stock.stock-index', compact('department'));
+    }
+
+    public function stockTemplate()
+    {
+        $file = storage_path()."/template/STOCK_LISTS.xls";
+        $headers = array('Content-Type: application/xls',);
+        return Response::download($file, 'STOCK_LISTS.xls',$headers);
+    }
+
+    public function bulkStockStore(Request $request)
+    {
+        $this->validate($request, [
+            'import_file' => 'required',
+        ]);
+
+        Excel::import(new StockImport, request()->file('import_file'));
+
+        return redirect('/stock-index');
     }
 
     public function newStockStore(Request $request)
