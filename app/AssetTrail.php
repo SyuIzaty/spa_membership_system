@@ -11,7 +11,7 @@ class AssetTrail extends Model
     protected $table = 'inv_asset_trail';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'asset_code', 'asset_code_type', 'finance_code', 'asset_name', 'asset_type', 'serial_no', 'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'acquisition_type',
+        'asset_code', 'asset_code_type', 'finance_code', 'asset_name', 'asset_type', 'serial_no', 'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'acquisition_type', 'asset_class',
         'custodian_id', 'created_by', 'remark', 'status', 'inactive_reason', 'inactive_remark', 'inactive_date', 'availability', 'storage_location', 'set_package', 'updated_by', 'asset_id', 'vendor_name'
     ];
 
@@ -33,6 +33,11 @@ class AssetTrail extends Model
     public function type()
     {
         return $this->hasOne('App\AssetType', 'id', 'asset_type');
+    }
+
+    public function assetClass()
+    {
+        return $this->hasOne('App\AssetClass', 'class_code', 'asset_class');
     }
 
     public function custodians()

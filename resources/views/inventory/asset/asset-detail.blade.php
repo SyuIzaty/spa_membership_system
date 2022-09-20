@@ -623,8 +623,8 @@
                                                                 <td>{{ $trails->codeType->code_name ?? '--' }}</td>
                                                                 <td>{{ $trails->asset_code ?? '--' }}</td>
                                                                 <td>{{ $trails->finance_code ?? '--' }}</td>
-                                                                <td>{{ $trails->type->type_name ?? '--' }}</td>
-                                                                <td>{{ $trails->assetClass->class_code ?? '--' }}</td>
+                                                                <td>{{ $trails->type->asset_type ?? '--' }}</td>
+                                                                <td>{{ $trails->assetClass->class_name ?? '--' }}</td>
                                                                 <td>{{ $trails->asset_name ?? '--' }}</td>
                                                                 <td>{{ $trails->serial_no ?? '--' }}</td>
                                                                 <td>{{ $trails->model ?? '--' }}</td>

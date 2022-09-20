@@ -42,7 +42,8 @@
                             <p style="line-height: 2em">Sir/Madam/Mr/Ms, {{ strtoupper($receiver_name) }}</p>
                             <p>
                                 You has been assigned as custodian for asset {{ $details }} on {{ $assign_date }}. 
-                                Please make verification of acceptance through IDS System as soon as possible.
+                                Please make sure the asset is keep in good condition throughout the custody.
+                                The asset list can be viewed in IDS System. Login the system for more information.
                             </p>
                             <p style="line-height: 2em">Thank you for your cooperation.</p>
                         </div><br><br>

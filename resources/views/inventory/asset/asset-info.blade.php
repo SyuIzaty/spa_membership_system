@@ -172,7 +172,7 @@
                                                     <tr>
                                                         <div class="form-group">
                                                             <td width="15%"><label class="form-label" for="purchase_date"> Purchase Date : </label></td>
-                                                            <td colspan="3">{{ date('d-m-Y', strtotime($asset->purchase_date)) ?? '--' }}</td>
+                                                            <td colspan="3">{{ isset($asset->purchase_date) ? date('d-m-Y', strtotime($asset->purchase_date)) : '--' }}</td>
                                                             <td width="15%"><label class="form-label" for="vendor_name"> Vendor :</label></td>
                                                             <td colspan="3">{{ $asset->vendor_name ??'--' }}</td>
                                                         </div>

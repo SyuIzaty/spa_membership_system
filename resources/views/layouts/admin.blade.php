@@ -844,12 +844,12 @@
                                     <span class="nav-link-text" data-i18n="nav.list">MyAsset</span>
                                 </a>
                                 <ul>
-                                    <li>
+                                    {{-- <li>
                                         <a href="/verify-list" title="Pending" data-filter-tags="pending">
                                             <span class="nav-link-text" data-i18n="nav.pending">Pending
                                                 Verification</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                     <li>
                                         <a href="/individual-list" title="MyAsset" data-filter-tags="myasset">
                                             <span class="nav-link-text" data-i18n="nav.myasset">MyAsset List</span>

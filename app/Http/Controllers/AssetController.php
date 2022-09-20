@@ -259,8 +259,9 @@ class AssetController extends Controller
             'custodian_id'     => $asset->custodian_id,
             'location'         => $asset->storage_location,
             'assigned_by'      => $user->id,
-            'verification'     => '0',
-            'status'           => '1',
+            'verification'     => '1',
+            'verification_date'=> Carbon::now(),
+            'status'           => '2',
         ]);
 
         if(isset($cust->staff->staff_email))
@@ -897,8 +898,9 @@ class AssetController extends Controller
             'reason_remark'         => $request->reason_remark, 
             'location'              => $request->location, 
             'assigned_by'           => $user->id,
-            'verification'          => '0',
-            'status'                => '1',
+            'verification'          => '1',
+            'verification_date'     => Carbon::now(),
+            'status'                => '2',
         ]);
 
         $asset->update([
@@ -1138,7 +1140,7 @@ class AssetController extends Controller
             $code       = $verify->assets->asset_code ?? '--';
             $finance    = $verify->assets->finance_code ?? '--';
 
-            return '<div style="line-height:25px"><b>ASSET CODE</b> : '.$code.'<br><b>FINANCE CODE</b> : '.$finance.'<br><b>NAME</b> : '.$name.'<br><b>SERIAL NO.</b> : '.$serial.'<br><b>MODEL</b> : '.$model.'<br><b>STORAGE</b> : '.$storage.'</div>' ?? '--';
+            return '<div style="line-height:25px"><b>ASSET CODE</b> : '.$code.'<br><b>FINANCE CODE</b> : '.$finance.'<br><b>NAME</b> : '.$name.'<br><b>SERIAL NO.</b> : '.$serial.'<br><b>MODEL</b> : '.$model.'<br><b>LOCATION</b> : '.$storage.'</div>' ?? '--';
         })
 
         ->editColumn('department', function ($verify) {
