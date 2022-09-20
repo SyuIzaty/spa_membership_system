@@ -116,11 +116,11 @@ class AduanController extends Controller
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
                 $fileNames = $originalsName;
-                $image[$y]->storeAs('/aduan', $fileNames);
+                $image[$y]->storeAs('/aduan', date('dmyhi').' - '.$fileNames);
                 ImejAduan::create([
-                    'id_aduan'  => $aduan->id,
-                    'upload_image' => $originalsName,
-                    'web_path'  => "app/aduan/".$fileNames,
+                    'id_aduan'      => $aduan->id,
+                    'upload_image'  => date('dmyhi').' - '.$originalsName,
+                    'web_path'      =>"app/aduan/".date('dmyhi').' - '.$fileNames,
                 ]);
             }
         }
@@ -135,12 +135,12 @@ class AduanController extends Controller
                 $originalName = $file[$x]->getClientOriginalName();
                 $fileSize = $file[$x]->getSize();
                 $fileName = $originalName;
-                $file[$x]->storeAs('/resit', $fileName);
+                $file[$x]->storeAs('/resit', date('dmyhi').' - '.$fileName);
                 ResitAduan::create([
                     'id_aduan'  => $aduan->id,
-                    'nama_fail' => $originalName,
+                    'nama_fail' => date('dmyhi').' - '.$originalName,
                     'saiz_fail' => $fileSize,
-                    'web_path'  => "app/resit/".$fileName,
+                    'web_path'  => "app/resit/".date('dmyhi').' - '.$fileName,
                 ]);
             }
         }
@@ -354,37 +354,12 @@ class AduanController extends Controller
 
     public function getImej($file)
     {
-        $path = storage_path().'/'.'app'.'/aduan/'.$file;
-
-        $file = File::get($path);
-        $filetype = File::mimeType($path);
-
-        $response = Response::make($file, 200);
-        $response->header("Content-Type", $filetype);
-
-        return $response;
+        return Storage::response('aduan/'.$file);
     }
 
     public function failResit($filename,$type)
     {
-        $path = storage_path().'/'.'app'.'/resit/'.$filename;
-
-        if($type == "Download")
-        {
-            if (file_exists($path)) {
-                return Response::download($path);
-            }
-        }
-        else
-        {
-            $file = File::get($path);
-            $filetype = File::mimeType($path);
-
-            $response = Response::make($file, 200);
-            $response->header("Content-Type", $type);
-
-            return $response;
-        }
+        return Storage::response('resit/'.$filename);
     }
 
     public function simpanPengesahan(Request $request)
@@ -402,24 +377,7 @@ class AduanController extends Controller
 
     public function failPembaikan($filename,$type)
     {
-        $path = storage_path().'/'.'app'.'/pembaikan/'.$filename;
-
-        if($type == "Download")
-        {
-            if (file_exists($path)) {
-                return Response::download($path);
-            }
-        }
-        else
-        {
-            $file = File::get($path);
-            $filetype = File::mimeType($path);
-
-            $response = Response::make($file, 200);
-            $response->header("Content-Type", $type);
-
-            return $response;
-        }
+        return Storage::response('pembaikan/'.$filename);
     }
 
     //Senarai Aduan
@@ -837,11 +795,11 @@ class AduanController extends Controller
     //             $originalsName = $image[$y]->getClientOriginalName();
     //             $fileSizes = $image[$y]->getSize();
     //             $fileNames = $originalsName;
-    //             $image[$y]->storeAs('/pembaikan', $fileNames);
+    //             $image[$y]->storeAs('/pembaikan', date('dmyhi').' - '.$fileNames);
     //             ImejPembaikan::create([
-    //                 'id_aduan'  => $aduan->id,
-    //                 'upload_image' => $originalsName,
-    //                 'web_path'  => "app/pembaikan/".$fileNames,
+    //                 'id_aduan'       => $aduan->id,
+    //                 'upload_image'   => date('dmyhi').' - '.$originalsName,
+    //                 'web_path'       => "app/pembaikan/".date('dmyhi').' - '.$fileNames,
     //             ]);
     //         }
     //     }
@@ -913,11 +871,11 @@ class AduanController extends Controller
                     $originalsName = $image[$y]->getClientOriginalName();
                     $fileSizes = $image[$y]->getSize();
                     $fileNames = $originalsName;
-                    $image[$y]->storeAs('/pembaikan', $fileNames);
+                    $image[$y]->storeAs('/pembaikan', date('dmyhi').' - '.$fileNames);
                     ImejPembaikan::create([
-                        'id_aduan'  => $aduan->id,
-                        'upload_image' => $originalsName,
-                        'web_path'  => "app/pembaikan/".$fileNames,
+                        'id_aduan'      => $aduan->id,
+                        'upload_image'  => date('dmyhi').' - '.$originalsName,
+                        'web_path'      => "app/pembaikan/".date('dmyhi').' - '.$fileNames,
                     ]);
                 }
             }
@@ -959,11 +917,11 @@ class AduanController extends Controller
                     $originalsName = $image[$y]->getClientOriginalName();
                     $fileSizes = $image[$y]->getSize();
                     $fileNames = $originalsName;
-                    $image[$y]->storeAs('/pembaikan', $fileNames);
+                    $image[$y]->storeAs('/pembaikan', date('dmyhi').' - '.$fileNames);
                     ImejPembaikan::create([
-                        'id_aduan'  => $aduan->id,
-                        'upload_image' => $originalsName,
-                        'web_path'  => "app/pembaikan/".$fileNames,
+                        'id_aduan'      => $aduan->id,
+                        'upload_image'  => date('dmyhi').' - '.$originalsName,
+                        'web_path'      => "app/pembaikan/".date('dmyhi').' - '.$fileNames,
                     ]);
                 }
             }
@@ -1024,15 +982,7 @@ class AduanController extends Controller
 
     public function getGambar($file)
     {
-        $path = storage_path().'/'.'app'.'/pembaikan/'.$file;
-
-        $file = File::get($path);
-        $filetype = File::mimeType($path);
-
-        $response = Response::make($file, 200);
-        $response->header("Content-Type", $filetype);
-
-        return $response;
+        return Storage::response('pembaikan/'.$file);
     }
 
     public function senaraiSelesai(Request $request)

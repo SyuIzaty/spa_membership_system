@@ -24,6 +24,7 @@ use App\TrainingEvaluationQuestion;
 use App\TrainingEvaluationStatus;
 use App\TrainingEvaluationResult;
 use App\TrainingEvaluationHeadResult;
+use Illuminate\Support\Facades\Storage;
 use App\Exports\ClaimExport;
 use App\Exports\LatestClaimExport;
 use App\Exports\LatestRecordExport;
@@ -229,7 +230,7 @@ class TrainingController extends Controller
             $originalsName = $image->getClientOriginalName();
             $fileSizes = $image->getSize();
             $fileNames = $originalsName;
-            $image->storeAs('/training', $fileNames);
+            $image->storeAs('/training', date('dmyhi').' - '.$fileNames);
 
             TrainingList::create([
                 'title'            => strtoupper($request->title),
@@ -244,8 +245,8 @@ class TrainingController extends Controller
                 'link'             => $request->link,
                 'evaluation'       => $request->evaluation,
                 'evaluation_status'=> $request->evaluation_status,
-                'upload_image'     => $originalsName,
-                'web_path'         => "app/training/".$fileNames,
+                'upload_image'     => date('dmyhi').' - '.$originalsName,
+                'web_path'         => "app/training/".date('dmyhi').' - '.$fileNames,
             ]);
         } else {
             TrainingList::create([
@@ -294,7 +295,7 @@ class TrainingController extends Controller
             $originalsName = $image->getClientOriginalName();
             $fileSizes = $image->getSize();
             $fileNames = $originalsName;
-            $image->storeAs('/training', $fileNames);
+            $image->storeAs('/training', date('dmyhi').' - '.$fileNames);
 
             $train->update([
                 'title'            => strtoupper($request->title),
@@ -307,8 +308,8 @@ class TrainingController extends Controller
                 'claim_hour'       => $request->claim_hour,
                 'venue'            => $request->venue,
                 'link'             => $request->link,
-                'upload_image'     => $originalsName,
-                'web_path'         => "app/training/".$fileNames,
+                'upload_image'     => date('dmyhi').' - '.$originalsName,
+                'web_path'         => "app/training/".date('dmyhi').' - '.$fileNames,
                 'evaluation'       => $request->evaluation,
                 'evaluation_status'=> $request->evaluation_status,
             ]);
@@ -362,15 +363,7 @@ class TrainingController extends Controller
 
      public function getImage($file)
     {
-        $path = storage_path().'/'.'app'.'/training/'.$file;
-
-        $file = File::get($path);
-        $filetype = File::mimeType($path);
-
-        $response = Response::make($file, 200);
-        $response->header("Content-Type", $filetype);
-
-        return $response;
+        return Storage::response('training/'.$file);
     }
 
     public function trainingEvaluation($id, $staff)
@@ -815,12 +808,12 @@ class TrainingController extends Controller
                         $originalName = $file[$x]->getClientOriginalName();
                         $fileSize = $file[$x]->getSize();
                         $fileName = $originalName;
-                        $file[$x]->storeAs('/claim', $fileName);
+                        $file[$x]->storeAs('/claim', date('dmyhi').' - '.$fileName);
                         ClaimAttachment::create([
                             'claim_id'      => $claim->id,
-                            'file_name'     => $originalName,
+                            'file_name'     => date('dmyhi').' - '.$originalName,
                             'file_size'     => $fileSize,
-                            'web_path'      => "app/claim/".$fileName,
+                            'web_path'      => "app/claim/".date('dmyhi').' - '.$fileName,
                         ]);
                     }
                 }
@@ -892,12 +885,12 @@ class TrainingController extends Controller
                     $originalName = $file[$x]->getClientOriginalName();
                     $fileSize = $file[$x]->getSize();
                     $fileName = $originalName;
-                    $file[$x]->storeAs('/claim', $fileName);
+                    $file[$x]->storeAs('/claim', date('dmyhi').' - '.$fileName);
                     ClaimAttachment::create([
                         'claim_id'      => $claim->id,
-                        'file_name'     => $originalName,
+                        'file_name'     => date('dmyhi').' - '.$originalName,
                         'file_size'     => $fileSize,
-                        'web_path'      => "app/claim/".$fileName,
+                        'web_path'      => "app/claim/".date('dmyhi').' - '.$fileName,
                     ]);
                 }
             }
@@ -1566,24 +1559,7 @@ class TrainingController extends Controller
 
     public function claimAttachment($filename,$type)
     {
-        $path = storage_path().'/'.'app'.'/claim/'.$filename;
-
-        if($type == "Download")
-        {
-            if (file_exists($path)) {
-                return Response::file($path);
-            }
-        }
-        else
-        {
-            $file = File::get($path);
-            $filetype = File::mimeType($path);
-
-            $response = Response::make($file, 200);
-            $response->header("Content-Type", $type);
-
-            return $response;
-        }
+        return Storage::response('claim/'.$filename);
     }
 
     public function fileStore(Request $request)
@@ -1595,12 +1571,12 @@ class TrainingController extends Controller
             $originalName = $file->getClientOriginalName();
             $fileSize = $file->getSize();
             $fileName = $originalName;
-            $file->storeAs('/claim', $fileName);
+            $file->storeAs('/claim', date('dmyhi').' - '.$fileName);
             ClaimAttachment::create([
                 'claim_id'      => $request->ids,
-                'file_name'     => $originalName,
+                'file_name'     => date('dmyhi').' - '.$originalName,
                 'file_size'     => $fileSize,
-                'web_path'      => "app/claim/".$fileName,
+                'web_path'      => "app/claim/".date('dmyhi').' - '.$fileName,
             ]);
         }
 
