@@ -170,7 +170,7 @@
                             <tr>
                                 <div class="form-group">
                                     <td width="20%"><label class="form-label" for="import_file"><span class="text-danger">*</span> File : </td>
-                                    <td colspan="5"><input type="file" name="import_file" class="form-control mb-3" required> 
+                                    <td colspan="5"><input type="file" name="import_file" class="form-control mb-3" required>
                                         <p style="color:red; font-size: 10px"><span class="text-danger">**</span><i>Note: this upload function is suitable to use for only first time stock entry.</i></p>
                                     </td>
                                 </div>
@@ -349,7 +349,7 @@
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 9, "desc" ]],
+                "order": [[ 0, "desc" ]],
                 "initComplete": function(settings, json) {
 
                 }
