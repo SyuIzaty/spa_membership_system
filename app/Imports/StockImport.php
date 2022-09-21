@@ -25,19 +25,19 @@ class StockImport implements ToModel, WithHeadingRow, WithValidation
     {
         return [
             'stock_code'       => 'nullable',
-            'stock_name'       => 'nullable',
+            'stock_name'       => 'required',
             'model'            => 'required',
-            'brand'            => 'required',
-            'status'           => 'nullable',
+            'brand'            => 'nullable',
+            'status'           => 'required',
             'created_by'       => 'nullable',
-            'department_id'    => 'nullable',
+            'department_id'    => 'required',
             'stock_id'         => 'nullable',
-            'stock_in'         => 'nullable',
+            'stock_in'         => 'required',
             'lo_no'            => 'nullable',
             'io_no'            => 'nullable',
             'unit_price'       => 'nullable',
             'purchase_date'    => 'nullable',
-            'trans_date'       => 'nullable',
+            'trans_date'       => 'required',
             'remark'           => 'nullable',
         ];
     }

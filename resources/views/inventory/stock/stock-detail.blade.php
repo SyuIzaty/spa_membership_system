@@ -71,7 +71,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="stock_name"><span class="text-danger">*</span> Stock Name:</label></td>
                                                                     <td colspan="3">
-                                                                        <input class="form-control" id="stock_name" name="stock_name" value="{{ $stock->stock_name }}" style="text-transform: uppercase">
+                                                                        <input class="form-control" id="stock_name" name="stock_name" value="{{ $stock->stock_name }}" style="text-transform: uppercase" required>
                                                                         @error('stock_name')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -82,7 +82,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="model"><span class="text-danger">*</span> Model:</label></td>
                                                                     <td colspan="3">
-                                                                        <input class="form-control" id="model" name="model" value="{{ $stock->model }}" style="text-transform: uppercase">
+                                                                        <input class="form-control" id="model" name="model" value="{{ $stock->model }}" style="text-transform: uppercase" required>
                                                                         @error('model')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -102,9 +102,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="status"> Status:</label></td>
+                                                                    <td width="25%"><label class="form-label" for="status"><span class="text-danger">*</span> Status:</label></td>
                                                                     <td colspan="3">
-                                                                        <select class="form-control" id="status" name="status">
+                                                                        <select class="form-control" id="status" name="status" required>
                                                                             <option value="">Select Status</option>
                                                                             <option value="1" {{ old('status', $stock->status) == '1' ? 'selected':''}} >ACTIVE</option>
                                                                             <option value="0" {{ old('status', $stock->status) == '0' ? 'selected':''}} >INACTIVE</option>
