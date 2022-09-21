@@ -171,7 +171,12 @@
                                 <div class="form-group">
                                     <td width="20%"><label class="form-label" for="import_file"><span class="text-danger">*</span> File : </td>
                                     <td colspan="5"><input type="file" name="import_file" class="form-control mb-3" required>
-                                        <p style="color:red; font-size: 10px"><span class="text-danger">**</span><i>Note: this upload function is suitable to use for only first time stock entry.</i></p>
+                                        <p style="color:red; font-size: 10px"><span class="text-danger">**</span><i>Notes:</i><br>
+                                        - This upload function is suitable to use for only first time stock entry.<br>
+                                        - Delete the example column data when uploading to avoid data error.<br>
+                                        - io_no = invoice number.<br>
+                                        - Required: stock_name, model, status, department_id, created_by, stock_in.<br>
+                                        </p>
                                     </td>
                                 </div>
                             </tr>

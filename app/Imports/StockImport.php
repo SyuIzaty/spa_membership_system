@@ -29,7 +29,7 @@ class StockImport implements ToModel, WithHeadingRow, WithValidation
             'model'            => 'required',
             'brand'            => 'nullable',
             'status'           => 'required',
-            'created_by'       => 'nullable',
+            'created_by'       => 'required',
             'department_id'    => 'required',
             'stock_id'         => 'nullable',
             'stock_in'         => 'required',
@@ -37,7 +37,7 @@ class StockImport implements ToModel, WithHeadingRow, WithValidation
             'io_no'            => 'nullable',
             'unit_price'       => 'nullable',
             'purchase_date'    => 'nullable',
-            'trans_date'       => 'required',
+            'trans_date'       => 'nullable',
             'remark'           => 'nullable',
         ];
     }
@@ -53,7 +53,8 @@ class StockImport implements ToModel, WithHeadingRow, WithValidation
                 'brand'                     => $row['brand'],
                 'status'                    => $row['status'],
                 'department_id'             => $row['department_id'],
-                'created_by'                => Auth::user()->id,
+                'created_by'                => $row['created_by'],
+                // 'created_by'                => Auth::user()->id,
             ]);
 
             $transaction = StockTransaction::create([
@@ -67,7 +68,8 @@ class StockImport implements ToModel, WithHeadingRow, WithValidation
                 'trans_date'              => Carbon::now()->toDateString(),
                 'remark'                  => $row['remark'],
                 'status'                  => '1',
-                'created_by'              => Auth::user()->id,
+                'created_by'              => $row['created_by'],
+                // 'created_by'              => Auth::user()->id,
             ]);
 
             Session::flash('message', 'Stock and Transaction In Data Imported Successfully');
