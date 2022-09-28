@@ -24,7 +24,7 @@
 
                     <div class="panel-container show">
                         <div class="panel-content">
-                               
+
                             <div class="row">
 
                                 <div class="col-sm-12 col-md-4 mb-4">
@@ -38,6 +38,9 @@
                                                 @if (Session::has('notification'))
                                                     <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
                                                 @endif
+                                                <?php
+                                                    $exist = \App\TrainingClaim::where('training_id', $train->id)->first();
+                                                ?>
                                                 <div class="table-responsive">
                                                     <table id="asset" class="table table-bordered table-hover table-striped w-100 mb-1">
                                                         <thead>
@@ -45,7 +48,7 @@
                                                             <p style="margin-bottom: -15px"><span class="text-danger">*</span> Required fields</p>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="title"><span class="text-danger">*</span> Title : </label></td>
+                                                                    <td width="30%"><label class="form-label" for="title"><span class="text-danger">*</span> Title : </label></td>
                                                                     <td colspan="3">
                                                                         <input class="form-control" id="title" name="title" value="{{ $train->title }}" required>
                                                                     </td>
@@ -55,7 +58,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="start_date"><span class="text-danger">*</span>  Start Date : </label></td>
                                                                     <td colspan="3">
-                                                                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ isset($train->start_date) ? date('Y-m-d', strtotime($train->start_date)) : old('start_date') }}" required>
+                                                                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ isset($train->start_date) ? date('Y-m-d', strtotime($train->start_date)) : old('start_date') }}" @if(isset($exist)) readonly @else required @endif>
                                                                         @error('start_date')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -66,7 +69,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="end_date"><span class="text-danger">*</span>  End Date : </label></td>
                                                                     <td colspan="3">
-                                                                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ isset($train->end_date) ? date('Y-m-d', strtotime($train->end_date)) : old('end_date') }}" required>
+                                                                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ isset($train->end_date) ? date('Y-m-d', strtotime($train->end_date)) : old('end_date') }}" @if(isset($exist)) readonly @else required @endif>
                                                                         @error('end_date')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -77,7 +80,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="start_time"><span class="text-danger">*</span>  Start Time : </label></td>
                                                                     <td colspan="3">
-                                                                        <input type="time" class="form-control" id="start_time" name="start_time" value="{{ isset($train->start_time) ? date('h:i', strtotime($train->start_time)) : old('start_time') }}" required>
+                                                                        <input type="time" class="form-control" id="start_time" name="start_time" value="{{ isset($train->start_time) ? date('h:i', strtotime($train->start_time)) : old('start_time') }}" @if(isset($exist)) readonly @else required @endif>
                                                                         @error('start_time')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -88,7 +91,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="end_time"><span class="text-danger">*</span>  End Time : </label></td>
                                                                     <td colspan="3">
-                                                                        <input type="time" class="form-control" id="end_time" name="end_time" value="{{ isset($train->end_time) ? date('h:i', strtotime($train->end_time)) : old('end_time') }}" required>
+                                                                        <input type="time" class="form-control" id="end_time" name="end_time" value="{{ isset($train->end_time) ? date('h:i', strtotime($train->end_time)) : old('end_time') }}" @if(isset($exist)) readonly @else required @endif>
                                                                         @error('end_time')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -101,7 +104,7 @@
                                                                     <td colspan="3">
                                                                         <select class="form-control" name="type" id="type" required>
                                                                             <option value="">Please Select</option>
-                                                                            @foreach ($data_type as $types) 
+                                                                            @foreach ($data_type as $types)
                                                                                 <option value="{{ $types->id }}" {{ $train->type == $types->id ? 'selected="selected"' : '' }}>{{ strtoupper($types->type_name) }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -117,7 +120,7 @@
                                                                     <td colspan="3">
                                                                         <select class="form-control" name="category" id="category" required>
                                                                             <option value="">Please Select</option>
-                                                                            @foreach ($data_category as $categories) 
+                                                                            @foreach ($data_category as $categories)
                                                                                 <option value="{{ $categories->id }}" {{ $train->category == $categories->id ? 'selected="selected"' : '' }}>{{ strtoupper($categories->category_name) }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -147,7 +150,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="claim_hour"><span class="text-danger">*</span>  Claim Hours : </label></td>
                                                                     <td colspan="3">
-                                                                        <input type="number" step="any" class="form-control" id="claim_hour" name="claim_hour" value="{{ $train->claim_hour }}" required>
+                                                                        <input type="number" step="any" class="form-control" id="claim_hour" name="claim_hour" value="{{ $train->claim_hour }}" @if(isset($exist)) readonly @else required @endif>
                                                                     </td>
                                                                 </div>
                                                             </tr>
@@ -157,7 +160,7 @@
                                                                     <td colspan="3">
                                                                         <select class="form-control" name="evaluation" id="evaluation" required>
                                                                             <option value="">Please Select</option>
-                                                                            @foreach ($data_evaluation as $evaluates) 
+                                                                            @foreach ($data_evaluation as $evaluates)
                                                                                 <option value="{{ $evaluates->id }}" {{ $train->evaluation == $evaluates->id ? 'selected="selected"' : '' }}>{{ strtoupper($evaluates->evaluation) }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -200,9 +203,9 @@
                                                                         <?php
                                                                             $data = \App\TrainingClaim::where('status', '2')->where('training_id', $train->id)->count();
                                                                         ?>
-                                                                        @if($data == '0') 
+                                                                        @if($data == '0')
                                                                             <p style="color : red"><b>NO PARTICIPANT</b></p>
-                                                                        @else 
+                                                                        @else
                                                                             <p><b>{{ $data }}</b></p>
                                                                         @endif
                                                                     </td>
@@ -276,7 +279,7 @@
                                                         <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                                             <th>NO</th>
                                                             <th>TICKET #ID</th>
-                                                            <th>ID</th>
+                                                            <th>STAFF</th>
                                                             <th>NAME</th>
                                                             <th>POSITION</th>
                                                             <th>DEPARTMENT</th>
@@ -308,8 +311,8 @@
                                                                         @if($train->type == '1' || $train->type == '2') {{-- internal --}}
                                                                             @if(\App\TrainingList::where('id', $train->id)->whereNotNull('evaluation')->first()) {{-- evaluation in training not null --}}
                                                                                 {{-- exist and evaluation close but can view --}}
-                                                                                <a href="/training-evaluation/{{ $train->id }}/{{ $parts->staff_id }}" class="btn btn-info btn-xs" target="_blank"><i class="fal fa-link"></i></a>  
-                                                                            @else 
+                                                                                <a href="/training-evaluation/{{ $train->id }}/{{ $parts->staff_id }}" class="btn btn-info btn-xs" target="_blank"><i class="fal fa-link"></i></a>
+                                                                            @else
                                                                                 <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
                                                                             @endif
                                                                         @else  {{-- external --}}
@@ -321,7 +324,7 @@
                                                         @endforeach
                                                     </tbody>
                                                 </table>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -330,8 +333,8 @@
                         </div>
                     </div>
 
-                     
-                    
+
+
             </div>
         </div>
     </div>
@@ -363,7 +366,7 @@
         var table = $('#log').DataTable({
             columnDefs: [],
                 orderCellsTop: true,
-                "order": [[ 3, "desc" ]],
+                "order": [[ 0, "asc" ]],
                 "initComplete": function(settings, json) {
                 }
         });
@@ -379,11 +382,11 @@
             }
         });
 
-        $('#type').val(); 
-        $("#type").change(); 
+        $('#type').val();
+        $("#type").change();
         $('#evaluation').val().change();
         $('#evaluation_status').val().change();
- 
+
     })
 
     function Print(button)
