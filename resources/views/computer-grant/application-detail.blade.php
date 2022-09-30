@@ -156,7 +156,11 @@
                                             <table id="upload"
                                                 class="table table-bordered table-hover table-striped w-100">
                                                 <thead>
-                                                    {!! Form::open(['action' => 'ComputerGrantController@update', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                                    {!! Form::open([
+                                                        'action' => 'ComputerGrantController@update',
+                                                        'method' => 'POST',
+                                                        'enctype' => 'multipart/form-data',
+                                                    ]) !!}
                                                     <input type="hidden" id="id" name="id"
                                                         value="{{ $activeData->id }}" required>
                                                     <tr>
@@ -164,6 +168,15 @@
                                                                 class="form-label"><i class="fal fa-file"></i> PURCHASE
                                                                 DETAILS</label></td>
                                                     </tr>
+                                                    <tr style="background-color: rgb(250, 240, 107)">
+                                                        <td colspan="5">
+                                                            After submit the purchase details, please bring the device,
+                                                            original
+                                                            receipt/invoice and proof of payment (bank transaction)
+                                                            to IT Department
+                                                        </td>
+                                                    </tr>
+
 
                                                     @if ($activeData->remark != null)
                                                         <tr>
@@ -192,8 +205,8 @@
                                                         <th width="20%" style="vertical-align: middle"><span
                                                                 class="text-danger">*</span> Serial No : </th>
                                                         <td colspan="2"><input class="form-control" id="serial_no"
-                                                                name="serial_no" value="{{ old('serial_no') }}"
-                                                                required></td>
+                                                                name="serial_no" value="{{ old('serial_no') }}" required>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th width="20%" style="vertical-align: middle"><span
@@ -280,7 +293,10 @@
                                             </div>
                                         </div>
                                         {!! Form::close() !!}
-                                    @elseif ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5' || $activeData->status == '6')
+                                    @elseif ($activeData->status == '3' ||
+                                        $activeData->status == '4' ||
+                                        $activeData->status == '5' ||
+                                        $activeData->status == '6')
                                         <div class="table-responsive">
                                             <table id="upload"
                                                 class="table table-bordered table-hover table-striped w-100">
@@ -369,7 +385,10 @@
                                         @endif
                                     @endif
 
-                                    @if ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5' || $activeData->status == '6')
+                                    @if ($activeData->status == '3' ||
+                                        $activeData->status == '4' ||
+                                        $activeData->status == '5' ||
+                                        $activeData->status == '6')
                                         <div class="table-responsive">
                                             <table id="verifikasi"
                                                 class="table table-bordered table-hover table-striped w-100">
