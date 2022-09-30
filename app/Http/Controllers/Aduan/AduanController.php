@@ -159,10 +159,10 @@ class AduanController extends Controller
                 'penerangan' => 'Anda telah menerima aduan baru daripada '.$aduan->nama_pelapor.' pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
             ];
 
-            Mail::send('aduan.emel-aduan', $data, function ($message) use ($aduan, $admin_email, $user) {
+            Mail::send('aduan.emel-aduan', $data, function ($message) use ($aduan, $admin_email) {
                 $message->subject('Aduan Baru Tiket #'.$aduan->id);
-                // $message->from('ITadmin@intec.edu.my');
-                $message->from($user->email);
+                $message->from('ITadmin@intec.edu.my');
+                // $message->from($user->email);
                 $message->to($admin_email);
             });
         }
@@ -173,10 +173,10 @@ class AduanController extends Controller
                              di dalam sistem IDS. Sila log masuk sistem IDS untuk menyemak aduan anda',
         ];
 
-        Mail::send('aduan.emel-aduan', $datas, function ($message) use ($aduan, $user) {
+        Mail::send('aduan.emel-aduan', $datas, function ($message) use ($aduan) {
             $message->subject('Aduan Baru Tiket #'.$aduan->id);
             $message->from('ITadmin@intec.edu.my');
-            $message->to($user->email);
+            $message->to($aduan->emel_pelapor);
         });
 
         Session::flash('message');
