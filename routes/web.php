@@ -165,7 +165,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/data_assetexport', 'AssetController@data_assetexport');
     Route::get('/assetExport', 'AssetController@exports');
     Route::post('/assetExport', 'AssetController@exports');
-    Route::get('exportasset/{department?}/{availability?}/{type?}/{status?}', 'AssetController@exports');
+    Route::get('exportasset/{availability?}/{type?}/{status?}/{classs?}', 'AssetController@exports');
     Route::get('deleteImage/{id}/{asset_id}', 'AssetController@deleteImage')->name('deleteImage');
     Route::get('deleteSet/{id}/{asset_id}', 'AssetController@deleteSet')->name('deleteSet');
     Route::post('updateSet', 'AssetController@updateSet');

@@ -18,12 +18,12 @@ use DB;
 class AssetExport implements FromCollection, WithHeadings
 {
     use Exportable;
-    public function __construct(String $department = null , String $availability = null, String $type = null, String $status = null)
+    public function __construct(String $availability = null, String $type = null, String $status = null, String $classs = null)
     {
-        $this->department = $department;
         $this->availability = $availability;
         $this->type = $type;
         $this->status = $status;
+        $this->classs = $classs;
     }
     /**
     * @return \Illuminate\Support\Collection
@@ -31,11 +31,6 @@ class AssetExport implements FromCollection, WithHeadings
     public function collection()
     {
         $cond = "1";
-
-        if($this->department && $this->department != "All")
-        {
-            $cond .= " AND asset_type = '".$this->department."' ";
-        }
 
         if($this->availability && $this->availability != "All")
         {
@@ -52,8 +47,13 @@ class AssetExport implements FromCollection, WithHeadings
             $cond .= " AND status = '".$this->status."' ";
         }
 
+        if($this->classs != "" && $this->classs != "All")
+        {
+            $cond .= " AND asset_class = '".$this->classs."' ";
+        }
+
         if( Auth::user()->hasRole('Inventory Admin') )
-        { 
+        {
             $list = Asset::whereRaw($cond)->get();
         }
         else
@@ -145,7 +145,7 @@ class AssetExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['ID','DEPARTMENT','CODE TYPE','FINANCE CODE','ASSET CODE','ASSET NAME','ASSET TYPE','ASSET CLASS','SERIAL NO.', 'MODEL', 'BRAND','STATUS','INACTIVE DATE','INACTIVE REASON','INACTIVE REMARK', 
+        return ['ID','DEPARTMENT','CODE TYPE','FINANCE CODE','ASSET CODE','ASSET NAME','ASSET TYPE','ASSET CLASS','SERIAL NO.', 'MODEL', 'BRAND','STATUS','INACTIVE DATE','INACTIVE REASON','INACTIVE REMARK',
         'AVAILABILITY', 'SET','PRICE (RM)','L.O. NO.','D.O. NO.','INVOICE NO.','PURCHASE DATE','VENDOR', 'ACQUISITION TYPE','REMARK', 'CUSTODIAN','LOCATION','CREATED BY','NOTES'];
     }
 }

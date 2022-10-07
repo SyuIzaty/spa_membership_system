@@ -23,16 +23,6 @@
 
                             <div class="row">
                                 <div class="col-md-6 mt-3">
-                                    <label>Department</label>
-                                    <select class="selectfilter form-control" name="department" id="department">
-                                        <option value="">Please Select</option>
-                                        <option>All</option>
-                                        @foreach($department as $depart)
-                                            <option value="{{$depart->id}}" <?php if($request->department == $depart->id) echo "selected"; ?> >{{strtoupper($depart->department_name)}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mt-3">
                                     <label>Availability</label>
                                     <select class="selectfilter form-control" name="availability" id="availability">
                                         <option value="">Please Select</option>
@@ -114,7 +104,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                                 
+
                         </div>
                     </div>
                 </div>
@@ -132,12 +122,12 @@
     }
 </style>
 <script >
-    
+
     $(document).ready(function()
     {
-        $('#department, #availability, #type, #status, #classs').select2();
+        $('#availability, #type, #status, #classs').select2();
 
-        function createDatatable(department = null, availability = null, type = null, status = null, classs = null)
+        function createDatatable(availability = null, type = null, status = null, classs = null)
         {
             $('#rep').DataTable().destroy();
             var table = $('#rep').DataTable({
@@ -146,7 +136,7 @@
             autowidth: false,
             ajax: {
                 url: "/data_assetexport",
-                data: {department:department, availability:availability, type:type, status:status, classs:classs},
+                data: {availability:availability, type:type, status:status, classs:classs},
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
@@ -184,7 +174,7 @@
                     { data: 'storage_location', name: 'storage_location' },
                     { data: 'created_by', name: 'created_by' },
                     { data: 'notes', name: 'notes' },
-                    
+
                 ],
                 orderCellsTop: true,
                 "order": [[ 0, "asc" ]],
@@ -209,12 +199,11 @@
         }
 
         $('.selectfilter').on('change',function(){
-            var department = $('#department').val();
             var availability = $('#availability').val();
             var type = $('#type').val();
             var status = $('#status').val();
             var classs = $('#classs').val();
-            createDatatable(department,availability,type,status,classs);
+            createDatatable(availability,type,status,classs);
         });
 
     });

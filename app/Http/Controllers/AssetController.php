@@ -1217,18 +1217,14 @@ class AssetController extends Controller
         return view('inventory.asset.asset-report', compact('request', 'department', 'type', 'availability', 'selectedstatus', 'selecteddepartment', 'selectedavailability', 'selectedtype', 'selectedclass', 'list', 'class'));
     }
 
-    public function exports($department = null, $availability = null, $type = null, $status = null, $classs = null)
+    public function exports($availability = null, $type = null, $status = null, $classs = null)
     {
-        return Excel::download(new AssetExport($department, $availability, $type, $status, $classs), 'Asset.xlsx');
+        return Excel::download(new AssetExport($availability, $type, $status, $classs), 'Asset.xlsx');
     }
 
     public function data_assetexport(Request $request)
     {
         $cond = "1";
-        if($request->department && $request->department != "All")
-        {
-            $cond .= " AND asset_type = '".$request->department."' ";
-        }
 
         if( $request->availability != "" && $request->availability != "All")
         {
