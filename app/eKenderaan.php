@@ -21,6 +21,17 @@ class eKenderaan extends Model
         return $this->hasOne(Department::class, 'id', 'waiting_area');
     }
 
+    public function student()
+    {
+        return $this->hasOne(Student::class, 'students_id', 'intec_id');
+    }
+
+
+    public function programmes()
+    {
+        return $this->hasOne('App\Programmes', 'id', 'students_programme');
+    }
+
     public function vehicleList()
     {
         return $this->hasOne(eKenderaanVehicles::class, 'id', 'vehicle');

@@ -105,14 +105,14 @@
                                                     <td>
                                                         <input type="text" class="form-control" id="departdate"
                                                             name="departdate" placeholder="Please insert departure date"
-                                                            autocomplete="off" required>
+                                                            autocomplete="off" value="{{ old('departdate') }}" required>
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Time</th>
                                                     <td colspan="2">
                                                         <input class="form-control" type="text" id="departtime"
                                                             name="departtime" placeholder="Please insert departure time"
-                                                            autocomplete="off" required>
+                                                            autocomplete="off" value="{{ old('departtime') }}" required>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -120,20 +120,20 @@
                                                         Return Date</th>
                                                     <td>
                                                         <input type="text" class="form-control" id="returndate" name="returndate"
-                                                         placeholder="Please insert return date" autocomplete="off" required>
+                                                         placeholder="Please insert return date" autocomplete="off" value="{{ old('returndate') }}" required>
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Time</th>
                                                     <td colspan="2">
                                                         <input class="form-control" type="text" id="returntime" name="returntime"
-                                                            placeholder="Please insert return time" autocomplete="off" required>
+                                                            placeholder="Please insert return time" autocomplete="off" value="{{ old('returntime') }}" required>
                                                         </td>
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Destination (Full Address)</th>
                                                     <td colspan="5" style="vertical-align: middle">
-                                                        <textarea class="form-control" id="example-textarea" rows="3" name="destination" required></textarea>
+                                                        <textarea class="form-control" id="example-textarea" rows="3" name="destination" required>{{Request::old('destination')}}</textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -155,7 +155,7 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Purpose</th>
                                                     <td colspan="5" style="vertical-align: middle">
-                                                        <textarea class="form-control" id="example-textarea" rows="2" name="purpose" required></textarea>
+                                                        <textarea class="form-control" id="example-textarea" rows="3" name="purpose" required>{{Request::old('purpose')}}</textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>

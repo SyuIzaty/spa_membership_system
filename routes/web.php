@@ -43,6 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/search-id', 'EKenderaanController@searchID');
     Route::post('/add-passenger', 'EKenderaanController@addPassenger');
     Route::get('/search-staff', 'EKenderaanController@searchStaff');
+    Route::get('/ekenderaan-application', 'EKenderaanController@application');
+    Route::post('/get-eKenderaan-list', 'EKenderaanController@getList');
     Route::get('/eKenderaan-list/{id}', 'EKenderaanController@applicationList');
     Route::post('/application-list/{id}', 'EKenderaanController@applicationLists');
     Route::get('/eKenderaan-application/{id}', 'EKenderaanController@show');
@@ -53,6 +55,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/operation-verify-application', 'EKenderaanController@operationVerifyApplication');
     Route::get('/get-file-attachment/{id}', 'EKenderaanController@file');
     Route::post('/feedback', 'EKenderaanController@feedback');
+    Route::get('/eKenderaan-driver', 'EKenderaanController@driver');
+    Route::post('/driver-list', 'EKenderaanController@driverList');
+    Route::post('/add-driver', 'EKenderaanController@addDriver');
+    Route::post('/edit-driver', 'EKenderaanController@editDriver');
+    Route::get('/eKenderaan-vehicle', 'EKenderaanController@vehicle');
+    Route::post('/vehicle-list', 'EKenderaanController@vehicleList');
+    Route::post('/add-vehicle', 'EKenderaanController@addVehicle');
+    Route::post('/edit-vehicle', 'EKenderaanController@editVehicle');
+    Route::get('/ekn-report', 'EKenderaanController@report');
+    Route::post('/all-report-ekn', 'EKenderaanController@allReport');
+    Route::get('/get-year-ekn/{year}', 'EKenderaanController@getYear');
+    Route::post('/year-report-ekn', 'EKenderaanController@reportYear');
+    Route::post('/month-year-report-ekn', 'EKenderaanController@reportMonthYear');
+    Route::get('/eKenderaan-Reports', 'EKenderaanController@eKenderaanReport');
+    Route::get('/eKenderaan-Report-Year/{year}', 'EKenderaanController@eKenderaanReportYear');
+    Route::get('/eKenderaan-Report-Year-Month/{year}/{month}', 'EKenderaanController@eKenderaanReportYearMonth');
 
     // Aduan
     Route::get('/borang-aduan', 'Aduan\AduanController@borangAduan')->name('borangAduan');

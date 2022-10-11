@@ -11,6 +11,8 @@ use App\Student;
 use Carbon\Carbon;
 use App\Department;
 use App\eKenderaan;
+use App\Programmes;
+use App\Departments;
 use App\eKenderaanStatus;
 use App\eKenderaanDrivers;
 use App\eKenderaanRejects;
@@ -19,7 +21,10 @@ use App\eKenderaanVehicles;
 use Illuminate\Http\Request;
 use App\eKenderaanPassengers;
 use App\eKenderaanAttachments;
+use App\Exports\eKenderaanExport;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
 class EKenderaanController extends Controller
@@ -62,6 +67,71 @@ class EKenderaanController extends Controller
         }
     }
 
+    public function application()
+    {
+        return view('eKenderaan.application');
+    }
+
+
+    public function getList()
+    {
+        $data = eKenderaan::where('intec_id', Auth::user()->id)->get();
+
+        return datatables()::of($data)
+
+        ->editColumn('name', function ($data) {
+            if ($data->category == "STF") {
+                $details = Staff::where('staff_id', $data->intec_id)->first();
+
+                return isset($details->staff_name) ? $details->staff_name : 'N/A';
+            } elseif ($data->category == "STD") {
+                $details = Student::where('students_id', $data->intec_id)->first();
+
+                return isset($details->students_name) ? $details->students_name : 'N/A';
+            }
+        })
+
+        ->editColumn('id', function ($data) {
+            return $data->intec_id;
+        })
+
+        ->editColumn('progfac', function ($data) {
+            if ($data->category == "STF") {
+                $details = Staff::where('staff_id', $data->intec_id)->first();
+
+                return isset($details->staff_dept) ? $details->staff_dept : 'N/A';
+            } elseif ($data->category == "STD") {
+                $details = Student::where('students_id', $data->intec_id)->first();
+
+                return isset($details->programmes->programme_name) ? $details->programmes->programme_name : 'N/A';
+            }
+        })
+
+        ->editColumn('date_applied', function ($data) {
+            $date = new DateTime($data->created_at);
+            $dateApplied = $date->format('d-m-Y');
+
+            return $dateApplied;
+        })
+
+        ->editColumn('status', function ($data) {
+            return $data->statusList->name;
+        })
+
+        ->addColumn('action', function ($data) {
+            return '<a href="/eKenderaan-application/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+        })
+
+        ->addColumn('log', function ($data) {
+            return '<a href="/log-eKenderaan/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
+        })
+
+        ->addIndexColumn()
+        ->rawColumns(['action','log'])
+        ->make(true);
+    }
+
+
     public function applicationList($id)
     {
         $data = eKenderaanStatus::where('id', $id)->first();
@@ -71,7 +141,20 @@ class EKenderaanController extends Controller
 
     public function applicationLists($id)
     {
-        $data = eKenderaan::where('status', $id)->get();
+        if (Auth::user()->hasRole('eKenderaan Admin')) {
+            $data = eKenderaan::where('status', $id)->get();
+        } elseif (Auth::user()->hasRole('eKenderaan Manager')) {
+            $department = Departments::where('hod', Auth::user()->id)->first();
+            $data = eKenderaan::where('status', $id)->whereHas('student', function ($query) use ($program) {
+                $query->whereIn('students_programme', $program);
+            })->get();
+        } else {
+            $program = Programmes::where('head_of_programme', Auth::user()->id)->pluck('id')->toArray();
+
+            $data = eKenderaan::where('status', $id)->whereHas('student', function ($query) use ($program) {
+                $query->whereIn('students_programme', $program);
+            })->get();
+        }
 
         return datatables()::of($data)
 
@@ -134,6 +217,13 @@ class EKenderaanController extends Controller
         $returndate = Carbon::createFromFormat('d/m/Y', $request->returndate)->format('Y-m-d');
         $returntime = Carbon::createFromFormat('h:i a', $request->returntime)->format('H:i:s');
 
+        $validated = $request->validate([
+            'hp_no'   => 'required|regex:/[0-9]/|min:10|max:11',
+        ], [
+            'hp_no.min'      => 'Phone number does not match the format!',
+            'hp_no.max'      => 'Phone number does not match the format!',
+            'hp_no.regex'    => 'Phone number must be number only!',
+        ]);
 
         $application = eKenderaan::create([
             'intec_id'     => Auth::user()->id,
@@ -210,8 +300,8 @@ class EKenderaanController extends Controller
         $returntime = Carbon::createFromFormat('H:i:s', $data->return_time)->format('h:i a');
 
         $passenger  = eKenderaanPassengers::where('ekn_details_id', $id)->get();
-        $driver = eKenderaanDrivers::all();
-        $vehicle = eKenderaanVehicles::all();
+        $driver = eKenderaanDrivers::where('status', 'Y')->get();
+        $vehicle = eKenderaanVehicles::where('status', 'Y')->get();
         $file = eKenderaanAttachments::where('ekn_details_id', $id)->first();
         $remark = eKenderaanRejects::where('ekn_details_id', $id)->first();
         $feedback = eKenderaanFeedback::where('ekn_details_id', $id)->first();
@@ -372,39 +462,292 @@ class EKenderaanController extends Controller
         return redirect()->back()->with('message', 'Feedback Successfully Submitted!');
     }
 
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\eKenderaan  $eKenderaan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(eKenderaan $eKenderaan)
+    public function driver()
     {
-        //
+        return view('eKenderaan.driver');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\eKenderaan  $eKenderaan
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, eKenderaan $eKenderaan)
+    public function driverList()
     {
-        //
+        $driver = eKenderaanDrivers::get();
+
+        return datatables()::of($driver)
+
+            ->editColumn('status', function ($driver) {
+                if ($driver->status == 'Y') {
+                    return '<div style="color: green;"><b>Active</b></div>';
+                } else {
+                    return '<div style="color: red;"><b>Inactive</b></div>';
+                }
+            })
+
+            ->addColumn('edit', function ($driver) {
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$driver->id.'" data-name="'.$driver->name.'" data-staff_id="'.$driver->staff_id.'" data-status="'.$driver->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->rawColumns(['status','edit'])
+            ->addIndexColumn()
+            ->make(true);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\eKenderaan  $eKenderaan
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(eKenderaan $eKenderaan)
+    public function addDriver(Request $request)
     {
-        //
+        eKenderaanDrivers::create([
+            'name'      => $request->name,
+            'staff_id'  => $request->staff_id,
+            'status'    => $request->status,
+            'created_by'=> Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Add Successfully');
+    }
+
+    public function editDriver(Request $request)
+    {
+        $update = eKenderaanDrivers::where('id', $request->id)->first();
+        $update->update([
+            'name'      => $request->name,
+            'staff_id'  => $request->staff_id,
+            'status'    => $request->status,
+            'updated_by'=> Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Update Successfully');
+    }
+
+    public function vehicle()
+    {
+        return view('eKenderaan.vehicle');
+    }
+
+    public function vehicleList()
+    {
+        $vehicle = eKenderaanVehicles::get();
+
+        return datatables()::of($vehicle)
+
+            ->editColumn('status', function ($vehicle) {
+                if ($vehicle->status == 'Y') {
+                    return '<div style="color: green;"><b>Active</b></div>';
+                } else {
+                    return '<div style="color: red;"><b>Inactive</b></div>';
+                }
+            })
+
+            ->addColumn('edit', function ($vehicle) {
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$vehicle->id.'" data-name="'.$vehicle->name.'" data-plate_no="'.$vehicle->plate_no.'" data-status="'.$vehicle->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->rawColumns(['status','edit'])
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function addVehicle(Request $request)
+    {
+        eKenderaanVehicles::create([
+            'name'      => $request->name,
+            'plate_no'  => $request->plate_no,
+            'status'    => $request->status,
+            'created_by'=> Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Add Successfully');
+    }
+
+    public function editVehicle(Request $request)
+    {
+        $update = eKenderaanVehicles::where('id', $request->id)->first();
+        $update->update([
+            'name'      => $request->name,
+            'plate_no'  => $request->plate_no,
+            'status'    => $request->status,
+            'updated_by'=> Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Update Successfully');
+    }
+
+    public function report()
+    {
+        $year = eKenderaan::orderBy('created_at', 'ASC')
+        ->pluck('created_at')
+        ->map(function ($date) {
+            return Carbon::parse($date)->format('Y');
+        })
+        ->unique(); //year selection
+
+        return view('eKenderaan.report', compact('year'));
+    }
+
+    public function allReport()
+    {
+        $list = eKenderaan::whereIn('status', ['3','5'])->get();
+
+        return datatables()::of($list)
+
+        ->editColumn('name', function ($list) {
+            if ($list->category == "STF") {
+                $details = Staff::where('staff_id', $list->intec_id)->first();
+
+                return isset($details->staff_name) ? $details->staff_name : 'N/A';
+            } elseif ($list->category == "STD") {
+                $details = Student::where('students_id', $list->intec_id)->first();
+
+                return isset($details->students_name) ? $details->students_name : 'N/A';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+            return $list->intec_id;
+        })
+
+        ->editColumn('progfac', function ($list) {
+            if ($list->category == "STF") {
+                $details = Staff::where('staff_id', $list->intec_id)->first();
+
+                return isset($details->staff_dept) ? $details->staff_dept : 'N/A';
+            } elseif ($list->category == "STD") {
+                $details = Student::where('students_id', $list->intec_id)->first();
+
+                return isset($details->programmes->programme_name) ? $details->programmes->programme_name : 'N/A';
+            }
+        })
+
+        ->editColumn('hp_no', function ($list) {
+            return $list->phone_no;
+        })
+
+        ->editColumn('date_applied', function ($list) {
+            $date = Carbon::createFromFormat('Y-m-d H:i:s', $list->created_at)->format('d/m/Y');
+            return $date;
+        })
+
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+    public function reportYear(Request $request)
+    {
+        $list = eKenderaan::whereIn('status', ['3','5'])->whereYear('created_at', '=', $request->year)->get();
+
+        return datatables()::of($list)
+
+        ->editColumn('name', function ($list) {
+            if ($list->category == "STF") {
+                $details = Staff::where('staff_id', $list->intec_id)->first();
+
+                return isset($details->staff_name) ? $details->staff_name : 'N/A';
+            } elseif ($list->category == "STD") {
+                $details = Student::where('students_id', $list->intec_id)->first();
+
+                return isset($details->students_name) ? $details->students_name : 'N/A';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+            return $list->intec_id;
+        })
+
+        ->editColumn('progfac', function ($list) {
+            if ($list->category == "STF") {
+                $details = Staff::where('staff_id', $list->intec_id)->first();
+
+                return isset($details->staff_dept) ? $details->staff_dept : 'N/A';
+            } elseif ($list->category == "STD") {
+                $details = Student::where('students_id', $list->intec_id)->first();
+
+                return isset($details->programmes->programme_name) ? $details->programmes->programme_name : 'N/A';
+            }
+        })
+
+        ->editColumn('hp_no', function ($list) {
+            return $list->phone_no;
+        })
+
+        ->editColumn('date_applied', function ($list) {
+            $date = Carbon::createFromFormat('Y-m-d H:i:s', $list->created_at)->format('d/m/Y');
+            return $date;
+        })
+
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+    public function reportMonthYear(Request $request)
+    {
+        $month = date('m', strtotime($request->month));
+
+        $list = eKenderaan::whereIn('status', ['3','5'])->whereYear('created_at', '=', $request->year)->whereMonth('created_at', '=', $month)->get();
+
+        return datatables()::of($list)
+
+        ->editColumn('name', function ($list) {
+            if ($list->category == "STF") {
+                $details = Staff::where('staff_id', $list->intec_id)->first();
+
+                return isset($details->staff_name) ? $details->staff_name : 'N/A';
+            } elseif ($list->category == "STD") {
+                $details = Student::where('students_id', $list->intec_id)->first();
+
+                return isset($details->students_name) ? $details->students_name : 'N/A';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+            return $list->intec_id;
+        })
+
+        ->editColumn('progfac', function ($list) {
+            if ($list->category == "STF") {
+                $details = Staff::where('staff_id', $list->intec_id)->first();
+
+                return isset($details->staff_dept) ? $details->staff_dept : 'N/A';
+            } elseif ($list->category == "STD") {
+                $details = Student::where('students_id', $list->intec_id)->first();
+
+                return isset($details->programmes->programme_name) ? $details->programmes->programme_name : 'N/A';
+            }
+        })
+
+        ->editColumn('hp_no', function ($list) {
+            return $list->phone_no;
+        })
+
+        ->editColumn('date_applied', function ($list) {
+            $date = Carbon::createFromFormat('Y-m-d H:i:s', $list->created_at)->format('d/m/Y');
+            return $date;
+        })
+
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+    public function getYear($year)
+    {
+        $month = eKenderaan::whereYear('created_at', '=', $year)
+                ->orderBy('created_at', 'ASC')
+                ->pluck('created_at')
+                ->map(function ($date) {
+                    return Carbon::parse($date)->format('F');
+                })
+                ->unique(); //month selection
+
+        return response()->json($month);
+    }
+
+    public function eKenderaanReport()
+    {
+        return Excel::download(new eKenderaanExport(), 'eKenderaan Full Report.xlsx');
+    }
+
+    public function eKenderaanReportYear($year)
+    {
+        return Excel::download(new eKenderaanExportByYear($year), 'eKenderaan Report '.$year.'.xlsx');
+    }
+
+    public function eKenderaanReportYearMonth($year, $month)
+    {
+        return Excel::download(new eKenderaanExportByYearMonth($year, $month), 'eKenderaan Report '.$month.' '.$year.'.xlsx');
     }
 }

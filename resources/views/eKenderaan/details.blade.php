@@ -543,14 +543,6 @@
                                                     </thead>
                                                 </table>
                                             </div>
-                                            @csrf
-                                            <input type="hidden" id="id" name="id"
-                                                value="{{ $data->id }}">
-                                            <button type="submit"
-                                                class="btn btn-danger ml-auto float-right mt-2 mb-2 waves-effect waves-themed"
-                                                id="verify" disabled><i class="fal fa-times-circle"></i> Verify
-                                            </button>
-                                            {!! Form::close() !!}
                                         </div>
                                     @endif
                                 </div>

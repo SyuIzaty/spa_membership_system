@@ -236,17 +236,26 @@
                         <!-- Start eKenderaan Management System -->
                         <li class="nav-title">e-Kenderaan</li>
                         <li>
-                            <a href="/eKenderaan-form" title="eKenderaan Form" data-filter-tags="eKenderaan-form">
+                            <a href="/ekenderaan-application" title="eKenderaan Form"
+                                data-filter-tags="eKenderaan-form">
                                 <i class="fal fa-file-alt"></i>
                                 <span class="nav-link-text" data-i18n="nav.eKenderaan-form">Application</span>
                             </a>
                         </li>
+                        @can('Verify eKenderaan Application')
+                            <li>
+                                <a href="/eKenderaan-list/1" title="pending" data-filter-tags="pending">
+                                    <i class="fal fa-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.pending">Pending Application List</span>
+                                </a>
+                            </li>
+                        @endcan
 
                         @role('eKenderaan Admin')
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">Application List</span>
+                                    <span class="nav-link-text" data-i18n="nav.list">Application List (Admin)</span>
                                 </a>
                                 <ul>
                                     <li>
@@ -296,8 +305,8 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/eKenderaan-status" title="Status" data-filter-tags="ekenderaanStatus">
-                                            <span class="nav-link-text" data-i18n="nav.ekenderaanStatus">Status</span>
+                                        <a href="/eKenderaan-driver" title="Driver" data-filter-tags="ekenderaanDriver">
+                                            <span class="nav-link-text" data-i18n="nav.ekenderaanDriver">Driver</span>
                                         </a>
                                     </li>
                                     <li>
@@ -307,6 +316,12 @@
                                         </a>
                                     </li>
                                 </ul>
+                            </li>
+                            <li>
+                                <a href="/ekn-report" title="Report" data-filter-tags="report">
+                                    <i class="fal fa-clipboard-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.report">Report</span>
+                                </a>
                             </li>
                         @endrole
 

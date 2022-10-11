@@ -151,7 +151,7 @@
                                         </form>
                                     @endif
 
-                                    @if ($activeData->status == 2)
+                                    @if ($activeData->status == 2 || $activeData->status == 3)
                                         <div class="table-responsive">
                                             <table id="upload"
                                                 class="table table-bordered table-hover table-striped w-100">
