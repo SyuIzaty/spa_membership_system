@@ -285,8 +285,12 @@ class AssetController extends Controller
 
     public function assetDelete($id)
     {
-        $exist = Asset::find($id);
-        $exist->delete();
+        $exist_asset = Asset::where('id', $id)->first();
+
+        $exist_trail = AssetTrail::where('asset_id', $exist_asset->id)->delete();
+
+        $exist_asset->delete();
+
         return response()->json(['success'=>'Asset Deleted Successfully']);
     }
 
