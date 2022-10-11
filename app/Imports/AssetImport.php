@@ -88,8 +88,8 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
                 'asset_code'            => $asset->asset_code,
                 'asset_code_type'       => $asset->asset_code_type,
                 'finance_code'          => $asset->finance_code,
-                'asset_name'            => $asset->asset_name, 
-                'serial_no'             => $asset->serial_no, 
+                'asset_name'            => $asset->asset_name,
+                'serial_no'             => $asset->serial_no,
                 'model'                 => $asset->model,
                 'brand'                 => $asset->brand,
                 'status'                => $asset->status,
@@ -107,7 +107,7 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
                 'acquisition_type'      => $asset->acquisition_type,
                 'set_package'           => $asset->set_package,
                 'storage_location'      => $asset->storage_location,
-                'custodian_id'          => $asset->custodian_id, 
+                'custodian_id'          => $asset->custodian_id,
                 'created_by'            => $asset->created_by,
                 'updated_by'            => Auth::user()->id,
             ]);
@@ -115,9 +115,11 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
             $custodian = Custodian::create([
                 'asset_id'         => $asset->id,
                 'custodian_id'     => $asset->custodian_id,
+                'location'         => $asset->storage_location,
                 'assigned_by'      => Auth::user()->id,
-                'verification'     => '0',
-                'status'           => '1',
+                'verification'     => '1',
+                'verification_date'=> Carbon::now(),
+                'status'           => '2',
             ]);
 
             Session::flash('success', 'Asset Data Imported Successfully');
