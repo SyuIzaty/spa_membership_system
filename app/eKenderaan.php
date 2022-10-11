@@ -26,6 +26,10 @@ class eKenderaan extends Model
         return $this->hasOne(Student::class, 'students_id', 'intec_id');
     }
 
+    public function staff()
+    {
+        return $this->hasOne(Staff::class, 'staff_id', 'intec_id');
+    }
 
     public function programmes()
     {
@@ -45,6 +49,11 @@ class eKenderaan extends Model
     public function statusList()
     {
         return $this->hasOne(eKenderaanStatus::class, 'id', 'status');
+    }
+
+    public function feedback()
+    {
+        return $this->hasOne(eKenderaanFeedback::class, 'ekn_details_id', 'id');
     }
 
     public function attachments()

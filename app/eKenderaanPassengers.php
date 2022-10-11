@@ -12,4 +12,14 @@ class eKenderaanPassengers extends Model
     protected $fillable = [
         'ekn_details_id', 'intec_id', 'category','created_by', 'updated_by', 'deleted_by'
     ];
+
+    public function student()
+    {
+        return $this->hasOne(Student::class, 'students_id', 'intec_id');
+    }
+
+    public function staff()
+    {
+        return $this->hasOne(Staff::class, 'staff_id', 'intec_id');
+    }
 }
