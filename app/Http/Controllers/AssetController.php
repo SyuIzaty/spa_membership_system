@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Imports\AssetImport;
 use Carbon\Carbon;
+use DateTime;
 use Session;
 use Response;
 use Auth;
@@ -411,8 +412,18 @@ class AssetController extends Controller
 
         ->addColumn('action', function ($asset) {
 
-            return '<div class="btn-group"><a href="/asset-detail/' . $asset->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
+            $datenow   = Carbon::now()->format('d-m-Y');
+            $duedate   = $asset->created_at->format('d-m-Y');
+            $datetime1 = new DateTime($datenow);
+            $datetime2 = new DateTime($duedate);
+            $difference  = $datetime1->diff($datetime2)->format('%a')+1;
+
+            if($difference >= 31) {
+                return '<div class="btn-group"><a href="/asset-detail/' . $asset->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a></div>';
+            } else {
+                return '<div class="btn-group"><a href="/asset-detail/' . $asset->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
                 <button class="btn btn-sm btn-danger btn-delete" data-remote="/asset-index/' . $asset->id . '"><i class="fal fa-trash"></i></button></div>';
+            }
 
         })
 
