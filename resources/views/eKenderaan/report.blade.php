@@ -310,7 +310,7 @@
                         extend: 'excel',
                         text: 'Report',
                         className: 'btn btn-danger',
-                        title: 'i-Complaint Report'
+                        title: 'e-Kenderaan Report'
                     }, ]
                 });
             }
@@ -344,7 +344,7 @@
                     $("#buttonyear").hide();
                     $("#buttonyearmonth").show();
                     $('#buttonyearmonth').click(function() {
-                        window.location = "/iComplaint-Report-Year-Month/" + year + "/" + month;
+                        window.location = "/eKenderaan-Report-Year-Month/" + year + "/" + month;
                     });
 
                 }

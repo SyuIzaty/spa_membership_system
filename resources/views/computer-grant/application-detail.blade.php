@@ -151,7 +151,7 @@
                                         </form>
                                     @endif
 
-                                    @if ($activeData->status == 2 || $activeData->status == 3)
+                                    @if ($activeData->status == 2)
                                         <div class="table-responsive">
                                             <table id="upload"
                                                 class="table table-bordered table-hover table-striped w-100">
@@ -307,6 +307,14 @@
                                                         <td colspan="5" class="bg-primary-50"><label
                                                                 class="form-label"><i class="fal fa-file"></i> PURCHASE
                                                                 DETAILS</label></td>
+                                                    </tr>
+                                                    <tr style="background-color: rgb(250, 240, 107)">
+                                                        <td colspan="5">
+                                                            After submit the purchase details, please bring the device,
+                                                            original
+                                                            receipt/invoice and proof of payment (bank transaction)
+                                                            to IT Department
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th width="20%" style="vertical-align: middle">Type of Device :

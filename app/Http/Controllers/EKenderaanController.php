@@ -25,7 +25,9 @@ use App\Exports\eKenderaanExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\eKenderaanExportByYear;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\eKenderaanExportByYearMonth;
 
 class EKenderaanController extends Controller
 {
@@ -570,7 +572,8 @@ class EKenderaanController extends Controller
 
     public function report()
     {
-        $year = eKenderaan::orderBy('created_at', 'ASC')
+        $year = eKenderaan::whereIn('status', ['3','5'])
+        ->orderBy('created_at', 'ASC')
         ->pluck('created_at')
         ->map(function ($date) {
             return Carbon::parse($date)->format('Y');
@@ -725,7 +728,8 @@ class EKenderaanController extends Controller
 
     public function getYear($year)
     {
-        $month = eKenderaan::whereYear('created_at', '=', $year)
+        $month = eKenderaan::whereIn('status', ['3','5'])
+                ->whereYear('created_at', '=', $year)
                 ->orderBy('created_at', 'ASC')
                 ->pluck('created_at')
                 ->map(function ($date) {

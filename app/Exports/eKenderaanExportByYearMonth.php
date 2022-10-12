@@ -13,20 +13,38 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class eKenderaanExport implements FromView, WithEvents, WithStyles, WithColumnFormatting
+class eKenderaanExportByYearMonth implements FromView, WithEvents, WithStyles, WithColumnFormatting
 {
+    public function __construct($year, $month)
+    {
+        $this->year = $year;
+        $this->month = $month;
+    }
+
     public function view(): View
     {
-        $data = eKenderaan::whereIn('status', ['3','5'])->get();
+        $year = $this->year;
+        $month = $this->month;
+        $m = date('m', strtotime($month));
+
+        $data = eKenderaan::whereIn('status', ['3','5'])->with('passengers')->whereYear('created_at', $year)
+        ->whereMonth('created_at', $m)->get();
 
         return view('eKenderaan.report-export', compact('data'));
     }
 
     public function styles(Worksheet $sheet)
     {
-        $passenger = eKenderaanPassengers::count();
+        $month = $this->month;
+        $m = date('m', strtotime($month));
 
-        $total = eKenderaan::whereIn('status', ['3','5'])->get()->count() + $passenger + 1;
+        $ekenderaan = eKenderaan::whereIn('status', ['3','5'])->with('passengers')->whereYear('created_at', $this->year)
+        ->whereMonth('created_at', $m)->pluck('id')->toArray();
+
+        $passenger = eKenderaanPassengers::whereIn('ekn_details_id', $ekenderaan)->count();
+
+        $total = eKenderaan::whereIn('status', ['3','5'])->whereYear('created_at', $this->year)
+        ->whereMonth('created_at', $m)->get()->count() + $passenger + 2;
 
         return [
             "A1:S{$total}" => [
@@ -54,8 +72,16 @@ class eKenderaanExport implements FromView, WithEvents, WithStyles, WithColumnFo
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $passenger = eKenderaanPassengers::count();
-                $total = eKenderaan::whereIn('status', ['3','5'])->get()->count() + $passenger + 1;
+                $month = $this->month;
+                $m = date('m', strtotime($month));
+
+                $ekenderaan = eKenderaan::whereIn('status', ['3','5'])->with('passengers')->whereYear('created_at', $this->year)
+                ->whereMonth('created_at', $m)->pluck('id')->toArray();
+
+                $passenger = eKenderaanPassengers::whereIn('ekn_details_id', $ekenderaan)->count();
+
+                $total = eKenderaan::whereIn('status', ['3','5'])->whereYear('created_at', $this->year)
+                ->whereMonth('created_at', $m)->get()->count() + $passenger + 2;
 
                 $cellAllRange = 'A1:S'.$total.'';
                 $event->sheet->getDelegate()->getStyle('A1:S1')->getFont()->setBold(true);
