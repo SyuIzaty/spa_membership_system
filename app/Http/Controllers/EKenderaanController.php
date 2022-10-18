@@ -13,6 +13,7 @@ use App\Department;
 use App\eKenderaan;
 use App\Programmes;
 use App\Departments;
+use App\eKenderaanLog;
 use App\eKenderaanStatus;
 use App\eKenderaanDrivers;
 use App\eKenderaanRejects;
@@ -73,7 +74,6 @@ class EKenderaanController extends Controller
     {
         return view('eKenderaan.application');
     }
-
 
     public function getList()
     {
@@ -146,10 +146,9 @@ class EKenderaanController extends Controller
         if (Auth::user()->hasRole('eKenderaan Admin')) {
             $data = eKenderaan::where('status', $id)->get();
         } elseif (Auth::user()->hasRole('eKenderaan Manager')) {
-            $department = Departments::where('hod', Auth::user()->id)->first();
-            $data = eKenderaan::where('status', $id)->whereHas('student', function ($query) use ($program) {
-                $query->whereIn('students_programme', $program);
-            })->get();
+            $dept = Staff::where('staff_id', Auth::user()->id)->first();
+            $staff = Staff::where('staff_code', $dept->staff_code)->get()->pluck('staff_id')->toArray();
+            $data = eKenderaan::whereIn('intec_id', $staff)->get();
         } else {
             $program = Programmes::where('head_of_programme', Auth::user()->id)->pluck('id')->toArray();
 
@@ -240,6 +239,13 @@ class EKenderaanController extends Controller
             'status'       => '1',
             'category'     => Auth::user()->category,
             'created_by'   => Auth::user()->id
+        ]);
+
+        eKenderaanLog::create([
+            'ekn_details_id'=> $application->id,
+            'name'          => Auth::user()->name,
+            'activity'      => 'Apply new application',
+            'created_by'    => Auth::user()->id
         ]);
 
         if ($request->staff_id) {
@@ -392,6 +398,13 @@ class EKenderaanController extends Controller
             'updated_by' => Auth::user()->id
         ]);
 
+        eKenderaanLog::create([
+            'ekn_details_id'=> $request->id,
+            'name'          => Auth::user()->name,
+            'activity'      => 'HOD/HOP verify application',
+            'created_by'    => Auth::user()->id
+        ]);
+
         return redirect()->back()->with('message', 'Successfully Verified!');
     }
 
@@ -411,6 +424,13 @@ class EKenderaanController extends Controller
             'created_by' => Auth::user()->id
         ]);
 
+        eKenderaanLog::create([
+            'ekn_details_id'=> $request->id,
+            'name'          => Auth::user()->name,
+            'activity'      => 'HOD/HOP reject application',
+            'created_by'    => Auth::user()->id
+        ]);
+
         return redirect()->back()->with('message', 'Rejected!');
     }
 
@@ -423,6 +443,13 @@ class EKenderaanController extends Controller
             'vehicle' => $request->vehicle,
             'status' => '3',
             'updated_by' => Auth::user()->id
+        ]);
+
+        eKenderaanLog::create([
+            'ekn_details_id'=> $request->id,
+            'name'          => Auth::user()->name,
+            'activity'      => 'Operation verify application',
+            'created_by'    => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Successfully Verified!');
@@ -444,6 +471,13 @@ class EKenderaanController extends Controller
             'created_by' => Auth::user()->id
         ]);
 
+        eKenderaanLog::create([
+            'ekn_details_id'=> $request->id,
+            'name'          => Auth::user()->name,
+            'activity'      => 'Operation reject application',
+            'created_by'    => Auth::user()->id
+        ]);
+
         return redirect()->back()->with('message', 'Rejected!');
     }
 
@@ -459,6 +493,13 @@ class EKenderaanController extends Controller
             'ekn_details_id' => $request->id,
             'remark' => $request->feedback,
             'created_by' => Auth::user()->id
+        ]);
+
+        eKenderaanLog::create([
+            'ekn_details_id'=> $request->id,
+            'name'          => Auth::user()->name,
+            'activity'      => 'Submit feedback',
+            'created_by'    => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Feedback Successfully Submitted!');
@@ -753,5 +794,25 @@ class EKenderaanController extends Controller
     public function eKenderaanReportYearMonth($year, $month)
     {
         return Excel::download(new eKenderaanExportByYearMonth($year, $month), 'eKenderaan Report '.$month.' '.$year.'.xlsx');
+    }
+
+    public function log($id)
+    {
+        return view('eKenderaan.log', compact('id'));
+    }
+
+    public function logList($id)
+    {
+        $log = eKenderaanLog::where('ekn_details_id', $id)->get();
+
+        return datatables()::of($log)
+
+            ->addColumn('date', function ($log) {
+                return $log->created_at->format('d/m/Y g:i A') ?? '';
+            })
+
+            ->addIndexColumn()
+            ->rawColumns(['date'])
+            ->make(true);
     }
 }

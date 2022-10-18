@@ -29,7 +29,7 @@ class eKenderaanExport implements FromView, WithEvents, WithStyles, WithColumnFo
         $total = eKenderaan::whereIn('status', ['3','5'])->get()->count() + $passenger + 1;
 
         return [
-            "A1:S{$total}" => [
+            "A1:U{$total}" => [
                 'borders' => ['allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                     ]
@@ -45,8 +45,8 @@ class eKenderaanExport implements FromView, WithEvents, WithStyles, WithColumnFo
     public function columnFormats(): array
     {
         return [
-            // R is the IC column
-            'R' => NumberFormat::FORMAT_NUMBER,
+            // T is the IC column
+            'T' => NumberFormat::FORMAT_NUMBER,
         ];
     }
 
@@ -57,9 +57,9 @@ class eKenderaanExport implements FromView, WithEvents, WithStyles, WithColumnFo
                 $passenger = eKenderaanPassengers::count();
                 $total = eKenderaan::whereIn('status', ['3','5'])->get()->count() + $passenger + 1;
 
-                $cellAllRange = 'A1:S'.$total.'';
-                $event->sheet->getDelegate()->getStyle('A1:S1')->getFont()->setBold(true);
-                $event->sheet->getDelegate()->getStyle('O2:S2')->getFont()->setBold(true);
+                $cellAllRange = 'A1:U'.$total.'';
+                $event->sheet->getDelegate()->getStyle('A1:U1')->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle('O2:U2')->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setSize('8');
                 $event->sheet->getDelegate()->getDefaultRowDimension()->setRowHeight(25);

@@ -19,12 +19,14 @@
             <th style="background-color: #ffe1b7;">WAITING AREA</th>
             <th style="background-color: #ffe1b7;">PURPOSE</th>
             <th style="background-color: #ffe1b7;">DATE APPLIED</th>
+            <th style="background-color: #ffe1b7;">DRIVER</th>
+            <th style="background-color: #ffe1b7;">VEHICLE</th>
             <th style="background-color: #ffe1b7;">FEEDBACK</th>
             <th style="background-color: #ffe1b7;" colspan="5">PASSENGER</th>
         </tr>
 
         <tr>
-            <td colspan="14"></td>
+            <td colspan="16"></td>
             <th style="background-color: #b7e8ff;">NO</th>
             <th style="background-color: #b7e8ff;">NAME</th>
             <th style="background-color: #b7e8ff;">FACULTY/PROGRAMME</th>
@@ -57,14 +59,16 @@
                 <td style="width: 100px;">{{ $d->waitingArea->department_name }}</td>
                 <td style="width: 300px;">{{ $d->purpose }}</td>
                 <td style="width: 100px;">{{ date('d/m/Y', strtotime($d->created_at)) }}</td>
+                <td style="width: 200px;">{{ $d->driverList->name }}</td>
+                <td style="width: 200px;">{{ $d->vehicleList->name }} - {{ $d->vehicleList->plate_no }}</td>
                 <td style="width: 250px;">{{ isset($d->feedback->remark) ? $d->feedback->remark : 'N/A' }}</td>
-                <td colspan="5"></td>
+                <td style="background-color: #b7e8ff;" colspan="5"></td>
             </tr>
             @php $j = 1;@endphp
             @if (isset($d->passengers))
                 @foreach ($d->passengers as $p)
                     <tr>
-                        <td colspan="14"></td>
+                        <td colspan="16"></td>
                         <td>{{ $j }}</td>
                         @if ($p->category == 'STF')
                             <td style="width: 200px;">
@@ -80,6 +84,8 @@
                             <td style="width: 200px;">
                                 {{ isset($p->student->programmes->programme_name) ? $p->student->programmes->programme_name : 'N/A' }}
                             </td>
+                            <td style="width: 100px;">
+                                {{ isset($p->student->students_ic) ? $p->student->students_ic : 'N/A' }}
                             <td>{{ isset($p->intec_id) ? $p->intec_id : 'N/A' }}</td>
                         @endif
                         @php $j++; @endphp

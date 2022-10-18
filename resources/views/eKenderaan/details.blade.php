@@ -348,7 +348,7 @@
                                         @canany('Manage and Verify eKenderaan Application')
                                             <button
                                                 class="btn btn-danger ml-auto float-right mt-2 mb-2 waves-effect waves-themed click">
-                                                <i class="fal fa-times-circle"></i>Reject
+                                                <i class="fal fa-times-circle"></i> Reject
                                             </button>
                                             <div class="remark mt-2">
                                                 {!! Form::open([
@@ -495,7 +495,8 @@
                                                         </tr>
                                                         <tr>
                                                             <th width="20%" style="vertical-align: top"><span
-                                                                    class="text-danger">*</span> Feedback</th>
+                                                                    class="text-danger">*</span> Please provide feedback
+                                                                after arrival at INTEC</th>
                                                             <td colspan="4" style="vertical-align: middle">
                                                                 <textarea class="form-control" id="textarea" rows="3" name="feedback" required></textarea>
                                                             </td>
