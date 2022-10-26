@@ -30,6 +30,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreAduanRequest;
 use App\Http\Requests\StoreEditAduanRequest;
 use App\Http\Requests\StorePembaikanRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 
