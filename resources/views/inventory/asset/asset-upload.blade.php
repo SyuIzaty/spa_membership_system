@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
+<main id="js-page-content" role="main" class="page-content">
     <div class="subheader">
         <h1 class="subheader-title">
         <i class='subheader-icon fal fa-upload'></i>Bulk Upload
@@ -22,7 +22,7 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        
+
                         @if($errors->any())
                             <div class="alert alert-danger">
                                 <button type="button" class="close" data-dismiss="alert">x</button>
@@ -31,6 +31,7 @@
                                     @endforeach
                             </div>
                         @endif
+
                         @if (Session::has('success'))
                             <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('success') }}</div>
                         @endif
@@ -86,10 +87,6 @@
                                                             <td>CODE ID</td>
                                                             <td>CODE NAME</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Code ID"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Code Name"></td>
-                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($code as $codes)
@@ -129,18 +126,6 @@
                                                             <td>DEPARTMENT</td>
                                                             <td>TYPE CODE</td>
                                                             <td>ASSET TYPE NAME</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="hasinput">
-                                                                <select id="data_department" name="data_department" class="form-control">
-                                                                    <option value="">All</option>
-                                                                    @foreach($data_department as $data_departments)
-                                                                        <option value="{{$data_departments->department_name}}">{{ $data_departments->department_name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Type Code"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Type Name"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -182,10 +167,6 @@
                                                             <td>CLASS CODE</td>
                                                             <td>CLASS NAME</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Code"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
-                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($class as $classes)
@@ -224,10 +205,6 @@
                                                         <tr class="bg-primary-50 text-center">
                                                             <td>STATUS CODE</td>
                                                             <td>STATUS NAME</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Status Code"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Status Name"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -270,10 +247,6 @@
                                                             <td>ACQUISITION CODE</td>
                                                             <td>ACQUISITION NAME</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Acquisition Code"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Acquisition Name"></td>
-                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($acquisition as $acq)
@@ -313,10 +286,6 @@
                                                             <td>AVAILABILITY CODE</td>
                                                             <td>AVAILABILITY NAME</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Availibility Code"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Availibility Name"></td>
-                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($availability as $availabilitys)
@@ -353,25 +322,17 @@
                                                 <table class="table table-bordered" style="width: 100%" id="custodian_list">
                                                     <thead>
                                                         <tr class="bg-primary-50 text-center">
-                                                            <td>CUSTODIAN ID</td>
-                                                            <td>CUSTODIAN NAME</td>
-                                                            <td>CUSTODIAN POSITION</td>
-                                                            <td>CUSTODIAN DEPARTMENT</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Custodian ID"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Custodian Name"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Custodian Position"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Custodian Department"></td>
+                                                            <td> ID</td>
+                                                            <td> NAME</td>
+                                                            <td> DEPARTMENT</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($custodian as $custodians)
+                                                        @foreach ($staff as $staffs)
                                                             <tr align="center">
-                                                                <td>{{ $custodians->id ?? '--' }}</td>
-                                                                <td>{{ $custodians->name ?? '--' }}</td>
-                                                                <td>{{ $custodians->staff->staff_position ?? '--' }}</td>
-                                                                <td>{{ $custodians->staff->staff_dept ?? '--' }}</td>
+                                                                <td>{{ $staffs->staff_id ?? '--' }}</td>
+                                                                <td>{{ $staffs->staff_name ?? '--' }}</td>
+                                                                <td>{{ $staffs->staff_dept ?? '--' }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -380,7 +341,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -390,7 +350,6 @@
             </div>
         </div>
     </div>
-
 </main>
 @endsection
 
@@ -401,31 +360,6 @@
     {
         $('#data_department').select2();
 
-        $('#code_list thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
         var table = $('#code_list').DataTable({
             columnDefs: [],
                 orderCellsTop: true,
@@ -433,35 +367,9 @@
                 "initComplete": function(settings, json) {
                 }
         });
-
     });
 
     $(document).ready(function() {
-
-        $('#type_list thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
 
         var table = $('#type_list').DataTable({
             columnDefs: [],
@@ -470,35 +378,9 @@
                 "initComplete": function(settings, json) {
                 }
         });
-
     });
 
     $(document).ready(function() {
-
-        $('#class_list thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
 
         var table = $('#class_list').DataTable({
             columnDefs: [],
@@ -507,35 +389,9 @@
                 "initComplete": function(settings, json) {
                 }
         });
-
     });
 
     $(document).ready(function() {
-
-        $('#status_list thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
 
         var table = $('#status_list').DataTable({
             columnDefs: [],
@@ -544,35 +400,9 @@
                 "initComplete": function(settings, json) {
                 }
         });
-
     });
 
     $(document).ready(function() {
-
-        $('#acquisition_list thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
 
         var table = $('#acquisition_list').DataTable({
             columnDefs: [],
@@ -581,35 +411,9 @@
                 "initComplete": function(settings, json) {
                 }
         });
-
     });
 
     $(document).ready(function() {
-
-        $('#availability_list thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
 
         var table = $('#availability_list').DataTable({
             columnDefs: [],
@@ -618,35 +422,9 @@
                 "initComplete": function(settings, json) {
                 }
         });
-
     });
 
     $(document).ready(function() {
-
-        $('#custodian_list thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
 
         var table = $('#custodian_list').DataTable({
             columnDefs: [],
@@ -655,7 +433,6 @@
                 "initComplete": function(settings, json) {
                 }
         });
-
     });
 
 </script>

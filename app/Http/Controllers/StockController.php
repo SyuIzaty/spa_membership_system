@@ -19,6 +19,7 @@ use Response;
 use Auth;
 use File;
 use DB;
+use App\Staff;
 use App\User;
 
 class StockController extends Controller
@@ -219,14 +220,14 @@ class StockController extends Controller
         $image = StockImage::where('stock_id', $id)->get();
         $transaction = StockTransaction::where('stock_id', $id)->first();
         $department = AssetDepartment::all();
-        $user = User::orderBy('name')->get();
+        $staff = Staff::orderBy('staff_name')->get();
 
         $total_bal = 0;
         foreach($stock->transaction as $list){
             $total_bal += ($list->stock_in - $list->stock_out);
         }
 
-        return view('inventory.stock.stock-detail', compact('stock', 'image', 'department', 'transaction', 'user', 'total_bal'))->with('no', 1);
+        return view('inventory.stock.stock-detail', compact('stock', 'image', 'department', 'transaction', 'staff', 'total_bal'))->with('no', 1);
     }
 
     public function deleteImages($id, $stock_id)

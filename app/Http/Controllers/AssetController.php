@@ -33,6 +33,7 @@ use Response;
 use Auth;
 use File;
 use DB;
+use App\Staff;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AssetController extends Controller
@@ -1460,7 +1461,7 @@ class AssetController extends Controller
         $code = AssetCodeType::all();
         $acquisition = AssetAcquisition::all();
         $availability = AssetAvailability::all();
-        $custodian = User::orderBy('name')->get();
+        $staff = Staff::orderBy('staff_name')->get();
         $data_department = AssetDepartment::all();
         $class = AssetClass::all();
 
@@ -1477,7 +1478,7 @@ class AssetController extends Controller
             });
         }
 
-        return view('inventory.asset.asset-upload', compact('code','type','acquisition','availability','custodian','data_department','class'));
+        return view('inventory.asset.asset-upload', compact('code','type','acquisition','availability','staff','data_department','class'));
     }
 
     public function assetTemplate()

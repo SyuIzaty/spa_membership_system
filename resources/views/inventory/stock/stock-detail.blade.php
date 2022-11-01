@@ -483,8 +483,8 @@
                                             <td colspan="7">
                                                 <select class="form-control supply_to" name="supply_to" id="supply_to">
                                                     <option value=""> Please select </option>
-                                                    @foreach ($user as $usr)
-                                                        <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->id }} - {{ $usr->name }}</option>
+                                                    @foreach ($staff as $staffs)
+                                                        <option value="{{ $staffs->staff_id }}" {{ old('supply_to') ==  $staffs->staff_id  ? 'selected' : '' }}>{{ $staffs->staff_id }} - {{ $staffs->staff_name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('supply_to')
@@ -637,8 +637,8 @@
                                         <td colspan="7">
                                             <select class="form-control supply" name="supply" id="supply">
                                                 <option value=""> Please Select </option>
-                                                @foreach ($user as $usr)
-                                                    <option value="{{ $usr->id }}" {{ old('supply') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
+                                                @foreach ($staff as $staffs)
+                                                    <option value="{{ $staffs->staff_id }}" {{ old('supply') ==  $staffs->staff_id  ? 'selected' : '' }}>{{ $staffs->staff_id }} - {{ $staffs->staff_name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('supply')
