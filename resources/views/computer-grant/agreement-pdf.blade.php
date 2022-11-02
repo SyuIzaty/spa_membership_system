@@ -250,10 +250,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Name: SITI MARYAM NURUDDIN</td>
+                                    <td>Name: SAIFUL HAWARI KAMAL</td>
                                 </tr>
                                 <tr>
-                                    <td>Position: EXECUTIVE</td>
+                                    <td>Position: IT MANAGER</td>
                                 </tr>
                                 <tr>
                                     <td>Date:</td>
