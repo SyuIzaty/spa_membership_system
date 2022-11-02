@@ -40,7 +40,7 @@
                                                         <td>
                                                             <select name="custodian_id[]" id="custodian_id" class="custodian_id form-control">
                                                                 <option value="">Select Manager</option>
-                                                                @foreach ($members as $member) 
+                                                                @foreach ($members as $member)
                                                                     <option value="{{ $member->id }}" {{ old('custodian_id') ? 'selected' : '' }}>{{ $member->name }}</option>
                                                                 @endforeach
                                                             </select>
@@ -64,7 +64,7 @@
                                     <div class="card-header">
                                         <p class="card-title w-100" style="font-weight: 500">Manager List</p>
                                     </div>
-                                
+
                                     <div class="card-body">
                                         <div class="col-md-12">
                                             @if (Session::has('message'))
@@ -85,14 +85,14 @@
                                                         <td>
                                                             <b>{{ $clo->custodian->name }}</b><br>
                                                             Department : {{ isset($clo->custodian->staff->staff_dept) ? $clo->custodian->staff->staff_dept : '--' }}<br>
-                                                            Phone no : {{ $clo->custodian->staff->staff_phone }}<br>
-                                                            Email : {{ $clo->custodian->staff->staff_email }}
+                                                            Phone no : {{ isset($clo->custodian->staff->staff_phone) ? $clo->custodian->staff->staff_phone : '--' }}<br>
+                                                            Email : {{ isset($clo->custodian->staff->staff_email) ? $clo->custodian->staff->staff_email : '--' }}
                                                         </td>
                                                         <td align="center" style="vertical-align: middle">
-                                                            <form action="{{route('deleteCustodian', $clo->id)}}" method="POST" class="delete_form"> 
-                                                                @method('DELETE')  
+                                                            <form action="{{route('deleteCustodian', $clo->id)}}" method="POST" class="delete_form">
+                                                                @method('DELETE')
                                                                 @csrf
-                                                                <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i> Delete</button>               
+                                                                <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i> Delete</button>
                                                             </form>
                                                         </td>
                                                     </tr>
@@ -107,8 +107,8 @@
                         </div>
                     </div>
                 </div>
-                    
-                 
+
+
             </div>
         </div>
     </div>
@@ -131,14 +131,14 @@
             <td>
                 <select name="custodian_id[]" class="custodians_id form-control">
                     <option value="">Select Manager</option>
-                    @foreach ($members as $member) 
+                    @foreach ($members as $member)
                         <option value="{{ $member->id }}" {{ old('custodian_id') ? 'selected' : '' }}>{{ $member->name }}</option>
                     @endforeach
                 </select>
             </td>
             <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
             </tr>
-            `); 
+            `);
             $('.custodians_id').select2();
         });
 
@@ -217,7 +217,7 @@
                     form[0].submit();
                     Swal.fire({ text: "Successfully delete the data.", icon: 'success'
                 });
-            } 
+            }
         });
     });
 

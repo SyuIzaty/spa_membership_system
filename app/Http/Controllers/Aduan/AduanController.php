@@ -1902,7 +1902,7 @@ class AduanController extends Controller
 
         $res[] = ['Status','Jumlah'];
         foreach ($juruteknik as $key => $value) {
-            $res[++$key] = [$value->kod_status, (int)$value->count];
+            $res[++$key] = [$value->status_aduan, (int)$value->count];
         }
 
         $senarai = User::whereHas('roles', function($query){
