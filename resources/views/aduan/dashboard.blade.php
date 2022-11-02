@@ -17,7 +17,7 @@
     }
 </style>
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
-    
+
     <div class="row">
         <div class="col-xl-12">
             <div id="panel-1" class="panel">
@@ -72,7 +72,7 @@
                                             @role('Technical Staff')
                                                 <div class="col-md-6 col-sm-12 mb-4">
                                                     <div class="card">
-                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> </div>
+                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
                                                         <div class="card-body">
                                                             <div id="chart5" style="height: 500px"></div>
                                                         </div>
@@ -106,7 +106,7 @@
                                             @role('Technical Staff')
                                                 <div class="col-md-6 col-sm-12 mb-4">
                                                     <div class="card">
-                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> </div>
+                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
                                                         <div class="card-body">
                                                             <div id="chart6" style="height: 500px"></div>
                                                         </div>
@@ -124,7 +124,7 @@
                 @role('Technical Admin')
                     <div class="panel-container show">
                         <div class="panel-content">
-                            
+
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="accordion accordion-outline" id="js_demo_accordion-3">
@@ -180,13 +180,13 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                     
+
                                         <div class="card">
                                             <div class="card-header">
                                                 <i class="fal fa-adjust width-2 fs-xl"></i>
                                                 JUMLAH STATUS TERKINI
                                             </div>
-                                             
+
                                                 <div class="card-body">
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered" style="width: 100%" >
@@ -206,12 +206,12 @@
                                                         </table>
                                                     </div>
                                                 </div>
-                                             
+
                                         </div>
-                                    
+
                                 </div>
                             </div>
-                        
+
                         </div>
                     </div>
                 @endrole
@@ -275,7 +275,7 @@
             </div>
         </div>
     </div>
-    
+
 </main>
 @endsection
 
@@ -320,7 +320,7 @@
 
     });
 
-    $(function () {    
+    $(function () {
         var aduan = <?php echo $aduan; ?>;
         console.log(aduan);
         google.charts.load('current', {'packages':['corechart']});
@@ -335,14 +335,14 @@
                 fontSize: 16,
             },
             bar: {groupWidth: "80%"},
-            borderColor: 
+            borderColor:
                 'rgb(135, 48, 14)',
             legend: { position: 'bottom'},
             is3D: true,
-            } 
+            }
             var chart = new google.visualization.PieChart(document.getElementById('chart1'));
             chart.draw(data, options);
-            
+
         }
 
     })
@@ -364,7 +364,7 @@
             bar: {groupWidth: "80%"},
             legend: { position: 'bottom'},
             is3D: true,
-            } 
+            }
             var chart = new google.visualization.PieChart(document.getElementById('chart2'));
             chart.draw(data, options);
         }
@@ -387,13 +387,13 @@
             bar: {groupWidth: "80%"},
             legend: { position: 'bottom'},
             is3D: true,
-            } 
+            }
             var chart = new google.visualization.PieChart(document.getElementById('chart5'));
             chart.draw(data, options);
         }
     })
 
-    $(function () {    
+    $(function () {
         var aduan = <?php echo $aduan; ?>;
         console.log(aduan);
         google.charts.load('current', {'packages':['corechart']});
@@ -408,10 +408,10 @@
                 fontSize: 16,
             },
             bar: {groupWidth: "80%"},
-            borderColor: 
+            borderColor:
                 'rgb(135, 48, 14)',
             legend: { position: 'bottom'},
-            } 
+            }
             var chart = new google.visualization.BarChart(document.getElementById('chart3'));
             chart.draw(data, options);
         }
@@ -434,7 +434,7 @@
             },
             bar: {groupWidth: "80%"},
             legend: { position: 'bottom'},
-            } 
+            }
             var chart = new google.visualization.BarChart(document.getElementById('chart4'));
             chart.draw(data, options);
         }
@@ -456,7 +456,7 @@
             },
             bar: {groupWidth: "80%"},
             legend: { position: 'bottom'},
-            } 
+            }
             var chart = new google.visualization.BarChart(document.getElementById('chart6'));
             chart.draw(data, options);
         }

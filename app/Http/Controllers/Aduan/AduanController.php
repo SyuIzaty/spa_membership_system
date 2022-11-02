@@ -1886,9 +1886,8 @@ class AduanController extends Controller
         ->leftJoin('cms_aduan as tblAduan','tblAduan.id','=','tblJuru.id_aduan')
         ->leftJoin('cms_status_aduan as tblStatus','tblStatus.kod_status','=','tblAduan.status_aduan')
         ->groupBy('tblJuru.juruteknik_bertugas','tblAduan.status_aduan','tblStatus.nama_status')
+        ->where('tblJuru.juruteknik_bertugas', Auth::user()->id)
         ->get();
-
-        $juruteknik = $data->where('juruteknik_bertugas', Auth::user()->id)->toArray();
 
         $result[] = ['Status','Jumlah'];
         foreach ($aduan as $key => $value) {
@@ -1901,7 +1900,7 @@ class AduanController extends Controller
         }
 
         $res[] = ['Status','Jumlah'];
-        foreach ($juruteknik as $key => $value) {
+        foreach ($data as $key => $value) {
             $res[++$key] = [$value->status_aduan, (int)$value->count];
         }
 
