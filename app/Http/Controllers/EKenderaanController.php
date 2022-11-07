@@ -436,6 +436,11 @@ class EKenderaanController extends Controller
 
     public function operationVerifyApplication(Request $request)
     {
+        $validated = $request->validate([
+            'driver'   => 'required',
+            'vehicle'   => 'required',
+        ]);
+
         $data =EKenderaan::where('id', $request->id)->first();
         $data->update([
             'operation_approval' => 'Y',

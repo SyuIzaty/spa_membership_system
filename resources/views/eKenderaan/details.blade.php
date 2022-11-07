@@ -85,6 +85,19 @@
                                 </div>
                             @enderror
 
+                            @error('driver')
+                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
+                                    <i class="icon fal fa-check-circle"></i> {{ $message }}
+                                </div>
+                            @enderror
+
+                            @error('vehicle')
+                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
+                                    <i class="icon fal fa-check-circle"></i> {{ $message }}
+                                </div>
+                            @enderror
+
+
                             <div class="panel-container show">
                                 <div class="panel-content">
                                     <div class="table-responsive">
@@ -152,7 +165,8 @@
                                                     </td>
                                                     <th style="vertical-align: middle">H/P No.</th>
                                                     <td colspan="2">
-                                                        <input class="form-control" value="{{ $data->phone_no }}" readonly>
+                                                        <input class="form-control" value="{{ $data->phone_no }}"
+                                                            readonly>
                                                     </td>
                                                 </tr>
                                                 <tr>
