@@ -555,7 +555,8 @@ class ComputerGrantController extends Controller
 
         $data = [
             'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user->staff_name,
-            'emel'     => 'Your proof of purchased device has been verified on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to IDS system to make agreement declaration.',
+            'emel'     => 'Your proof of purchased device has been verified on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Finance Department will process the reimbursement.
+                           Any information regarding the reimbursement, please contact Finance Department.',
         ];
 
         Mail::send('computer-grant.email', $data, function ($message) use ($user_email) {

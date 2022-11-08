@@ -510,7 +510,7 @@
                                                         <tr>
                                                             <th width="20%" style="vertical-align: top"><span
                                                                     class="text-danger">*</span> Please provide feedback
-                                                                after arrival at INTEC</th>
+                                                                upon arrival at INTEC</th>
                                                             <td colspan="4" style="vertical-align: middle">
                                                                 <textarea class="form-control" id="textarea" rows="3" name="feedback" required></textarea>
                                                             </td>

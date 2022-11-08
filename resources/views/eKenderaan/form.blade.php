@@ -208,7 +208,7 @@
                                                     {{-- <button type="button" id="1" class="btn_remove_staff btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed float-right"><i class="fal fa-times"></i></button> --}}
                                                 </th>
                                                 <tr class="bg-info-50">
-                                                    <td colspan="6">Click plus button on the right to add passenger details. Total of passenger including staff & student limited to 24 persons only.
+                                                    <td colspan="6">Click plus button on the right to add staff id. Total of passenger including staff & student limited to 24 persons only.
                                                         <button type="button" id="btnstf"
                                                             class="btn btn-sm btn-warning btn-icon rounded-circle waves-effect waves-themed float-right"><i
                                                                 class="fal fa-plus"></i>
@@ -228,7 +228,7 @@
                                                     {{-- <button type="button" id="1" class="btn_remove_student btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed float-right"><i class="fal fa-times"></i></button> --}}
                                                 </th>
                                                 <tr class="bg-info-50">
-                                                    <td colspan="6">Click plus button on the right to add passenger details. Total of passenger including staff & student limited to 24 persons only.
+                                                    <td colspan="6">Click plus button on the right to add student id. Total of passenger including staff & student limited to 24 persons only.
                                                         <button type="button" id="btnstd"
                                                             class="btn btn-sm btn-warning btn-icon rounded-circle waves-effect waves-themed float-right"><i
                                                                 class="fal fa-plus"></i>

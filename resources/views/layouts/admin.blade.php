@@ -246,7 +246,7 @@
                             <li>
                                 <a href="/eKenderaan-list/1" title="pending" data-filter-tags="pending">
                                     <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.pending">Pending Application List</span>
+                                    <span class="nav-link-text" data-i18n="nav.pending">Application List</span>
                                 </a>
                             </li>
                         @endcan
