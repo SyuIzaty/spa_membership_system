@@ -51,9 +51,9 @@
                                         class="icon fal fa-check-circle"></i> {{ $message }}</div>
                             @enderror
 
-                            @error('office_no')
+                            @error('waitingarea')
                                 <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;"> <i
-                                        class="icon fal fa-check-circle"></i> {{ $message }}</div>
+                                        class="icon fal fa-check-circle"></i> The Waiting Area field is required.</div>
                             @enderror
 
 

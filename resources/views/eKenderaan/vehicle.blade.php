@@ -76,7 +76,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Name</span>
                                 </div>
-                                <input type="text" id="name" name="name" class="form-control" required>
+                                <input type="text" name="name" class="form-control" required>
                             </div>
                         </div>
 
@@ -85,7 +85,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Plate No.</span>
                                 </div>
-                                <input type="text" id="plate_no" name="plate_no" class="form-control" required>
+                                <input type="text" name="plate_no" class="form-control" required>
                             </div>
                         </div>
 

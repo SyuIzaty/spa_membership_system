@@ -76,7 +76,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Name</span>
                                 </div>
-                                <input type="text" id="name" name="name" class="form-control" required>
+                                <input type="text" name="name" class="form-control" required>
                             </div>
                         </div>
 
@@ -85,7 +85,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Staff ID</span>
                                 </div>
-                                <input type="text" id="staff_id" name="staff_id" class="form-control" required>
+                                <input type="text" name="staff_id" class="form-control" required>
                             </div>
                         </div>
 

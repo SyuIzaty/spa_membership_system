@@ -220,6 +220,13 @@ class EKenderaanController extends Controller
 
         $validated = $request->validate([
             'hp_no'   => 'required|regex:/[0-9]/|min:10|max:11',
+            'departdate'   => 'required',
+            'departtime'   => 'required',
+            'returndate'   => 'required',
+            'returntime'   => 'required',
+            'destination'  => 'required',
+            'waitingarea'  => 'required',
+            'purpose'      => 'required',
         ], [
             'hp_no.min'      => 'Phone number does not match the format!',
             'hp_no.max'      => 'Phone number does not match the format!',
