@@ -219,7 +219,7 @@ class EKenderaanController extends Controller
         $returntime = Carbon::createFromFormat('h:i a', $request->returntime)->format('H:i:s');
 
         $validated = $request->validate([
-            'hp_no'   => 'required|regex:/[0-9]/|min:10|max:11',
+            'hp_no'   => 'required|numeric|digits_between:10,11',
             'departdate'   => 'required',
             'departtime'   => 'required',
             'returndate'   => 'required',
@@ -228,9 +228,6 @@ class EKenderaanController extends Controller
             'waitingarea'  => 'required',
             'purpose'      => 'required',
         ], [
-            'hp_no.min'      => 'Phone number does not match the format!',
-            'hp_no.max'      => 'Phone number does not match the format!',
-            'hp_no.regex'    => 'Phone number must be number only!',
         ]);
 
         $application = eKenderaan::create([
@@ -284,7 +281,7 @@ class EKenderaanController extends Controller
 
         if (isset($file)) {
             $originalName = time().$file->getClientOriginalName();
-            $request->file('attachment')->storeAs('eKenderaan', $originalName, 'minio');
+            $request->file('attachment')->storeAs('/eKenderaan', $originalName);
             eKenderaanAttachments::create([
                 'ekn_details_id' => $application->id,
                 'upload'         => $originalName,

@@ -56,6 +56,11 @@
                                         class="icon fal fa-check-circle"></i> The Waiting Area field is required.</div>
                             @enderror
 
+                            @if($errors->any())
+                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
+                                    <i class="icon fal fa-exclamation-circle"></i> {{ $errors->first() }}
+                                </div>
+                            @endif
 
                             <div class="panel-container show">
                                 <div class="panel-content">
@@ -399,6 +404,13 @@
             dynamic: false,
             dropdown: true,
             scrollbar: true
+        });
+
+        $('#departdate').on('change', function() {
+        $('#returndate').datepicker("option", "minDate", $('#departdate').datepicker('getDate'));
+        });
+        $('#returndate').on('change', function() {
+        $('#departdate').datepicker("option", "maxDate", $('#returndate').datepicker('getDate'));
         });
     </script>
 @endsection
