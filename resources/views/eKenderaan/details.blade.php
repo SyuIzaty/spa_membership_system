@@ -352,7 +352,7 @@
                                             <input type="hidden" id="id" name="id"
                                                 value="{{ $data->id }}">
                                             <button type="submit"
-                                                class="btn btn-warning ml-auto float-right mr-2 mt-2 mb-4 waves-effect waves-themed">
+                                                class="btn btn-warning ml-auto float-right mr-2 mt-2 mb-4 waves-effect waves-themed verify">
                                                 <i class="fal fa-check"></i> Verify Application
                                             </button>
                                             {!! Form::close() !!}
@@ -573,6 +573,8 @@
 @section('script')
     <script>
         $(document).ready(function() {
+            $('#vehicle,#driver').select2();
+
             var id = @json($id);
 
             var table = $('#passenger').DataTable({
@@ -626,11 +628,13 @@
             $('.click').click(function() {
                 $('.remark').show();
                 $('.click').hide();
+                $('.verify').hide();
             });
 
             $('.reject-cancel').click(function() {
                 $('.remark').hide();
                 $('.click').show();
+                $('.verify').show();
             });
 
             $('.operation').hide();

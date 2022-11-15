@@ -268,6 +268,8 @@
 
    $(document).ready(function()
    {
+    $('#waiting_area').select2();
+
        //table staff
         $('#btnstf').click(function()
         {
