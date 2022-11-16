@@ -40,9 +40,9 @@ Route::group(['middleware' => 'auth'], function () {
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');
     Route::post('/eKenderaan-application', 'EKenderaanController@store');
-    Route::get('/search-id', 'EKenderaanController@searchID');
+    Route::get('/findStaffID', 'EKenderaanController@findStaffID');
+    Route::get('/findStudendID', 'EKenderaanController@findStudID');
     Route::post('/add-passenger', 'EKenderaanController@addPassenger');
-    Route::get('/search-staff', 'EKenderaanController@searchStaff');
     Route::get('/ekenderaan-application', 'EKenderaanController@application');
     Route::post('/get-eKenderaan-list', 'EKenderaanController@getList');
     Route::get('/eKenderaan-list/{id}', 'EKenderaanController@applicationList');

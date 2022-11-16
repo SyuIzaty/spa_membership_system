@@ -221,7 +221,10 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="text-center">
-                                                    <th colspan="2">ID</th>
+                                                    <th>ID</th>
+                                                    <th>IC</th>
+                                                    <th>NAME</th>
+                                                    <th>DEPARTMENT</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -241,7 +244,10 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="text-center">
-                                                    <th colspan="2">ID</th>
+                                                    <th>ID</th>
+                                                    <th>IC</th>
+                                                    <th>NAME</th>
+                                                    <th>PROGRAMME</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -278,6 +284,32 @@
        //table staff
         $('#btnstf').click(function()
         {
+            if($('.staff_id').val()!=''){
+                findID($('.staff_id'));
+            }
+            $(document).on('change','.staff_id',function(){
+                var a = $(this).attr("id");
+                findID($(this), a);
+            });
+
+            function findID(elem, a){
+                var staffID=elem.val();
+
+                $.ajax({
+                    type:'get',
+                    url:'{!!URL::to('findStaffID')!!}',
+                    data:{'id':staffID},
+                    success:function(data)
+                    {
+                        console.log(a)
+                        $('.staff_ic'+a).val(data.staff_ic);
+                        $('.staff_name'+a).val(data.staff_name);
+                        $('.staff_dept'+a).val(data.staff_dept);
+
+                    },
+                });
+            }
+
             i++;
             if (i<25)
             {
@@ -285,10 +317,21 @@
             <tr id="row${i}">
                 <div class="form-group">
                     <td>
-                        <input type="text" id="staff_id" name="staff_id[]" class="form-control staff_id" value="{{old('staff_id')}}">
-                            @error('staff_id')
-                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                            @enderror
+                        <select class="form-control staff_id" id="${i}" name="staff_id[]" required>
+                            <option value="" selected disabled>Please Select</option>
+                            @foreach ($staff as $s)
+                                <option value="{{ $s->staff_id }}">{{ $s->staff_id }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" id="staff_ic" name="staff_ic[]" class="form-control staff_ic${i}" disabled>
+                    </td>
+                    <td>
+                        <input type="text" id="staff_name" name="staff_name[]" class="form-control staff_name${i}" disabled>
+                    </td>
+                    <td>
+                        <input type="text" id="staff_dept" name="staff_dept[]" class="form-control staff_dept${i}" disabled>
                     </td>
                     <td class="text-center" style="width: 10%;">
                         <button type="button" id="${i}" class="btn_remove btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
@@ -296,6 +339,7 @@
                 </div>
             </tr>`);
             }
+            $('.staff_id').select2();
         });
 
         var i=0;
@@ -317,24 +361,60 @@
 
         $('#btnstd').click(function()
         {
+            if($('.stud_id').val()!=''){
+                findStudID($('.stud_id'));
+            }
+            $(document).on('change','.stud_id',function(){
+                var b = $(this).attr("id");
+                findStudID($(this), b);
+            });
+
+            function findStudID(elem, b){
+                var studID=elem.val();
+
+                $.ajax({
+                    type:'get',
+                    url:'{!!URL::to('findStudendID')!!}',
+                    data:{'id':studID},
+                    success:function(data)
+                    {
+                        $('.stud_ic'+b).val(data.students_ic);
+                        $('.stud_name'+b).val(data.students_name);
+                        $('.stud_dept'+b).val(data.programmes.programme_name);
+
+                    },
+                });
+            }
             s++;
             if (s<25)
             {
                 $('#student').append(`
-                <tr class="row${s}">
-                    <div class="form-group">
-                        <td>
-                            <input type="text" id="student_id" name="student_id[]" class="form-control student_id" value="{{old('student_id')}}">
-                                @error('student_id')
-                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                @enderror
-                        </td>
-                        <td class="text-center" style="width: 10%;">
-                            <button type="button" id="${s}" class="btn_remove_stud btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
-                        </td>
-                    </div>
-                </tr>`);
+                <tr id="row${s}">
+                <div class="form-group">
+                    <td>
+                        <select class="form-control stud_id" id="${s}" name="student_id[]" required>
+                            <option value="" selected disabled>Please Select</option>
+                            @foreach ($student as $s)
+                                <option value="{{ $s->students_id }}">{{ $s->students_id }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" id="stud_ic" name="stud_ic[]" class="form-control stud_ic${s}" disabled>
+                    </td>
+                    <td>
+                        <input type="text" id="stud_name" name="stud_name[]" class="form-control stud_name${s}" disabled>
+                    </td>
+                    <td>
+                        <input type="text" id="stud_dept" name="stud_dept[]" class="form-control stud_dept${s}" disabled>
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        <button type="button" id="${s}" class="btn_remove btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
+                    </td>
+                </div>
+            </tr>`);
             }
+            $('.stud_id').select2();
         });
 
         var s=0;

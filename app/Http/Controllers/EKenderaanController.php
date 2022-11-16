@@ -54,20 +54,10 @@ class EKenderaanController extends Controller
         }
 
         $waitingArea = Department::all();
+        $staff = Staff::all();
+        $student = Student::where('students_status', 'AKTIF')->get();
 
-        return view('eKenderaan.form', compact('name', 'id', 'deptProg', 'waitingArea', 'user'));
-    }
-
-    public function searchStaff(Request $request)
-    {
-        $data =  Staff::select('staff_name', 'staff_ic', 'staff_dept')->where('staff_id', $request->id)->first();
-
-        if ($data == '') {
-            $data = '';
-            return response()->json($data);
-        } else {
-            return response()->json($data);
-        }
+        return view('eKenderaan.form', compact('name', 'id', 'deptProg', 'waitingArea', 'user', 'staff', 'student'));
     }
 
     public function application()
@@ -209,6 +199,25 @@ class EKenderaanController extends Controller
         ->addIndexColumn()
         ->rawColumns(['action','log'])
         ->make(true);
+    }
+
+    public function findStaffID(Request $request)
+    {
+        $data = Staff::select('staff_ic', 'staff_name', 'staff_dept')
+            ->where('staff_id', $request->id)
+            ->first();
+
+        return response()->json($data);
+    }
+
+    public function findStudID(Request $request)
+    {
+        $data = Student::select('*')
+                ->where('students_id', $request->id)
+                ->with(['programmes'])
+                ->first();
+
+        return response()->json($data);
     }
 
     public function store(Request $request)
