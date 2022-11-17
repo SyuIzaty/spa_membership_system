@@ -543,7 +543,16 @@ class EKenderaanController extends Controller
             })
 
             ->addColumn('edit', function ($driver) {
-                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$driver->id.'" data-name="'.$driver->name.'" data-staff_id="'.$driver->staff_id.'" data-status="'.$driver->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                $id = $driver->id;
+                $drivers = eKenderaan::whereHas('driverList', function ($query) use ($id) {
+                    $query->where('driver', $id);
+                })->first();
+
+                if ($drivers != null) {
+                    return '';
+                } else {
+                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$driver->id.'" data-name="'.$driver->name.'" data-staff_id="'.$driver->staff_id.'" data-status="'.$driver->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                }
             })
 
             ->rawColumns(['status','edit'])
@@ -596,7 +605,15 @@ class EKenderaanController extends Controller
             })
 
             ->addColumn('edit', function ($vehicle) {
-                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$vehicle->id.'" data-name="'.$vehicle->name.'" data-plate_no="'.$vehicle->plate_no.'" data-status="'.$vehicle->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                $vehicles = eKenderaan::whereHas('vehicleList', function ($query) use ($vehicle) {
+                    $query->where('vehicle', $vehicle->id);
+                })->first();
+
+                if ($vehicles != null) {
+                    return '';
+                } else {
+                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$vehicle->id.'" data-name="'.$vehicle->name.'" data-plate_no="'.$vehicle->plate_no.'" data-status="'.$vehicle->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                }
             })
 
             ->rawColumns(['status','edit'])
