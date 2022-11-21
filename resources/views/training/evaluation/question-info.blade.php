@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-folder-open' style="text-transform: uppercase"></i> #{{ $evaluate->id }} : {{ $evaluate->evaluation }} 
+            <i class='subheader-icon fal fa-folder-open' style="text-transform: uppercase"></i> #{{ $evaluate->id }} : {{ $evaluate->evaluation }}
         </h1>
     </div>
 
@@ -16,6 +16,9 @@
                         {{-- EvaluationID : #{{ $evaluate->id }} --}}
                     </h2>
                     <div class="panel-toolbar">
+                        @if($evaluation->first())
+                            <a data-page="/question-pdf/{{ $id }}" type="button" class="btn btn-sm btn-outline-secondary btn-pills waves-effect waves-themed mr-4" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-file-pdf"></i> Download Evaluation</a>
+                        @endif
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                         <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
                         <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
@@ -33,10 +36,11 @@
                                     <div class="card-body m-3">
                                         {{-- @if ($result < 1) --}}
                                             {!! Form::open(['action' => 'TrainingController@storeHeader', 'method' => 'POST'])!!}
+                                            <p><span class="text-danger">*</span> Required fields</p>
                                                 <table class="table table-bordered text-center" id="head_field">
                                                     <tr class="bg-primary-50">
-                                                        <td>Question Header</td>
-                                                        <td>Color</td>
+                                                        <td><span class="text-danger">*</span> Question Header</td>
+                                                        <td><span class="text-danger">*</span> Color</td>
                                                         <td>Action</td>
                                                     </tr>
                                                     <tr>
@@ -60,22 +64,19 @@
                             <div class="col-sm-12 col-md-6 mb-4">
                                 <div class="card card-primary card-outline mb-4">
                                     <div class="card-header">
-                                        <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i> HEADER LIST 
-                                            @if($evaluation->first())
-                                                <a data-page="/question-pdf/{{ $id }}" class="float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-file-pdf" style="color: red; font-size: 20px"></i></a>
-                                            @endif
-                                        </h5>
+                                        <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i> HEADER LIST</h5>
                                     </div>
                                     <div class="card-body m-3">
                                         @if (Session::has('message'))
                                             <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                                         @endif
+                                        <p><span class="text-danger">*</span> Required fields</p>
                                         <table class="table table-bordered headedit" id="headedit">
                                             <thead class="bg-primary-50 text-center">
                                                 <tr>
                                                     <td style="width: 5px">No</td>
-                                                    <td>Question Header</td>
-                                                    <td>Color</td>
+                                                    <td><span class="text-danger">*</span> Question Header</td>
+                                                    <td><span class="text-danger">*</span> Color</td>
                                                 </tr>
                                             </thead>
                                             <tbody data-eid="{{ $id }}">
@@ -118,10 +119,11 @@
                                             <div class="card-body">
                                                 {{-- @if($result < 1) --}}
                                                     {!! Form::open(['action' => 'TrainingController@storeQuestion', 'method' => 'POST'])!!}
+                                                    <p><span class="text-danger">*</span> Required fields</p>
                                                         <table class="table table-bordered text-center" id="question_field{{ $eval->id }}">
                                                             <tr class="bg-primary-50 text-center">
-                                                                <td>Question</td>
-                                                                <td>Type</td>
+                                                                <td><span class="text-danger">*</span> Question</td>
+                                                                <td><span class="text-danger">*</span> Type</td>
                                                                 <td>Action</td>
                                                             </tr>
                                                             <tr class="data-row">
@@ -146,10 +148,10 @@
                                                 {{-- @endif --}}
                                                 <table class="table table-bordered editable mt-5 w-100" id="editable">
                                                     <thead class="bg-primary-50">
-                                                        <tr>
+                                                        <tr class="text-center">
                                                             <td style="width: 5px">No</td>
-                                                            <td style="width: 900px">Question</td>
-                                                            <td>Type</td>
+                                                            <td style="width: 900px"><span class="text-danger">*</span> Question</td>
+                                                            <td><span class="text-danger">*</span> Type</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody data-teid="{{ $eval->evaluation_id }}">
@@ -174,7 +176,7 @@
                             </div>
                     </div>
                 </div>
-                       
+
             </div>
         </div>
     </div>
@@ -185,7 +187,7 @@
 
 <script>
 
-    $(document).ready(function() 
+    $(document).ready(function()
     {
         $('#status, .ques_type, .eval_rate').select2();
 
@@ -319,7 +321,7 @@
                     location.reload();
                 }
             });
-            
+
             $('.category_color').each(function(){
                 var selected = $(this).data('selected');
                 var color = `<input type="hidden" name="color" data-type="changed" class="select_color" value="${selected}"><input type="color" class="color form-control" value="${selected}">`;
@@ -471,7 +473,7 @@
                 }
             });
         });
-       
+
         function printErrorMsg (msg) {
             $(".print-error-msg").find("ul").html('');
             $(".print-error-msg").css('display','block');

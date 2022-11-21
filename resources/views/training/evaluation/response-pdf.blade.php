@@ -1,5 +1,5 @@
 @extends('layouts.public')
-    
+
 @section('content')
 <main id="js-page-content" role="main" class="page-content">
     <div class="row">
@@ -26,7 +26,7 @@
                 </div>
                 <br>
                 <div style="font-style: italic; font-size: 10px">
-                    <p style="float: left">@ Copyright INTEC Education College</p>  
+                    <p style="float: left">@ Copyright INTEC Education College</p>
                     <p style="float: right">Printed Date : {{ date(' d/m/Y ', strtotime( \Carbon\Carbon::now()) )}}</p><br>
                 </div>
         </div>

@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-clone'></i>TRAINING HOUR
+        <i class='subheader-icon fal fa-clone'></i> HOUR MANAGEMENT
         </h1>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        TRAINING HOUR <span class="fw-300"><i>LIST</i></span>
+                         HOUR <span class="fw-300"><i>LIST</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -65,7 +65,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>NEW TRAINING HOUR</h5>
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>NEW HOUR INFO</h5>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'TrainingController@storeHour', 'method' => 'POST']) !!}
@@ -103,7 +103,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>EDIT TRAINING HOUR</h5>
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>EDIT HOUR INFO</h5>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'TrainingController@updateHour', 'method' => 'POST']) !!}
@@ -151,6 +151,7 @@
                             <td width="10%"><label class="form-label" for="year"><span class="text-danger">*</span> Year :</label></td>
                             <td width="10%">
                                 <select class="form-control data_year" name="year" id="year">
+                                    <option value="" selected disabled>Please select</option>
                                     @foreach ($data_years as $data_year)
                                         <option value="{{ $data_year->year }}"  {{ old('year') ==  $data_year->year  ? 'selected' : '' }}>{{ $data_year->year }}</option>
                                     @endforeach

@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card-body">
                     <div class="panel-container show">
                         <div class="panel-content" align="center">
@@ -25,7 +25,7 @@
                                     <div class="table-responsive">
                                         <table class="table table-striped w-100">
                                             <tr>
-                                                <td width="30%" style="vertical-align: middle"><label class="form-label" for="ids"><span class="text-danger">**</span> Staff ID / IC Number :</label></td>
+                                                <td width="30%" style="vertical-align: middle"><label class="form-label" for="ids"><span class="text-danger">**</span> Staff ID/IC :</label></td>
                                                 <td colspan="3"><input class="form-control" id="ids" name="ids" value="{{ $request->ids }}" required></td>
                                                 <td style="vertical-align: middle"><button type="submit" id="btn-search" class="btn btn-sm btn-success float-right"><i class="fal fa-location-arrow"></i></button></td>
                                             <tr>
@@ -71,20 +71,22 @@
                                                         <div class="table-responsive">
                                                             <table id="train" class="table table-bordered table-hover table-striped w-100 mb-1">
                                                                 <thead>
+                                                                    @if($training->upload_image != null)
                                                                     <tr class="text-center">
                                                                         <div class="form-group">
                                                                             <td colspan="6">
                                                                                 @if(isset($training->upload_image))
-                                                                                    <a data-fancybox="gallery" href="/get-train-image/{{ $training->upload_image }}"><img src="/get-train-image/{{ $training->upload_image }}" style="width:100%" class="img-fluid"></a>
-                                                                                @else 
-                                                                                    <img src="{{ URL::to('/') }}/img/default.png" alt="default" style="width:100%">
+                                                                                    <a data-fancybox="gallery" href="/get-train-image/{{ $training->upload_image }}"><img src="/get-train-image/{{ $training->upload_image }}" style="width:50%" class="img-fluid"></a>
+                                                                                @else
+                                                                                    <img src="{{ URL::to('/') }}/img/default.png" alt="default" style="width:50%">
                                                                                 @endif
                                                                             </td>
                                                                         </div>
                                                                     </tr>
+                                                                    @endif
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td width="22%"><label class="form-label"> TRAINING TITLE : </label></td>
+                                                                            <td width="22%"><label class="form-label"> TITLE : </label></td>
                                                                             <td colspan="6">{{ $training->title ?? '--' }}</td>
                                                                         </div>
                                                                     </tr>
@@ -186,9 +188,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            @else 
+                            @else
                                 -- Open Attendance Closed --
-                            @endif 
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -199,7 +201,7 @@
 @endsection
 @section('script')
     <script>
-        
+
         // $("#datek, #cates").change(function(){
         //     $("#form_find").submit();
         // })

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-     
+
 @section('content')
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
@@ -38,10 +38,10 @@
                                         <th>TEMPOH KELEWATAN</th>
                                         <th>STATUS</th>
                                         <th>TAHAP</th>
-                                        <th>TINDAKAN</th> 
+                                        <th>TINDAKAN</th>
                                     </tr>
                                     <tr>
-                                        <td class="hasinput"></td> 
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
                                          <td class="hasinput"><input type="text" class="form-control" placeholder="Lokasi"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Kategori"></td>
@@ -60,7 +60,7 @@
                                             <option value="SEGERA">Segera</option>
                                             <option value="BELUM DITENTUKAN">Belum Ditentukan</option>
                                         </select></td>
-                                        <td class="hasinput"></td> 
+                                        <td class="hasinput"></td>
                                     </tr>
                                 </thead>
                             </table>
@@ -84,7 +84,7 @@
                                         <td colspan="7">
                                             <select class="form-control kod_status" name="kod_status" id="kod_status" required>
                                                 <option value="" disabled selected> Please select </option>
-                                                @foreach ($status as $stat) 
+                                                @foreach ($status as $stat)
                                                     <option value="{{ $stat->kod_status }}" {{ old('kod_status') ==  $stat->kod_status  ? 'selected' : '' }}>{{ $stat->nama_status }}</option>
                                                 @endforeach
                                             </select>
@@ -93,8 +93,8 @@
                                             @enderror
                                     </div>
                                     <div class="footer">
-                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
+                                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -142,15 +142,15 @@
     {
         $('#status_aduan, #tahap_kategori').select2();
 
-        $('#kod_status').select2({ 
-            dropdownParent: $('#crud-modals') 
-        }); 
+        $('#kod_status').select2({
+            dropdownParent: $('#crud-modals')
+        });
 
         $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var id = button.data('id') 
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
 
-            $('.modal-body #id').val(id); 
+            $('.modal-body #id').val(id);
         });
 
         $('#senarai thead tr .hasinput').each(function(i)
@@ -203,7 +203,7 @@
                 "order": [[ 4, "desc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#senarai').on('click', '.btn-delete[data-remote]', function (e) {

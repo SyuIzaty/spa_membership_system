@@ -672,7 +672,7 @@ class TrainingController extends Controller
         //         ->where('b.active', '=', 'Y')
         //         ->pluck('a.staff_id')->toArray();
 
-        $staff = Staff::select('staff_id')->pluck('staff_id')->toArray();
+        $staff = Staff::select('staff_id')->pluck('staff_id')->whereNull('deleted_at')->toArray();
 
         foreach($staff as $key => $value) {
 
@@ -692,6 +692,7 @@ class TrainingController extends Controller
         $list_staff = array_column($trails->toArray(), 'staff_id');
         $data =  Staff::select('id', 'staff_id', 'staff_name')
                 ->whereNotIn('staff_id', $list_staff)
+                ->whereNull('deleted_at')
                 ->take(100)->get();
 
         return response()->json($data);
@@ -1812,15 +1813,18 @@ class TrainingController extends Controller
             $exist = TrainingList::where('evaluation', $evaluate->id)->first();
             if(isset($exist)) {
 
-                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$evaluate->id.'" data-evaluation="'.$evaluate->evaluation.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-                        <a href="/question-info/' . $evaluate->id.'" class="btn btn-sm btn-primary ml-1"><i class="fal fa-eye"></i></a>';
+                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$evaluate->id.'" data-evaluation="'.$evaluate->evaluation.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
 
             } else {
 
                 return '<a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$evaluate->id.'" data-evaluation="'.$evaluate->evaluation.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-                        <a href="/question-info/' . $evaluate->id.'" class="btn btn-sm btn-primary ml-1"><i class="fal fa-eye"></i></a>
                         <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-evaluation/' . $evaluate->id . '"><i class="fal fa-trash"></i></button>';
             }
+        })
+
+        ->addColumn('form', function ($evaluate) {
+
+                return '<a href="/question-info/' . $evaluate->id.'" class="btn btn-sm btn-info ml-1"><i class="fal fa-eye"></i></a>';
         })
 
         ->editColumn('created_at', function ($evaluate) {
@@ -1828,7 +1832,7 @@ class TrainingController extends Controller
             return isset($evaluate->created_at) ? strtoupper(date(' Y-m-d ', strtotime($evaluate->created_at) )) : '--';
         })
 
-        ->rawColumns(['action', 'created_at'])
+        ->rawColumns(['action', 'created_at', 'form'])
         ->make(true);
     }
 

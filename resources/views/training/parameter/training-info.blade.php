@@ -249,7 +249,7 @@
                                                                     <tr align="center">
                                                                         @if(isset($train->upload_image))
                                                                             <td colspan="5">
-                                                                                <a data-fancybox="gallery" href="/get-train-image/{{ $train->upload_image }}"><img src="/get-train-image/{{ $train->upload_image }}" style="width:100%" class="img-fluid mr-2"></a><br><br>
+                                                                                <a data-fancybox="gallery" href="/get-train-image/{{ $train->upload_image }}"><img src="/get-train-image/{{ $train->upload_image }}" style="width:30%" class="img-fluid mr-2"></a><br><br>
                                                                             </td>
                                                                         @else
                                                                             <span>No Image Uploaded</span>

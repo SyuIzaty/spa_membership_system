@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-cog'></i>TRAINING EVALUATION 
+        <i class='subheader-icon fal fa-cog'></i>TRAINING EVALUATION
         </h1>
     </div>
     <div class="row">
@@ -35,12 +35,14 @@
                                         <th>#ID</th>
                                         <th>EVALUATION</th>
                                         <th>CREATED DATE</th>
+                                        <th>FORM</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Evaluation"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                     </tr>
                                 </thead>
@@ -94,7 +96,7 @@
                     {!! Form::open(['action' => 'TrainingController@updateEvaluation', 'method' => 'POST']) !!}
                     <input type="hidden" name="eval_id" id="eval">
                     <p><span class="text-danger">*</span> Required fields</p>
-                    
+
                     <div class="form-group">
                         <td width="15%"><label class="form-label" for="evaluations"><span class="text-danger">*</span> Evaluation :</label></td>
                         <td colspan="5"><input class="form-control" id="evaluations" name="evaluations" style="text-transform: uppercase" required>
@@ -127,12 +129,12 @@
         });
 
         $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var id = button.data('id') 
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
             var evaluation = button.data('evaluation')
 
-            $('.modal-body #eval').val(id); 
-            $('.modal-body #evaluations').val(evaluation); 
+            $('.modal-body #eval').val(id);
+            $('.modal-body #evaluations').val(evaluation);
         })
 
         $('#evaluate thead tr .hasinput').each(function(i)
@@ -172,13 +174,14 @@
                     { className: 'text-center', data: 'id', name: 'id' },
                     { data: 'evaluation', name: 'evaluation' },
                     { className: 'text-center', data: 'created_at', name: 'created_at' },
+                    { className: 'text-center', data: 'form', name: 'form', orderable: false, searchable: false},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 0, "asc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#evaluate').on('click', '.btn-delete[data-remote]', function (e) {

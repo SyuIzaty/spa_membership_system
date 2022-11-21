@@ -2,7 +2,7 @@
 
 @section('content')
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
-    
+
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -10,14 +10,14 @@
                 <div class="card-header bg-primary-50">
                     <div class="d-flex justify-content-center" style="color: black">
                         <div class="p-2">
-                            <center><img src="{{ asset('img/intec_logo_new.png') }}" style="max-width: 100%" class="responsive"/></center><br>
-                            <h4 style="text-align: center; margin-top: -25px">
+                            <center><img src="{{ asset('img/intec_logo_new.png') }}" height="120" width="320" alt="INTEC"/></center><br>
+                            <h4 style="text-align: center">
                                 <b>TRAINING EVALUATION FORM</b>
                             </h4>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card-body">
                     <div class="panel-container show">
                         <div class="p-2 col-md-12">
@@ -66,7 +66,7 @@
                                                             {{ $headers->question_head }}
                                                         </td>
                                                     </tr>
-                                                    <?php 
+                                                    <?php
                                                         $data = \App\TrainingEvaluationHead::where('id', $headers->id)->first();
                                                     ?>
                                                     @foreach($data->trainingEvaluationQuestions->groupBy('head_id') as $questions)
