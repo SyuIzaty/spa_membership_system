@@ -1118,7 +1118,7 @@
                                 <a href="/selfHistory/{{ Auth::user()->id }}" title="History"
                                     data-filter-tags="history">
                                     <i class="fal fa-clock"></i>
-                                    <span class="nav-link-text" data-i18n="nav.history">Self History</span>
+                                    <span class="nav-link-text" data-i18n="nav.history">Declaration History</span>
                                 </a>
                             </li>
                         @endcan

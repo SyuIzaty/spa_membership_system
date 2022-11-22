@@ -16,7 +16,7 @@
                 <i class="subheader-icon fal fa-chart-area"></i> Covid19 <span class="fw-300">Dashboard</span>
             </h1>
         </div>
-         
+
         <div class="row">
             <div class="col-md-12">
                 <div class="accordion accordion-outline" id="js_demo_accordion-3">
@@ -73,7 +73,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" align="center">
+                                    <div class="row col-md-12 mb-6">
+                                        <div class="col-md-1 mb-4">
+                                        </div>
                                         <div class="col-md-2 mb-4">
                                             <div class="js-easy-pie-chart color-danger-500 d-inline-flex" data-percent="{{ $percentA }}" data-piesize="100" data-linewidth="40" data-scalelength="2">
                                             </div>
@@ -84,7 +86,7 @@
                                             </div>
                                             <button class="btn btn-xs btn-outline-primary pl-4 pr-4"><small>CATEGORY B : <b>{{ $categoryB }}</b></small></button>
                                         </div>
-                                        <div class="col-md-4 mb-4">
+                                        <div class="col-md-2 mb-4">
                                             <div class="js-easy-pie-chart color-primary-500 d-inline-flex" data-percent="{{ $percentC }}" data-piesize="100" data-linewidth="40" data-scalelength="2">
                                             </div>
                                             <button class="btn btn-xs btn-outline-primary pl-4 pr-4"><small>CATEGORY C : <b>{{ $categoryC }}</b></small></button>
@@ -100,7 +102,6 @@
                                             <button class="btn btn-xs btn-outline-primary pl-4 pr-4"><small>CATEGORY E : <b>{{ $categoryE }}</b></small></button>
                                         </div>
                                     </div>
-                                    <br><br>
                                     <center>
                                         <a data-fancybox="gallery" class="btn btn-primary btn-pills btn-block waves-effect waves-themed w-25" href="{{asset('img/cvd_category.png')}}">
                                             >> Category Description <<
@@ -115,8 +116,8 @@
                     </div>
                 </div>
             </div>
-            
-            
+
+
         </div>
     </main>
 @endsection

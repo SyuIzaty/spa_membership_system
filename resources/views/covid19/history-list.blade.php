@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-clock'></i>Declaration History Management
+        <i class='subheader-icon fal fa-clock'></i> History List Management
         </h1>
     </div>
     <div class="row">
@@ -65,7 +65,7 @@
 
     $(document).ready(function()
     {
-    
+
         $('#history thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
@@ -115,7 +115,7 @@
                 "order": [[ 5, "desc" ], [ 2, "asc"]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#history').on('click', '.btn-delete[data-remote]', function (e) {

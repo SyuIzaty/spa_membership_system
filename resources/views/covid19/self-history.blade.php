@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        Self History Declaration <span class="fw-300"><i>List</i></span>
+                        Declaration History Declaration <span class="fw-300"><i>List</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -122,10 +122,10 @@
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 3, "desc" ]], 
+                "order": [[ 3, "desc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#history').on('click', '.btn-delete[data-remote]', function (e) {
