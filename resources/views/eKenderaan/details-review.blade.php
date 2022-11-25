@@ -40,9 +40,9 @@
                             <center><img src="{{ asset('img/INTEC_PRIMARY_LOGO.png') }}" style="width: 300px;"></center>
                             <br>
 
-                            @if (Session::has('message'))
-                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;">
-                                    <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}
+                            @if (session()->has('message'))
+                                <div class="alert alert-success">
+                                    {{ session()->get('message') }}
                                 </div>
                             @endif
 
@@ -56,20 +56,25 @@
                                         class="icon fal fa-check-circle"></i> The Waiting Area field is required.</div>
                             @enderror
 
-                            @if($errors->any())
-                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
-                                    <i class="icon fal fa-exclamation-circle"></i> {{ $errors->first() }}
-                                </div>
-                            @endif
-
                             <div class="panel-container show">
                                 <div class="panel-content">
                                     {!! Form::open([
-                                        'action' => 'EKenderaanController@review',
+                                        'action' => 'EKenderaanController@store',
                                         'method' => 'POST',
                                         'enctype' => 'multipart/form-data',
                                     ]) !!}
                                     <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped w-100">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="6" class="bg-warning text-center">
+                                                        <h5>
+                                                            <b>REVIEW APPLICATION</b>
+                                                        </h5>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                        </table>
                                         <table id="applicant" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>
@@ -98,8 +103,8 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         H/P No.</th>
                                                     <td colspan="2">
-                                                        <input class="form-control border border-danger" id="hp_no" name="hp_no"
-                                                            value="{{ old('hp_no') }}"
+                                                        <input class="form-control" id="hp_no" name="hp_no"
+                                                            value="{{ $user_hp }}"
                                                             placeholder="Please insert phone no. eg: 0123456789" required>
                                                     </td>
                                                 </tr>
@@ -107,49 +112,49 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Date</th>
                                                     <td>
-                                                        <input type="text" class="form-control border border-danger" id="departdate"
+                                                        <input type="text" class="form-control" id="departdate"
                                                             name="departdate" placeholder="Please insert departure date"
-                                                            autocomplete="off" value="{{ old('departdate') }}" required>
+                                                            autocomplete="off" value="{{ $departdate }}" required>
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Time</th>
                                                     <td colspan="2">
-                                                        <input class="form-control border border-danger" type="text" id="departtime"
+                                                        <input class="form-control" type="text" id="departtime"
                                                             name="departtime" placeholder="Please insert departure time"
-                                                            autocomplete="off" value="{{ old('departtime') }}" required>
+                                                            autocomplete="off" value="{{ $departtime }}" required>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Date</th>
                                                     <td>
-                                                        <input type="text" class="form-control border border-danger" id="returndate" name="returndate"
-                                                         placeholder="Please insert return date" autocomplete="off" value="{{ old('returndate') }}" required>
+                                                        <input type="text" class="form-control" id="returndate" name="returndate"
+                                                         placeholder="Please insert return date" autocomplete="off" value="{{ $returndate }}" required>
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Time</th>
                                                     <td colspan="2">
-                                                        <input class="form-control border border-danger" type="text" id="returntime" name="returntime"
-                                                            placeholder="Please insert return time" autocomplete="off" value="{{ old('returntime') }}" required>
+                                                        <input class="form-control" type="text" id="returntime" name="returntime"
+                                                            placeholder="Please insert return time" autocomplete="off" value="{{ $returntime }}" required>
                                                         </td>
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Destination (Full Address)</th>
                                                     <td colspan="5" style="vertical-align: middle">
-                                                        <textarea class="form-control border border-danger" id="example-textarea" rows="3" name="destination" required>{{Request::old('destination')}}</textarea>
+                                                        <textarea class="form-control" id="example-textarea" rows="3" name="destination" required>{{ $destination }}</textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Waiting Area</th>
                                                     <td colspan="5">
-                                                        <select class="form-control border border-danger waitingArea" name="waitingarea"
+                                                        <select class="form-control waitingArea" name="waitingarea"
                                                             id="waiting_area" required>
                                                             <option disabled selected>Choose Waiting Area</option>
                                                             @foreach ($waitingArea as $w)
                                                                 <option value="{{ $w->id }}"
-                                                                    {{ old('waitingarea') == $w->id ? 'selected' : '' }}>
+                                                                    {{ $waiting_area == $w->id ? 'selected' : '' }}>
                                                                     {{ $w->department_name }}</option>
                                                             @endforeach
                                                         </select>
@@ -159,22 +164,21 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Purpose</th>
                                                     <td colspan="5" style="vertical-align: middle">
-                                                        <textarea class="form-control border border-danger" id="example-textarea" rows="3" name="purpose" required>{{Request::old('purpose')}}</textarea>
+                                                        <textarea class="form-control" id="example-textarea" rows="3" name="purpose" required>{{ $purpose }}</textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span> Attachment (PDF format only)</th>
                                                     <td colspan="5">
-                                                        @if ($user->category == "STD")
-                                                            <input type="file" class="form-control" accept=".pdf" id="attachment" name="attachment" required>
-                                                            <span style="color: red">*Students are required to upload an approval letter from student affairs. </span>
-                                                        @else
-                                                            <input type="file" class="form-control" accept=".pdf" id="attachment" name="attachment">
-                                                            <span style="color: red">*Students are required to upload an approval letter from student affairs. </span>
+                                                        @if ($image_id != '')
+                                                            <a class="btn btn-primary" target="_blank"
+                                                                href="/temp-file/{{ $image_id }}">
+                                                                <i class="fal fa-download"></i> {{ $originalName }}
+                                                            </a>
+                                                            <input type="hidden" name="temp_file" value="{{ $image_id }}">
+                                                            @else
+                                                                N/A
                                                         @endif
-                                                        @error('attachment')
-                                                            <p style="color: red">{{ $message }}</p>
-                                                        @enderror
                                                     </td>
                                                 </tr>
                                             </thead>
@@ -187,22 +191,8 @@
                                                             <i class="fal fa-user"></i> PASSENGER DETAILS</label>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <th style="vertical-align: middle">Bulk Upload (Student only)
-                                                        <span>
-                                                            <a href="/student-list-excel-format" target="_blank" class="btn btn-warning btn-sm btn-icon rounded-circle waves-effect waves-themed mr-2">
-                                                                <i class="fal fa-info"></i>
-                                                            </a>
-                                                        </span>
-                                                    </th>
-
-                                                    <td colspan="5">
-                                                        <input type="file" name="import_file" accept=".xlsx" class="form-control mb-3">
-                                                    </td>
-                                                </tr>
                                             </thead>
                                         </table>
-                                        <br>
                                         <table id="staff"
                                             class="table table-bordered table-hover table-striped w-100 tablestaff">
                                             <thead>
@@ -222,6 +212,34 @@
                                                     <th>NAME</th>
                                                     <th>DEPARTMENT</th>
                                                 </tr>
+                                                @if ($passenger_staff != null)
+                                                    @foreach ($passenger_staff as $key => $value)
+                                                        @php
+                                                            $staff = App\Staff::where('staff_id', $passenger_staff[$key])->first();
+                                                        @endphp
+
+                                                        <tr id="rowStaff{{$staff->staff_id}}" name="rowStaff{{$staff->staff_id}}">
+                                                            <div class="form-group">
+                                                                <td>
+                                                                    <input type="text" id="staff_id" name="staff_id[]" class="form-control staff_id{{$staff->staff_id}}" value ="{{$staff->staff_id}}" disabled>
+                                                                    <input type="hidden" name="passenger_staff[]" value="{{ $staff->staff_id }}">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" id="staff_ic" name="staff_ic[]" class="form-control staff_ic{{$staff->staff_id}}" value ="{{$staff->staff_id}}" disabled>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" id="staff_name" name="staff_name[]" class="form-control staff_name{{$staff->staff_name}}" value ="{{$staff->staff_name}}" disabled>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" id="staff_dept" name="staff_dept[]" class="form-control staff_dept{{$staff->staff_dept}}" value="{{$staff->staff_dept}}" disabled>
+                                                                </td>
+                                                                <td class="text-center" style="width: 10%;">
+                                                                    <button type="button" id="{{$staff->staff_id}}" class="btn_remove_staff btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
+                                                                </td>
+                                                            </div>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </thead>
                                         </table>
                                         <table id="student"
@@ -244,14 +262,70 @@
                                                     <th>NAME</th>
                                                     <th>PROGRAMME</th>
                                                 </tr>
+                                                @if ($passengerBulk != null)
+                                                    @foreach ($passengerBulk as $key => $value)
+                                                        @php
+                                                            $students = App\Student::where('students_id', $value['ID'])->first();
+                                                        @endphp
+                                                        <tr name ="bulk{{$students->students_id}}">
+                                                            <td>
+                                                                <input type="text" id="{{$students->students_id}}" name="student_id_bulk[]" class="form-control stud_ic{{$students->students_id}}" value="{{$students->students_id}}" disabled>
+                                                                <input type="hidden" name="student_id_bulk[]" value="{{ $students->students_id }}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" id="stud_ic" name="stud_ic[]" class="form-control stud_ic{{$students->students_id}}" value="{{$students->students_id}}" disabled>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" id="stud_name" name="stud_name[]" class="form-control stud_name{{$students->students_id}}" value="{{$students->students_name}}" disabled>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" id="stud_dept" name="stud_dept[]" class="form-control stud_dept{{$students->students_id}}" value="{{$students->programmes->programme_name}}" disabled>
+                                                            </td>
+                                                            <td class="text-center" style="width: 10%;">
+                                                                <button type="button" id="{{$students->students_id}}" class="btn_remove_bulk btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                                @if ($passenger_student != null)
+                                                    @foreach ($passenger_student as $key => $value)
+                                                        @php
+                                                            $students = App\Student::where('students_id', $passenger_student[$key])->first();
+                                                        @endphp
+                                                        <tr name ="student{{$students->students_id}}">
+                                                            <td>
+                                                                <input type="text" id="{{$students->students_id}}" name="student_id_passenger[]" class="form-control stud_id{{$students->students_id}}" value="{{$students->students_id}}" disabled>
+                                                                <input type="hidden" name="passenger_student[]" value="{{ $students->students_id }}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" id="stud_ic" name="stud_ic[]" class="form-control stud_ic{{$students->students_id}}" value="{{$students->students_id}}" disabled>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" id="stud_name" name="stud_name[]" class="form-control stud_name{{$students->students_id}}" value="{{$students->students_name}}" disabled>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" id="stud_dept" name="stud_dept[]" class="form-control stud_dept{{$students->students_id}}" value="{{$students->programmes->programme_name}}" disabled>
+                                                            </td>
+                                                            <td class="text-center" style="width: 10%;">
+                                                                <button type="button" id="{{$students->students_id}}" class="btn_remove_student btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </thead>
                                         </table>
                                     </div>
                                     <div class="table-responsive">
                                         <div class="form-group">
+                                            @if ($image_id != '')
+                                            <a href="#" data-path="{{$image_id}}" style="margin-top: 5px;" class="btn btn-warning float-left btn_cancel"><i class="fal fa-times"></i> Cancel</a>
+                                            @else
+                                            <a href="#" style="margin-top: 5px;" class="btn btn-primary float-left btn_cancel_application"><i class="fal fa-times"></i> Cancel</a>
+                                            @endif
                                             <button style="margin-top: 5px;" class="btn btn-danger float-right"
                                                 id="submit" name="submit"><i class="fal fa-check"></i>
-                                                Submit</button></td>
+                                                Submit
+                                            </button>
                                         </div>
                                     </div>
                                     {!! Form::close() !!}
@@ -274,7 +348,7 @@
 
    $(document).ready(function()
    {
-    $('#waiting_area').select2();
+    $('#waiting_area,#stud,.staff_id').select2();
 
     if($('.staff_id').val()!=''){
                 findID($('.staff_id'));
@@ -293,7 +367,6 @@
                     data:{'id':staffID},
                     success:function(data)
                     {
-                        console.log(a)
                         $('.staff_ic'+a).val(data.staff_ic);
                         $('.staff_name'+a).val(data.staff_name);
                         $('.staff_dept'+a).val(data.staff_dept);
@@ -301,19 +374,21 @@
                     },
                 });
             }
+
        //table staff
         $('#btnstf').click(function()
         {
             i++;
             if (i<25)
             {
+
                 $('#staff').append(`
             <tr id="row${i}">
                 <div class="form-group">
                     <td>
                         <select class="form-control staff_id" id="${i}" name="staff_id[]" required>
                             <option value="" selected disabled>Please Select</option>
-                            @foreach ($staff as $s)
+                            @foreach ($staffs as $s)
                                 <option value="{{ $s->staff_id }}">{{ $s->staff_id }}</option>
                             @endforeach
                         </select>
@@ -332,7 +407,7 @@
                     </td>
                 </div>
             </tr>`);
-            }
+        }
             $('.staff_id').select2();
         });
 
@@ -342,6 +417,12 @@
         {
             var button_id = $(this).attr("id");
             $('#row'+button_id+'').remove();
+        });
+
+        $(document).on('click', '.btn_remove_staff', function()
+        {
+            var button_staff = $(this).attr("id");
+            $("[name='rowStaff"+button_staff+"']").remove();
         });
 
         $('input[name="stf"]').change(function () {
@@ -369,6 +450,7 @@
                     data:{'id':studID},
                     success:function(data)
                     {
+                        console.log(b)
                         $('.stud_ic'+b).val(data.students_ic);
                         $('.stud_name'+b).val(data.students_name);
                         $('.stud_dept'+b).val(data.programmes.programme_name);
@@ -410,7 +492,7 @@
             $('.stud_id').select2();
         });
 
-        var s=0;
+        var s=1;
 
         $(document).on('click', '.btn_remove_stud', function()
         {
@@ -424,22 +506,19 @@
             }
         });
 
+        $(document).on('click', '.btn_remove_bulk', function()
+        {
+            var button_bulk = $(this).attr("id");
+            $("[name='bulk"+button_bulk+"']").remove();
+        });
+
+        $(document).on('click', '.btn_remove_student', function()
+        {
+            var button_student = $(this).attr("id");
+            $("[name='student"+button_student+"']").remove();
+        });
+
    });
-
-
-
-    // $(document).on('click', '.btn_remove_staff', function()
-    //     {
-    //         var button_id = $(this).attr("id");
-    //         $('#staff').hide();
-    //     });
-
-
-    // $(document).on('click', '.btn_remove_student', function()
-    //     {
-    //         $(".tablestudent").hide();
-    //     });
-
 
     //datepicker & timepicker
         $("#departdate").datepicker({
@@ -460,6 +539,7 @@
 
         $('#departtime').timepicker({
             timeFormat: 'h:mm p',
+            interval: 5,
             minTime: '6',
             maxTime: '11:55pm',
             startTime: '6:00',
@@ -470,6 +550,7 @@
 
         $('#returntime').timepicker({
             timeFormat: 'h:mm p',
+            interval: 5,
             minTime: '6',
             maxTime: '11:55pm',
             startTime: '6:00',
@@ -483,6 +564,62 @@
         });
         $('#returndate').on('change', function() {
         $('#departdate').datepicker("option", "maxDate", $('#returndate').datepicker('getDate'));
+        });
+
+        $(".btn_cancel").on('click', function(e) {
+        e.preventDefault();
+
+        let id = $(this).data('path');
+
+            Swal.fire({
+                title: 'Are you sure you want to cancel this application?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Cancel!',
+                cancelButtonText: 'No'
+            }).then(function (e) {
+                if (e.value === true) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/cancel-application/" + id,
+                        data: id,
+                        dataType: "json",
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success: function (response) {
+                        console.log(response);
+                        if(response){
+                            window.location.href ="/ekenderaan-application";
+                    }
+                        }
+                    });
+                }
+                else {
+                    e.dismiss;
+                }
+            }, function (dismiss) {
+                return false;
+            })
+        });
+
+        $(".btn_cancel_application").on('click', function(e) {
+        e.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure you want to cancel this application?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Cancel!',
+                cancelButtonText: 'No'
+            }).then(function (e) {
+                if (e.value === true) {
+                    window.location.href ="/ekenderaan-application";
+                }
+
+            })
         });
     </script>
 @endsection

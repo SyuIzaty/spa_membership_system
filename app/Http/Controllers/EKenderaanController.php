@@ -29,6 +29,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\eKenderaanExportByYear;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\eKenderaanExportByYearMonth;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Illuminate\Support\Facades\Input;
 
 class EKenderaanController extends Controller
 {
@@ -53,7 +55,7 @@ class EKenderaanController extends Controller
             $deptProg = $student->programmes->programme_name;
         }
 
-        $waitingArea = Department::all();
+        $waitingArea = Department::orderBy('department_name', 'ASC')->get();
         $staff = Staff::all();
         $student = Student::where('students_status', 'AKTIF')->get();
 
@@ -273,6 +275,20 @@ class EKenderaanController extends Controller
                 }
             }
         }
+
+        if ($request->passenger_staff) {
+            foreach ($request->passenger_staff as $key => $value) {
+                if ($request->passenger_staff[$key] != null) {
+                    eKenderaanPassengers::create([
+                        'ekn_details_id' => $application->id,
+                        'intec_id'       => $request->passenger_staff[$key],
+                        'category'       => 'STF',
+                        'created_by'   => Auth::user()->id
+                        ]);
+                }
+            }
+        }
+
         if ($request->student_id) {
             foreach ($request->student_id as $key => $value) {
                 if ($request->student_id[$key] != null) {
@@ -286,17 +302,36 @@ class EKenderaanController extends Controller
             }
         }
 
-        $file = $request->file('attachment');
+        if ($request->student_id_bulk) {
+            foreach ($request->student_id_bulk as $key => $value) {
+                if ($request->student_id_bulk[$key] != null) {
+                    eKenderaanPassengers::create([
+                        'ekn_details_id' => $application->id,
+                        'intec_id'       => $request->student_id_bulk[$key],
+                        'category'       => 'STD',
+                        'created_by'   => Auth::user()->id
+                        ]);
+                }
+            }
+        }
 
-        if (isset($file)) {
-            $originalName = time().$file->getClientOriginalName();
-            $request->file('attachment')->storeAs('/eKenderaan', $originalName);
-            eKenderaanAttachments::create([
-                'ekn_details_id' => $application->id,
-                'upload'         => $originalName,
-                'web_path'       => "eKenderaan/".$originalName,
-                'created_by'     => Auth::user()->id
-            ]);
+        if ($request->passenger_student) {
+            foreach ($request->passenger_student as $key => $value) {
+                if ($request->passenger_student[$key] != null) {
+                    eKenderaanPassengers::create([
+                        'ekn_details_id' => $application->id,
+                        'intec_id'       => $request->passenger_student[$key],
+                        'category'       => 'STD',
+                        'created_by'   => Auth::user()->id
+                        ]);
+                }
+            }
+        }
+
+        $file = $request->temp_file;
+
+        if ($file != '') {
+            eKenderaanAttachments::where('id', $file)->update(['ekn_details_id', $application->id]);
         }
         return redirect('eKenderaan-application/'.$application->id)->with('message', 'Application Sent!');
     }
@@ -849,5 +884,149 @@ class EKenderaanController extends Controller
             ->addIndexColumn()
             ->rawColumns(['date'])
             ->make(true);
+    }
+
+    public function review(Request $request)
+    {
+        $staffs = Staff::get();
+        $student = Student::where('students_status', 'AKTIF')->get();
+
+        $departdate = $request->departdate;
+        $departtime = $request->departtime;
+        $returndate = $request->returndate;
+        $returntime = $request->returntime;
+
+        $validated = $request->validate([
+            'hp_no'   => 'required|numeric|digits_between:10,11',
+            'departdate'   => 'required',
+            'departtime'   => 'required',
+            'returndate'   => 'required',
+            'returntime'   => 'required',
+            'destination'  => 'required',
+            'waitingarea'  => 'required',
+            'purpose'      => 'required',
+        ], [
+        ]);
+
+        $user = Auth::user();
+
+        if ($user->category == "STF") {
+            $staff =  Staff::where('staff_id', $user->id)->first();
+            $name = $staff->staff_name;
+            $id = $user->id;
+            $deptProg = $staff->staff_dept;
+        } elseif ($user->category == "STD") {
+            $student =  Student::where('students_id', $user->id)->first();
+            $name = $student->students_name;
+            $id = $user->id;
+            $deptProg = $student->programmes->programme_name;
+        }
+
+        $user_hp = $request->hp_no;
+        $destination = $request->destination;
+        $waiting_area = $request->waitingarea;
+        $purpose = $request->purpose;
+        $waitingArea = Department::all();
+
+        $file = $request->file('attachment');
+
+        if (isset($file)) {
+            $originalName = time().$file->getClientOriginalName();
+            $request->file('attachment')->storeAs('/eKenderaan', $originalName);
+            $image = eKenderaanAttachments::create([
+                'ekn_details_id' => null,
+                'upload'         => $originalName,
+                'web_path'       => "eKenderaan/".$originalName,
+                'created_by'     => Auth::user()->id
+            ]);
+
+            $image_id = $image->id;
+        } else {
+            $image_id = '';
+            $originalName = '';
+        }
+        if ($request->staff_id) {
+            $passenger_staff = $request->staff_id;
+        } else {
+            $passenger_staff = '';
+        }
+
+        if ($request->student_id) {
+            $passenger_student = $request->student_id;
+        } else {
+            $passenger_student = '';
+        }
+
+        $isError = false;
+
+        $bulkStudent = $request->file('import_file');
+        if ($bulkStudent != null) {
+            $passengerBulk = (new FastExcel())->import(request()->file('import_file'));
+
+            $passenger = (new FastExcel())->import(request()->file('import_file'), function ($line) use (&$isError) {
+                if (!isset($line['ID'])) {
+                    $isError = true;
+                }
+            });
+        } else {
+            $passengerBulk = '';
+        }
+
+        if ($isError) {
+            return redirect()->back()->withInput()->withErrors("Bulk Student File format is not accurate. Please refer to the reference");
+        } else {
+            return view('eKenderaan.details-review', compact(
+                'staffs',
+                'student',
+                'user',
+                'departdate',
+                'departtime',
+                'returndate',
+                'returntime',
+                'id',
+                'name',
+                'deptProg',
+                'user_hp',
+                'destination',
+                'waiting_area',
+                'purpose',
+                'image_id',
+                'originalName',
+                'passengerBulk',
+                'waitingArea',
+                'passenger_staff',
+                'passenger_student'
+            ));
+        }
+    }
+
+    public function getFile()
+    {
+        $file = "Student List Excel Format.png";
+
+        $path = storage_path().'/ekenderaan/'.$file;
+
+        $form = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($form, 200);
+        $response->header("Content-Type", $filetype);
+
+        return $response;
+    }
+
+    public function getTempFile($id)
+    {
+        $file = eKenderaanAttachments::where('id', $id)->first();
+        $filename = $file->upload;
+        return Storage::response('eKenderaan/'.$filename);
+    }
+
+    public function cancelApplication($id)
+    {
+        $exist = eKenderaanAttachments::find($id);
+        $exist->delete();
+
+        return response()->json();
     }
 }
