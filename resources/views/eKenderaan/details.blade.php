@@ -4,6 +4,51 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .rating {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            overflow: hidden;
+            flex-direction: row-reverse;
+            /* height: 150px; */
+            position: relative;
+        }
+
+        .rating-0 {
+            filter: grayscale(100%);
+        }
+
+        .rating>input {
+            display: none;
+        }
+
+        .rating>label {
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            margin-top: auto;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23e3e3e3' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 76%;
+            transition: 0.3s;
+        }
+
+        .rating>input:checked~label,
+        .rating>input:checked~label~label {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23fcd93a' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+        }
+
+        .rating>input:not(:checked)~label:hover,
+        .rating>input:not(:checked)~label:hover~label {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23d8b11e' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+        }
+    </style>
     <main id="js-page-content" role="main" class="page-content"
         style="background-image: url({{ asset('img/bg-form.jpg') }}); background-size: cover">
         <div class="subheader">
@@ -32,71 +77,29 @@
                         <div class="panel-content">
                             <center><img src="{{ asset('img/INTEC_PRIMARY_LOGO.png') }}" style="width: 300px;"></center>
                             <br>
-                            <div class="row">
-                                <div class="col-sm-6 col-xl-6">
-                                    <div class="p-3 bg-info-100 rounded overflow-hidden position-relative text-white mb-g">
-                                        <h3 class="display-5 d-block l-h-n m-0 fw-500">
-                                            @if ($data->hod_hop_approval != null)
-                                                @if ($data->hod_hop_approval == 'Y')
-                                                    Approved
-                                                @endif
-                                                @if ($data->hod_hop_approval == 'N')
-                                                    Rejected
-                                                @endif
-                                            @else
-                                                Pending
-                                            @endif
-                                            <small class="m-0 l-h-n">HOD/HOP</small>
-                                        </h3>
-                                        <i class="fal fa-user position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
-                                            style="font-size:6rem"></i>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-xl-6">
-                                    <div class="p-3 bg-info-100 rounded overflow-hidden position-relative text-white mb-g">
-                                        <h3 class="display-5 d-block l-h-n m-0 fw-500">
-                                            @if ($data->operation_approval != null)
-                                                @if ($data->operation_approval == 'Y')
-                                                    Approved
-                                                @endif
-                                                @if ($data->operation_approval == 'N')
-                                                    Rejected
-                                                @endif
-                                            @else
-                                                Pending
-                                            @endif
-                                            <small class="m-0 l-h-n">Operation</small>
-                                        </h3>
-                                        <i class="fal fa-user position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
-                                            style="font-size:6rem"></i>
-                                    </div>
-                                </div>
-                            </div>
                             @if (session()->has('message'))
                                 <div class="alert alert-success">
                                     {{ session()->get('message') }}
                                 </div>
                             @endif
 
-                            @error('hp_no')
+                            @error('rating')
+                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
+                                    <i class="icon fal fa-check-circle"></i> Please rate the driver service
+                                </div>
+                            @enderror
+
+                            @error('scale')
+                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
+                                    <i class="icon fal fa-check-circle"></i> Please rate the quality of service
+                                </div>
+                            @enderror
+
+                            @error('feedback')
                                 <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
                                     <i class="icon fal fa-check-circle"></i> {{ $message }}
                                 </div>
                             @enderror
-
-                            @error('driver')
-                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
-                                    <i class="icon fal fa-check-circle"></i> {{ $message }}
-                                </div>
-                            @enderror
-
-                            @error('vehicle')
-                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
-                                    <i class="icon fal fa-check-circle"></i> {{ $message }}
-                                </div>
-                            @enderror
-
 
                             <div class="panel-container show">
                                 <div class="panel-content">
@@ -112,20 +115,7 @@
                                                 </tr>
                                             </thead>
                                         </table>
-                                        @if ($data->hod_hop_approval == 'N')
-                                            <table class="table table-bordered table-hover table-striped w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <td colspan="6" class="bg-warning-50"><label class="form-label">
-                                                                <i class="fal fa-user"></i> HOD/HOP REMARK</label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6">{{ $remark->remark }}</td>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        @elseif($data->operation_approval == 'N')
+                                        @if ($data->operation_approval == 'N')
                                             <table class="table table-bordered table-hover table-striped w-100">
                                                 <thead>
                                                     <tr>
@@ -165,8 +155,7 @@
                                                     </td>
                                                     <th style="vertical-align: middle">H/P No.</th>
                                                     <td colspan="2">
-                                                        <input class="form-control" value="{{ $data->phone_no }}"
-                                                            readonly>
+                                                        <input class="form-control" value="{{ $data->phone_no }}" readonly>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -291,73 +280,7 @@
                                             </table>
                                         @endif
                                     </div>
-                                    @if ($data->status == '1')
-                                        @canany('Verify eKenderaan Application')
-                                            {{-- HOD/HOP REJECT APPLICATION --}}
-                                            <button
-                                                class="btn btn-danger ml-auto float-right waves-effect waves-themed click mt-2 mb-2">
-                                                <i class="fal fa-times-circle"></i>
-                                                Reject
-                                            </button>
-                                            <div class="remark mt-2">
-                                                {!! Form::open([
-                                                    'action' => 'EKenderaanController@rejectApplication',
-                                                    'method' => 'POST',
-                                                    'enctype' => 'multipart/form-data',
-                                                ]) !!}
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered table-hover table-striped w-100">
-                                                        <thead>
-                                                            <input type="hidden" id="id" name="id"
-                                                                value="{{ $data->id }}" required>
-                                                            <tr>
-                                                                <td colspan="5" class="bg-primary-50">
-                                                                    <label class="form-label"><i class="fal fa-pencil"></i>
-                                                                        REMARK</label>
-                                                                    <a href="javascript:void(0);"
-                                                                        class="btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed float-right reject-cancel">
-                                                                        <i class="fal fa-times"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th width="20%" style="vertical-align: top"><span
-                                                                        class="text-danger">*</span> Reason : </th>
-                                                                <td colspan="4" style="vertical-align: middle">
-                                                                    <textarea class="form-control" maxlength="255" id="textarea" rows="3"
-                                                                        placeholder="Please fill in rejection reason" name="remark" required></textarea>
-                                                                    <span style="font-size: 10px; color: red;"><i>*Limit to 255
-                                                                            characters only</i></span>
-                                                                </td>
-                                                            </tr>
-                                                        </thead>
-                                                    </table>
-                                                </div>
-                                                @csrf
-                                                <input type="hidden" id="id" name="id"
-                                                    value="{{ $data->id }}">
-                                                <button type="submit"
-                                                    class="btn btn-danger ml-auto float-right mt-2 mb-2 waves-effect waves-themed"
-                                                    id="reject"><i class="fal fa-times-circle"></i> Submit
-                                                </button>
-                                                {!! Form::close() !!}
-                                            </div>
-
-                                            {{-- HOD/HOP VERIFY APPLICATION --}}
-                                            {!! Form::open([
-                                                'action' => 'EKenderaanController@verifyApplication',
-                                                'method' => 'POST',
-                                                'enctype' => 'multipart/form-data',
-                                            ]) !!}
-                                            <input type="hidden" id="id" name="id"
-                                                value="{{ $data->id }}">
-                                            <button type="submit"
-                                                class="btn btn-warning ml-auto float-right mr-2 mt-2 mb-4 waves-effect waves-themed verify">
-                                                <i class="fal fa-check"></i> Verify Application
-                                            </button>
-                                            {!! Form::close() !!}
-                                        @endcanany
-                                    @elseif ($data->status == '2')
+                                    @if ($data->status == '2')
                                         {{-- OPERATION REJECT APPLICATION --}}
                                         @canany('Manage and Verify eKenderaan Application')
                                             <button
@@ -494,30 +417,122 @@
                                                         <input type="hidden" id="id" name="id"
                                                             value="{{ $data->id }}" required>
                                                         <tr>
-                                                            <td colspan="5" class="bg-primary-50">
+                                                            <td colspan="7" class="bg-primary-50">
                                                                 <label class="form-label"><i class="fal fa-pencil"></i>
                                                                     APPLICANT FEEDBACK</label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="5" class="bg-warning-50">
+                                                            <td colspan="7" class="bg-warning-50">
                                                                 This division is working to improve the quality of service
                                                                 to all student and staff. In order to achieve that goal,
-                                                                we ask for your cooperation in providing feedback and
+                                                                we ask for your cooperation in providing rating, feedback
+                                                                and
                                                                 suggestions/comments.
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            {{-- <div class="container">
+                                                                <div class="feedback">
+
+                                                                </div>
+                                                            </div> --}}
+                                                            <td colspan="7">
+                                                                <h4 class="text-center" style="color:red;">
+                                                                    <b>Please rate the driver service</b>
+                                                                </h4>
+                                                                <div class="rating">
+                                                                    <input type="radio" name="rating" id="rating-5"
+                                                                        value="5">
+                                                                    <label for="rating-5"></label>
+                                                                    <input type="radio" name="rating" id="rating-4"
+                                                                        value="4">
+                                                                    <label for="rating-4"></label>
+                                                                    <input type="radio" name="rating" id="rating-3"
+                                                                        value="3">
+                                                                    <label for="rating-3"></label>
+                                                                    <input type="radio" name="rating" id="rating-2"
+                                                                        value="2">
+                                                                    <label for="rating-2"></label>
+                                                                    <input type="radio" name="rating" id="rating-1"
+                                                                        value="1">
+                                                                    <label for="rating-1"></label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="text-center border" style="background-color: #c6c6c6;">
+                                                            <td width="100px">5</td>
+                                                            <td width="100px">4</td>
+                                                            <td width="100px" colspan="2">3</td>
+                                                            <td width="100px">2</td>
+                                                            <td width="100px" colspan="2">1</td>
+                                                        </tr>
+                                                        <tr class="text-center">
+                                                            <td width="100px">Excellent</td>
+                                                            <td width="100px">Very Good</td>
+                                                            <td width="100px" colspan="2">Good</td>
+                                                            <td width="100px">Satisfying</td>
+                                                            <td width="100px" colspan="2">Less Satisfactory</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="7"></td>
+                                                        </tr>
+                                                        <tr class="text-center" style="background-color: #a2d2ff;">
+                                                            <td>NO</td>
+                                                            <td width="100px">QUALITY OF SERVICES PROVIDED</td>
+                                                            <td width="100px">5</td>
+                                                            <td width="100px">4</td>
+                                                            <td width="100px">3</td>
+                                                            <td width="100px">2</td>
+                                                            <td width="100px">1</td>
+                                                        </tr>
+                                                        @php $i = 1 @endphp
+                                                        @foreach ($feedbackQuestion as $f)
+                                                            <tr>
+                                                                <td class="text-center">{{ $i }}</td>
+                                                                <td>{{ $f->question }}</td>
+                                                                <td class="text-center"><input type="radio"
+                                                                        name="scale[{{ $f->id }}]" id="scale-5"
+                                                                        value="5">
+                                                                    <label for="scale-5"></label>
+                                                                </td>
+                                                                <td class="text-center"><input type="radio"
+                                                                        name="scale[{{ $f->id }}]" id="scale-4"
+                                                                        value="4">
+                                                                    <label for="scale-4"></label>
+                                                                </td>
+                                                                <td class="text-center"><input type="radio"
+                                                                        name="scale[{{ $f->id }}]" id="scale-3"
+                                                                        value="3">
+                                                                    <label for="scale-3"></label>
+                                                                </td>
+                                                                <td class="text-center"><input type="radio"
+                                                                        name="scale[{{ $f->id }}]" id="scale-2"
+                                                                        value="2">
+                                                                    <label for="scale-2"></label>
+                                                                </td>
+                                                                <td class="text-center"> <input type="radio"
+                                                                        name="scale[{{ $f->id }}]" id="scale-1"
+                                                                        value="1">
+                                                                    <label for="scale-1"></label>
+                                                                </td>
+                                                            </tr>
+                                                            @php $i++ @endphp
+                                                        @endforeach
+                                                        <tr>
+                                                            <td colspan="7"></td>
                                                         </tr>
                                                         <tr>
                                                             <th width="20%" style="vertical-align: top"><span
                                                                     class="text-danger">*</span> Please provide feedback
                                                                 upon arrival at INTEC</th>
-                                                            <td colspan="4" style="vertical-align: middle">
-                                                                <textarea class="form-control" id="textarea" rows="3" name="feedback" required></textarea>
+                                                            <td colspan="7" style="vertical-align: middle">
+                                                                <textarea class="form-control" id="textarea" rows="3" name="feedback" required>{{ Request::old('feedback') }}</textarea>
                                                             </td>
                                                         </tr>
                                                     </thead>
                                                     <tr>
-                                                        <td colspan="5">
+                                                        <td colspan="7">
                                                             <p class="form-label" for="check">
                                                                 <input type="checkbox" name="check" id="agree"
                                                                     onclick="agreement()" />
@@ -543,15 +558,111 @@
                                                 <table class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
                                                         <tr>
-                                                            <td colspan="5" class="bg-primary-50">
+                                                            <td colspan="7" class="bg-primary-50">
                                                                 <label class="form-label"><i class="fal fa-pencil"></i>
                                                                     APPLICANT FEEDBACK</label>
                                                             </td>
                                                         </tr>
                                                         <tr>
+                                                            <td colspan="7">
+                                                                <h4 class="text-center" style="color:red;">
+                                                                    <b>Driver Service Rating</b>
+                                                                </h4>
+                                                                <div class="rating">
+                                                                    <input type="radio" name="rating" id="rating-5"
+                                                                        value="5" disabled
+                                                                        @if ($feedback->rating == '5') checked @endif>
+                                                                    <label for="rating-5"></label>
+                                                                    <input type="radio" name="rating" id="rating-4"
+                                                                        value="4" disabled
+                                                                        @if ($feedback->rating == '4') checked @endif>
+                                                                    <label for="rating-4"></label>
+                                                                    <input type="radio" name="rating" id="rating-3"
+                                                                        value="3" disabled
+                                                                        @if ($feedback->rating == '3') checked @endif>
+                                                                    <label for="rating-3"></label>
+                                                                    <input type="radio" name="rating" id="rating-2"
+                                                                        value="2" disabled
+                                                                        @if ($feedback->rating == '2') checked @endif>
+                                                                    <label for="rating-2"></label>
+                                                                    <input type="radio" name="rating" id="rating-1"
+                                                                        value="1" disabled
+                                                                        @if ($feedback->rating == '1') checked @endif>
+                                                                    <label for="rating-1"></label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="text-center border" style="background-color: #c6c6c6;">
+                                                            <td width="100px">5</td>
+                                                            <td width="100px">4</td>
+                                                            <td width="100px" colspan="2">3</td>
+                                                            <td width="100px">2</td>
+                                                            <td width="100px" colspan="2">1</td>
+                                                        </tr>
+                                                        <tr class="text-center">
+                                                            <td width="100px">Excellent</td>
+                                                            <td width="100px">Very Good</td>
+                                                            <td width="100px" colspan="2">Good</td>
+                                                            <td width="100px">Satisfying</td>
+                                                            <td width="100px" colspan="2">Less Satisfactory</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="7"></td>
+                                                        </tr>
+                                                        <tr class="text-center" style="background-color: #a2d2ff;">
+                                                            <td>NO</td>
+                                                            <td width="100px">QUALITY OF SERVICES PROVIDED</td>
+                                                            <td width="100px">5</td>
+                                                            <td width="100px">4</td>
+                                                            <td width="100px">3</td>
+                                                            <td width="100px">2</td>
+                                                            <td width="100px">1</td>
+                                                        </tr>
+                                                        @php $i = 1 @endphp
+                                                        @foreach ($feedbackScale as $f)
+                                                            <tr>
+                                                                <td class="text-center">{{ $i }}</td>
+                                                                <td>{{ $f->questionList->question }}</td>
+                                                                <td class="text-center"><input type="radio"
+                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
+                                                                        id="scale-5" value="5"
+                                                                        @if ($f->scale == '5') checked @else disabled @endif>
+                                                                    <label for="scale-5"></label>
+                                                                </td>
+                                                                <td class="text-center"><input type="radio"
+                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
+                                                                        id="scale-4" value="4"
+                                                                        @if ($f->scale == '4') checked @else disabled @endif>
+                                                                    <label for="scale-4"></label>
+                                                                </td>
+                                                                <td class="text-center"><input type="radio"
+                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
+                                                                        id="scale-3" value="3"
+                                                                        @if ($f->scale == '3') checked @else disabled @endif>
+                                                                    <label for="scale-3"></label>
+                                                                </td>
+                                                                <td class="text-center"><input type="radio"
+                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
+                                                                        id="scale-2" value="2"
+                                                                        @if ($f->scale == '2') checked @else disabled @endif>
+                                                                    <label for="scale-2"></label>
+                                                                </td>
+                                                                <td class="text-center"> <input type="radio"
+                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
+                                                                        id="scale-1" value="1"
+                                                                        @if ($f->scale == '1') checked @else disabled @endif>
+                                                                    <label for="scale-1"></label>
+                                                                </td>
+                                                            </tr>
+                                                            @php $i++ @endphp
+                                                        @endforeach
+                                                        <tr>
+                                                            <td colspan="7"></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th width="20%" style="vertical-align: top">Feedback about
                                                                 the trip/driver</th>
-                                                            <td colspan="4" style="vertical-align: middle">
+                                                            <td colspan="7" style="vertical-align: middle">
                                                                 {!! nl2br(isset($feedback->remark) ? $feedback->remark : '') !!}
                                                             </td>
                                                         </tr>

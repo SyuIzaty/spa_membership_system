@@ -242,42 +242,25 @@
                                 <span class="nav-link-text" data-i18n="nav.eKenderaan-form">Application</span>
                             </a>
                         </li>
-                        @can('Verify eKenderaan Application')
-                            <li>
-                                <a href="/eKenderaan-list/1" title="pending" data-filter-tags="pending">
-                                    <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.pending">Application List</span>
-                                </a>
-                            </li>
-                        @endcan
-
                         @role('eKenderaan Admin')
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">Application List (Admin)</span>
+                                    <span class="nav-link-text" data-i18n="nav.list">Admin</span>
                                 </a>
                                 <ul>
-                                    <li>
-                                        @inject('grant', 'App\eKenderaan')
-                                        <a href="/eKenderaan-list/1" title="Pending HOD/HOP" data-filter-tags="pending">
-                                            <span class="nav-link-text" data-i18n="nav.pending">Pending for HOD/HOP
-                                                Approval
-                                                ({{ $grant->countPending() }})</span>
-                                        </a>
-                                    </li>
+                                    @inject('grant', 'App\eKenderaan')
                                     <li>
                                         <a href="/eKenderaan-list/2" title="Pending Operation"
                                             data-filter-tags="hodHopApproved">
-                                            <span class="nav-link-text" data-i18n="nav.hodhopApproved">Pending for
-                                                Operation Approval
-                                                ({{ $grant->countHODHOPApproved() }})</span>
+                                            <span class="nav-link-text" data-i18n="nav.hodhopApproved">Pending
+                                                ({{ $grant->countOperationPending() }})</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/eKenderaan-list/3" title="Operation Verified"
                                             data-filter-tags="adminApproved">
-                                            <span class="nav-link-text" data-i18n="nav.adminApproved">Operation Verified
+                                            <span class="nav-link-text" data-i18n="nav.adminApproved">Verified
                                                 ({{ $grant->countAdminVerified() }})</span>
                                         </a>
                                     </li>
@@ -313,6 +296,12 @@
                                         <a href="/eKenderaan-vehicle" title="Vehicle"
                                             data-filter-tags="ekenderaanVehicle">
                                             <span class="nav-link-text" data-i18n="nav.ekenderaanVehicle">Vehicle</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/eKenderaan-feedback-questions" title="Question"
+                                            data-filter-tags="ekenderaanQuestions">
+                                            <span class="nav-link-text" data-i18n="nav.ekenderaanQuestions">Feedback Questions</span>
                                         </a>
                                     </li>
                                 </ul>

@@ -178,6 +178,7 @@
                                                             <input type="hidden" name="temp_file" value="{{ $image_id }}">
                                                             @else
                                                                 N/A
+                                                                <input type="hidden" name="temp_file" value="{{ $image_id }}">
                                                         @endif
                                                     </td>
                                                 </tr>

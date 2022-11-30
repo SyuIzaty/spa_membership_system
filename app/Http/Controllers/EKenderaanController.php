@@ -23,14 +23,16 @@ use Illuminate\Http\Request;
 use App\eKenderaanPassengers;
 use App\eKenderaanAttachments;
 use App\Exports\eKenderaanExport;
+use App\eKenderaanFeedbackService;
 use Illuminate\Support\Facades\DB;
+use App\eKenderaanFeedbackQuestion;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Illuminate\Support\Facades\Input;
 use App\Exports\eKenderaanExportByYear;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\eKenderaanExportByYearMonth;
-use Rap2hpoutre\FastExcel\FastExcel;
-use Illuminate\Support\Facades\Input;
 
 class EKenderaanController extends Controller
 {
@@ -251,7 +253,7 @@ class EKenderaanController extends Controller
             'destination'  => $request->destination,
             'waiting_area' => $request->waitingarea,
             'purpose'      => $request->purpose,
-            'status'       => '1',
+            'status'       => '2',
             'category'     => Auth::user()->category,
             'created_by'   => Auth::user()->id
         ]);
@@ -327,11 +329,10 @@ class EKenderaanController extends Controller
                 }
             }
         }
-
         $file = $request->temp_file;
 
         if ($file != '') {
-            eKenderaanAttachments::where('id', $file)->update(['ekn_details_id', $application->id]);
+            eKenderaanAttachments::where('id', $file)->update(['ekn_details_id' => $application->id]);
         }
         return redirect('eKenderaan-application/'.$application->id)->with('message', 'Application Sent!');
     }
@@ -361,6 +362,8 @@ class EKenderaanController extends Controller
         $file = eKenderaanAttachments::where('ekn_details_id', $id)->first();
         $remark = eKenderaanRejects::where('ekn_details_id', $id)->first();
         $feedback = eKenderaanFeedback::where('ekn_details_id', $id)->first();
+        $feedbackQuestion = eKenderaanFeedbackQuestion::where('status', 'Y')->orderBy('sequence', 'ASC')->get();
+        $feedbackScale = eKenderaanFeedbackService::where('ekn_details_id', $id)->get();
 
         return view('eKenderaan.details', compact(
             'id',
@@ -376,7 +379,9 @@ class EKenderaanController extends Controller
             'vehicle',
             'file',
             'remark',
-            'feedback'
+            'feedback',
+            'feedbackQuestion',
+            'feedbackScale'
         ));
     }
 
@@ -437,51 +442,6 @@ class EKenderaanController extends Controller
         ->make(true);
     }
 
-    public function verifyApplication(Request $request)
-    {
-        $data =EKenderaan::where('id', $request->id)->first();
-        $data->update([
-            'hod_hop_approval' => 'Y',
-            'status' => '2',
-            'updated_by' => Auth::user()->id
-        ]);
-
-        eKenderaanLog::create([
-            'ekn_details_id'=> $request->id,
-            'name'          => Auth::user()->name,
-            'activity'      => 'HOD/HOP verify application',
-            'created_by'    => Auth::user()->id
-        ]);
-
-        return redirect()->back()->with('message', 'Successfully Verified!');
-    }
-
-    public function rejectApplication(Request $request)
-    {
-        $data = EKenderaan::where('id', $request->id)->first();
-        $data->update([
-            'hod_hop_approval' => 'N',
-            'status' => '4',
-            'updated_by' => Auth::user()->id
-        ]);
-
-        eKenderaanRejects::create([
-            'ekn_details_id' => $request->id,
-            'remark' => $request->remark,
-            'category' => 'HOD/HOP',
-            'created_by' => Auth::user()->id
-        ]);
-
-        eKenderaanLog::create([
-            'ekn_details_id'=> $request->id,
-            'name'          => Auth::user()->name,
-            'activity'      => 'HOD/HOP reject application',
-            'created_by'    => Auth::user()->id
-        ]);
-
-        return redirect()->back()->with('message', 'Rejected!');
-    }
-
     public function operationVerifyApplication(Request $request)
     {
         $validated = $request->validate([
@@ -536,7 +496,14 @@ class EKenderaanController extends Controller
 
     public function feedback(Request $request)
     {
-        $data =EKenderaan::where('id', $request->id)->first();
+        $validated = $request->validate([
+            'rating'   => 'required',
+            'scale'    => 'required',
+            'feedback' => 'required',
+        ], [
+        ]);
+
+        $data = EKenderaan::where('id', $request->id)->first();
         $data->update([
             'status' => '5',
             'updated_by' => Auth::user()->id
@@ -545,8 +512,18 @@ class EKenderaanController extends Controller
         eKenderaanFeedback::create([
             'ekn_details_id' => $request->id,
             'remark' => $request->feedback,
+            'rating' => $request->rating,
             'created_by' => Auth::user()->id
         ]);
+
+        foreach ($request->scale as $key => $value) {
+            eKenderaanFeedbackService::create([
+                'ekn_feedback_questions_id' => $key,
+                'ekn_details_id' => $request->id,
+                'scale' => $value,
+                'created_by' => Auth::user()->id
+            ]);
+        }
 
         eKenderaanLog::create([
             'ekn_details_id'=> $request->id,
@@ -1028,5 +1005,70 @@ class EKenderaanController extends Controller
         $exist->delete();
 
         return response()->json();
+    }
+
+    public function question()
+    {
+        return view('eKenderaan.feedback-questions');
+    }
+
+    public function questionList()
+    {
+        $question = eKenderaanFeedbackQuestion::get();
+
+        return datatables()::of($question)
+
+            ->editColumn('status', function ($question) {
+                if ($question->status == 'Y') {
+                    return '<div style="color: green;"><b>Finalize</b></div>';
+                } else {
+                    return '<div style="color: red;"><b>Not Finalize</b></div>';
+                }
+            })
+
+            ->addColumn('edit', function ($question) {
+                if ($question->status == 'Y') {
+                    return '';
+                } else {
+                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$question->id.'" data-question="'.$question->question.'" data-status="'.$question->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                }
+            })
+
+            ->rawColumns(['status','edit'])
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function addQuestion(Request $request)
+    {
+        $request->validate([
+            'sequence' => 'unique:ekn_feedback_questions,sequence'
+        ]);
+
+        eKenderaanFeedbackQuestion::create([
+            'question'  => $request->question,
+            'sequence'  => $request->sequence,
+            'status'    => $request->status,
+            'created_by'=> Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Add Successfully');
+    }
+
+    public function editQuestion(Request $request)
+    {
+        $request->validate([
+            'sequence' => 'unique:ekn_feedback_questions,sequence'
+        ]);
+
+        $update = eKenderaanFeedbackQuestion::where('id', $request->id)->first();
+        $update->update([
+            'question'      => $request->question,
+            'sequence'  => $request->sequence,
+            'status'    => $request->status,
+            'updated_by'=> Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Update Successfully');
     }
 }

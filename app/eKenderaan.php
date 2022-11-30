@@ -66,12 +66,7 @@ class eKenderaan extends Model
         return $this->hasMany(eKenderaanPassengers::class, 'ekn_details_id', 'id');
     }
 
-    public function countPending()
-    {
-        return $this->where('status', 1)->count();
-    }
-
-    public function countHODHOPApproved()
+    public function countOperationPending()
     {
         return $this->where('status', 2)->count();
     }

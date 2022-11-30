@@ -77,6 +77,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/review-application', 'EKenderaanController@review');
     Route::get('/temp-file/{id}', 'EKenderaanController@getTempFile');
     Route::delete('/cancel-application/{id}', 'EKenderaanController@cancelApplication');
+    Route::get('/eKenderaan-feedback-questions', 'EKenderaanController@question');
+    Route::post('/feedback-questions', 'EKenderaanController@questionList');
+    Route::post('/add-feedback-questions', 'EKenderaanController@addQuestion');
+    Route::post('/edit-feedback-questions', 'EKenderaanController@editQuestion');
+
 
     // Aduan
     Route::get('/borang-aduan', 'Aduan\AduanController@borangAduan')->name('borangAduan');
