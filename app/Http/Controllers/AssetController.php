@@ -1137,7 +1137,7 @@ class AssetController extends Controller
 
         ->editColumn('verification_date', function ($verify) {
 
-            return date(' Y-m-d ', strtotime($verify->verification_date)) ?? '<div style="color:red;" >--</div>';
+            return isset($verify->created_at) ? date(' Y-m-d ', strtotime($verify->created_at)) : '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('asset_name', function ($verify) {

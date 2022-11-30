@@ -109,7 +109,7 @@
                         </div>
                     </div>
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex pull-right">
-                        <button class="btn btn-info ml-auto float-right mr-2" name="action" value="Print"><i class="fal fa-print"></i> Print Barcode</button>
+                        <button class="btn btn-info ml-auto float-right mr-2" name="action" value="Print"><i class="fal fa-print"></i> Print Qrcode</button>
                         {!! Form::close() !!}
                         <a class="btn btn-primary float-right" href="/asset-new"><i class="fal fa-plus-square"></i> Add New Asset</a><br><br>
                     </div>
@@ -227,7 +227,7 @@
                 "order": [[ 1, "desc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#list_asset').on('click', '.btn-delete[data-remote]', function (e) {

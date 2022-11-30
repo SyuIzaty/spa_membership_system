@@ -64,11 +64,12 @@
                                         <td>{{ strtoupper($depart->department_name) }}</td>
                                         <td style="font-size: 30px; color: rgb(0, 0, 0); text-align: center; font-style: italic; font-family: fantasy;">{{ $depart->total }}</td>
                                         <td><div class="btn-group">
-                                            <form action="{{route('deleteDepartment', $depart->id)}}" method="POST" class="delete_form"> 
-                                                @method('DELETE')  
+                                            <form action="{{route('deleteDepartment', $depart->id)}}" method="POST" class="delete_form">
+                                                @method('DELETE')
                                                 @csrf
+                                                <?php $data = \App\AssetType::where('department_id', $depart->id)->first(); ?>
                                                 <a href="/custodian-list/{{$depart->id}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-                                                <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i></button>               
+                                                @if(isset($data)) <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i></button> @endif
                                             </form>
                                         </div></td>
                                     </tr>
@@ -81,7 +82,7 @@
                         <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary ml-auto float-right"><i class="fal fa-plus-square"></i> Add New Department</a>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -103,7 +104,7 @@
                                 @enderror
                             </td>
                         </div>
-                     
+
                     <div class="footer">
                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -122,9 +123,9 @@
 <script>
     $(document).ready(function()
     {
-        $('.department').select2({ 
-            dropdownParent: $('#crud-modal') 
-        }); 
+        $('.department').select2({
+            dropdownParent: $('#crud-modal')
+        });
 
         $('#new').click(function () {
             $('#crud-modal').modal('show');
@@ -182,7 +183,7 @@
                     form[0].submit();
                     Swal.fire({ text: "Successfully delete the data.", icon: 'success'
                 });
-            } 
+            }
         });
     });
 </script>

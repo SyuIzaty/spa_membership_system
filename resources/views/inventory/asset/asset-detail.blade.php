@@ -24,7 +24,7 @@
 
                     <div class="panel-container show">
                         <div class="panel-content">
-                               
+
                             <div class="row">
                                 <div class="col-auto">
                                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -103,7 +103,7 @@
                                                                                 <td colspan="3">
                                                                                     <select class="form-control asset_code_type" name="asset_code_type" id="asset_code_type" required>
                                                                                         <option value="">Please Select</option>
-                                                                                        @foreach ($codeType as $codeTypes) 
+                                                                                        @foreach ($codeType as $codeTypes)
                                                                                             <option value="{{ $codeTypes->id }}" {{ old('asset_code_type', ($asset->asset_code_type ? $asset->codeType->id : '' )) == $codeTypes->id ? 'selected' : '' }}>{{ $codeTypes->id }} - {{ $codeTypes->code_name }}</option>
                                                                                         @endforeach
                                                                                     </select>
@@ -178,7 +178,7 @@
                                                                                 <td colspan="3">
                                                                                     <select class="form-control availability" name="availability" id="availability">
                                                                                         <option value="">Please Select</option>
-                                                                                        @foreach ($availability as $available) 
+                                                                                        @foreach ($availability as $available)
                                                                                             <option value="{{ $available->id }}" {{ old('availability', ($asset->availability ? $asset->availabilities->id : '')) == $available->id ? 'selected' : '' }}>{{ $available->name }}</option>
                                                                                         @endforeach
                                                                                     </select>
@@ -200,7 +200,7 @@
                                                                                 <td colspan="3">
                                                                                     <select class="form-control inactive_reason" name="inactive_reason" id="inactive_reason">
                                                                                         <option value="">Please Select</option>
-                                                                                        @foreach ($status as $statuss) 
+                                                                                        @foreach ($status as $statuss)
                                                                                             <option value="{{ $statuss->id }}" {{ old('inactive_reason', ($asset->inactive_reason ? $asset->assetStatus->id : '')) ==  $statuss->id  ? 'selected' : '' }}>
                                                                                                 {{ $statuss->status_name }}</option>
                                                                                         @endforeach
@@ -236,7 +236,7 @@
                                                                                 <td colspan="3">
                                                                                     <select class="form-control asset_class" name="asset_class" id="asset_class">
                                                                                         <option value="">Please Select</option>
-                                                                                        @foreach ($class as $classes) 
+                                                                                        @foreach ($class as $classes)
                                                                                             <option value="{{ $classes->class_code }}" {{ old('asset_class', ($asset->asset_class ? $asset->assetClass->class_code : '')) ==  $classes->class_code  ? 'selected' : '' }}>
                                                                                                 {{ $classes->class_code }} - {{ $classes->class_name }}</option>
                                                                                         @endforeach
@@ -282,7 +282,7 @@
                                                                                                 <td>
                                                                                                     <select class="form-control asset_types" name="asset_types[]" id="asset_types" >
                                                                                                         <option value="">Please Select</option>
-                                                                                                        @foreach ($setType as $setTypes) 
+                                                                                                        @foreach ($setType as $setTypes)
                                                                                                             <option value="{{ $setTypes->id }}" {{ old('asset_types') ==  $setTypes->id  ? 'selected' : '' }}>{{ $setTypes->asset_type }}</option>
                                                                                                         @endforeach
                                                                                                     </select>
@@ -454,7 +454,7 @@
                                                                                     </div>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <?php 
+                                                                                    <?php
                                                                                         $get_type = $asset->codeType->code_name ?? '--';
                                                                                         $get_class = $asset->assetClass->class_code ?? '--';
                                                                                         $get_department = $asset->type->department->department_name ?? '--';
@@ -559,7 +559,7 @@
                                                                                 <td colspan="3">
                                                                                     <select class="form-control acquisition_type" name="acquisition_type" id="acquisition_type">
                                                                                         <option value="">Please Select</option>
-                                                                                        @foreach ($acquisition as $acq) 
+                                                                                        @foreach ($acquisition as $acq)
                                                                                             <option value="{{ $acq->id }}" {{ old('asset_code_type', ($asset->acquisition_type ? $asset->acquisitionType->id : '' )) == $acq->id ? 'selected' : '' }}>{{ $acq->acquisition_type }}</option>
                                                                                         @endforeach
                                                                                     </select>
@@ -637,7 +637,7 @@
                                                                 <td>{{ $trails->total_price ?? '--' }}</td>
                                                                 @if($trails->status == '0')
                                                                     <td>INACTIVE<br>({{ $trails->assetStatus->status_name ?? '--' }})</td>
-                                                                @else 
+                                                                @else
                                                                     <td>ACTIVE</td>
                                                                 @endif
                                                                 <td>{{ $trails->staffs->name ?? '--' }}</td>
@@ -733,7 +733,7 @@
                                             <td colspan="7">
                                                 <select name="department_id" id="department_id" class="department form-control" disabled>
                                                     <option value="">Select Department</option>
-                                                    @foreach ($department as $depart) 
+                                                    @foreach ($department as $depart)
                                                         <option value="{{ $depart->id }}" {{  $asset->type->department_id == $depart->id ? 'selected="selected"' : '' }}>{{ strtoupper($depart->department_name) }}</option>
                                                     @endforeach
                                                 </select>
@@ -746,7 +746,7 @@
                                             <td colspan="7">
                                                 <select class="form-control custodian_id" name="custodian_id" id="custodian_id" required>
                                                     <option value="">Select Custodian</option>
-                                                    @foreach ($custodian as $custs) 
+                                                    @foreach ($custodian as $custs)
                                                         <option value="{{ $custs->id }}" {{ old('custodian_id') ==  $custs->id  ? 'selected' : '' }}>{{ $custs->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -772,7 +772,7 @@
                                                 @enderror
                                             </td>
                                         </div>
-                                     
+
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -800,7 +800,7 @@
                                             <td colspan="7">
                                                 <select name="department_id" id="department_id" class="department form-control" disabled>
                                                     <option value="">Select Department</option>
-                                                    @foreach ($department as $depart) 
+                                                    @foreach ($department as $depart)
                                                         <option value="{{ $depart->id }}" {{  $asset->type->department_id == $depart->id ? 'selected="selected"' : '' }}>{{ strtoupper($depart->department_name) }}</option>
                                                     @endforeach
                                                 </select>
@@ -837,7 +837,7 @@
                                             </td>
                                             </td>
                                         </div>
-                                     
+
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -862,7 +862,7 @@
                                             <td colspan="7">
                                                 <select class="form-control type" name="asset_type" id="asset_type" disabled>
                                                     <option value="">Select Asset Type</option>
-                                                    @foreach ($setType as $setTypes) 
+                                                    @foreach ($setType as $setTypes)
                                                         <option value="{{ $setTypes->id }}" {{ old('asset_type') ==  $setTypes->id  ? 'selected' : '' }}>{{ $setTypes->asset_type }}</option>
                                                     @endforeach
                                                 </select>
@@ -898,7 +898,7 @@
                                                 @enderror
                                             </td>
                                         </div>
-                                     
+
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -908,7 +908,7 @@
                             </div>
                         </div>
                     </div>
-                       
+
             </div>
         </div>
     </div>
@@ -923,8 +923,8 @@
     {
         $('#status, #availability, #asset_types, #asset_code_type, #acquisition_type, #inactive_reason, #asset_class').select2();
 
-        $('.department, .custodian_id').select2({ 
-            dropdownParent: $("#crud-modal") 
+        $('.department, .custodian_id').select2({
+            dropdownParent: $("#crud-modal")
         });
 
         $('#new').click(function () {
@@ -932,8 +932,8 @@
         });
 
         $('#crud-modal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var depart = button.data('depart') 
+            var button = $(event.relatedTarget)
+            var depart = button.data('depart')
 
             document.getElementById("depart").value = depart;
         });
@@ -943,32 +943,32 @@
         });
 
         $('#crud-modal2').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var id = button.data('id') 
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
             var custodian = button.data('custodian')
             var reason = button.data('reason')
             var location = button.data('location')
 
-            $('.modal-body #ids').val(id); 
-            $('.modal-body #custodian').val(custodian); 
-            $('.modal-body #reason').val(reason); 
-            $('.modal-body #locations').val(location); 
+            $('.modal-body #ids').val(id);
+            $('.modal-body #custodian').val(custodian);
+            $('.modal-body #reason').val(reason);
+            $('.modal-body #locations').val(location);
         });
 
         $('#crud-modal3').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var id = button.data('id') 
-            var asset = button.data('asset') 
-            var type = button.data('type') 
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+            var asset = button.data('asset')
+            var type = button.data('type')
             var serial = button.data('serial')
             var model = button.data('model')
             var brand = button.data('brand')
 
-            $('.modal-body #ids').val(id); 
-            $('.modal-body .type').val(type); 
-            $('.modal-body .serial').val(serial); 
-            $('.modal-body .model').val(model); 
-            $('.modal-body .brand').val(brand); 
+            $('.modal-body #ids').val(id);
+            $('.modal-body .type').val(type);
+            $('.modal-body .serial').val(serial);
+            $('.modal-body .model').val(model);
+            $('.modal-body .brand').val(brand);
         });
 
         // Add Set
@@ -979,7 +979,7 @@
             <td>
                 <select class="form-control assetType" name="asset_types[]">
                     <option value="">Select Asset Type</option>
-                    @foreach ($setType as $setTypes) 
+                    @foreach ($setType as $setTypes)
                         <option value="{{ $setTypes->id }}" {{ old('asset_types') ==  $setTypes->id  ? 'selected' : '' }}>{{ $setTypes->asset_type }}</option>
                     @endforeach
                 </select>
@@ -1059,11 +1059,11 @@
     }
 
     // Radiobutton
-    $(function () {          
+    $(function () {
 
         $(".set_tab").hide();
 
-        $("input[name=set_package]").change(function () {        
+        $("input[name=set_package]").change(function () {
             if ($(this).val() == "Y") {
             $(".set_tab").show();
             }
@@ -1072,7 +1072,7 @@
             }
         });
 
-        $('input[name="set_package"]:checked').change(); 
+        $('input[name="set_package"]:checked').change();
 
         $(".inactive").hide();
 
@@ -1085,8 +1085,8 @@
             }
         });
 
-        $('#status').val(); 
-        $("#status").change(); 
+        $('#status').val();
+        $("#status").change();
         $('#inactive_date').val();
         $('#inactive_reason').val();
         $('#inactive_remark').val();
