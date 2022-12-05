@@ -109,92 +109,92 @@
                         @endphp
 
                         <!-- Start eAduan Korporat System -->
-
-                        <li class="nav-title">i-Complaint</li>
-                        <li>
-                            <a href="/iComplaint" style="text-decoration: none!important;" title="Form"
-                                data-filter-tags="form" target="_blank">
-                                <i class="fal fa-file-alt"></i>
-                                <span class="nav-link-text" data-i18n="nav.form">i-Complaint</span>
-                            </a>
-                        </li>
-
-                        @can('assign department')
-                            <li>
-                                <a href="/dashboard-icomplaint" title="Dashboard i-Complaint"
-                                    data-filter-tags="dashboard">
-                                    <i class="fal fa-chart-pie"></i>
-                                    <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="/reports" title="Report" data-filter-tags="report">
-                                    <i class="fal fa-clipboard-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.report">Report</span>
-                                </a>
-                            </li>
-                        @endcan
-
-                        @can('take action')
-                            <li class="open">
-                                <a href="#" title="iComplaint List" data-filter-tags="list">
-                                    <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">List</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/lists/2" title="Pending List" data-filter-tags="pending">
-                                            <span class="nav-link-text" data-i18n="nav.pending">Pending</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/lists/4" title="Complete List" data-filter-tags="complete">
-                                            <span class="nav-link-text" data-i18n="nav.complete">Complete</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcan
-
-                        @can('assign department')
-                            <li class="open">
-                                <a href="#" title="Complaint List" data-filter-tags="list">
-                                    <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">Complaint List</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        @inject('lists', 'App\AduanKorporat')
-                                        <a href="/lists/1" title="Pending" data-filter-tags="pending">
-                                            <span class="nav-link-text" data-i18n="nav.pending">Pending
-                                                ({{ $lists->countPending() }})</span>
-                                        </a>
-                                    </li>
-                                    @inject('lists', 'App\AduanKorporat')
-                                    <li>
-                                        <a href="/lists/2" title="Has Assigned" data-filter-tags="assign">
-                                            <span class="nav-link-text" data-i18n="nav.assign">Has Assigned
-                                                ({{ $lists->countAssigned() }})</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/lists/3" title="Action Taken" data-filter-tags="action">
-                                            <span class="nav-link-text" data-i18n="nav.action">Action Taken
-                                                ({{ $lists->countAction() }})</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/lists/4" title="Completed" data-filter-tags="completed">
-                                            <span class="nav-link-text" data-i18n="nav.completed">Completed
-                                                ({{ $lists->countCompleted() }})</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcan
-
                         @role('eAduan Super Admin')
+                            <li class="nav-title">i-Complaint</li>
+                            <li>
+                                <a href="/iComplaint" style="text-decoration: none!important;" title="Form"
+                                    data-filter-tags="form" target="_blank">
+                                    <i class="fal fa-file-alt"></i>
+                                    <span class="nav-link-text" data-i18n="nav.form">i-Complaint</span>
+                                </a>
+                            </li>
+
+                            @can('assign department')
+                                <li>
+                                    <a href="/dashboard-icomplaint" title="Dashboard i-Complaint"
+                                        data-filter-tags="dashboard">
+                                        <i class="fal fa-chart-pie"></i>
+                                        <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/reports" title="Report" data-filter-tags="report">
+                                        <i class="fal fa-clipboard-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.report">Report</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('take action')
+                                <li class="open">
+                                    <a href="#" title="iComplaint List" data-filter-tags="list">
+                                        <i class="fal fa-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.list">List</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/lists/2" title="Pending List" data-filter-tags="pending">
+                                                <span class="nav-link-text" data-i18n="nav.pending">Pending</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/lists/4" title="Complete List" data-filter-tags="complete">
+                                                <span class="nav-link-text" data-i18n="nav.complete">Complete</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endcan
+
+                            @can('assign department')
+                                <li class="open">
+                                    <a href="#" title="Complaint List" data-filter-tags="list">
+                                        <i class="fal fa-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.list">Complaint List</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            @inject('lists', 'App\AduanKorporat')
+                                            <a href="/lists/1" title="Pending" data-filter-tags="pending">
+                                                <span class="nav-link-text" data-i18n="nav.pending">Pending
+                                                    ({{ $lists->countPending() }})</span>
+                                            </a>
+                                        </li>
+                                        @inject('lists', 'App\AduanKorporat')
+                                        <li>
+                                            <a href="/lists/2" title="Has Assigned" data-filter-tags="assign">
+                                                <span class="nav-link-text" data-i18n="nav.assign">Has Assigned
+                                                    ({{ $lists->countAssigned() }})</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/lists/3" title="Action Taken" data-filter-tags="action">
+                                                <span class="nav-link-text" data-i18n="nav.action">Action Taken
+                                                    ({{ $lists->countAction() }})</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/lists/4" title="Completed" data-filter-tags="completed">
+                                                <span class="nav-link-text" data-i18n="nav.completed">Completed
+                                                    ({{ $lists->countCompleted() }})</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endcan
+
+                            {{-- @role('eAduan Super Admin') --}}
                             <li class="open">
                                 <a href="#" title="Setting" data-filter-tags="setting">
                                     <i class="fal fa-cogs"></i>
@@ -301,7 +301,8 @@
                                     <li>
                                         <a href="/eKenderaan-feedback-questions" title="Question"
                                             data-filter-tags="ekenderaanQuestions">
-                                            <span class="nav-link-text" data-i18n="nav.ekenderaanQuestions">Feedback Questions</span>
+                                            <span class="nav-link-text" data-i18n="nav.ekenderaanQuestions">Feedback
+                                                Questions</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -339,34 +340,34 @@
 
                         <!-- Start eVoting Management System -->
                         @role('Super Admin')
-                        <li class="nav-title">eVoting</li>
+                            <li class="nav-title">eVoting</li>
 
-                        @can('eVoting - Management System')
+                            @can('eVoting - Management System')
+                                <li>
+                                    <a href="/vote-management" title="e-Voting Management"
+                                        data-filter-tags="vote-management">
+                                        <!-- <i class="fal fa-file"></i> -->
+                                        <i class="ni ni-briefcase"></i>
+                                        <span class="nav-link-text" data-i18n="nav.vote-management">e-Voting Management</span>
+                                    </a>
+                                </li>
+                            @endcan
                             <li>
-                                <a href="/vote-management" title="e-Voting Management"
-                                    data-filter-tags="vote-management">
+                                <a href="/vote-platform" title="e-Voting Platform" data-filter-tags="vote-platform">
                                     <!-- <i class="fal fa-file"></i> -->
-                                    <i class="ni ni-briefcase"></i>
-                                    <span class="nav-link-text" data-i18n="nav.vote-management">e-Voting Management</span>
+                                    <i class="ni ni-envelope-letter"></i>
+                                    <span class="nav-link-text" data-i18n="nav.vote-platform">e-Voting Platform</span>
                                 </a>
                             </li>
-                        @endcan
-                        <li>
-                            <a href="/vote-platform" title="e-Voting Platform" data-filter-tags="vote-platform">
-                                <!-- <i class="fal fa-file"></i> -->
-                                <i class="ni ni-envelope-letter"></i>
-                                <span class="nav-link-text" data-i18n="nav.vote-platform">e-Voting Platform</span>
-                            </a>
-                        </li>
-                        @can('eVoting - View Report')
-                            <li>
-                                <a href="/vote-report" title="e-Voting Report" data-filter-tags="vote-report">
-                                    <!-- <i class="fal fa-file"></i> -->
-                                    <i class="ni ni-doc"></i>
-                                    <span class="nav-link-text" data-i18n="nav.vote-report">e-Voting Report</span>
-                                </a>
-                            </li>
-                        @endcan
+                            @can('eVoting - View Report')
+                                <li>
+                                    <a href="/vote-report" title="e-Voting Report" data-filter-tags="vote-report">
+                                        <!-- <i class="fal fa-file"></i> -->
+                                        <i class="ni ni-doc"></i>
+                                        <span class="nav-link-text" data-i18n="nav.vote-report">e-Voting Report</span>
+                                    </a>
+                                </li>
+                            @endcan
                         @endrole
                         <!-- End eVoting Management System -->
 
@@ -403,79 +404,79 @@
                         @endrole
                         <!-- End Engagement Management System -->
 
-                         <!-- Start ShortCourse Management System -->
+                        <!-- Start ShortCourse Management System -->
                         @role('Super Admin')
-                        @can('Short Course Management - View All')
-                            <li class="nav-title">Short Course Management</li>
-                            <li>
-                                <a href="#" title="Catalogues" data-filter-tags="catalogues">
-                                    <i class="ni ni-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.catalogues">Catalogues</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/topics" title="Topic" data-filter-tags="topic-catalogue">
-                                            <i class="ni ni-book-open"></i>
-                                            <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic-Category
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/shortcourses" title="Course" data-filter-tags="course-catalogue">
-                                            <i class="ni ni-book-open"></i>
-                                            <span class="nav-link-text" data-i18n="nav.course-catalogue">Course
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/venues" title="Venue" data-filter-tags="venue-catalogue">
-                                            <i class="ni ni-book-open"></i>
-                                            <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/feedback-sets" title="Feedback Set"
-                                            data-filter-tags="feedback-set-catalogue">
-                                            <i class="ni ni-book-open"></i>
-                                            <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback
-                                                Set
-                                            </span>
-                                        </a>
-                                    </li>
+                            @can('Short Course Management - View All')
+                                <li class="nav-title">Short Course Management</li>
+                                <li>
+                                    <a href="#" title="Catalogues" data-filter-tags="catalogues">
+                                        <i class="ni ni-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.catalogues">Catalogues</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/topics" title="Topic" data-filter-tags="topic-catalogue">
+                                                <i class="ni ni-book-open"></i>
+                                                <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic-Category
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/shortcourses" title="Course" data-filter-tags="course-catalogue">
+                                                <i class="ni ni-book-open"></i>
+                                                <span class="nav-link-text" data-i18n="nav.course-catalogue">Course
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/venues" title="Venue" data-filter-tags="venue-catalogue">
+                                                <i class="ni ni-book-open"></i>
+                                                <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/feedback-sets" title="Feedback Set"
+                                                data-filter-tags="feedback-set-catalogue">
+                                                <i class="ni ni-book-open"></i>
+                                                <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback
+                                                    Set
+                                                </span>
+                                            </a>
+                                        </li>
 
-                                    <li>
-                                        <a href="/trainers" title="Trainer" data-filter-tags="trainer">
-                                            <i class="ni ni-earphones-alt"></i>
-                                            <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="/events" title="Event Management" data-filter-tags="event-management">
-                                    <i class="ni ni-calendar-fine"></i>
-                                    <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
-                                </a>
-                            </li>
+                                        <li>
+                                            <a href="/trainers" title="Trainer" data-filter-tags="trainer">
+                                                <i class="ni ni-earphones-alt"></i>
+                                                <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="/events" title="Event Management" data-filter-tags="event-management">
+                                        <i class="ni ni-calendar-fine"></i>
+                                        <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
+                                    </a>
+                                </li>
 
 
 
-                            <li>
-                                <a href="#" title="People" data-filter-tags="people">
-                                    <i class="ni ni-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.people">People</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/participants" title="Participant" data-filter-tags="participant">
-                                            <i class="ni ni-users"></i>
-                                            <span class="nav-link-text" data-i18n="nav.participant">Participant</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            {{-- <li>
+                                <li>
+                                    <a href="#" title="People" data-filter-tags="people">
+                                        <i class="ni ni-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.people">People</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/participants" title="Participant" data-filter-tags="participant">
+                                                <i class="ni ni-users"></i>
+                                                <span class="nav-link-text" data-i18n="nav.participant">Participant</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {{-- <li>
                                 <a href="#" title="Application" data-filter-tags="application">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.application">Application</span>
@@ -490,20 +491,20 @@
                                 </ul>
                             </li> --}}
 
-                            <li>
-                                <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">
-                                    <i class="fal fa-users"></i>
-                                    <span class="nav-link-text" data-i18n="nav.shortcourse">Public View</span>
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">
+                                        <i class="fal fa-users"></i>
+                                        <span class="nav-link-text" data-i18n="nav.shortcourse">Public View</span>
+                                    </a>
+                                </li>
 
-                            {{-- <li>
+                                {{-- <li>
                                 <a href="/feedback/form" title="Feedback" data-filter-tags="feedback">
                                     <i class="ni ni-note"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Feedback</span>
                                 </a>
                             </li> --}}
-                        @endcan
+                            @endcan
                         @endrole
                         <!-- End ShortCourse Management System -->
 
