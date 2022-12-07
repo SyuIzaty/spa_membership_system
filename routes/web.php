@@ -88,9 +88,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/assign-new-vehicle', 'EKenderaanController@assignNewVehicle');
     Route::post('/assign-new-driver', 'EKenderaanController@assignNewDriver');
     Route::post('/edit-assign-vehicle', 'EKenderaanController@updateAssignedVehicle');
-    Route::post('/edit-assign-driver', 'EKenderaanController@updateAssignedDriver');
-
-
 
 
     // Aduan

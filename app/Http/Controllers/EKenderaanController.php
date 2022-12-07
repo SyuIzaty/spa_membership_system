@@ -479,7 +479,7 @@ class EKenderaanController extends Controller
 
             $data = [
                 'receivers'   => $user->staff_name,
-                'message'     => 'Untuk makluman, anda telah ditugaskan pada :-',
+                'emel'        => 'Untuk makluman, anda telah ditugaskan pada :-',
                 'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
                 'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
                 'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
@@ -1124,8 +1124,7 @@ class EKenderaanController extends Controller
         })
 
         ->editColumn('action', function ($data) {
-            return '<a href="#" data-target="#editDriver" data-toggle="modal" data-id="'.$data->id.'" data-driver="'.$data->driver_id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-assign-driver/'.$data->id.'"><i class="fal fa-trash"></i></button>';
+            return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-assign-driver/'.$data->id.'"><i class="fal fa-trash"></i></button>';
         })
 
         ->rawColumns(['action'])
@@ -1154,7 +1153,7 @@ class EKenderaanController extends Controller
 
         $data = [
             'receivers'   => $user->staff_name,
-            'message'     => 'Untuk makluman, anda telah ditugaskan pada :-',
+            'emel'        => 'Untuk makluman, anda telah ditugaskan pada :-',
             'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
             'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
             'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
@@ -1172,18 +1171,6 @@ class EKenderaanController extends Controller
         return redirect()->back()->with('message', 'Successfully Assigned New Driver!');
     }
 
-    public function updateAssignedDriver(Request $request)
-    {
-        $data = eKenderaanAssignDriver::where('id', $request->id)->first();
-        $data->update([
-            'driver_id' => $request->driver,
-            'updated_by' => Auth::user()->id
-        ]);
-
-        return redirect()->back()->with('message', 'Assigned Driver Update Successfully');
-    }
-
-
     public function deleteAssignedDriver($id)
     {
         $data = eKenderaanAssignDriver::where('id', $id)->first();
@@ -1196,7 +1183,7 @@ class EKenderaanController extends Controller
 
         $data = [
             'receivers'   => $user->staff_name,
-            'emel'     => 'Untuk makluman, penugasan pada butiran tersebut telah dibatalkan.',
+            'emel'        => 'Untuk makluman, penugasan pada butiran tersebut telah dibatalkan.',
             'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
             'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
             'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
@@ -1224,7 +1211,7 @@ class EKenderaanController extends Controller
         return datatables()::of($vehicle)
 
         ->editColumn('vehicle', function ($vehicle) {
-            return ''.$vehicle->vehicleList->name.'-'.$vehicle->vehicleList->plate_no.'';
+            return ''.$vehicle->vehicleList->name.' - '.$vehicle->vehicleList->plate_no.'';
         })
 
         ->editColumn('action', function ($vehicle) {

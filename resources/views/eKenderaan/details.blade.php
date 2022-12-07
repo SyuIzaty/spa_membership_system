@@ -314,12 +314,14 @@
                                                                 @if ($assignVehicle->count() > 1)
                                                                     <ul>
                                                                         @foreach ($assignVehicle as $v)
-                                                                            <li>{{ $v->vehicleList->name }}</li>
+                                                                            <li>{{ $v->vehicleList->name }} -
+                                                                                {{ $v->vehicleList->plate_no }}</li>
                                                                         @endforeach
                                                                     </ul>
                                                                 @else
                                                                     @foreach ($assignVehicle as $v)
-                                                                        {{ $v->vehicleList->name }}
+                                                                        {{ $v->vehicleList->name }} -
+                                                                        {{ $v->vehicleList->plate_no }}
                                                                     @endforeach
                                                                 @endif
                                                             </td>
@@ -886,48 +888,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="modal fade" id="editDriver" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="card-header">
-                                                    <h5 class="card-title w-100">Edit Assigned Driver</h5>
-                                                </div>
-                                                <div class="modal-body">
-                                                    {!! Form::open(['action' => 'EKenderaanController@updateAssignedDriver', 'method' => 'POST']) !!}
-                                                    <input type="hidden" id="id" name="id">
-                                                    <div class="form-group">
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="">Driver:</span>
-                                                            </div>
-                                                            <select class="form-control driver" name="driver"
-                                                                id="driver" required>
-                                                                <option disabled>Choose Driver</option>
-                                                                @foreach ($driver as $d)
-                                                                    <option value="{{ $d->id }}">
-                                                                        {{ $d->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="footer">
-                                                        <button type="submit" id="btn_search"
-                                                            class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i
-                                                                class="fal fa-save"></i> Update</button>
-                                                        <button type="button"
-                                                            class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
-                                                            data-dismiss="modal"><i class="fal fa-window-close"></i>
-                                                            Close</button>
-                                                    </div>
-                                                    {!! Form::close() !!}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -963,20 +923,6 @@
                 var id = button.data('id') // data-id
 
                 $('.modal-body #id').val(id);
-            });
-
-            $('#editDriver').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget)
-                var id = button.data('id') // data-id
-                var driver = button.data('driver') // data-driver
-
-                $('.modal-body #id').val(id);
-                $('.modal-body #driver').val(driver);
-
-                $('.driver').select2({
-                    dropdownParent: $('#editDriver'),
-                }).val(driver)
-
             });
 
             $('#editVehicle').on('show.bs.modal', function(event) {
