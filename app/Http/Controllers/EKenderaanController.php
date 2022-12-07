@@ -22,11 +22,14 @@ use App\eKenderaanVehicles;
 use Illuminate\Http\Request;
 use App\eKenderaanPassengers;
 use App\eKenderaanAttachments;
+use App\eKenderaanAssignDriver;
+use App\eKenderaanAssignVehicle;
 use App\Exports\eKenderaanExport;
 use App\eKenderaanFeedbackService;
 use Illuminate\Support\Facades\DB;
 use App\eKenderaanFeedbackQuestion;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Input;
@@ -364,6 +367,8 @@ class EKenderaanController extends Controller
         $feedback = eKenderaanFeedback::where('ekn_details_id', $id)->first();
         $feedbackQuestion = eKenderaanFeedbackQuestion::where('status', 'Y')->orderBy('sequence', 'ASC')->get();
         $feedbackScale = eKenderaanFeedbackService::where('ekn_details_id', $id)->get();
+        $assignDriver = eKenderaanAssignDriver::where('ekn_details_id', $id)->get();
+        $assignVehicle = eKenderaanAssignVehicle::where('ekn_details_id', $id)->get();
 
         return view('eKenderaan.details', compact(
             'id',
@@ -381,7 +386,9 @@ class EKenderaanController extends Controller
             'remark',
             'feedback',
             'feedbackQuestion',
-            'feedbackScale'
+            'feedbackScale',
+            'assignDriver',
+            'assignVehicle'
         ));
     }
 
@@ -446,17 +453,55 @@ class EKenderaanController extends Controller
     {
         $validated = $request->validate([
             'driver'   => 'required',
-            'vehicle'   => 'required',
+            'vehicle'  => 'required',
         ]);
 
-        $data =EKenderaan::where('id', $request->id)->first();
+        $data = EKenderaan::where('id', $request->id)->first();
         $data->update([
             'operation_approval' => 'Y',
-            'driver' => $request->driver,
-            'vehicle' => $request->vehicle,
             'status' => '3',
             'updated_by' => Auth::user()->id
         ]);
+
+        foreach ($request->driver as $key => $value) {
+            eKenderaanAssignDriver::create([
+                'ekn_details_id'=> $request->id,
+                'driver_id'     => $value,
+                'created_by'    => Auth::user()->id
+            ]);
+
+            $driver = eKenderaanDrivers::where('id', $value)->first();
+
+            $user = Staff::where('staff_id', $driver->staff_id)->first();
+            $user_email = $user->staff_email;
+
+            $details = eKenderaan::where('id', $request->id)->first();
+
+            $data = [
+                'receivers'   => $user->staff_name,
+                'message'     => 'Untuk makluman, anda telah ditugaskan pada :-',
+                'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
+                'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
+                'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
+                'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
+                'destination' => $details->destination,
+                'waitingArea' => $details->waitingArea->department_name,
+            ];
+
+            Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
+                $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
+                $message->from('operasi@intec.edu.my');
+                $message->to($user_email);
+            });
+        }
+
+        foreach ($request->vehicle as $key => $value) {
+            eKenderaanAssignVehicle::create([
+                'ekn_details_id'=> $request->id,
+                'vehicle_id'    => $value,
+                'created_by'    => Auth::user()->id
+            ]);
+        }
 
         eKenderaanLog::create([
             'ekn_details_id'=> $request->id,
@@ -1030,7 +1075,7 @@ class EKenderaanController extends Controller
                 if ($question->status == 'Y') {
                     return '';
                 } else {
-                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$question->id.'" data-question="'.$question->question.'" data-status="'.$question->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$question->id.'" data-question="'.$question->question.'" data-sequence="'.$question->sequence.'" data-status="'.$question->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 }
             })
 
@@ -1057,10 +1102,6 @@ class EKenderaanController extends Controller
 
     public function editQuestion(Request $request)
     {
-        $request->validate([
-            'sequence' => 'unique:ekn_feedback_questions,sequence'
-        ]);
-
         $update = eKenderaanFeedbackQuestion::where('id', $request->id)->first();
         $update->update([
             'question'      => $request->question,
@@ -1070,5 +1111,164 @@ class EKenderaanController extends Controller
         ]);
 
         return redirect()->back()->with('message', 'Update Successfully');
+    }
+
+    public function assignDriver($id)
+    {
+        $data  = eKenderaanAssignDriver::where('ekn_details_id', $id)->get();
+
+        return datatables()::of($data)
+
+        ->editColumn('driver', function ($data) {
+            return $data->driverList->name;
+        })
+
+        ->editColumn('action', function ($data) {
+            return '<a href="#" data-target="#editDriver" data-toggle="modal" data-id="'.$data->id.'" data-driver="'.$data->driver_id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+            <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-assign-driver/'.$data->id.'"><i class="fal fa-trash"></i></button>';
+        })
+
+        ->rawColumns(['action'])
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+    public function assignNewDriver(Request $request)
+    {
+        $validated = $request->validate([
+            'driver'   => 'required',
+        ]);
+
+        eKenderaanAssignDriver::create([
+            'ekn_details_id'=> $request->id,
+            'driver_id'     => $request->driver,
+            'created_by'    => Auth::user()->id
+        ]);
+
+        $driver = eKenderaanDrivers::where('id', $request->driver)->first();
+
+        $user = Staff::where('staff_id', $driver->staff_id)->first();
+        $user_email = $user->staff_email;
+
+        $details = eKenderaan::where('id', $request->id)->first();
+
+        $data = [
+            'receivers'   => $user->staff_name,
+            'message'     => 'Untuk makluman, anda telah ditugaskan pada :-',
+            'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
+            'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
+            'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
+            'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
+            'destination' => $details->destination,
+            'waitingArea' => $details->waitingArea->department_name,
+        ];
+
+        Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
+            $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
+            $message->from('operasi@intec.edu.my');
+            $message->to($user_email);
+        });
+
+        return redirect()->back()->with('message', 'Successfully Assigned New Driver!');
+    }
+
+    public function updateAssignedDriver(Request $request)
+    {
+        $data = eKenderaanAssignDriver::where('id', $request->id)->first();
+        $data->update([
+            'driver_id' => $request->driver,
+            'updated_by' => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Assigned Driver Update Successfully');
+    }
+
+
+    public function deleteAssignedDriver($id)
+    {
+        $data = eKenderaanAssignDriver::where('id', $id)->first();
+        $driver = eKenderaanDrivers::where('id', $data->driver_id)->first();
+
+        $user = Staff::where('staff_id', $driver->staff_id)->first();
+        $user_email = $user->staff_email;
+
+        $details = eKenderaan::where('id', $data->ekn_details_id)->first();
+
+        $data = [
+            'receivers'   => $user->staff_name,
+            'emel'     => 'Untuk makluman, penugasan pada butiran tersebut telah dibatalkan.',
+            'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
+            'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
+            'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
+            'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
+            'destination' => $details->destination,
+            'waitingArea' => $details->waitingArea->department_name,
+        ];
+
+        Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
+            $message->subject('EKENDERAAN: PEMBATALAN TUGASAN');
+            $message->from('operasi@intec.edu.my');
+            $message->to($user_email);
+        });
+
+        $exist = eKenderaanAssignDriver::find($id);
+        $exist->delete();
+
+        return response()->json();
+    }
+
+    public function assignVehicle($id)
+    {
+        $vehicle  = eKenderaanAssignVehicle::where('ekn_details_id', $id)->get();
+
+        return datatables()::of($vehicle)
+
+        ->editColumn('vehicle', function ($vehicle) {
+            return ''.$vehicle->vehicleList->name.'-'.$vehicle->vehicleList->plate_no.'';
+        })
+
+        ->editColumn('action', function ($vehicle) {
+            return '<a href="#" data-target="#editVehicle" data-toggle="modal" data-id="'.$vehicle->id.'" data-vehicle="'.$vehicle->vehicle_id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+            <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-assign-vehicle/'.$vehicle->id.'"><i class="fal fa-trash"></i></button>';
+        })
+
+        ->rawColumns(['action'])
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+    public function assignNewVehicle(Request $request)
+    {
+        $validated = $request->validate([
+            'vehicle'  => 'required',
+        ]);
+
+        eKenderaanAssignVehicle::create([
+            'ekn_details_id' => $request->id,
+            'vehicle_id'     => $request->vehicle,
+            'created_by'     => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Successfully Assigned New Vehicle!');
+    }
+
+
+    public function deleteAssignedVehicle($id)
+    {
+        $exist = eKenderaanAssignVehicle::find($id);
+        $exist->delete();
+
+        return response()->json();
+    }
+
+    public function updateAssignedVehicle(Request $request)
+    {
+        $data = eKenderaanAssignVehicle::where('id', $request->id)->first();
+        $data->update([
+            'vehicle_id' => $request->vehicle,
+            'updated_by' => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Assigned Vehicle Update Successfully');
     }
 }

@@ -83,6 +83,18 @@
                                 </div>
                             @endif
 
+                            @error('driver')
+                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
+                                    <i class="icon fal fa-check-circle"></i> {{ $message }}
+                                </div>
+                            @enderror
+
+                            @error('vehicle')
+                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
+                                    <i class="icon fal fa-check-circle"></i> {{ $message }}
+                                </div>
+                            @enderror
+
                             @error('rating')
                                 <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
                                     <i class="icon fal fa-check-circle"></i> Please rate the driver service
@@ -155,7 +167,8 @@
                                                     </td>
                                                     <th style="vertical-align: middle">H/P No.</th>
                                                     <td colspan="2">
-                                                        <input class="form-control" value="{{ $data->phone_no }}" readonly>
+                                                        <input class="form-control" value="{{ $data->phone_no }}"
+                                                            readonly>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -262,22 +275,101 @@
                                                         <td colspan="5" class="bg-primary-50">
                                                             <label class="form-label"><i class="fal fa-car"></i>
                                                                 Operation</label>
+                                                            @if ($data->status == '3')
+                                                                @canany('Manage and Verify eKenderaan Application')
+                                                                    <a href="#" data-target="#addDriver"
+                                                                        data-toggle="modal" data-id="{{ $data->id }}"
+                                                                        class="btn btn-sm btn-info btn-icon rounded-circle waves-effect waves-themed float-right">+
+                                                                        <i class="fal fa-user"></i>
+                                                                    </a>
+                                                                    <a href="#" data-target="#addVehicle"
+                                                                        data-toggle="modal" data-id="{{ $data->id }}"
+                                                                        class="btn btn-sm btn-info btn-icon rounded-circle waves-effect waves-themed float-right mr-2">+
+                                                                        <i class="fal fa-car"></i>
+                                                                    </a>
+                                                                @endcanany
+                                                            @endif
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <th width="20%" style="vertical-align: top">Driver</th>
-                                                        <td colspan="4" style="vertical-align: middle">
-                                                            {{ $data->driverList->name }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th width="20%" style="vertical-align: top">Vehicle</th>
-                                                        <td colspan="4" style="vertical-align: middle">
-                                                            {{ $data->vehicleList->name }} -
-                                                            {{ $data->vehicleList->plate_no }}
-                                                        </td>
-                                                    </tr>
+                                                    @if ($data->status == '3' || $data->status == '5')
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: top">Driver</th>
+                                                            <td colspan="7" style="vertical-align: middle">
+                                                                @if ($assignDriver->count() > 1)
+                                                                    <ul>
+                                                                        @foreach ($assignDriver as $d)
+                                                                            <li>{{ $d->driverList->name }}</li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @else
+                                                                    @foreach ($assignDriver as $d)
+                                                                        {{ $d->driverList->name }}
+                                                                    @endforeach
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: top">Vehicle</th>
+                                                            <td colspan="7" style="vertical-align: middle">
+                                                                @if ($assignVehicle->count() > 1)
+                                                                    <ul>
+                                                                        @foreach ($assignVehicle as $v)
+                                                                            <li>{{ $v->vehicleList->name }}</li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @else
+                                                                    @foreach ($assignVehicle as $v)
+                                                                        {{ $v->vehicleList->name }}
+                                                                    @endforeach
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 </thead>
                                             </table>
+
+                                            @if ($data->status == '3')
+                                                @canany('Manage and Verify eKenderaan Application')
+                                                    <div class="table-responsive">
+                                                        <table id="driverList"
+                                                            class="table table-bordered table-hover table-striped w-100">
+                                                            <thead>
+                                                                <tr class="bg-success-50 text-center">
+                                                                    <th class="text-center">No.</th>
+                                                                    <th class="text-center">Driver</th>
+                                                                    <th class="text-center">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="hasinput"></td>
+                                                                    <td class="hasinput"></td>
+                                                                    <td class="hasinput"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table id="vehicleList"
+                                                            class="table table-bordered table-hover table-striped w-100">
+                                                            <thead>
+                                                                <tr class="bg-success-50 text-center">
+                                                                    <th class="text-center">No.</th>
+                                                                    <th class="text-center">Vehicle</th>
+                                                                    <th class="text-center">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="hasinput"></td>
+                                                                    <td class="hasinput"></td>
+                                                                    <td class="hasinput"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                @endcanany
+                                            @endif
                                         @endif
                                     </div>
                                     @if ($data->status == '2')
@@ -361,9 +453,9 @@
                                                                 <th width="20%" style="vertical-align: top"><span
                                                                         class="text-danger">*</span> Driver</th>
                                                                 <td colspan="4" style="vertical-align: middle">
-                                                                    <select class="form-control" name="driver"
-                                                                        id="driver" required>
-                                                                        <option disabled selected>Choose Driver</option>
+                                                                    <select class="form-control" name="driver[]"
+                                                                        id="drv" multiple required>
+                                                                        <option disabled>Choose Driver</option>
                                                                         @foreach ($driver as $d)
                                                                             <option value="{{ $d->id }}"
                                                                                 {{ old('driver') == $d->id ? 'selected' : '' }}>
@@ -376,14 +468,14 @@
                                                                 <th width="20%" style="vertical-align: top"><span
                                                                         class="text-danger">*</span> Vehicle</th>
                                                                 <td colspan="4" style="vertical-align: middle">
-                                                                    <select class="form-control" name="vehicle"
-                                                                        id="vehicle" required>
-                                                                        <option disabled selected>Choose Vehicle</option>
+                                                                    <select class="form-control" name="vehicle[]"
+                                                                        id="vhc" multiple required>
+                                                                        <option disabled>Choose Vehicle</option>
                                                                         @foreach ($vehicle as $v)
                                                                             <option value="{{ $v->id }}"
-                                                                                {{ old('vehicle') == $d->id ? 'selected' : '' }}>
+                                                                                {{ old('vehicle') == $v->id ? 'selected' : '' }}>
                                                                                 {{ $v->name }} - {{ $v->plate_no }}
-                                                                            </option>verify application
+                                                                            </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -478,7 +570,6 @@
                                                             <td colspan="7"></td>
                                                         </tr>
                                                         <tr class="text-center" style="background-color: #a2d2ff;">
-                                                            <td>NO</td>
                                                             <td width="100px">QUALITY OF SERVICES PROVIDED</td>
                                                             <td width="100px">5</td>
                                                             <td width="100px">4</td>
@@ -489,8 +580,8 @@
                                                         @php $i = 1 @endphp
                                                         @foreach ($feedbackQuestion as $f)
                                                             <tr>
-                                                                <td class="text-center">{{ $i }}</td>
-                                                                <td>{{ $f->question }}</td>
+                                                                <td class="text-center">
+                                                                    {{ $f->question }}</td>
                                                                 <td class="text-center"><input type="radio"
                                                                         name="scale[{{ $f->id }}]" id="scale-5"
                                                                         value="5">
@@ -671,6 +762,172 @@
                                             </div>
                                         </div>
                                     @endif
+                                    <div class="modal fade" id="addVehicle" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="card-header">
+                                                    <h5 class="card-title w-100">Assign Vehicle</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {!! Form::open(['action' => 'EKenderaanController@assignNewVehicle', 'method' => 'POST']) !!}
+                                                    <input type="hidden" id="id" name="id">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="">Vehicle:</span>
+                                                            </div>
+                                                            <select class="form-control vehicles" name="vehicle"
+                                                                id="vehicle" required>
+                                                                <option selected disabled>Choose Vehicle</option>
+                                                                @foreach ($vehicle as $v)
+                                                                    <option value="{{ $v->id }}"
+                                                                        {{ old('vehicle') == $v->id ? 'selected' : '' }}>
+                                                                        {{ $v->name }} - {{ $v->plate_no }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="footer">
+                                                        <button type="submit" id="btn_search"
+                                                            class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i
+                                                                class="fal fa-save"></i> Add</button>
+                                                        <button type="button"
+                                                            class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                                            data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                            Close</button>
+                                                    </div>
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="editVehicle" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="card-header">
+                                                    <h5 class="card-title w-100">Edit Assigned Vehicle</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {!! Form::open(['action' => 'EKenderaanController@updateAssignedVehicle', 'method' => 'POST']) !!}
+                                                    <input type="hidden" name="id" id="id">
+
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="">Vehicle</span>
+                                                            </div>
+                                                            <select class="form-control vehicle" name="vehicle"
+                                                                id="vehicles" required>
+                                                                <option disabled>Choose Vehicle</option>
+                                                                @foreach ($vehicle as $v)
+                                                                    <option value="{{ $v->id }}">
+                                                                        {{ $v->name }} - {{ $v->plate_no }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer">
+                                                        <button type="submit" id="btn_search"
+                                                            class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i
+                                                                class="fal fa-save"></i> Update</button>
+                                                        <button type="button"
+                                                            class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                                            data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                            Close</button>
+                                                    </div>
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="addDriver" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="card-header">
+                                                    <h5 class="card-title w-100">Assign Driver</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {!! Form::open(['action' => 'EKenderaanController@assignNewDriver', 'method' => 'POST']) !!}
+                                                    <input type="hidden" id="id" name="id">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="">Driver:</span>
+                                                            </div>
+                                                            <select class="form-control drivers" name="driver"
+                                                                id="driver" required>
+                                                                <option selected disabled>Choose Driver</option>
+                                                                @foreach ($driver as $d)
+                                                                    <option value="{{ $d->id }}"
+                                                                        {{ old('driver') == $d->id ? 'selected' : '' }}>
+                                                                        {{ $d->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="footer">
+                                                        <button type="submit" id="btn_search"
+                                                            class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i
+                                                                class="fal fa-save"></i> Add</button>
+                                                        <button type="button"
+                                                            class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                                            data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                            Close</button>
+                                                    </div>
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="editDriver" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="card-header">
+                                                    <h5 class="card-title w-100">Edit Assigned Driver</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {!! Form::open(['action' => 'EKenderaanController@updateAssignedDriver', 'method' => 'POST']) !!}
+                                                    <input type="hidden" id="id" name="id">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="">Driver:</span>
+                                                            </div>
+                                                            <select class="form-control driver" name="driver"
+                                                                id="driver" required>
+                                                                <option disabled>Choose Driver</option>
+                                                                @foreach ($driver as $d)
+                                                                    <option value="{{ $d->id }}">
+                                                                        {{ $d->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="footer">
+                                                        <button type="submit" id="btn_search"
+                                                            class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i
+                                                                class="fal fa-save"></i> Update</button>
+                                                        <button type="button"
+                                                            class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                                            data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                            Close</button>
+                                                    </div>
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -684,7 +941,58 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('#vehicle,#driver').select2();
+            $('#vhc,#drv').select2();
+
+            $('.vehicles').select2({
+                dropdownParent: $('#addVehicle'),
+            });
+
+            $('.drivers').select2({
+                dropdownParent: $('#addDriver'),
+            });
+
+            $('#addVehicle').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id') // data-id
+
+                $('.modal-body #id').val(id);
+            });
+
+            $('#addDriver').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id') // data-id
+
+                $('.modal-body #id').val(id);
+            });
+
+            $('#editDriver').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id') // data-id
+                var driver = button.data('driver') // data-driver
+
+                $('.modal-body #id').val(id);
+                $('.modal-body #driver').val(driver);
+
+                $('.driver').select2({
+                    dropdownParent: $('#editDriver'),
+                }).val(driver)
+
+            });
+
+            $('#editVehicle').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id') // data-id
+                var vehicle = button.data('vehicle') // data-vehicle
+
+                $('.modal-body #id').val(id);
+                $('.modal-body #vehicles').val(vehicle);
+
+                $('.vehicle').select2({
+                    dropdownParent: $('#editVehicle'),
+                }).val(vehicle)
+
+            });
+
 
             var id = @json($id);
 
@@ -772,5 +1080,152 @@
                 submit.focus();
             }
         }
+
+        var idEkn = @json($id);
+
+        var table = $('#driverList').DataTable({
+            searching: false,
+            paging: false,
+            info: false,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/assign-driver/" + idEkn,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [{
+                    className: 'text-center',
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    className: 'text-left',
+                    data: 'driver',
+                    name: 'driver'
+                },
+                {
+                    className: 'text-center',
+                    data: 'action',
+                    name: 'action'
+                }
+            ],
+            orderCellsTop: true,
+            "order": [
+                [0, "asc"]
+            ],
+            "initComplete": function(settings, json) {}
+        });
+
+        $('#driverList').on('click', '.btn-delete[data-remote]', function(e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = $(this).data('remote');
+            Swal.fire({
+                title: 'Are you sure you want to cancel this driver?',
+                text: "Driver will be notified about this cancellation",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        data: {
+                            method: '_DELETE',
+                            submit: true
+                        }
+                    }).always(function(data) {
+                        $('#driverList').DataTable().draw(false);
+                    });
+                }
+            })
+        });
+
+        var idEkn = @json($id);
+
+        var table = $('#vehicleList').DataTable({
+            searching: false,
+            paging: false,
+            info: false,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/assign-vehicle/" + idEkn,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [{
+                    className: 'text-center',
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    className: 'text-left',
+                    data: 'vehicle',
+                    name: 'vehicle'
+                },
+                {
+                    className: 'text-center',
+                    data: 'action',
+                    name: 'action'
+                }
+            ],
+            orderCellsTop: true,
+            "order": [
+                [0, "asc"]
+            ],
+            "initComplete": function(settings, json) {}
+        });
+
+        $('#vehicleList').on('click', '.btn-delete[data-remote]', function(e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = $(this).data('remote');
+            Swal.fire({
+                title: 'Are you sure you want to cancel this vehicle?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        data: {
+                            method: '_DELETE',
+                            submit: true
+                        }
+                    }).always(function(data) {
+                        $('#vehicleList').DataTable().draw(false);
+                    });
+                }
+            })
+        });
     </script>
 @endsection

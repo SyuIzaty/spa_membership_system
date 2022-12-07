@@ -12,8 +12,7 @@ class eKenderaan extends Model
     protected $table = 'ekn_details';
     protected $fillable = [
         'intec_id', 'phone_no', 'depart_date', 'depart_time', 'return_date', 'return_time',
-        'destination', 'waiting_area', 'purpose', 'total_passenger', 'driver',
-        'vehicle', 'status', 'category', 'hod_hop_approval', 'operation_approval', 'created_by', 'updated_by', 'deleted_by'
+        'destination', 'waiting_area', 'purpose', 'status', 'category', 'operation_approval', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function waitingArea()
@@ -34,16 +33,6 @@ class eKenderaan extends Model
     public function programmes()
     {
         return $this->hasOne('App\Programmes', 'id', 'students_programme');
-    }
-
-    public function vehicleList()
-    {
-        return $this->hasOne(eKenderaanVehicles::class, 'id', 'vehicle');
-    }
-
-    public function driverList()
-    {
-        return $this->hasOne(eKenderaanDrivers::class, 'id', 'driver');
     }
 
     public function statusList()

@@ -81,6 +81,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/feedback-questions', 'EKenderaanController@questionList');
     Route::post('/add-feedback-questions', 'EKenderaanController@addQuestion');
     Route::post('/edit-feedback-questions', 'EKenderaanController@editQuestion');
+    Route::post('/assign-driver/{id}', 'EKenderaanController@assignDriver');
+    Route::delete('/delete-assign-driver/{id}', 'EKenderaanController@deleteAssignedDriver');
+    Route::post('/assign-vehicle/{id}', 'EKenderaanController@assignVehicle');
+    Route::delete('/delete-assign-vehicle/{id}', 'EKenderaanController@deleteAssignedVehicle');
+    Route::post('/assign-new-vehicle', 'EKenderaanController@assignNewVehicle');
+    Route::post('/assign-new-driver', 'EKenderaanController@assignNewDriver');
+    Route::post('/edit-assign-vehicle', 'EKenderaanController@updateAssignedVehicle');
+    Route::post('/edit-assign-driver', 'EKenderaanController@updateAssignedDriver');
+
+
 
 
     // Aduan

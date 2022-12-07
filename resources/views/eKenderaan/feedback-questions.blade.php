@@ -191,10 +191,12 @@
                 var button = $(event.relatedTarget)
                 var id = button.data('id') // data-id
                 var question = button.data('question') // data-question
+                var sequence = button.data('sequence') // data-sequence
                 var status = button.data('status') // data-status
 
                 $('.modal-body #id').val(id);
                 $('.modal-body #question').val(question);
+                $('.modal-body #sequence').val(sequence);
                 $('.modal-body #status').val(status);
 
             });
