@@ -8,7 +8,7 @@ class eKenderaanFeedbackService extends Model
 {
     protected $table = 'ekn_feedback_services';
     protected $fillable = [
-        'ekn_feedback_questions_id', 'ekn_details_id', 'scale', 'created_by', 'updated_by', 'deleted_by'
+        'ekn_feedback_questions_id', 'ekn_details_id', 'ekn_assigned_driver_id', 'scale', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function questionList()

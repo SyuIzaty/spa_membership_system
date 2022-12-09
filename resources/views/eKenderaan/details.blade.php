@@ -24,8 +24,11 @@
         }
 
         .rating>input {
-            display: none;
+            opacity: 0;
+            margin-left: -25px;
+            cursor: pointer;
         }
+
 
         .rating>label {
             cursor: pointer;
@@ -509,7 +512,7 @@
                                                 <table class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
                                                         <input type="hidden" id="id" name="id"
-                                                            value="{{ $data->id }}" required>
+                                                            value="{{ $data->id }}">
                                                         <tr>
                                                             <td colspan="7" class="bg-primary-50">
                                                                 <label class="form-label"><i class="fal fa-pencil"></i>
@@ -525,92 +528,113 @@
                                                                 suggestions/comments.
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            {{-- <div class="container">
-                                                                <div class="feedback">
-
-                                                                </div>
-                                                            </div> --}}
-                                                            <td colspan="7">
-                                                                <h4 class="text-center" style="color:red;">
-                                                                    <b>Please rate the driver service</b>
-                                                                </h4>
-                                                                <div class="rating">
-                                                                    <input type="radio" name="rating" id="rating-5"
-                                                                        value="5">
-                                                                    <label for="rating-5"></label>
-                                                                    <input type="radio" name="rating" id="rating-4"
-                                                                        value="4">
-                                                                    <label for="rating-4"></label>
-                                                                    <input type="radio" name="rating" id="rating-3"
-                                                                        value="3">
-                                                                    <label for="rating-3"></label>
-                                                                    <input type="radio" name="rating" id="rating-2"
-                                                                        value="2">
-                                                                    <label for="rating-2"></label>
-                                                                    <input type="radio" name="rating" id="rating-1"
-                                                                        value="1">
-                                                                    <label for="rating-1"></label>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="text-center border" style="background-color: #c6c6c6;">
-                                                            <td width="100px">5</td>
-                                                            <td width="100px">4</td>
-                                                            <td width="100px" colspan="2">3</td>
-                                                            <td width="100px">2</td>
-                                                            <td width="100px" colspan="2">1</td>
-                                                        </tr>
-                                                        <tr class="text-center">
-                                                            <td width="100px">Excellent</td>
-                                                            <td width="100px">Very Good</td>
-                                                            <td width="100px" colspan="2">Good</td>
-                                                            <td width="100px">Satisfying</td>
-                                                            <td width="100px" colspan="2">Less Satisfactory</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="7"></td>
-                                                        </tr>
-                                                        <tr class="text-center" style="background-color: #a2d2ff;">
-                                                            <td width="100px">QUALITY OF SERVICES PROVIDED</td>
-                                                            <td width="100px">5</td>
-                                                            <td width="100px">4</td>
-                                                            <td width="100px">3</td>
-                                                            <td width="100px">2</td>
-                                                            <td width="100px">1</td>
-                                                        </tr>
-                                                        @php $i = 1 @endphp
-                                                        @foreach ($feedbackQuestion as $f)
+                                                        @foreach ($assignDriver as $ad)
                                                             <tr>
-                                                                <td class="text-center">
-                                                                    {{ $f->question }}</td>
-                                                                <td class="text-center"><input type="radio"
-                                                                        name="scale[{{ $f->id }}]" id="scale-5"
-                                                                        value="5">
-                                                                    <label for="scale-5"></label>
-                                                                </td>
-                                                                <td class="text-center"><input type="radio"
-                                                                        name="scale[{{ $f->id }}]" id="scale-4"
-                                                                        value="4">
-                                                                    <label for="scale-4"></label>
-                                                                </td>
-                                                                <td class="text-center"><input type="radio"
-                                                                        name="scale[{{ $f->id }}]" id="scale-3"
-                                                                        value="3">
-                                                                    <label for="scale-3"></label>
-                                                                </td>
-                                                                <td class="text-center"><input type="radio"
-                                                                        name="scale[{{ $f->id }}]" id="scale-2"
-                                                                        value="2">
-                                                                    <label for="scale-2"></label>
-                                                                </td>
-                                                                <td class="text-center"> <input type="radio"
-                                                                        name="scale[{{ $f->id }}]" id="scale-1"
-                                                                        value="1">
-                                                                    <label for="scale-1"></label>
+                                                                <td colspan="7">
+                                                                    <h4 class="text-center" style="color:red;">
+                                                                        <b>Please rate {{ $ad->driverList->name }}
+                                                                            service</b>
+                                                                        <input type="hidden" id="id"
+                                                                            name="driver_id[]"
+                                                                            value="{{ $ad->id }}">
+                                                                    </h4>
+                                                                    <div class="rating">
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->id }}]"
+                                                                            id="rating-5{{ $ad->id }}"
+                                                                            value="5">
+                                                                        <label for="rating-5"></label>
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->id }}]"
+                                                                            id="rating-4{{ $ad->id }}"
+                                                                            value="4">
+                                                                        <label for="rating-4"></label>
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->id }}]"
+                                                                            id="rating-3{{ $ad->id }}"
+                                                                            value="3">
+                                                                        <label for="rating-3"></label>
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->id }}]"
+                                                                            id="rating-2{{ $ad->id }}"
+                                                                            value="2">
+                                                                        <label for="rating-2"></label>
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->id }}]"
+                                                                            id="rating-1{{ $ad->id }}"
+                                                                            value="1">
+                                                                        <label for="rating-1"></label>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
-                                                            @php $i++ @endphp
+                                                            <tr class="text-center border"
+                                                                style="background-color: #c6c6c6;">
+                                                                <td width="100px">5</td>
+                                                                <td width="100px">4</td>
+                                                                <td width="100px" colspan="2">3</td>
+                                                                <td width="100px">2</td>
+                                                                <td width="100px" colspan="2">1</td>
+                                                            </tr>
+                                                            <tr class="text-center">
+                                                                <td width="100px">Excellent</td>
+                                                                <td width="100px">Very Good</td>
+                                                                <td width="100px" colspan="2">Good</td>
+                                                                <td width="100px">Satisfying</td>
+                                                                <td width="100px" colspan="2">Less Satisfactory</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="7"></td>
+                                                            </tr>
+                                                            <tr class="text-center" style="background-color: #a2d2ff;">
+                                                                <td width="100px">QUALITY OF SERVICES PROVIDED</td>
+                                                                <td width="100px">5</td>
+                                                                <td width="100px">4</td>
+                                                                <td width="100px">3</td>
+                                                                <td width="100px">2</td>
+                                                                <td width="100px">1</td>
+                                                            </tr>
+                                                            @php $i = 1 @endphp
+                                                            @foreach ($feedbackQuestion as $f)
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        {{ $f->question }}</td>
+                                                                    <td class="text-center"><input type="radio"
+                                                                            name="scale[{{ $f->id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-5{{ $ad->driver_id }}"
+                                                                            value="5">
+                                                                        <label for="scale-5"></label>
+                                                                    </td>
+                                                                    <td class="text-center"><input type="radio"
+                                                                            name="scale[{{ $f->id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-4{{ $ad->driver_id }}"
+                                                                            value="4">
+                                                                        <label for="scale-4"></label>
+                                                                    </td>
+                                                                    <td class="text-center"><input type="radio"
+                                                                            name="scale[{{ $f->id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-3{{ $ad->driver_id }}"
+                                                                            value="3">
+                                                                        <label for="scale-3"></label>
+                                                                    </td>
+                                                                    <td class="text-center"><input type="radio"
+                                                                            name="scale[{{ $f->id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-2{{ $ad->driver_id }}"
+                                                                            value="2">
+                                                                        <label for="scale-2"></label>
+                                                                    </td>
+                                                                    <td class="text-center"> <input type="radio"
+                                                                            name="scale[{{ $f->id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-1{{ $ad->driver_id }}"
+                                                                            value="1">
+                                                                        <label for="scale-1"></label>
+                                                                    </td>
+                                                                </tr>
+                                                                @php $i++ @endphp
+                                                            @endforeach
+                                                            <tr>
+                                                                <td colspan="7" style="background-color: #ffa4a4;">
+                                                                </td>
+                                                            </tr>
                                                         @endforeach
                                                         <tr>
                                                             <td colspan="7"></td>
@@ -656,99 +680,113 @@
                                                                     APPLICANT FEEDBACK</label>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td colspan="7">
-                                                                <h4 class="text-center" style="color:red;">
-                                                                    <b>Driver Service Rating</b>
-                                                                </h4>
-                                                                <div class="rating">
-                                                                    <input type="radio" name="rating" id="rating-5"
-                                                                        value="5" disabled
-                                                                        @if ($feedback->rating == '5') checked @endif>
-                                                                    <label for="rating-5"></label>
-                                                                    <input type="radio" name="rating" id="rating-4"
-                                                                        value="4" disabled
-                                                                        @if ($feedback->rating == '4') checked @endif>
-                                                                    <label for="rating-4"></label>
-                                                                    <input type="radio" name="rating" id="rating-3"
-                                                                        value="3" disabled
-                                                                        @if ($feedback->rating == '3') checked @endif>
-                                                                    <label for="rating-3"></label>
-                                                                    <input type="radio" name="rating" id="rating-2"
-                                                                        value="2" disabled
-                                                                        @if ($feedback->rating == '2') checked @endif>
-                                                                    <label for="rating-2"></label>
-                                                                    <input type="radio" name="rating" id="rating-1"
-                                                                        value="1" disabled
-                                                                        @if ($feedback->rating == '1') checked @endif>
-                                                                    <label for="rating-1"></label>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="text-center border" style="background-color: #c6c6c6;">
-                                                            <td width="100px">5</td>
-                                                            <td width="100px">4</td>
-                                                            <td width="100px" colspan="2">3</td>
-                                                            <td width="100px">2</td>
-                                                            <td width="100px" colspan="2">1</td>
-                                                        </tr>
-                                                        <tr class="text-center">
-                                                            <td width="100px">Excellent</td>
-                                                            <td width="100px">Very Good</td>
-                                                            <td width="100px" colspan="2">Good</td>
-                                                            <td width="100px">Satisfying</td>
-                                                            <td width="100px" colspan="2">Less Satisfactory</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="7"></td>
-                                                        </tr>
-                                                        <tr class="text-center" style="background-color: #a2d2ff;">
-                                                            <td>NO</td>
-                                                            <td width="100px">QUALITY OF SERVICES PROVIDED</td>
-                                                            <td width="100px">5</td>
-                                                            <td width="100px">4</td>
-                                                            <td width="100px">3</td>
-                                                            <td width="100px">2</td>
-                                                            <td width="100px">1</td>
-                                                        </tr>
-                                                        @php $i = 1 @endphp
-                                                        @foreach ($feedbackScale as $f)
+                                                        @foreach ($assignDriver as $ad)
                                                             <tr>
-                                                                <td class="text-center">{{ $i }}</td>
-                                                                <td>{{ $f->questionList->question }}</td>
-                                                                <td class="text-center"><input type="radio"
-                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
-                                                                        id="scale-5" value="5"
-                                                                        @if ($f->scale == '5') checked @else disabled @endif>
-                                                                    <label for="scale-5"></label>
-                                                                </td>
-                                                                <td class="text-center"><input type="radio"
-                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
-                                                                        id="scale-4" value="4"
-                                                                        @if ($f->scale == '4') checked @else disabled @endif>
-                                                                    <label for="scale-4"></label>
-                                                                </td>
-                                                                <td class="text-center"><input type="radio"
-                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
-                                                                        id="scale-3" value="3"
-                                                                        @if ($f->scale == '3') checked @else disabled @endif>
-                                                                    <label for="scale-3"></label>
-                                                                </td>
-                                                                <td class="text-center"><input type="radio"
-                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
-                                                                        id="scale-2" value="2"
-                                                                        @if ($f->scale == '2') checked @else disabled @endif>
-                                                                    <label for="scale-2"></label>
-                                                                </td>
-                                                                <td class="text-center"> <input type="radio"
-                                                                        name="scale[{{ $f->ekn_feedback_questions_id }}]"
-                                                                        id="scale-1" value="1"
-                                                                        @if ($f->scale == '1') checked @else disabled @endif>
-                                                                    <label for="scale-1"></label>
+                                                                <td colspan="7">
+                                                                    <h4 class="text-center" style="color:red;">
+                                                                        <b>{{ $ad->driverList->name }} SERVICE RATING</b>
+                                                                    </h4>
+                                                                    <div class="rating">
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->driver_id }}]"
+                                                                            id="rating-5" value="5" disabled
+                                                                            @if ($ad->rating == '5') checked @endif>
+                                                                        <label for="rating-5"></label>
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->driver_id }}]"
+                                                                            id="rating-4" value="4" disabled
+                                                                            @if ($ad->rating == '4') checked @endif>
+                                                                        <label for="rating-4"></label>
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->driver_id }}]"
+                                                                            id="rating-3" value="3" disabled
+                                                                            @if ($ad->rating == '3') checked @endif>
+                                                                        <label for="rating-3"></label>
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->driver_id }}]"
+                                                                            id="rating-2" value="2" disabled
+                                                                            @if ($ad->rating == '2') checked @endif>
+                                                                        <label for="rating-2"></label>
+                                                                        <input type="radio"
+                                                                            name="rating[{{ $ad->driver_id }}]"
+                                                                            id="rating-1" value="1" disabled
+                                                                            @if ($ad->rating == '1') checked @endif>
+                                                                        <label for="rating-1"></label>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
-                                                            @php $i++ @endphp
+                                                            <tr class="text-center border"
+                                                                style="background-color: #c6c6c6;">
+                                                                <td width="100px">5</td>
+                                                                <td width="100px">4</td>
+                                                                <td width="100px" colspan="2">3</td>
+                                                                <td width="100px">2</td>
+                                                                <td width="100px" colspan="2">1</td>
+                                                            </tr>
+                                                            <tr class="text-center">
+                                                                <td width="100px">Excellent</td>
+                                                                <td width="100px">Very Good</td>
+                                                                <td width="100px" colspan="2">Good</td>
+                                                                <td width="100px">Satisfying</td>
+                                                                <td width="100px" colspan="2">Less Satisfactory</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="7"></td>
+                                                            </tr>
+                                                            <tr class="text-center" style="background-color: #a2d2ff;">
+                                                                <td>NO</td>
+                                                                <td width="100px">QUALITY OF SERVICES PROVIDED</td>
+                                                                <td width="100px">5</td>
+                                                                <td width="100px">4</td>
+                                                                <td width="100px">3</td>
+                                                                <td width="100px">2</td>
+                                                                <td width="100px">1</td>
+                                                            </tr>
+                                                            @php $i = 1 @endphp
+                                                            @foreach ($feedbackScale->where('ekn_assigned_driver_id', $ad->driver_id) as $f)
+                                                                <tr>
+                                                                    <td class="text-center">{{ $i }}</td>
+                                                                    <td>{{ $f->questionList->question }}</td>
+                                                                    <td class="text-center"><input type="radio"
+                                                                            name="scale[{{ $f->ekn_feedback_questions_id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-5{{ $ad->driver_id }}"
+                                                                            value="5"
+                                                                            @if ($f->scale == '5') checked @else disabled @endif>
+                                                                        <label for="scale-5"></label>
+                                                                    </td>
+                                                                    <td class="text-center"><input type="radio"
+                                                                            name="scale[{{ $f->ekn_feedback_questions_id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-4{{ $ad->driver_id }}"
+                                                                            value="4"
+                                                                            @if ($f->scale == '4') checked @else disabled @endif>
+                                                                        <label for="scale-4"></label>
+                                                                    </td>
+                                                                    <td class="text-center"><input type="radio"
+                                                                            name="scale[{{ $f->ekn_feedback_questions_id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-3{{ $ad->driver_id }}"
+                                                                            value="3"
+                                                                            @if ($f->scale == '3') checked @else disabled @endif>
+                                                                        <label for="scale-3"></label>
+                                                                    </td>
+                                                                    <td class="text-center"><input type="radio"
+                                                                            name="scale[{{ $f->ekn_feedback_questions_id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-2{{ $ad->driver_id }}"
+                                                                            value="2"
+                                                                            @if ($f->scale == '2') checked @else disabled @endif>
+                                                                        <label for="scale-2"></label>
+                                                                    </td>
+                                                                    <td class="text-center"> <input type="radio"
+                                                                            name="scale[{{ $f->ekn_feedback_questions_id }}][{{ $ad->driver_id }}]"
+                                                                            id="scale-1{{ $ad->driver_id }}"
+                                                                            value="1"
+                                                                            @if ($f->scale == '1') checked @else disabled @endif>
+                                                                        <label for="scale-1"></label>
+                                                                    </td>
+                                                                </tr>
+                                                                @php $i++ @endphp
+                                                            @endforeach
                                                         @endforeach
+
                                                         <tr>
                                                             <td colspan="7"></td>
                                                         </tr>

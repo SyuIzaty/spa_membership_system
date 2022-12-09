@@ -463,38 +463,6 @@ class EKenderaanController extends Controller
             'updated_by' => Auth::user()->id
         ]);
 
-        foreach ($request->driver as $key => $value) {
-            eKenderaanAssignDriver::create([
-                'ekn_details_id'=> $request->id,
-                'driver_id'     => $value,
-                'created_by'    => Auth::user()->id
-            ]);
-
-            $driver = eKenderaanDrivers::where('id', $value)->first();
-
-            $user = Staff::where('staff_id', $driver->staff_id)->first();
-            $user_email = $user->staff_email;
-
-            $details = eKenderaan::where('id', $request->id)->first();
-
-            $data = [
-                'receivers'   => $user->staff_name,
-                'emel'        => 'Untuk makluman, anda telah ditugaskan pada :-',
-                'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
-                'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
-                'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
-                'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
-                'destination' => $details->destination,
-                'waitingArea' => $details->waitingArea->department_name,
-            ];
-
-            Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
-                $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
-                $message->from('operasi@intec.edu.my');
-                $message->to($user_email);
-            });
-        }
-
         foreach ($request->vehicle as $key => $value) {
             eKenderaanAssignVehicle::create([
                 'ekn_details_id'=> $request->id,
@@ -509,6 +477,38 @@ class EKenderaanController extends Controller
             'activity'      => 'Operation verify application',
             'created_by'    => Auth::user()->id
         ]);
+
+        foreach ($request->driver as $key => $value) {
+            eKenderaanAssignDriver::create([
+                'ekn_details_id'=> $request->id,
+                'driver_id'     => $value,
+                'created_by'    => Auth::user()->id
+            ]);
+
+            $driver = eKenderaanDrivers::where('id', $value)->first();
+
+            $user = Staff::where('staff_id', $driver->staff_id)->first();
+            $user_email = $user->staff_email;
+
+            $details = eKenderaan::where('id', $request->id)->first();
+
+            // $data = [
+            //     'receivers'   => $user->staff_name,
+            //     'emel'        => 'Untuk makluman, anda telah ditugaskan pada :-',
+            //     'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
+            //     'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
+            //     'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
+            //     'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
+            //     'destination' => $details->destination,
+            //     'waitingArea' => $details->waitingArea->department_name,
+            // ];
+
+            // Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
+            //     $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
+            //     $message->from('operasi@intec.edu.my');
+            //     $message->to($user_email);
+            // });
+        }
 
         return redirect()->back()->with('message', 'Successfully Verified!');
     }
@@ -557,17 +557,23 @@ class EKenderaanController extends Controller
         eKenderaanFeedback::create([
             'ekn_details_id' => $request->id,
             'remark' => $request->feedback,
-            'rating' => $request->rating,
             'created_by' => Auth::user()->id
         ]);
 
-        foreach ($request->scale as $key => $value) {
-            eKenderaanFeedbackService::create([
-                'ekn_feedback_questions_id' => $key,
-                'ekn_details_id' => $request->id,
-                'scale' => $value,
-                'created_by' => Auth::user()->id
-            ]);
+        foreach ($request->rating as $key => $value) {
+            eKenderaanAssignDriver::where('id', $key)->update(['rating' => $value]);
+        }
+
+        foreach ($request->scale as $key => $v) {
+            foreach ($v as $k => $value) {
+                eKenderaanFeedbackService::create([
+                    'ekn_feedback_questions_id' => $key,
+                    'ekn_details_id'            => $request->id,
+                    'ekn_assigned_driver_id'    => $k,
+                    'scale'                     => $value,
+                    'created_by'                => Auth::user()->id
+                ]);
+            }
         }
 
         eKenderaanLog::create([
