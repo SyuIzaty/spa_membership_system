@@ -1157,22 +1157,22 @@ class EKenderaanController extends Controller
 
         $details = eKenderaan::where('id', $request->id)->first();
 
-        $data = [
-            'receivers'   => $user->staff_name,
-            'emel'        => 'Untuk makluman, anda telah ditugaskan pada :-',
-            'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
-            'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
-            'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
-            'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
-            'destination' => $details->destination,
-            'waitingArea' => $details->waitingArea->department_name,
-        ];
+        // $data = [
+        //     'receivers'   => $user->staff_name,
+        //     'emel'        => 'Untuk makluman, anda telah ditugaskan pada :-',
+        //     'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
+        //     'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
+        //     'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
+        //     'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
+        //     'destination' => $details->destination,
+        //     'waitingArea' => $details->waitingArea->department_name,
+        // ];
 
-        Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
-            $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
-            $message->from('operasi@intec.edu.my');
-            $message->to($user_email);
-        });
+        // Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
+        //     $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
+        //     $message->from('operasi@intec.edu.my');
+        //     $message->to($user_email);
+        // });
 
         return redirect()->back()->with('message', 'Successfully Assigned New Driver!');
     }
@@ -1187,22 +1187,22 @@ class EKenderaanController extends Controller
 
         $details = eKenderaan::where('id', $data->ekn_details_id)->first();
 
-        $data = [
-            'receivers'   => $user->staff_name,
-            'emel'        => 'Untuk makluman, penugasan pada butiran tersebut telah dibatalkan.',
-            'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
-            'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
-            'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
-            'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
-            'destination' => $details->destination,
-            'waitingArea' => $details->waitingArea->department_name,
-        ];
+        // $data = [
+        //     'receivers'   => $user->staff_name,
+        //     'emel'        => 'Untuk makluman, penugasan pada butiran tersebut telah dibatalkan.',
+        //     'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
+        //     'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
+        //     'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
+        //     'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
+        //     'destination' => $details->destination,
+        //     'waitingArea' => $details->waitingArea->department_name,
+        // ];
 
-        Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
-            $message->subject('EKENDERAAN: PEMBATALAN TUGASAN');
-            $message->from('operasi@intec.edu.my');
-            $message->to($user_email);
-        });
+        // Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
+        //     $message->subject('EKENDERAAN: PEMBATALAN TUGASAN');
+        //     $message->from('operasi@intec.edu.my');
+        //     $message->to($user_email);
+        // });
 
         $exist = eKenderaanAssignDriver::find($id);
         $exist->delete();
@@ -1263,5 +1263,53 @@ class EKenderaanController extends Controller
         ]);
 
         return redirect()->back()->with('message', 'Assigned Vehicle Update Successfully');
+    }
+
+    public function driverReportList()
+    {
+        return view('eKenderaan.driver-report-list');
+    }
+
+    public function getDriverReportList()
+    {
+        $data = eKenderaanDrivers::get();
+
+        return datatables()::of($data)
+
+        ->editColumn('name', function ($data) {
+            $details = Staff::where('staff_id', $data->staff_id)->first();
+
+            return isset($details->staff_name) ? $details->staff_name : 'N/A';
+        })
+
+        ->editColumn('staff_id', function ($data) {
+            return $data->staff_id;
+        })
+
+        ->editColumn('year', function ($data) {
+            return '2022';
+        })
+
+        ->addColumn('view', function ($data) {
+            $assign = eKenderaanAssignDriver::where('driver_id', $data->id)->where('rating', '!=', 'null');
+
+            if ($assign->exists()) {
+                return '<a href="/view-driver-report/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            } else {
+                return '<span style="color:red;"><b>No Feedback</b></span>';
+            }
+        })
+
+        ->addIndexColumn()
+        ->rawColumns(['view'])
+        ->make(true);
+    }
+
+    public function viewDriverReport($id)
+    {
+        $details = eKenderaanAssignDriver::where('driver_id', $id)->get();
+        $question = eKenderaanFeedbackService::select('ekn_feedback_questions_id')->where('ekn_assigned_driver_id', $id)->groupBy('ekn_feedback_questions_id')->get();
+        $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->get();
+        return view('eKenderaan.driver-report-view', compact('details', 'question', 'countScale'));
     }
 }

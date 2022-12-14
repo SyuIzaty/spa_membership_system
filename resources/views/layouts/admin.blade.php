@@ -307,11 +307,23 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li>
+                            <li class="open">
                                 <a href="/ekn-report" title="Report" data-filter-tags="report">
                                     <i class="fal fa-clipboard-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.report">Report</span>
                                 </a>
+                                <ul>
+                                    <li>
+                                        <a href="/ekn-report" title="Report" data-filter-tags="report">
+                                            <span class="nav-link-text" data-i18n="nav.report">Application</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/ekn-driver-report" title="Driver" data-filter-tags="driver">
+                                            <span class="nav-link-text" data-i18n="nav.driver">Driver</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         @endrole
 

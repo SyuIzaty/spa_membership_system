@@ -88,6 +88,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/assign-new-vehicle', 'EKenderaanController@assignNewVehicle');
     Route::post('/assign-new-driver', 'EKenderaanController@assignNewDriver');
     Route::post('/edit-assign-vehicle', 'EKenderaanController@updateAssignedVehicle');
+    Route::get('/ekn-driver-report', 'EKenderaanController@driverReportList');
+    Route::post('/get-ekn-driver-report', 'EKenderaanController@getDriverReportList');
+    Route::get('/view-driver-report/{id}', 'EKenderaanController@viewDriverReport');
+
 
 
     // Aduan
