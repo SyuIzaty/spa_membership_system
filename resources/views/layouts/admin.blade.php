@@ -308,7 +308,7 @@
                                 </ul>
                             </li>
                             <li class="open">
-                                <a href="/ekn-report" title="Report" data-filter-tags="report">
+                                <a href="#" title="Report" data-filter-tags="report">
                                     <i class="fal fa-clipboard-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.report">Report</span>
                                 </a>

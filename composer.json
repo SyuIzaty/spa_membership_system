@@ -23,6 +23,7 @@
         "maatwebsite/excel": "^3.1",
         "milon/barcode": "7.0.*",
         "nesbot/carbon": "^2.40",
+        "rap2hpoutre/fast-excel": "^4.1",
         "select2/select2": "^4.0",
         "simplesoftwareio/simple-qrcode": "^4.1",
         "spatie/laravel-activitylog": "^3.14",

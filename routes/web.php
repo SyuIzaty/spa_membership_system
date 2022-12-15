@@ -91,6 +91,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/ekn-driver-report', 'EKenderaanController@driverReportList');
     Route::post('/get-ekn-driver-report', 'EKenderaanController@getDriverReportList');
     Route::get('/view-driver-report/{id}', 'EKenderaanController@viewDriverReport');
+    Route::get('/report-driver-pdf/{id}', 'EKenderaanController@DriverReportPDF');
 
 
 

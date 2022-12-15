@@ -1308,8 +1308,18 @@ class EKenderaanController extends Controller
     public function viewDriverReport($id)
     {
         $details = eKenderaanAssignDriver::where('driver_id', $id)->get();
+        $driver = eKenderaanAssignDriver::select('driver_id')->where('driver_id', $id)->first();
         $question = eKenderaanFeedbackService::select('ekn_feedback_questions_id')->where('ekn_assigned_driver_id', $id)->groupBy('ekn_feedback_questions_id')->get();
         $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->get();
-        return view('eKenderaan.driver-report-view', compact('details', 'question', 'countScale'));
+        return view('eKenderaan.driver-report-view', compact('details', 'question', 'countScale', 'driver'));
+    }
+
+    public function DriverReportPDF($id)
+    {
+        $details = eKenderaanAssignDriver::where('driver_id', $id)->get();
+        $driver = eKenderaanAssignDriver::select('driver_id')->where('driver_id', $id)->first();
+        $question = eKenderaanFeedbackService::select('ekn_feedback_questions_id')->where('ekn_assigned_driver_id', $id)->groupBy('ekn_feedback_questions_id')->get();
+        $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->get();
+        return view('eKenderaan.driver-report-pdf', compact('details', 'question', 'countScale', 'driver'));
     }
 }
