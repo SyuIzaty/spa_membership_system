@@ -607,8 +607,8 @@ class EKenderaanController extends Controller
 
             ->addColumn('edit', function ($driver) {
                 $id = $driver->id;
-                $drivers = eKenderaan::whereHas('driverList', function ($query) use ($id) {
-                    $query->where('driver', $id);
+                $drivers = eKenderaanAssignDriver::whereHas('driverList', function ($query) use ($id) {
+                    $query->where('driver_id', $id);
                 })->first();
 
                 if ($drivers != null) {
@@ -668,8 +668,8 @@ class EKenderaanController extends Controller
             })
 
             ->addColumn('edit', function ($vehicle) {
-                $vehicles = eKenderaan::whereHas('vehicleList', function ($query) use ($vehicle) {
-                    $query->where('vehicle', $vehicle->id);
+                $vehicles = eKenderaanAssignVehicle::whereHas('vehicleList', function ($query) use ($vehicle) {
+                    $query->where('vehicle_id', $vehicle->id);
                 })->first();
 
                 if ($vehicles != null) {
