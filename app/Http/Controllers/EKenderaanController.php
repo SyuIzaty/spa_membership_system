@@ -358,17 +358,20 @@ class EKenderaanController extends Controller
         $departtime = Carbon::createFromFormat('H:i:s', $data->depart_time)->format('h:i a');
         $returndate = Carbon::createFromFormat('Y-m-d', $data->return_date)->format('d/m/Y');
         $returntime = Carbon::createFromFormat('H:i:s', $data->return_time)->format('h:i a');
-
-        $passenger  = eKenderaanPassengers::where('ekn_details_id', $id)->get();
-        $driver = eKenderaanDrivers::where('status', 'Y')->get();
-        $vehicle = eKenderaanVehicles::where('status', 'Y')->get();
-        $file = eKenderaanAttachments::where('ekn_details_id', $id)->first();
-        $remark = eKenderaanRejects::where('ekn_details_id', $id)->first();
-        $feedback = eKenderaanFeedback::where('ekn_details_id', $id)->first();
+        $passenger        = eKenderaanPassengers::where('ekn_details_id', $id)->get();
+        $file             = eKenderaanAttachments::where('ekn_details_id', $id)->first();
+        $remark           = eKenderaanRejects::where('ekn_details_id', $id)->first();
+        $feedback         = eKenderaanFeedback::where('ekn_details_id', $id)->first();
         $feedbackQuestion = eKenderaanFeedbackQuestion::where('status', 'Y')->orderBy('sequence', 'ASC')->get();
-        $feedbackScale = eKenderaanFeedbackService::where('ekn_details_id', $id)->get();
-        $assignDriver = eKenderaanAssignDriver::where('ekn_details_id', $id)->get();
-        $assignVehicle = eKenderaanAssignVehicle::where('ekn_details_id', $id)->get();
+        $feedbackScale    = eKenderaanFeedbackService::where('ekn_details_id', $id)->get();
+
+        $assignDriver     = eKenderaanAssignDriver::where('ekn_details_id', $id)->get();
+        $driver_assign    = array_column($assignDriver->toArray(), 'driver_id');
+        $driver           = eKenderaanDrivers::where('status', 'Y')->whereNotIn('id', $driver_assign)->get();
+
+        $assignVehicle    = eKenderaanAssignVehicle::where('ekn_details_id', $id)->get();
+        $vehicle_assign    = array_column($assignVehicle->toArray(), 'vehicle_id');
+        $vehicle           = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)->get();
 
         return view('eKenderaan.details', compact(
             'id',
@@ -917,7 +920,7 @@ class EKenderaanController extends Controller
     public function review(Request $request)
     {
         $staffs = Staff::get();
-        $student = Student::where('students_status', 'AKTIF')->get();
+        $pelajar = Student::where('students_status', 'AKTIF')->get();
 
         $departdate = $request->departdate;
         $departtime = $request->departtime;
@@ -1005,7 +1008,7 @@ class EKenderaanController extends Controller
         } else {
             return view('eKenderaan.details-review', compact(
                 'staffs',
-                'student',
+                'pelajar',
                 'user',
                 'departdate',
                 'departtime',

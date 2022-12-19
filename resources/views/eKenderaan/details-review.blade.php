@@ -321,7 +321,7 @@
                                             @if ($image_id != '')
                                             <a href="#" data-path="{{$image_id}}" style="margin-top: 5px;" class="btn btn-warning float-left btn_cancel"><i class="fal fa-times"></i> Cancel</a>
                                             @else
-                                            <a href="#" style="margin-top: 5px;" class="btn btn-primary float-left btn_cancel_application"><i class="fal fa-times"></i> Cancel</a>
+                                            <a href="#" style="margin-top: 5px;" class="btn btn-warning float-left btn_cancel_application"><i class="fal fa-times"></i> Cancel</a>
                                             @endif
                                             <button style="margin-top: 5px;" class="btn btn-danger float-right"
                                                 id="submit" name="submit"><i class="fal fa-check"></i>
@@ -470,7 +470,7 @@
                     <td>
                         <select class="form-control stud_id" id="${s}" name="student_id[]" required>
                             <option value="" selected disabled>Please Select</option>
-                            @foreach ($student as $s)
+                            @foreach ($pelajar as $s)
                                 <option value="{{ $s->students_id }}">{{ $s->students_id }}</option>
                             @endforeach
                         </select>

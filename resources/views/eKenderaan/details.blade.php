@@ -282,13 +282,13 @@
                                                                 @canany('Manage and Verify eKenderaan Application')
                                                                     <a href="#" data-target="#addDriver"
                                                                         data-toggle="modal" data-id="{{ $data->id }}"
-                                                                        class="btn btn-sm btn-info btn-icon rounded-circle waves-effect waves-themed float-right">+
-                                                                        <i class="fal fa-user"></i>
+                                                                        class="btn btn-sm btn-info waves-effect waves-themed float-right">+
+                                                                        <i class="fal fa-user"> Assign Driver</i>
                                                                     </a>
                                                                     <a href="#" data-target="#addVehicle"
                                                                         data-toggle="modal" data-id="{{ $data->id }}"
-                                                                        class="btn btn-sm btn-info btn-icon rounded-circle waves-effect waves-themed float-right mr-2">+
-                                                                        <i class="fal fa-car"></i>
+                                                                        class="btn btn-sm btn-info waves-effect waves-themed float-right mr-2">+
+                                                                        <i class="fal fa-car"> Assign Vehicle</i>
                                                                     </a>
                                                                 @endcanany
                                                             @endif
