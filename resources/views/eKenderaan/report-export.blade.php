@@ -59,8 +59,34 @@
                 <td style="width: 100px;">{{ $d->waitingArea->department_name }}</td>
                 <td style="width: 300px;">{{ $d->purpose }}</td>
                 <td style="width: 100px;">{{ date('d/m/Y', strtotime($d->created_at)) }}</td>
-                <td style="width: 200px;">{{ $d->driverList->name }}</td>
-                <td style="width: 200px;">{{ $d->vehicleList->name }} - {{ $d->vehicleList->plate_no }}</td>
+                <td style="width: 200px;">
+                    @if ($d->drivers->count() > 1)
+                        <ul>
+                            @foreach ($d->drivers as $v)
+                                <li>{{ $v->driverList->name }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        @foreach ($d->drivers as $v)
+                            {{ $v->driverList->name }}
+                        @endforeach
+                    @endif
+                </td>
+                <td style="width: 200px;">
+                    @if ($d->vehicles->count() > 1)
+                        <ul>
+                            @foreach ($d->vehicles as $s)
+                                <li>{{ $s->vehicleList->name }} -
+                                    {{ $s->vehicleList->plate_no }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        @foreach ($d->vehicles as $s)
+                            {{ $s->vehicleList->name }} -
+                            {{ $s->vehicleList->plate_no }}
+                        @endforeach
+                    @endif
+                </td>
                 <td style="width: 250px;">{{ isset($d->feedback->remark) ? $d->feedback->remark : 'N/A' }}</td>
                 <td style="background-color: #b7e8ff;" colspan="5"></td>
             </tr>

@@ -15,6 +15,16 @@ class eKenderaan extends Model
         'destination', 'waiting_area', 'purpose', 'status', 'category', 'operation_approval', 'created_by', 'updated_by', 'deleted_by'
     ];
 
+    public function drivers()
+    {
+        return $this->hasMany(eKenderaanAssignDriver::class, 'ekn_details_id', 'id');
+    }
+
+    public function vehicles()
+    {
+        return $this->hasMany(eKenderaanAssignVehicle::class, 'ekn_details_id', 'id');
+    }
+
     public function waitingArea()
     {
         return $this->hasOne(Department::class, 'id', 'waiting_area');

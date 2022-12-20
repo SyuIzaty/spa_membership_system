@@ -55,35 +55,34 @@
                                 </tr>
                                 <tr class="text-center">
                                     {{-- Formula for Star Rating
-                            AR = 1*a+2*b+3*c+4*d+5*e/(R)
+                                    AR = 1*a+2*b+3*c+4*d+5*e/(R)
 
-                            Where AR is the average rating
-                            a is the number of 1-star ratings
-                            b is the number of 2-star ratings
-                            c is the number of 3-star ratings
-                            d is the number of 4-star ratings
-                            e is the number of 5-star ratings
-                            R is the total number of ratings --}}
+                                    Where AR is the average rating
+                                    a is the number of 1-star ratings
+                                    b is the number of 2-star ratings
+                                    c is the number of 3-star ratings
+                                    d is the number of 4-star ratings
+                                    e is the number of 5-star ratings
+                                    R is the total number of ratings --}}
                                     @php
-                                        $count = 0;
                                         $total = 0;
-                                        $totalAll = 0;
+                                        $totalRating = 0;
                                     @endphp
                                     @for ($i = 5; $i >= 1; $i--)
                                         <td>
                                             {{ $data = $details->where('rating', $i)->count() }}
                                         </td>
                                         @php
-                                            $total = $data * $i;
-                                            $totalAll += $total;
+                                            $total += $data * $i;
+                                            $totalRating += $data;
                                         @endphp
                                     @endfor
 
-                                    <td>{{ $count = $details->count() }}</td>
+                                    <td>{{ $total }}</td>
                                 </tr>
                                 <tr class="font-weight-bold text-center">
                                     <td colspan="5">Average Rating</td>
-                                    <td>{{ $totalAll / $count }}</td>
+                                    <td>{{ number_format($total / $totalRating, 2) }}</td>
                                 </tr>
                             </thead>
                         </table>
@@ -106,30 +105,36 @@
                                 </tr>
                                 @php
                                     $j = 1;
-                                    $countRating = 0;
-                                    $totalCountRating = 0;
-                                    $totalAllRating = 0;
+                                    $datas = 0;
+                                    $totalRatings = 0;
                                 @endphp
                                 @foreach ($question as $q)
+                                    @php $totals = 0; @endphp
+
                                     <tr>
-                                        <td class="text-center">{{ $j }}</td>
+                                        <td>{{ $j }}</td>
                                         <td>{{ $q->questionList->question }}
                                         </td>
                                         @for ($i = 5; $i >= 1; $i--)
                                             <td class="text-center">
-                                                {{ $countScale->where('ekn_feedback_questions_id', $q->ekn_feedback_questions_id)->where('scale', $i)->count() }}
+                                                {{ $datas = $countScale->where('ekn_feedback_questions_id', $q->ekn_feedback_questions_id)->where('scale', $i)->count() }}
                                             </td>
+                                            @php
+                                                $totals += $datas * $i;
+                                            @endphp
                                         @endfor
                                         <td class="text-center">
-                                            {{ $totalRating = $countScale->where('ekn_feedback_questions_id', $q->ekn_feedback_questions_id)->count() }}
-                                            @php $totalCountRating += $totalRating @endphp
-                                        </td>
+                                            {{ $totals }}
                                     </tr>
-                                    @php $j++ @endphp
+                                    @php
+                                        $j++;
+                                        $totalRatings += $totals;
+                                    @endphp
                                 @endforeach
                                 <tr class="font-weight-bold text-center">
                                     <td colspan="7">Average Rating</td>
-                                    <td>{{ $totalCountRating / $question->count() }}</td>
+                                    <td>{{ number_format($totalRatings / $question->count(), 2) }}
+                                    </td>
                                 </tr>
                             </thead>
                         </table>

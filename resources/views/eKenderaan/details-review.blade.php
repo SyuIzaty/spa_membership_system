@@ -266,26 +266,46 @@
                                                 @if ($passengerBulk != null)
                                                     @foreach ($passengerBulk as $key => $value)
                                                         @php
-                                                            $students = App\Student::where('students_id', $value['ID'])->first();
+                                                            $students = App\Student::where('students_id', $value['ID']);
                                                         @endphp
-                                                        <tr name ="bulk{{$students->students_id}}">
-                                                            <td>
-                                                                <input type="text" id="{{$students->students_id}}" name="student_id_bulk[]" class="form-control stud_ic{{$students->students_id}}" value="{{$students->students_id}}" disabled>
-                                                                <input type="hidden" name="student_id_bulk[]" value="{{ $students->students_id }}">
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" id="stud_ic" name="stud_ic[]" class="form-control stud_ic{{$students->students_id}}" value="{{$students->students_id}}" disabled>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" id="stud_name" name="stud_name[]" class="form-control stud_name{{$students->students_id}}" value="{{$students->students_name}}" disabled>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" id="stud_dept" name="stud_dept[]" class="form-control stud_dept{{$students->students_id}}" value="{{$students->programmes->programme_name}}" disabled>
-                                                            </td>
-                                                            <td class="text-center" style="width: 10%;">
-                                                                <button type="button" id="{{$students->students_id}}" class="btn_remove_bulk btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
-                                                            </td>
-                                                        </tr>
+                                                        @if ($students->exists())
+                                                            <tr name ="bulk{{$students->first()->students_id}}">
+                                                                <td>
+                                                                    <input type="text" id="{{$students->first()->students_id}}" name="student_id_bulk[]" class="form-control stud_ic{{$students->first()->students_id}}" value="{{$students->first()->students_id}}" disabled>
+                                                                    <input type="hidden" name="student_id_bulk[]" value="{{ $students->first()->students_id }}">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" id="stud_ic" name="stud_ic[]" class="form-control stud_ic{{$students->first()->students_id}}" value="{{$students->first()->students_id}}" disabled>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" id="stud_name" name="stud_name[]" class="form-control stud_name{{$students->first()->students_id}}" value="{{$students->first()->students_name}}" disabled>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" id="stud_dept" name="stud_dept[]" class="form-control stud_dept{{$students->first()->students_id}}" value="{{$students->first()->programmes->programme_name}}" disabled>
+                                                                </td>
+                                                                <td class="text-center" style="width: 10%;">
+                                                                    <button type="button" id="{{$students->first()->students_id}}" class="btn_remove_bulk btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                            @else
+                                                            <tr name ="bulk{{$value['ID']}}">
+                                                                <td>
+                                                                    <input type="text" id="{{$value['ID']}}" name="student_id_bulk[]" class="form-control stud_ic{{$value['ID']}}" value="N/A" disabled>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" id="stud_ic" name="stud_ic[]" class="form-control stud_ic{{$value['ID']}}" value="N/A" disabled>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" id="stud_name" name="stud_name[]" class="form-control stud_name{{$value['ID']}}" value="N/A" disabled>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" id="stud_dept" name="stud_dept[]" class="form-control stud_dept{{$value['ID']}}" value="N/A" disabled>
+                                                                </td>
+                                                                <td class="text-center" style="width: 10%;">
+                                                                    <button type="button" id="{{$value['ID']}}" class="btn_remove_bulk btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
                                                     @endforeach
                                                 @endif
                                                 @if ($passenger_student != null)

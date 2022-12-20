@@ -2,22 +2,23 @@
 
 namespace App\Exports;
 
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromView;
 use App\eKenderaan;
 use App\eKenderaanPassengers;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Maatwebsite\Excel\Concerns\WithEvents;
+use App\eKenderaanAssignDriver;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 class eKenderaanExport implements FromView, WithEvents, WithStyles, WithColumnFormatting
 {
     public function view(): View
     {
-        $data = eKenderaan::whereIn('status', ['3','5'])->get();
+        $data = eKenderaan::whereIn('status', ['3','5'])->with(['drivers','vehicles'])->get();
 
         return view('eKenderaan.report-export', compact('data'));
     }
