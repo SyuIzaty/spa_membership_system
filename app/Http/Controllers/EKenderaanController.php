@@ -494,6 +494,8 @@ class EKenderaanController extends Controller
             $user_email = $user->staff_email;
 
             $details = eKenderaan::where('id', $request->id)->first();
+            $passenger = eKenderaanPassengers::where('ekn_details_id', $request->id)->get();
+            $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $request->id)->get();
 
             $data = [
                 'receivers'   => $user->staff_name,
@@ -504,6 +506,10 @@ class EKenderaanController extends Controller
                 'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
                 'destination' => $details->destination,
                 'waitingArea' => $details->waitingArea->department_name,
+                'purpose'     => $details->purpose,
+                'passenger'   => $passenger,
+                'vehicle'     => $vehicle,
+                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
             ];
 
             Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
@@ -1159,6 +1165,8 @@ class EKenderaanController extends Controller
         $user_email = $user->staff_email;
 
         $details = eKenderaan::where('id', $request->id)->first();
+        $passenger = eKenderaanPassengers::where('ekn_details_id', $request->id)->get();
+        $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $request->id)->get();
 
         $data = [
             'receivers'   => $user->staff_name,
@@ -1169,6 +1177,10 @@ class EKenderaanController extends Controller
             'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
             'destination' => $details->destination,
             'waitingArea' => $details->waitingArea->department_name,
+            'purpose'     => $details->purpose,
+            'passenger'   => $passenger,
+            'vehicle'     => $vehicle,
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
         ];
 
         Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
@@ -1189,6 +1201,8 @@ class EKenderaanController extends Controller
         $user_email = $user->staff_email;
 
         $details = eKenderaan::where('id', $data->ekn_details_id)->first();
+        $passenger = eKenderaanPassengers::where('ekn_details_id', $data->ekn_details_id)->get();
+        $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $data->ekn_details_id)->get();
 
         $data = [
             'receivers'   => $user->staff_name,
@@ -1199,6 +1213,10 @@ class EKenderaanController extends Controller
             'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
             'destination' => $details->destination,
             'waitingArea' => $details->waitingArea->department_name,
+            'purpose'     => $details->purpose,
+            'passenger'   => $passenger,
+            'vehicle'     => $vehicle,
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
         ];
 
         Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
@@ -1289,10 +1307,6 @@ class EKenderaanController extends Controller
             return $data->staff_id;
         })
 
-        ->editColumn('year', function ($data) {
-            return '2022';
-        })
-
         ->addColumn('view', function ($data) {
             $assign = eKenderaanAssignDriver::where('driver_id', $data->id)->where('rating', '!=', 'null');
 
@@ -1310,11 +1324,23 @@ class EKenderaanController extends Controller
 
     public function viewDriverReport($id)
     {
+        $years = eKenderaanAssignDriver::orderBy('created_at', 'ASC')
+        ->pluck('created_at')
+        ->map(function ($date) {
+            return Carbon::parse($date)->format('Y');
+        })
+        ->unique(); //year selection
+
+        $year = '';
+        $months = '';
+        $month = '';
+
         $details = eKenderaanAssignDriver::where('driver_id', $id)->get();
         $driver = eKenderaanAssignDriver::select('driver_id')->where('driver_id', $id)->first();
+        $id = $driver->driver_id;
         $question = eKenderaanFeedbackService::select('ekn_feedback_questions_id')->where('ekn_assigned_driver_id', $id)->groupBy('ekn_feedback_questions_id')->get();
         $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->get();
-        return view('eKenderaan.driver-report-view', compact('details', 'question', 'countScale', 'driver'));
+        return view('eKenderaan.driver-report-view', compact('years', 'details', 'question', 'countScale', 'driver', 'id', 'year', 'month', 'months'));
     }
 
     public function DriverReportPDF($id)
@@ -1323,6 +1349,85 @@ class EKenderaanController extends Controller
         $driver = eKenderaanAssignDriver::select('driver_id')->where('driver_id', $id)->first();
         $question = eKenderaanFeedbackService::select('ekn_feedback_questions_id')->where('ekn_assigned_driver_id', $id)->groupBy('ekn_feedback_questions_id')->get();
         $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->get();
+        return view('eKenderaan.driver-report-pdf', compact('details', 'question', 'countScale', 'driver'));
+    }
+
+    public function viewDriverReportYear($year, $id)
+    {
+        $years = eKenderaanAssignDriver::orderBy('created_at', 'ASC')
+        ->pluck('created_at')
+        ->map(function ($date) {
+            return Carbon::parse($date)->format('Y');
+        })
+        ->unique(); //year selection
+
+        $months = eKenderaanAssignDriver::whereYear('created_at', '=', $year)
+        ->orderBy('created_at', 'ASC')
+        ->pluck('created_at')
+        ->map(function ($date) {
+            return Carbon::parse($date)->format('F');
+        })
+        ->unique(); //month selection
+
+        $month = '';
+
+        $details = eKenderaanAssignDriver::where('driver_id', $id)->whereYear('created_at', '=', $year)->get();
+        $driver = eKenderaanAssignDriver::select('driver_id')->where('driver_id', $id)->first();
+        $question = eKenderaanFeedbackService::select('ekn_feedback_questions_id')->whereYear('created_at', '=', $year)->where('ekn_assigned_driver_id', $id)->groupBy('ekn_feedback_questions_id')->get();
+        $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->whereYear('created_at', '=', $year)->get();
+
+        return view('eKenderaan.driver-report-view', compact('id', 'years', 'details', 'question', 'countScale', 'driver', 'year', 'months', 'month'));
+    }
+
+    public function DriverReportPDFYear($year, $id)
+    {
+        $details = eKenderaanAssignDriver::where('driver_id', $id)->whereYear('created_at', '=', $year)->get();
+        $driver = eKenderaanAssignDriver::select('driver_id')->where('driver_id', $id)->first();
+        $question = eKenderaanFeedbackService::select('ekn_feedback_questions_id')->whereYear('created_at', '=', $year)->where('ekn_assigned_driver_id', $id)->groupBy('ekn_feedback_questions_id')->get();
+        $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->whereYear('created_at', '=', $year)->get();
+        return view('eKenderaan.driver-report-pdf', compact('details', 'question', 'countScale', 'driver'));
+    }
+
+
+    public function viewDriverReportYearMonth($year, $month, $id)
+    {
+        $years = eKenderaanAssignDriver::orderBy('created_at', 'ASC')
+        ->pluck('created_at')
+        ->map(function ($date) {
+            return Carbon::parse($date)->format('Y');
+        })
+        ->unique(); //year selection
+
+        $months = eKenderaanAssignDriver::whereYear('created_at', '=', $year)
+        ->orderBy('created_at', 'ASC')
+        ->pluck('created_at')
+        ->map(function ($date) {
+            return Carbon::parse($date)->format('F');
+        })
+        ->unique(); //month selection
+
+        $monthConvert = date('m', strtotime($month));
+
+        $details = eKenderaanAssignDriver::where('driver_id', $id)->whereMonth('created_at', '=', $monthConvert)->whereYear('created_at', '=', $year)->get();
+        $driver = eKenderaanAssignDriver::select('driver_id')->where('driver_id', $id)->first();
+        $question = eKenderaanFeedbackService::select('ekn_feedback_questions_id')->whereMonth('created_at', '=', $monthConvert)
+                    ->whereYear('created_at', '=', $year)->where('ekn_assigned_driver_id', $id)->groupBy('ekn_feedback_questions_id')->get();
+        $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->whereMonth('created_at', '=', $monthConvert)->whereYear('created_at', '=', $year)->get();
+
+        return view('eKenderaan.driver-report-view', compact('id', 'years', 'details', 'question', 'countScale', 'driver', 'year', 'months', 'month'));
+    }
+
+    public function DriverReportPDFYearMonth($year, $month, $id)
+    {
+        $monthConvert = date('m', strtotime($month));
+
+        $details = eKenderaanAssignDriver::where('driver_id', $id)->whereYear('created_at', '=', $year)
+                    ->whereMonth('created_at', '=', $monthConvert)->get();
+        $driver = eKenderaanAssignDriver::select('driver_id')->where('driver_id', $id)->first();
+        $question = eKenderaanFeedbackService::select('ekn_feedback_questions_id')->whereYear('created_at', '=', $year)
+                    ->whereMonth('created_at', '=', $monthConvert)->where('ekn_assigned_driver_id', $id)->groupBy('ekn_feedback_questions_id')->get();
+        $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->whereYear('created_at', '=', $year)
+                      ->whereMonth('created_at', '=', $monthConvert)->get();
         return view('eKenderaan.driver-report-pdf', compact('details', 'question', 'countScale', 'driver'));
     }
 }

@@ -39,37 +39,84 @@
                                 </div>
                             @endif
 
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <div class="card card-primary card-outline">
-                                        <div class="card-header text-white bg-primary">
-                                            <h5 class="card-title w-100 text-center">EVALUATION RESULT <a
-                                                    data-page="/report-driver-pdf/{{ $driver->driver_id }}"
-                                                    style="color: black;" class="btn btn-warning float-right"
-                                                    onclick="Print(this)"><i class="fal fa-file-pdf"
-                                                        style="color: red; font-size: 20px"></i>
-                                                    Print Report</a></h5>
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <label>Year</label>
+                                    <select class="form-control year selectYear" name="year" id="year">
+                                        <option disabled selected>Please Select</option>
+                                        @foreach ($years as $y)
+                                            <option value="{{ $y }}" {{ $y == $year ? 'selected' : '' }}>
+                                                {{ $y }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Month</label>
+                                    <select class="form-control month selectMonth" name="month" id="month">
+                                        <option disabled selected>Please Select</option>
+                                        @if ($months != '')
+                                            @foreach ($months as $m)
+                                                <option value="{{ $m }}" {{ $m == $month ? 'selected' : '' }}>
+                                                    {{ $m }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
 
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered table-hover table-striped w-100">
-                                                    <thead>
-                                                        <tr>
-                                                            <td colspan="8" class="bg-info-50 font-weight-bold">
-                                                                STAR RATING
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="font-weight-bold text-center">
-                                                            <td>Excellent</td>
-                                                            <td>Very Good</td>
-                                                            <td>Good</td>
-                                                            <td>Satisfying</td>
-                                                            <td>Less Satisfying</td>
-                                                            <td>Point</td>
-                                                        </tr>
-                                                        <tr class="text-center">
-                                                            {{-- Formula for Star Rating
+                            @if ($year == '')
+                                <table class="table table-bordered table-hover table-striped w-100 text-center">
+                                    <thead>
+                                        <tr>
+                                            <td class="bg-warning font-weight-bold">
+                                                PLEASE SELECT YEAR
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            @else
+                                <div class="row datas">
+                                    <div class="col-sm-8">
+                                        <div class="card card-primary card-outline">
+                                            <div class="card-header text-white bg-primary">
+
+                                                @if ($year != '' && $month == '')
+                                                    <h5 class="card-title w-100 text-center">EVALUATION RESULT <a
+                                                            data-page="/report-driver-pdf/{{ $year }}/{{ $id }}"
+                                                            style="color: black;" class="btn btn-warning float-right"
+                                                            onclick="Print(this)"><i class="fal fa-file-pdf"
+                                                                style="color: red; font-size: 20px"></i>
+                                                            Print Report</a>
+                                                    </h5>
+                                                @elseif ($year != '' && $month != '')
+                                                    <h5 class="card-title w-100 text-center">EVALUATION RESULT <a
+                                                            data-page="/report-driver-pdf/{{ $year }}/{{ $month }}/{{ $id }}"
+                                                            style="color: black;" class="btn btn-warning float-right"
+                                                            onclick="Print(this)"><i class="fal fa-file-pdf"
+                                                                style="color: red; font-size: 20px"></i>
+                                                            Print Report</a>
+                                                    </h5>
+                                                @endif
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-hover table-striped w-100">
+                                                        <thead>
+                                                            <tr>
+                                                                <td colspan="8" class="bg-info-50 font-weight-bold">
+                                                                    STAR RATING
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="font-weight-bold text-center">
+                                                                <td>Excellent</td>
+                                                                <td>Very Good</td>
+                                                                <td>Good</td>
+                                                                <td>Satisfying</td>
+                                                                <td>Less Satisfying</td>
+                                                                <td>Point</td>
+                                                            </tr>
+                                                            <tr class="text-center">
+                                                                {{-- Formula for Star Rating
                                                             AR = 1*a+2*b+3*c+4*d+5*e/(R)
 
                                                             Where AR is the average rating
@@ -79,124 +126,125 @@
                                                             d is the number of 4-star ratings
                                                             e is the number of 5-star ratings
                                                             R is the total number of ratings --}}
-                                                            @php
-                                                                $total = 0;
-                                                                $totalRating = 0;
-                                                            @endphp
-                                                            @for ($i = 5; $i >= 1; $i--)
-                                                                <td>
-                                                                    {{ $data = $details->where('rating', $i)->count() }}
-                                                                </td>
                                                                 @php
-                                                                    $total += $data * $i;
-                                                                    $totalRating += $data;
+                                                                    $total = 0;
+                                                                    $totalRating = 0;
                                                                 @endphp
-                                                            @endfor
-
-                                                            <td>{{ $total }}</td>
-                                                        </tr>
-                                                        <tr class="font-weight-bold text-center">
-                                                            <td colspan="5">Average Rating</td>
-                                                            <td>{{ number_format($total / $totalRating, 2) }}</td>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-
-                                                <table class="table table-bordered table-hover table-striped w-100">
-                                                    <thead>
-                                                        <tr>
-                                                            <td colspan="8" class="bg-info-50 font-weight-bold">
-                                                                QUALITY OF SERVICES
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="font-weight-bold text-center">
-                                                            <td>No</td>
-                                                            <td>Question</td>
-                                                            <td>Excellent</td>
-                                                            <td>Very Good</td>
-                                                            <td>Good</td>
-                                                            <td>Satisfying</td>
-                                                            <td>Less Satisfying</td>
-                                                            <td>Point</td>
-                                                        </tr>
-                                                        @php
-                                                            $j = 1;
-                                                            $datas = 0;
-                                                            $totalRatings = 0;
-                                                        @endphp
-                                                        @foreach ($question as $q)
-                                                            @php $totals = 0; @endphp
-
-                                                            <tr>
-                                                                <td>{{ $j }}</td>
-                                                                <td>{{ $q->questionList->question }}
-                                                                </td>
                                                                 @for ($i = 5; $i >= 1; $i--)
-                                                                    <td class="text-center">
-                                                                        {{ $datas = $countScale->where('ekn_feedback_questions_id', $q->ekn_feedback_questions_id)->where('scale', $i)->count() }}
+                                                                    <td>
+                                                                        {{ $data = $details->where('rating', $i)->count() }}
                                                                     </td>
                                                                     @php
-                                                                        $totals += $datas * $i;
+                                                                        $total += $data * $i;
+                                                                        $totalRating += $data;
                                                                     @endphp
                                                                 @endfor
-                                                                <td class="text-center">
-                                                                    {{ $totals }}
+
+                                                                <td>{{ $total }}</td>
+                                                            </tr>
+                                                            <tr class="font-weight-bold text-center">
+                                                                <td colspan="5">Average Rating</td>
+                                                                <td>{{ number_format($total / $totalRating, 2) }}</td>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+
+                                                    <table class="table table-bordered table-hover table-striped w-100">
+                                                        <thead>
+                                                            <tr>
+                                                                <td colspan="8" class="bg-info-50 font-weight-bold">
+                                                                    QUALITY OF SERVICES
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="font-weight-bold text-center">
+                                                                <td>No</td>
+                                                                <td>Question</td>
+                                                                <td>Excellent</td>
+                                                                <td>Very Good</td>
+                                                                <td>Good</td>
+                                                                <td>Satisfying</td>
+                                                                <td>Less Satisfying</td>
+                                                                <td>Point</td>
                                                             </tr>
                                                             @php
-                                                                $j++;
-                                                                $totalRatings += $totals;
+                                                                $j = 1;
+                                                                $datas = 0;
+                                                                $totalRatings = 0;
                                                             @endphp
-                                                        @endforeach
-                                                        <tr class="font-weight-bold text-center">
-                                                            <td colspan="7">Average Rating</td>
-                                                            <td>{{ number_format($totalRatings / $question->count(), 2) }}
-                                                            </td>
+                                                            @foreach ($question as $q)
+                                                                @php $totals = 0; @endphp
+
+                                                                <tr>
+                                                                    <td>{{ $j }}</td>
+                                                                    <td>{{ $q->questionList->question }}
+                                                                    </td>
+                                                                    @for ($i = 5; $i >= 1; $i--)
+                                                                        <td class="text-center">
+                                                                            {{ $datas = $countScale->where('ekn_feedback_questions_id', $q->ekn_feedback_questions_id)->where('scale', $i)->count() }}
+                                                                        </td>
+                                                                        @php
+                                                                            $totals += $datas * $i;
+                                                                        @endphp
+                                                                    @endfor
+                                                                    <td class="text-center">
+                                                                        {{ $totals }}
+                                                                </tr>
+                                                                @php
+                                                                    $j++;
+                                                                    $totalRatings += $totals;
+                                                                @endphp
+                                                            @endforeach
+                                                            <tr class="font-weight-bold text-center">
+                                                                <td colspan="7">Average Rating</td>
+                                                                <td>{{ number_format($totalRatings / $question->count(), 2) }}
+                                                                </td>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-4">
+                                        <div class="card card-primary card-outline">
+                                            <div class="card-header text-white bg-dark">
+                                                <h5 class="card-title w-100 text-center">STATUS</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered w-100">
+                                                        <tr class="bg-dark-50 font-weight-bold">
+                                                            <td>Status</td>
+                                                            <td>Grade</td>
                                                         </tr>
-                                                    </thead>
-                                                </table>
+                                                        <tr>
+                                                            <td>Excellent</td>
+                                                            <td class="text-center">5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Very Good</td>
+                                                            <td class="text-center">4</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Good</td>
+                                                            <td class="text-center">3</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Satisfying</td>
+                                                            <td class="text-center">2</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Less Satisfying</td>
+                                                            <td class="text-center">1</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <br>
-                                <div class="col-sm-4">
-                                    <div class="card card-primary card-outline">
-                                        <div class="card-header text-white bg-dark">
-                                            <h5 class="card-title w-100 text-center">STATUS</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered table-hover table-striped w-100">
-                                                    <tr class="bg-dark-50 font-weight-bold">
-                                                        <td>Status</td>
-                                                        <td>Grade</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Excellent</td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Very Good</td>
-                                                        <td>4</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Good</td>
-                                                        <td>3</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Satisfying</td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Less Satisfying</td>
-                                                        <td>1</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -215,5 +263,20 @@
                 printWindow.print();
             }, true);
         }
+
+        $('.selectYear').on('change', function() {
+            var year = $('#year').val();
+            var id = @json($id);
+
+            window.location = "/view-driver-report/" + year + "/" + id;
+        });
+
+        $('.selectMonth').on('change', function() {
+            var year = $('#year').val();
+            var month = $('#month').val();
+            var id = @json($id);
+
+            window.location = "/view-driver-report/" + year + "/" + month + "/" + id;
+        });
     </script>
 @endsection

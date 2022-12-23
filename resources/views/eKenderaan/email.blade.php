@@ -50,10 +50,49 @@
                                 <p>Masa Berlepas : {{ $departTime }}</p>
                                 <p>Tarikh Pulang : {{ $returnDate }}</p>
                                 <p>Masa Pulang : {{ $returnTime }}</p>
-                                <p>Destinasi : {{ $destination }}</p>
                                 <p>Tempat Menunggu : {{ $waitingArea }}</p>
+                                <p>Destinasi : {{ $destination }}</p>
+                                <p>Kenderaan :
+                                    @if ($vehicle->count() > 1)
+                                        <ol>
+                                            @foreach ($vehicle as $v)
+                                                <li>{{ $v->vehicleList->name }} - {{ $v->vehicleList->plate_no }}</li>
+                                            @endforeach
+                                        </ol>
+                                    @else
+                                        @foreach ($vehicle as $v)
+                                            {{ $v->vehicleList->name }} - {{ $v->vehicleList->plate_no }}
+                                        @endforeach
+                                    @endif
+                                </p>
+                                <p>Tujuan : {{ $purpose }}</p>
+                                <p>Penumpang :
+                                    @if ($passenger->count() > 1)
+                                        <ol>
+                                            @foreach ($passenger as $p)
+                                                @if ($p->category == 'STF')
+                                                    <li>{{ $p->staff->staff_name }}</li>
+                                                @else
+                                                    <li>{{ $p->student->students_name }}</li>
+                                                @endif
+                                            @endforeach
+                                        </ol>
+                                    @else
+                                        @foreach ($passenger as $p)
+                                            @if ($p->category == 'STF')
+                                                {{ $p->staff->staff_name }}
+                                            @else
+                                                {{ $p->student->students_name }}
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </p>
                                 <p style="line-height: 2em"></p>
-                            </div><br><br>
+                            </div><br>
+                            <div style="margin-left: 30px; line-height: 1em; color: black">
+                                <p>{{ $footer }}</p><br>
+                                <p>Terima Kasih.</p>
+                            </div>
                         </td>
                     </tr>
 

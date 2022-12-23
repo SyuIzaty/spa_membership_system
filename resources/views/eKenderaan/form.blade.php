@@ -189,9 +189,9 @@
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle">Bulk Upload (for Student passenger only. Please refer the excel format)
-                                                        <span>
-                                                            <a href="/student-list-excel-format" target="_blank" class="btn btn-warning btn-sm waves-effect waves-themed mr-2">
-                                                                <i class="fal fa-info"> Excel File Format Reference</i>
+                                                        <span style="margin-left: 10px">
+                                                            <a href="/student-list-excel-format" target="_blank" class="btn btn-warning btn-sm waves-effect waves-themed" style="box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);">
+                                                                <i class="fal fa-eye"> Excel Format</i>
                                                             </a>
                                                         </span>
                                                     </th>

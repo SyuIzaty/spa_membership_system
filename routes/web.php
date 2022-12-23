@@ -92,6 +92,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-ekn-driver-report', 'EKenderaanController@getDriverReportList');
     Route::get('/view-driver-report/{id}', 'EKenderaanController@viewDriverReport');
     Route::get('/report-driver-pdf/{id}', 'EKenderaanController@DriverReportPDF');
+    Route::get('/get-year-driver/{year}', 'EKenderaanController@getYearDriver');
+    Route::get('/view-driver-report/{year}/{id}', 'EKenderaanController@viewDriverReportYear');
+    Route::get('/report-driver-pdf/{year}/{id}', 'EKenderaanController@DriverReportPDFYear');
+    Route::get('/view-driver-report/{year}/{month}/{id}', 'EKenderaanController@viewDriverReportYearMonth');
+    Route::get('/report-driver-pdf/{year}/{month}/{id}', 'EKenderaanController@DriverReportPDFYearMonth');
 
 
 

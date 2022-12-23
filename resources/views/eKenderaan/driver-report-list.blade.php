@@ -35,13 +35,11 @@
                                             <th class="text-center">No</th>
                                             <th class="text-center">Name</th>
                                             <th class="text-center">Staff ID</th>
-                                            <th class="text-center">Year</th>
                                             <th class="text-center">View</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -86,11 +84,6 @@
                         className: 'text-center',
                         data: 'staff_id',
                         name: 'staff_id'
-                    },
-                    {
-                        className: 'text-center',
-                        data: 'year',
-                        name: 'year'
                     },
                     {
                         className: 'text-center',
