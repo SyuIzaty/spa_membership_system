@@ -142,7 +142,7 @@
                         <div class="form-group mt-4">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Name</span>
+                                    <span class="input-group-text">Question</span>
                                 </div>
                                 <textarea class="form-control" rows="3" name="question" id="question" required></textarea>
                             </div>
