@@ -417,7 +417,7 @@
                         <!-- End Engagement Management System -->
 
                         <!-- Start ShortCourse Management System -->
-                        @role('Super Admin')
+                        {{-- @role('Super Admin') --}}
                             @can('Short Course Management - View All')
                                 <li class="nav-title">Short Course Management</li>
                                 <li>
@@ -517,7 +517,7 @@
                                 </a>
                             </li> --}}
                             @endcan
-                        @endrole
+                        {{-- @endrole --}}
                         <!-- End ShortCourse Management System -->
 
                         {{-- Start Aduan --}}
