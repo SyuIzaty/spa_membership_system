@@ -157,12 +157,20 @@
     </div>
 
     <div class="modal fade" id="crud-modals" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">
                     <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>IMPORT STOCK LIST</h5>
                 </div>
                 <div class="modal-body">
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                                @foreach ($errors->all() as $error)
+                                    <i class="icon fal fa-check-circle"></i> {{ $error }}
+                                @endforeach
+                        </div>
+                    @endif
                     {!! Form::open(['action' => 'StockController@bulkStockStore', 'method' => 'POST', 'id' => 'data', 'enctype' => 'multipart/form-data']) !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <table class="table mb-0">

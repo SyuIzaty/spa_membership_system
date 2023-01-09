@@ -83,8 +83,8 @@ class AduanController extends Controller
             'kategori_aduan'     => 'required',
             'jenis_kerosakan'    => 'required',
             'sebab_kerosakan'    => 'required',
-            'upload_image'       => 'nullable',
-            'resit_file'         => 'nullable',
+            'upload_image'       => 'nullable|mimes:jpg,png,jpeg,gif,svg',
+            'resit_file'         => 'nullable|mimes:pdf,docx',
         ]);
 
         $aduan = Aduan::create([

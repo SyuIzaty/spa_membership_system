@@ -50,7 +50,7 @@ class StockController extends Controller
     public function bulkStockStore(Request $request)
     {
         $this->validate($request, [
-            'import_file' => 'required',
+            'import_file' => 'required|mimes:csv,xlx,xls,xlsx',
         ]);
 
         Excel::import(new StockImport, request()->file('import_file'));
