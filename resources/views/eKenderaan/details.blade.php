@@ -213,8 +213,17 @@
                                                     <th style="vertical-align: middle">
                                                         Waiting Area</th>
                                                     <td colspan="5">
-                                                        <input type="text" class="form-control"
-                                                            value="{{ $data->waitingArea->department_name }}" readonly>
+                                                        @if ($waitingArea->count() > 1)
+                                                            <ol>
+                                                                @foreach ($waitingArea as $w)
+                                                                    <li>{{ $w->waiting_area }}</li>
+                                                                @endforeach
+                                                            </ol>
+                                                        @else
+                                                            @foreach ($waitingArea as $w)
+                                                                {{ $w->waiting_area }}
+                                                            @endforeach
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 <tr>

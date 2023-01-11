@@ -51,11 +51,6 @@
                                         class="icon fal fa-check-circle"></i> {{ $message }}</div>
                             @enderror
 
-                            @error('waitingarea')
-                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;"> <i
-                                        class="icon fal fa-check-circle"></i> The Waiting Area field is required.</div>
-                            @enderror
-
                             @if($errors->any())
                                 <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
                                     <i class="icon fal fa-exclamation-circle"></i> {{ $errors->first() }}
@@ -141,18 +136,22 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th style="vertical-align: middle"><span class="text-danger">*</span>
-                                                        Waiting Area</th>
+                                                    <th style="vertical-align: middle"><span class="text-danger">*</span>Waiting Area</th>
                                                     <td colspan="5">
-                                                        <select class="form-control border border-danger waitingArea" name="waitingarea"
-                                                            id="waiting_area" required>
-                                                            <option disabled selected>Choose Waiting Area</option>
+                                                        <span style="color: red">User can select multiple waiting area on the below.</span>
+                                                        <select class="form-control border border-danger waitingArea" name="waitingarea[]"
+                                                            id="waiting_area" multiple>
                                                             @foreach ($waitingArea as $w)
-                                                                <option value="{{ $w->id }}"
-                                                                    {{ old('waitingarea') == $w->id ? 'selected' : '' }}>
+                                                                <option value="{{ $w->department_name }}"
+                                                                    {{ (collect(old('waitingarea'))->contains($w->department_name)) ? 'selected':'' }}>
                                                                     {{ $w->department_name }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span>
+                                                            <p style="margin-top: 10px">Other Waiting Area (if any):</p>
+                                                            <textarea class="form-control border border-danger" id="example-textarea" rows="2" name="others">{{ old('others') }}</textarea>
+                                                            <span style="color: red">For other waiting area, please provide <b>details location</b>. If you want to cancel, please make sure the text field is <b>empty</b>.</span>
+                                                        </span>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -425,6 +424,14 @@
         });
 
    });
+
+//    $('select[name="waitingarea[]"]').change(function () {
+//     var val = document.getElementById('waiting_area').value;
+//     if(val=='Others'){
+//         console.log("val");
+//             $('#othersWA').show();
+//         }
+//     });
 
 
 

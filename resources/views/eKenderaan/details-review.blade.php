@@ -147,17 +147,34 @@
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
-                                                        Waiting Area</th>
+                                                         Waiting Area</th>
                                                     <td colspan="5">
-                                                        <select class="form-control waitingArea" name="waitingarea"
-                                                            id="waiting_area" required>
-                                                            <option disabled selected>Choose Waiting Area</option>
-                                                            @foreach ($waitingArea as $w)
-                                                                <option value="{{ $w->id }}"
-                                                                    {{ $waiting_area == $w->id ? 'selected' : '' }}>
-                                                                    {{ $w->department_name }}</option>
-                                                            @endforeach
+                                                        <span style="color: red">User can select multiple waiting area on the below.</span>
+                                                        <select class="form-control waitingArea" name="waitingarea[]"
+                                                            id="waiting_area" multiple>
+                                                            @if (!empty($waiting_area))
+                                                                @foreach ($waiting_area as $a)
+                                                                    @foreach ($waitingArea as $w)
+                                                                        <option value="{{ $w->department_name }}"
+                                                                            {{ $a == $w->department_name ? 'selected' : '' }}>
+                                                                            {{ $w->department_name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                @endforeach
+                                                                @else
+                                                                @foreach ($waitingArea as $w)
+                                                                    <option value="{{ $w->department_name }}"
+                                                                        {{ old('waitingarea') == $w->department_name ? 'selected' : '' }}>
+                                                                        {{ $w->department_name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            @endif
                                                         </select>
+                                                            <span>
+                                                                <p style="margin-top: 10px">Other Waiting Area (if any):</p>
+                                                                <textarea class="form-control border border-danger" id="example-textarea" rows="2" name="others">{{ $other_waiting_area }}</textarea>
+                                                                <span style="color: red">For other waiting area, please provide <b>details location</b>. If you want to cancel, please make sure the text field is <b>empty</b>.</span>
+                                                            </span>
                                                     </td>
                                                 </tr>
                                                 <tr>

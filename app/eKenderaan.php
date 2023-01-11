@@ -11,8 +11,8 @@ class eKenderaan extends Model
 
     protected $table = 'ekn_details';
     protected $fillable = [
-        'intec_id', 'phone_no', 'depart_date', 'depart_time', 'return_date', 'return_time',
-        'destination', 'waiting_area', 'purpose', 'status', 'category', 'operation_approval', 'created_by', 'updated_by', 'deleted_by'
+        'intec_id', 'phone_no', 'depart_date', 'depart_time', 'return_date', 'return_time', 'destination',
+        'purpose', 'status', 'category', 'operation_approval', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function drivers()
@@ -25,10 +25,10 @@ class eKenderaan extends Model
         return $this->hasMany(eKenderaanAssignVehicle::class, 'ekn_details_id', 'id');
     }
 
-    public function waitingArea()
-    {
-        return $this->hasOne(Department::class, 'id', 'waiting_area');
-    }
+    // public function waitingArea()
+    // {
+    //     return $this->hasOne(Department::class, 'id', 'waiting_area');
+    // }
 
     public function student()
     {

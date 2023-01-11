@@ -22,6 +22,7 @@ use App\eKenderaanVehicles;
 use Illuminate\Http\Request;
 use App\eKenderaanPassengers;
 use App\eKenderaanAttachments;
+use App\eKenderaanWaitingArea;
 use App\eKenderaanAssignDriver;
 use App\eKenderaanAssignVehicle;
 use App\Exports\eKenderaanExport;
@@ -235,31 +236,47 @@ class EKenderaanController extends Controller
         $returntime = Carbon::createFromFormat('h:i a', $request->returntime)->format('H:i:s');
 
         $validated = $request->validate([
-            'hp_no'   => 'required|numeric|digits_between:10,11',
+            'hp_no'        => 'required|numeric|digits_between:10,11',
             'departdate'   => 'required',
             'departtime'   => 'required',
             'returndate'   => 'required',
             'returntime'   => 'required',
             'destination'  => 'required',
-            'waitingarea'  => 'required',
             'purpose'      => 'required',
+            'waitingarea'  => 'required_without:others',
         ], [
+            'waitingarea.required_without'  => 'The Waiting Area field is required.',
+
         ]);
 
-        $application = eKenderaan::create([
-            'intec_id'     => Auth::user()->id,
-            'phone_no'     => $request->hp_no,
-            'depart_date'  => $departdate,
-            'depart_time'  => $departtime,
-            'return_date'  => $returndate,
-            'return_time'  => $returntime,
-            'destination'  => $request->destination,
-            'waiting_area' => $request->waitingarea,
-            'purpose'      => $request->purpose,
-            'status'       => '2',
-            'category'     => Auth::user()->category,
-            'created_by'   => Auth::user()->id
-        ]);
+        $application               = new eKenderaan();
+        $application->intec_id     = Auth::user()->id;
+        $application->phone_no     = $request->hp_no;
+        $application->depart_date  = $departdate;
+        $application->depart_time  = $departtime;
+        $application->return_date  = $returndate;
+        $application->return_time  = $returntime;
+        $application->destination  = $request->destination;
+        $application->purpose      = $request->purpose;
+        $application->status       = '2';
+        $application->category     = Auth::user()->category;
+        $application->updated_by   = Auth::user()->id;
+        $application->save();
+
+
+        // $application = eKenderaan::create([
+        //     'intec_id'     => Auth::user()->id,
+        //     'phone_no'     => $request->hp_no,
+        //     'depart_date'  => $departdate,
+        //     'depart_time'  => $departtime,
+        //     'return_date'  => $returndate,
+        //     'return_time'  => $returntime,
+        //     'destination'  => $request->destination,
+        //     'purpose'      => $request->purpose,
+        //     'status'       => '2',
+        //     'category'     => Auth::user()->category,
+        //     'created_by'   => Auth::user()->id
+        // ]);
 
         eKenderaanLog::create([
             'ekn_details_id'=> $application->id,
@@ -267,6 +284,60 @@ class EKenderaanController extends Controller
             'activity'      => 'Apply new application',
             'created_by'    => Auth::user()->id
         ]);
+
+        // $errormsg = false;
+
+        // if (empty($request->waitingarea) && empty($request->others)) {
+        //     $errormsg = true;
+        // } else {
+        //     foreach ($request->waitingarea as $key => $value) {
+        //         eKenderaanWaitingArea::create([
+        //         'ekn_details_id' => $application->id,
+        //         'waiting_area'   => $request->waitingarea[$key],
+        //         'created_by'     => Auth::user()->id
+        //         ]);
+        //         if ($request->others != '') {
+        //             eKenderaanWaitingArea::create([
+        //                 'ekn_details_id' => $application->id,
+        //                 'waiting_area'   => $request->others,
+        //                 'created_by'     => Auth::user()->id
+        //                 ]);
+        //         }
+        //     }
+        // }
+
+        // foreach ($request->waitingarea as $key => $value) {
+        //     eKenderaanWaitingArea::create([
+        //     'ekn_details_id' => $application->id,
+        //     'waiting_area'   => $request->waitingarea[$key],
+        //     'created_by'     => Auth::user()->id
+        //     ]);
+        //     if ($request->others != '') {
+        //         eKenderaanWaitingArea::create([
+        //             'ekn_details_id' => $application->id,
+        //             'waiting_area'   => $request->others,
+        //             'created_by'     => Auth::user()->id
+        //             ]);
+        //     }
+        // }
+
+        if ($request->waitingarea) {
+            foreach ($request->waitingarea as $key => $value) {
+                eKenderaanWaitingArea::create([
+                'ekn_details_id' => $application->id,
+                'waiting_area'   => $request->waitingarea[$key],
+                'created_by'     => Auth::user()->id
+                ]);
+            }
+        }
+
+        if ($request->others) {
+            eKenderaanWaitingArea::create([
+                'ekn_details_id' => $application->id,
+                'waiting_area'   => $request->others,
+                'created_by'     => Auth::user()->id
+                ]);
+        }
 
         if ($request->staff_id) {
             foreach ($request->staff_id as $key => $value) {
@@ -337,6 +408,13 @@ class EKenderaanController extends Controller
         if ($file != '') {
             eKenderaanAttachments::where('id', $file)->update(['ekn_details_id' => $application->id]);
         }
+
+        // if ($errormsg) {
+        //     return redirect()->back()->withErrors("Waiting area can not be empty");
+        // } else {
+        //     return redirect('eKenderaan-application/'.$application->id)->with('message', 'Application Sent!');
+        // }
+
         return redirect('eKenderaan-application/'.$application->id)->with('message', 'Application Sent!');
     }
 
@@ -354,10 +432,11 @@ class EKenderaanController extends Controller
             $progfac = $details->programmes->programme_name;
         }
 
-        $departdate = Carbon::createFromFormat('Y-m-d', $data->depart_date)->format('d/m/Y');
-        $departtime = Carbon::createFromFormat('H:i:s', $data->depart_time)->format('h:i a');
-        $returndate = Carbon::createFromFormat('Y-m-d', $data->return_date)->format('d/m/Y');
-        $returntime = Carbon::createFromFormat('H:i:s', $data->return_time)->format('h:i a');
+        $departdate       = Carbon::createFromFormat('Y-m-d', $data->depart_date)->format('d/m/Y');
+        $departtime       = Carbon::createFromFormat('H:i:s', $data->depart_time)->format('h:i a');
+        $returndate       = Carbon::createFromFormat('Y-m-d', $data->return_date)->format('d/m/Y');
+        $returntime       = Carbon::createFromFormat('H:i:s', $data->return_time)->format('h:i a');
+        $waitingArea      = eKenderaanWaitingArea::where('ekn_details_id', $id)->get();
         $passenger        = eKenderaanPassengers::where('ekn_details_id', $id)->get();
         $file             = eKenderaanAttachments::where('ekn_details_id', $id)->first();
         $remark           = eKenderaanRejects::where('ekn_details_id', $id)->first();
@@ -370,8 +449,8 @@ class EKenderaanController extends Controller
         $driver           = eKenderaanDrivers::where('status', 'Y')->whereNotIn('id', $driver_assign)->get();
 
         $assignVehicle    = eKenderaanAssignVehicle::where('ekn_details_id', $id)->get();
-        $vehicle_assign    = array_column($assignVehicle->toArray(), 'vehicle_id');
-        $vehicle           = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)->get();
+        $vehicle_assign   = array_column($assignVehicle->toArray(), 'vehicle_id');
+        $vehicle          = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)->get();
 
         return view('eKenderaan.details', compact(
             'id',
@@ -382,6 +461,7 @@ class EKenderaanController extends Controller
             'departtime',
             'returndate',
             'returntime',
+            'waitingArea',
             'passenger',
             'driver',
             'vehicle',
@@ -940,9 +1020,11 @@ class EKenderaanController extends Controller
             'returndate'   => 'required',
             'returntime'   => 'required',
             'destination'  => 'required',
-            'waitingarea'  => 'required',
+            'waitingarea'  => 'required_without:others',
             'purpose'      => 'required',
         ], [
+            'waitingarea.required_without'  => 'The Waiting Area field is required.',
+
         ]);
 
         $user = Auth::user();
@@ -962,6 +1044,7 @@ class EKenderaanController extends Controller
         $user_hp = $request->hp_no;
         $destination = $request->destination;
         $waiting_area = $request->waitingarea;
+        $other_waiting_area = $request->others;
         $purpose = $request->purpose;
         $waitingArea = Department::all();
 
@@ -1026,6 +1109,7 @@ class EKenderaanController extends Controller
                 'user_hp',
                 'destination',
                 'waiting_area',
+                'other_waiting_area',
                 'purpose',
                 'image_id',
                 'originalName',
