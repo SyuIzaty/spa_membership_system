@@ -229,6 +229,7 @@
                                                     <th>IC</th>
                                                     <th>NAME</th>
                                                     <th>DEPARTMENT</th>
+                                                    <th></th>
                                                 </tr>
                                                 @if ($passenger_staff != null)
                                                     @foreach ($passenger_staff as $key => $value)
@@ -279,6 +280,7 @@
                                                     <th>IC</th>
                                                     <th>NAME</th>
                                                     <th>PROGRAMME</th>
+                                                    <th></th>
                                                 </tr>
                                                 @if ($passengerBulk != null)
                                                     @foreach ($passengerBulk as $key => $value)
@@ -427,7 +429,7 @@
                         <select class="form-control staff_id" id="${i}" name="staff_id[]" required>
                             <option value="" selected disabled>Please Select</option>
                             @foreach ($staffs as $s)
-                                <option value="{{ $s->staff_id }}">{{ $s->staff_id }}</option>
+                                <option value="{{ $s->staff_id }}">{{ $s->staff_id }} - {{ $s->staff_name }}</option>
                             @endforeach
                         </select>
                     </td>

@@ -220,6 +220,7 @@
                                                     <th>IC</th>
                                                     <th>NAME</th>
                                                     <th>DEPARTMENT</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -242,6 +243,7 @@
                                                     <th>IC</th>
                                                     <th>NAME</th>
                                                     <th>PROGRAMME</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -313,7 +315,7 @@
                         <select class="form-control staff_id" id="${i}" name="staff_id[]" required>
                             <option value="" selected disabled>Please Select</option>
                             @foreach ($staff as $s)
-                                <option value="{{ $s->staff_id }}">{{ $s->staff_id }}</option>
+                                <option value="{{ $s->staff_id }}">{{ $s->staff_id }} - {{ $s->staff_name }}</option>
                             @endforeach
                         </select>
                     </td>
