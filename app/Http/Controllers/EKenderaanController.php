@@ -1763,15 +1763,13 @@ class EKenderaanController extends Controller
             'created_by' => Auth::user()->id
         ]);
 
-        $detail = eKenderaan::where('id', $request->id)->first();
         $passenger = eKenderaanPassengers::where('ekn_details_id', $request->id)->get();
         $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $request->id)->get();
         $waitingArea = eKenderaanWaitingArea::where('ekn_details_id', $request->id)->get();
 
         $details = eKenderaanAssignDriver::where('ekn_details_id', $request->id)->get();
         $driver_assign    = array_column($details->toArray(), 'driver_id');
-        $driver          = eKenderaanDrivers::whereIn('id', $driver_assign)->get();
-
+        $driver           = eKenderaanDrivers::whereIn('id', $driver_assign)->get();
 
         if (isset($driver)) {
             foreach ($driver as $d) {
@@ -1798,13 +1796,17 @@ class EKenderaanController extends Controller
                     $message->from('operasi@intec.edu.my');
                     $message->to($user_email);
                 });
+            }
+        }
 
+        if (isset($details)) {
+            foreach ($details as $d) {
                 $d->delete();
                 $d->update(['deleted_by' => Auth::user()->id]);
             }
         }
 
-        $staff = User::where('id', $detail->intec_id)->first();
+        $staff = User::where('id', $updateApplication->intec_id)->first();
         $staff_email =  $staff->email;
 
         $data = [
