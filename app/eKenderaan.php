@@ -25,10 +25,10 @@ class eKenderaan extends Model
         return $this->hasMany(eKenderaanAssignVehicle::class, 'ekn_details_id', 'id');
     }
 
-    // public function waitingArea()
-    // {
-    //     return $this->hasOne(Department::class, 'id', 'waiting_area');
-    // }
+    public function areas()
+    {
+        return $this->hasMany(eKenderaanWaitingArea::class, 'ekn_details_id', 'id');
+    }
 
     public function student()
     {
@@ -83,5 +83,9 @@ class eKenderaan extends Model
     public function countFeedbackSubmitted()
     {
         return $this->where('status', 5)->count();
+    }
+    public function countCancelled()
+    {
+        return $this->where('status', 6)->count();
     }
 }

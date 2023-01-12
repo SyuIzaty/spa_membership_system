@@ -119,6 +119,20 @@
                             <div class="panel-container show">
                                 <div class="panel-content">
                                     <div class="table-responsive">
+                                        @if ($data->status == '2' || $data->status == '3')
+                                            {{-- OPERATION REJECT APPLICATION --}}
+                                            @canany('Manage and Verify eKenderaan Application')
+                                                <form id="form-id">
+                                                    @csrf
+                                                    <input type="hidden" id="id" name="id"
+                                                        value="{{ $data->id }}" required>
+                                                    <button type="submit"
+                                                        class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed"
+                                                        id="cancel" style="margin-bottom:10px;"><i
+                                                            class="fal fa-times-circle"></i> Request for Cancellation</button>
+                                                </form>
+                                            @endcanany
+                                        @endif
                                         <table class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>
@@ -160,7 +174,8 @@
                                                     </td>
                                                     <th style="vertical-align: middle">ID</th>
                                                     <td colspan="2" style="vertical-align: middle">
-                                                        <input class="form-control" value="{{ $data->intec_id }}" readonly>
+                                                        <input class="form-control" value="{{ $data->intec_id }}"
+                                                            readonly>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -1216,6 +1231,51 @@
                         }
                     }).always(function(data) {
                         $('#vehicleList').DataTable().draw(false);
+                    });
+                }
+            })
+        });
+
+        $("#cancel").on('click', function(e) {
+            e.preventDefault();
+
+            var datas = $('#form-id').serialize();
+
+            Swal.fire({
+                title: 'Are you sure you want to cancel this application?',
+                text: "Data cannot be restored!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Cancel!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+
+                if (result.value) {
+                    Swal.fire({
+                        title: 'Loading..',
+                        text: 'Please wait..',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        onOpen: () => {
+                            Swal.showLoading()
+                        }
+                    })
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('request-cancellation') }}",
+                        data: datas,
+                        dataType: "json",
+                        success: function(response) {
+                            console.log(response);
+                            if (response) {
+                                Swal.fire(response.success);
+                                location.reload();
+                            }
+                        }
                     });
                 }
             })

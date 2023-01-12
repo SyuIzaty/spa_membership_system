@@ -18,7 +18,7 @@ class eKenderaanExport implements FromView, WithEvents, WithStyles, WithColumnFo
 {
     public function view(): View
     {
-        $data = eKenderaan::whereIn('status', ['3','5'])->with(['drivers','vehicles'])->get();
+        $data = eKenderaan::whereIn('status', ['3','5'])->with(['drivers','vehicles','passengers','areas'])->get();
 
         return view('eKenderaan.report-export', compact('data'));
     }
@@ -27,10 +27,10 @@ class eKenderaanExport implements FromView, WithEvents, WithStyles, WithColumnFo
     {
         $passenger = eKenderaanPassengers::count();
 
-        $total = eKenderaan::whereIn('status', ['3','5'])->get()->count() + $passenger + 1;
+        $total = eKenderaan::whereIn('status', ['3','5'])->get()->count() + $passenger + 2;
 
         return [
-            "A1:U{$total}" => [
+            "A1:V{$total}" => [
                 'borders' => ['allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                     ]
@@ -56,11 +56,11 @@ class eKenderaanExport implements FromView, WithEvents, WithStyles, WithColumnFo
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $passenger = eKenderaanPassengers::count();
-                $total = eKenderaan::whereIn('status', ['3','5'])->get()->count() + $passenger + 1;
+                $total = eKenderaan::whereIn('status', ['3','5'])->get()->count() + $passenger + 2;
 
-                $cellAllRange = 'A1:U'.$total.'';
-                $event->sheet->getDelegate()->getStyle('A1:U1')->getFont()->setBold(true);
-                $event->sheet->getDelegate()->getStyle('O2:U2')->getFont()->setBold(true);
+                $cellAllRange = 'A1:V'.$total.'';
+                $event->sheet->getDelegate()->getStyle('A1:V1')->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle('R2:V2')->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setSize('8');
                 $event->sheet->getDelegate()->getDefaultRowDimension()->setRowHeight(25);

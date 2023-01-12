@@ -44,90 +44,7 @@
                             <div style="margin-left: 30px; line-height: 1em; color: black">
                                 <p>Assalammualaikum/Salam Sejahtera,</p><br>
                                 <p style="line-height: 0.5em">{{ $receivers }},</p>
-                                <p>{{ $emel }}</p>
-                                <br>
-                                <p>Tarikh Berlepas : {{ $departDate }}</p>
-                                <p>Masa Berlepas : {{ $departTime }}</p>
-                                <p>Tarikh Pulang : {{ $returnDate }}</p>
-                                <p>Masa Pulang : {{ $returnTime }}</p>
-                                <p>Tempat Menunggu :
-                                    @if ($waitingArea->count() > 1)
-                                        <ol>
-                                            @foreach ($waitingArea as $w)
-                                                <li>{{ $w->waiting_area }}</li>
-                                            @endforeach
-                                        </ol>
-                                    @else
-                                        @foreach ($waitingArea as $w)
-                                            {{ $w->waiting_area }}
-                                        @endforeach
-                                    @endif
-                                </p>
-                                <p>Destinasi : {{ $destination }}</p>
-                                <p>Pemandu :
-                                    @if (!empty($driver))
-
-                                        @if ($driver->count() > 1)
-                                            <ol>
-                                                @foreach ($driver as $d)
-                                                    <li>{{ isset($d->driverDetails->staff_name) ? $d->driverDetails->staff_name : N / A }}
-                                                    </li>
-                                                @endforeach
-                                            </ol>
-                                        @else
-                                            @foreach ($driver as $d)
-                                                {{ isset($d->driverDetails->staff_name) ? $d->driverDetails->staff_name : N / A }}
-                                            @endforeach
-                                        @endif
-                                    @else
-                                        N/A
-                                    @endif
-                                </p>
-                                <p>Kenderaan :
-                                    @if (!empty($vehicle))
-                                        @if ($vehicle->count() > 1)
-                                            <ol>
-                                                @foreach ($vehicle as $v)
-                                                    <li>{{ $v->vehicleList->name }} - {{ $v->vehicleList->plate_no }}
-                                                    </li>
-                                                @endforeach
-                                            </ol>
-                                        @else
-                                            @foreach ($vehicle as $v)
-                                                {{ $v->vehicleList->name }} - {{ $v->vehicleList->plate_no }}
-                                            @endforeach
-                                        @endif
-                                    @else
-                                        N/A
-                                    @endif
-                                </p>
-                                <p>Tujuan : {{ $purpose }}</p>
-                                <p>Penumpang :
-                                    @if (!empty($passenger))
-                                        @if ($passenger->count() > 1)
-                                            <ol>
-                                                @foreach ($passenger as $p)
-                                                    @if ($p->category == 'STF')
-                                                        <li>{{ $p->staff->staff_name }}</li>
-                                                    @else
-                                                        <li>{{ $p->student->students_name }}</li>
-                                                    @endif
-                                                @endforeach
-                                            </ol>
-                                        @else
-                                            @foreach ($passenger as $p)
-                                                @if ($p->category == 'STF')
-                                                    {{ $p->staff->staff_name }}
-                                                @else
-                                                    {{ $p->student->students_name }}
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    @elseif (empty($passenger))
-                                        N/A
-                                    @endif
-                                </p>
-                                <p style="line-height: 2em"></p>
+                                <p>{{ $emel }}.</p>
                             </div><br>
                             <div style="margin-left: 30px; line-height: 1em; color: black">
                                 <p>{{ $footer }}</p><br>
@@ -135,7 +52,6 @@
                             </div>
                         </td>
                     </tr>
-
                     <tr>
                         <td
                             style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">

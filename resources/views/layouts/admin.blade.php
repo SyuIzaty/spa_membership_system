@@ -278,6 +278,12 @@
                                                 ({{ $grant->countRejected() }})</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="/eKenderaan-list/6" title="Cancelled" data-filter-tags="cancelled">
+                                            <span class="nav-link-text" data-i18n="nav.cancelled">Cancelled
+                                                ({{ $grant->countCancelled() }})</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
 
@@ -418,77 +424,77 @@
 
                         <!-- Start ShortCourse Management System -->
                         {{-- @role('Super Admin') --}}
-                            @can('Short Course Management - View All')
-                                <li class="nav-title">Short Course Management</li>
-                                <li>
-                                    <a href="#" title="Catalogues" data-filter-tags="catalogues">
-                                        <i class="ni ni-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.catalogues">Catalogues</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="/topics" title="Topic" data-filter-tags="topic-catalogue">
-                                                <i class="ni ni-book-open"></i>
-                                                <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic-Category
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/shortcourses" title="Course" data-filter-tags="course-catalogue">
-                                                <i class="ni ni-book-open"></i>
-                                                <span class="nav-link-text" data-i18n="nav.course-catalogue">Course
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/venues" title="Venue" data-filter-tags="venue-catalogue">
-                                                <i class="ni ni-book-open"></i>
-                                                <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/feedback-sets" title="Feedback Set"
-                                                data-filter-tags="feedback-set-catalogue">
-                                                <i class="ni ni-book-open"></i>
-                                                <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback
-                                                    Set
-                                                </span>
-                                            </a>
-                                        </li>
+                        @can('Short Course Management - View All')
+                            <li class="nav-title">Short Course Management</li>
+                            <li>
+                                <a href="#" title="Catalogues" data-filter-tags="catalogues">
+                                    <i class="ni ni-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.catalogues">Catalogues</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/topics" title="Topic" data-filter-tags="topic-catalogue">
+                                            <i class="ni ni-book-open"></i>
+                                            <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic-Category
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/shortcourses" title="Course" data-filter-tags="course-catalogue">
+                                            <i class="ni ni-book-open"></i>
+                                            <span class="nav-link-text" data-i18n="nav.course-catalogue">Course
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/venues" title="Venue" data-filter-tags="venue-catalogue">
+                                            <i class="ni ni-book-open"></i>
+                                            <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/feedback-sets" title="Feedback Set"
+                                            data-filter-tags="feedback-set-catalogue">
+                                            <i class="ni ni-book-open"></i>
+                                            <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback
+                                                Set
+                                            </span>
+                                        </a>
+                                    </li>
 
-                                        <li>
-                                            <a href="/trainers" title="Trainer" data-filter-tags="trainer">
-                                                <i class="ni ni-earphones-alt"></i>
-                                                <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="/events" title="Event Management" data-filter-tags="event-management">
-                                        <i class="ni ni-calendar-fine"></i>
-                                        <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a href="/trainers" title="Trainer" data-filter-tags="trainer">
+                                            <i class="ni ni-earphones-alt"></i>
+                                            <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/events" title="Event Management" data-filter-tags="event-management">
+                                    <i class="ni ni-calendar-fine"></i>
+                                    <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
+                                </a>
+                            </li>
 
 
 
-                                <li>
-                                    <a href="#" title="People" data-filter-tags="people">
-                                        <i class="ni ni-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.people">People</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="/participants" title="Participant" data-filter-tags="participant">
-                                                <i class="ni ni-users"></i>
-                                                <span class="nav-link-text" data-i18n="nav.participant">Participant</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                {{-- <li>
+                            <li>
+                                <a href="#" title="People" data-filter-tags="people">
+                                    <i class="ni ni-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.people">People</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/participants" title="Participant" data-filter-tags="participant">
+                                            <i class="ni ni-users"></i>
+                                            <span class="nav-link-text" data-i18n="nav.participant">Participant</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {{-- <li>
                                 <a href="#" title="Application" data-filter-tags="application">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.application">Application</span>
@@ -503,20 +509,20 @@
                                 </ul>
                             </li> --}}
 
-                                <li>
-                                    <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">
-                                        <i class="fal fa-users"></i>
-                                        <span class="nav-link-text" data-i18n="nav.shortcourse">Public View</span>
-                                    </a>
-                                </li>
+                            <li>
+                                <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">
+                                    <i class="fal fa-users"></i>
+                                    <span class="nav-link-text" data-i18n="nav.shortcourse">Public View</span>
+                                </a>
+                            </li>
 
-                                {{-- <li>
+                            {{-- <li>
                                 <a href="/feedback/form" title="Feedback" data-filter-tags="feedback">
                                     <i class="ni ni-note"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Feedback</span>
                                 </a>
                             </li> --}}
-                            @endcan
+                        @endcan
                         {{-- @endrole --}}
                         <!-- End ShortCourse Management System -->
 

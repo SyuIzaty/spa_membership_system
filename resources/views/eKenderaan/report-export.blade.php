@@ -21,12 +21,13 @@
             <th style="background-color: #ffe1b7;">DATE APPLIED</th>
             <th style="background-color: #ffe1b7;">DRIVER</th>
             <th style="background-color: #ffe1b7;">VEHICLE</th>
+            <th style="background-color: #ffe1b7;">VERIFIED DATETIME</th>
             <th style="background-color: #ffe1b7;">FEEDBACK</th>
             <th style="background-color: #ffe1b7;" colspan="5">PASSENGER</th>
         </tr>
 
         <tr>
-            <td colspan="16"></td>
+            <td colspan="17"></td>
             <th style="background-color: #b7e8ff;">NO</th>
             <th style="background-color: #b7e8ff;">NAME</th>
             <th style="background-color: #b7e8ff;">FACULTY/PROGRAMME</th>
@@ -56,7 +57,19 @@
                 <td style="width: 100px;">{{ date('d/m/Y', strtotime($d->return_date)) }}</td>
                 <td style="width: 100px;">{{ date('g:i a', strtotime($d->return_time)) }}</td>
                 <td style="width: 250px;">{{ $d->destination }}</td>
-                <td style="width: 100px;">{{ $d->waitingArea->department_name }}</td>
+                <td style="width: 100px;">
+                    @if ($d->areas->count() > 1)
+                        <ul>
+                            @foreach ($d->areas as $w)
+                                <li>{{ $w->waiting_area }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        @foreach ($d->areas as $w)
+                            {{ $w->waiting_area }}
+                        @endforeach
+                    @endif
+                </td>
                 <td style="width: 300px;">{{ $d->purpose }}</td>
                 <td style="width: 100px;">{{ date('d/m/Y', strtotime($d->created_at)) }}</td>
                 <td style="width: 200px;">
@@ -87,6 +100,7 @@
                         @endforeach
                     @endif
                 </td>
+                <td style="width: 100px;">{{ isset($d->feedback->created_at) ? $d->feedback->created_at : 'N/A' }}</td>
                 <td style="width: 250px;">{{ isset($d->feedback->remark) ? $d->feedback->remark : 'N/A' }}</td>
                 <td style="background-color: #b7e8ff;" colspan="5"></td>
             </tr>
@@ -94,7 +108,7 @@
             @if (isset($d->passengers))
                 @foreach ($d->passengers as $p)
                     <tr>
-                        <td colspan="16"></td>
+                        <td colspan="17"></td>
                         <td>{{ $j }}</td>
                         @if ($p->category == 'STF')
                             <td style="width: 200px;">

@@ -12,4 +12,9 @@ class eKenderaanDrivers extends Model
     protected $fillable = [
         'name', 'staff_id', 'status', 'created_by', 'updated_by', 'deleted_by'
     ];
+
+    public function driverDetails()
+    {
+        return $this->hasOne(Staff::class, 'staff_id', 'staff_id');
+    }
 }

@@ -17,4 +17,9 @@ class eKenderaanAssignDriver extends Model
     {
         return $this->hasOne(eKenderaanDrivers::class, 'id', 'driver_id');
     }
+
+    public function driverName()
+    {
+        return $this->hasOne(Staff::class, 'staff_id', 'driver_id');
+    }
 }

@@ -97,6 +97,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report-driver-pdf/{year}/{id}', 'EKenderaanController@DriverReportPDFYear');
     Route::get('/view-driver-report/{year}/{month}/{id}', 'EKenderaanController@viewDriverReportYearMonth');
     Route::get('/report-driver-pdf/{year}/{month}/{id}', 'EKenderaanController@DriverReportPDFYearMonth');
+    Route::post('request-cancellation', 'EKenderaanController@operationCancelApplication');
+
 
 
 

@@ -47,7 +47,7 @@ class eKenderaanExportByYearMonth implements FromView, WithEvents, WithStyles, W
         ->whereMonth('created_at', $m)->get()->count() + $passenger + 2;
 
         return [
-            "A1:U{$total}" => [
+            "A1:V{$total}" => [
                 'borders' => ['allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                     ]
@@ -83,9 +83,9 @@ class eKenderaanExportByYearMonth implements FromView, WithEvents, WithStyles, W
                 $total = eKenderaan::whereIn('status', ['3','5'])->whereYear('created_at', $this->year)
                 ->whereMonth('created_at', $m)->get()->count() + $passenger + 2;
 
-                $cellAllRange = 'A1:U'.$total.'';
-                $event->sheet->getDelegate()->getStyle('A1:U1')->getFont()->setBold(true);
-                $event->sheet->getDelegate()->getStyle('O2:U2')->getFont()->setBold(true);
+                $cellAllRange = 'A1:V'.$total.'';
+                $event->sheet->getDelegate()->getStyle('A1:V1')->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle('R2:V2')->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setSize('8');
                 $event->sheet->getDelegate()->getDefaultRowDimension()->setRowHeight(25);

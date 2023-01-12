@@ -409,11 +409,22 @@ class EKenderaanController extends Controller
             eKenderaanAttachments::where('id', $file)->update(['ekn_details_id' => $application->id]);
         }
 
-        // if ($errormsg) {
-        //     return redirect()->back()->withErrors("Waiting area can not be empty");
-        // } else {
-        //     return redirect('eKenderaan-application/'.$application->id)->with('message', 'Application Sent!');
-        // }
+        $user = Auth::user();
+
+        $admin = User::where('id', '17020362')->first();
+        $admin_email = $admin->email;
+
+        $data = [
+            'receivers' => $admin->name,
+            'emel'      => 'Anda telah menerima permohonan e-Kenderaan baharu daripada '.$user->name.' pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+            'footer'    => 'Sila log masuk ke sistem IDS untuk tindakan selanjutnya.',
+        ];
+
+        Mail::send('eKenderaan.email_announcement', $data, function ($message) use ($admin_email) {
+            $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
+            $message->from('operasi@intec.edu.my');
+            $message->to($admin_email);
+        });
 
         return redirect('eKenderaan-application/'.$application->id)->with('message', 'Application Sent!');
     }
@@ -539,8 +550,8 @@ class EKenderaanController extends Controller
             'vehicle'  => 'required',
         ]);
 
-        $data = EKenderaan::where('id', $request->id)->first();
-        $data->update([
+        $detail = EKenderaan::where('id', $request->id)->first();
+        $detail->update([
             'operation_approval' => 'Y',
             'status' => '3',
             'updated_by' => Auth::user()->id
@@ -561,51 +572,80 @@ class EKenderaanController extends Controller
             'created_by'    => Auth::user()->id
         ]);
 
+        $passenger = eKenderaanPassengers::where('ekn_details_id', $request->id)->get();
+        $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $request->id)->get();
+        $waitingArea = eKenderaanWaitingArea::where('ekn_details_id', $request->id)->get();
+
         foreach ($request->driver as $key => $value) {
-            eKenderaanAssignDriver::create([
-                'ekn_details_id'=> $request->id,
-                'driver_id'     => $value,
-                'created_by'    => Auth::user()->id
-            ]);
+            $application                 = new eKenderaanAssignDriver();
+            $application->ekn_details_id = $request->id;
+            $application->driver_id      = $value;
+            $application->updated_by     = Auth::user()->id;
+            $application->save();
+        }
 
-            $driver = eKenderaanDrivers::where('id', $value)->first();
+        $details = eKenderaanAssignDriver::where('ekn_details_id', $request->id)->get();
+        $driver_assign    = array_column($details->toArray(), 'driver_id');
+        $drivers           = eKenderaanDrivers::whereIn('id', $driver_assign)->get();
 
-            $user = Staff::where('staff_id', $driver->staff_id)->first();
-            $user_email = $user->staff_email;
+        foreach ($drivers as $d) {
+            $user_email = $d->driverDetails->staff_email;
 
-            $details = eKenderaan::where('id', $request->id)->first();
-            $passenger = eKenderaanPassengers::where('ekn_details_id', $request->id)->get();
-            $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $request->id)->get();
-
-            $data = [
-                'receivers'   => $user->staff_name,
+            $data1 = [
+                'receivers'   => $d->driverDetails->staff_name,
                 'emel'        => 'Untuk makluman, anda telah ditugaskan pada :-',
-                'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
-                'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
-                'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
-                'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
-                'destination' => $details->destination,
-                'waitingArea' => $details->waitingArea->department_name,
-                'purpose'     => $details->purpose,
+                'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
+                'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
+                'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
+                'returnTime'  => date(' h:i A ', strtotime($detail->return_time)),
+                'destination' => $detail->destination,
+                'driver'      => $drivers,
+                'waitingArea' => $waitingArea,
+                'purpose'     => $detail->purpose,
                 'passenger'   => $passenger,
                 'vehicle'     => $vehicle,
                 'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
             ];
 
-            Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
-                $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
+            Mail::send('eKenderaan.email', $data1, function ($message) use ($user_email) {
+                $message->subject('EKENDERAAN: TUGASAN BAHARU');
                 $message->from('operasi@intec.edu.my');
                 $message->to($user_email);
             });
         }
+
+        $staff = User::where('id', $detail->intec_id)->first();
+        $staff_email =  $staff->email;
+
+        $data2 = [
+            'receivers'   => $staff->name,
+            'emel'        => 'Untuk makluman, permohonan anda telah diluluskan. Berikut merupakan butiran permohonan:-',
+            'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
+            'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
+            'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
+            'returnTime'  => date(' h:i A ', strtotime($detail->return_time)),
+            'destination' => $detail->destination,
+            'driver'      => $drivers,
+            'waitingArea' => $waitingArea,
+            'purpose'     => $detail->purpose,
+            'passenger'   => $passenger,
+            'vehicle'     => $vehicle,
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+        ];
+
+        Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
+            $message2->subject('EKENDERAAN: PERMOHONAN DILULUSKAN');
+            $message2->from('operasi@intec.edu.my');
+            $message2->to($staff_email);
+        });
 
         return redirect()->back()->with('message', 'Successfully Verified!');
     }
 
     public function operationRejectApplication(Request $request)
     {
-        $data = EKenderaan::where('id', $request->id)->first();
-        $data->update([
+        $details = EKenderaan::where('id', $request->id)->first();
+        $details->update([
             'operation_approval' => 'N',
             'status' => '4',
             'updated_by' => Auth::user()->id
@@ -624,6 +664,21 @@ class EKenderaanController extends Controller
             'activity'      => 'Operation reject application',
             'created_by'    => Auth::user()->id
         ]);
+
+        $staff = User::where('id', $details->intec_id)->first();
+        $staff_email =  $staff->email;
+
+        $data2 = [
+            'receivers'   => $staff->name,
+            'emel'        => 'Untuk makluman, permohonan anda telah ditolak. Sila log masuk ke sistem IDS untuk melihat sebab penolakan',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256.',
+        ];
+
+        Mail::send('eKenderaan.email_announcement', $data2, function ($message2) use ($staff_email) {
+            $message2->subject('EKENDERAAN: PERMOHONAN DITOLAK');
+            $message2->from('operasi@intec.edu.my');
+            $message2->to($staff_email);
+        });
 
         return redirect()->back()->with('message', 'Rejected!');
     }
@@ -671,6 +726,23 @@ class EKenderaanController extends Controller
             'activity'      => 'Submit feedback',
             'created_by'    => Auth::user()->id
         ]);
+
+        $user = Auth::user();
+
+        $admin = User::where('id', '17020362')->first();
+        $admin_email = $admin->email;
+
+        $data = [
+            'receivers' => $admin->name,
+            'emel'      => $user->name.' telah menghantar maklum balas pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+            'footer'    => 'Sila log masuk ke sistem IDS untuk melihat maklum balas tersebut.',
+        ];
+
+        Mail::send('eKenderaan.email_announcement', $data, function ($message) use ($admin_email) {
+            $message->subject('EKENDERAAN: MAKLUM BALAS BAHARU');
+            $message->from('operasi@intec.edu.my');
+            $message->to($admin_email);
+        });
 
         return redirect()->back()->with('message', 'Feedback Successfully Submitted!');
     }
@@ -1251,6 +1323,11 @@ class EKenderaanController extends Controller
         $details = eKenderaan::where('id', $request->id)->first();
         $passenger = eKenderaanPassengers::where('ekn_details_id', $request->id)->get();
         $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $request->id)->get();
+        $waitingArea = eKenderaanWaitingArea::where('ekn_details_id', $request->id)->get();
+        $assignDriver = eKenderaanAssignDriver::where('ekn_details_id', $request->id)->get();
+        $driver_assign    = array_column($assignDriver->toArray(), 'driver_id');
+        $drivers           = eKenderaanDrivers::whereIn('id', $driver_assign)->get();
+
 
         $data = [
             'receivers'   => $user->staff_name,
@@ -1260,7 +1337,8 @@ class EKenderaanController extends Controller
             'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
             'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
             'destination' => $details->destination,
-            'waitingArea' => $details->waitingArea->department_name,
+            'waitingArea' => $waitingArea,
+            'driver'      => $drivers,
             'purpose'     => $details->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
@@ -1271,6 +1349,31 @@ class EKenderaanController extends Controller
             $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
             $message->from('operasi@intec.edu.my');
             $message->to($user_email);
+        });
+
+        $staff = User::where('id', $details->intec_id)->first();
+        $staff_email =  $staff->email;
+
+        $data2 = [
+            'receivers'   => $staff->name,
+            'emel'        => 'Untuk makluman, terdapat perubahan pemandu bagi permohonan yang telah diluluskan. Berikut merupakan butiran permohonan:-',
+            'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
+            'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
+            'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
+            'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
+            'destination' => $details->destination,
+            'waitingArea' => $waitingArea,
+            'driver'      => $drivers,
+            'purpose'     => $details->purpose,
+            'passenger'   => $passenger,
+            'vehicle'     => $vehicle,
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+        ];
+
+        Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
+            $message2->subject('EKENDERAAN: PERUBAHAN PEMANDU');
+            $message2->from('operasi@intec.edu.my');
+            $message2->to($staff_email);
         });
 
         return redirect()->back()->with('message', 'Successfully Assigned New Driver!');
@@ -1287,8 +1390,15 @@ class EKenderaanController extends Controller
         $details = eKenderaan::where('id', $data->ekn_details_id)->first();
         $passenger = eKenderaanPassengers::where('ekn_details_id', $data->ekn_details_id)->get();
         $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $data->ekn_details_id)->get();
+        $waitingArea = eKenderaanWaitingArea::where('ekn_details_id', $data->ekn_details_id)->get();
+        $assignDriver = eKenderaanAssignDriver::where('ekn_details_id', $data->ekn_details_id)->get();
+        $driver_assign    = array_column($assignDriver->toArray(), 'driver_id');
+        $drivers           = eKenderaanDrivers::whereIn('id', $driver_assign)->get();
 
-        $data = [
+        $exist = eKenderaanAssignDriver::find($id);
+        $exist->delete();
+
+        $datas = [
             'receivers'   => $user->staff_name,
             'emel'        => 'Untuk makluman, penugasan pada butiran tersebut telah dibatalkan.',
             'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
@@ -1296,21 +1406,20 @@ class EKenderaanController extends Controller
             'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
             'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
             'destination' => $details->destination,
-            'waitingArea' => $details->waitingArea->department_name,
+            'waitingArea' => $waitingArea,
+            'driver'      => $drivers,
             'purpose'     => $details->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
             'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
         ];
 
-        Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
+        Mail::send('eKenderaan.email', $datas, function ($message) use ($user_email) {
             $message->subject('EKENDERAAN: PEMBATALAN TUGASAN');
             $message->from('operasi@intec.edu.my');
             $message->to($user_email);
         });
 
-        $exist = eKenderaanAssignDriver::find($id);
-        $exist->delete();
 
         return response()->json();
     }
@@ -1347,6 +1456,66 @@ class EKenderaanController extends Controller
             'created_by'     => Auth::user()->id
         ]);
 
+        $detail = eKenderaan::where('id', $request->id)->first();
+        $passenger = eKenderaanPassengers::where('ekn_details_id', $request->id)->get();
+        $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $request->id)->get();
+        $waitingArea = eKenderaanWaitingArea::where('ekn_details_id', $request->id)->get();
+
+        $details = eKenderaanAssignDriver::where('ekn_details_id', $request->id)->get();
+        $driver_assign    = array_column($details->toArray(), 'driver_id');
+        $drivers           = eKenderaanDrivers::whereIn('id', $driver_assign)->get();
+
+        foreach ($drivers as $d) {
+            $user_email = $d->driverDetails->staff_email;
+
+            $data1 = [
+                'receivers'   => $d->driverDetails->staff_name,
+                'emel'        => 'Untuk makluman, terdapat perubahan kenderaan bagi permohonan berikut :-',
+                'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
+                'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
+                'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
+                'returnTime'  => date(' h:i A ', strtotime($detail->return_time)),
+                'destination' => $detail->destination,
+                'driver'      => $drivers,
+                'waitingArea' => $waitingArea,
+                'purpose'     => $detail->purpose,
+                'passenger'   => $passenger,
+                'vehicle'     => $vehicle,
+                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+            ];
+
+            Mail::send('eKenderaan.email', $data1, function ($message) use ($user_email) {
+                $message->subject('EKENDERAAN: PERUBAHAN KENDERAAN');
+                $message->from('operasi@intec.edu.my');
+                $message->to($user_email);
+            });
+        }
+
+        $staff = User::where('id', $detail->intec_id)->first();
+        $staff_email =  $staff->email;
+
+        $data2 = [
+            'receivers'   => $staff->name,
+            'emel'        => 'Untuk makluman, terdapat perubahan kenderaan bagi permohonan yang telah diluluskan. Berikut merupakan butiran permohonan:-',
+            'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
+            'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
+            'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
+            'returnTime'  => date(' h:i A ', strtotime($detail->return_time)),
+            'destination' => $detail->destination,
+            'driver'      => $drivers,
+            'waitingArea' => $waitingArea,
+            'purpose'     => $detail->purpose,
+            'passenger'   => $passenger,
+            'vehicle'     => $vehicle,
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+        ];
+
+        Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
+            $message2->subject('EKENDERAAN: PERUBAHAN KENDERAAN');
+            $message2->from('operasi@intec.edu.my');
+            $message2->to($staff_email);
+        });
+
         return redirect()->back()->with('message', 'Successfully Assigned New Vehicle!');
     }
 
@@ -1366,6 +1535,68 @@ class EKenderaanController extends Controller
             'vehicle_id' => $request->vehicle,
             'updated_by' => Auth::user()->id
         ]);
+
+
+        $detail = eKenderaan::where('id', $data->ekn_details_id)->first();
+        $passenger = eKenderaanPassengers::where('ekn_details_id', $data->ekn_details_id)->get();
+        $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $data->ekn_details_id)->get();
+        $waitingArea = eKenderaanWaitingArea::where('ekn_details_id', $data->ekn_details_id)->get();
+
+        $details = eKenderaanAssignDriver::where('ekn_details_id', $data->ekn_details_id)->get();
+        $driver_assign    = array_column($details->toArray(), 'driver_id');
+        $drivers           = eKenderaanDrivers::whereIn('id', $driver_assign)->get();
+
+        foreach ($drivers as $d) {
+            $user_email = $d->driverDetails->staff_email;
+
+            $data1 = [
+                'receivers'   => $d->driverDetails->staff_name,
+                'emel'        => 'Untuk makluman, terdapat perubahan kenderaan bagi permohonan berikut :-',
+                'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
+                'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
+                'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
+                'returnTime'  => date(' h:i A ', strtotime($detail->return_time)),
+                'destination' => $detail->destination,
+                'driver'      => $drivers,
+                'waitingArea' => $waitingArea,
+                'purpose'     => $detail->purpose,
+                'passenger'   => $passenger,
+                'vehicle'     => $vehicle,
+                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+            ];
+
+            Mail::send('eKenderaan.email', $data1, function ($message) use ($user_email) {
+                $message->subject('EKENDERAAN: PERUBAHAN KENDERAAN');
+                $message->from('operasi@intec.edu.my');
+                $message->to($user_email);
+            });
+        }
+
+        $staff = User::where('id', $detail->intec_id)->first();
+        $staff_email =  $staff->email;
+
+        $data2 = [
+            'receivers'   => $staff->name,
+            'emel'        => 'Untuk makluman, terdapat perubahan kenderaan bagi permohonan yang telah diluluskan. Berikut merupakan butiran permohonan:-',
+            'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
+            'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
+            'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
+            'returnTime'  => date(' h:i A ', strtotime($detail->return_time)),
+            'destination' => $detail->destination,
+            'driver'      => $drivers,
+            'waitingArea' => $waitingArea,
+            'purpose'     => $detail->purpose,
+            'passenger'   => $passenger,
+            'vehicle'     => $vehicle,
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+        ];
+
+        Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
+            $message2->subject('EKENDERAAN: PERUBAHAN KENDERAAN');
+            $message2->from('operasi@intec.edu.my');
+            $message2->to($staff_email);
+        });
+
 
         return redirect()->back()->with('message', 'Assigned Vehicle Update Successfully');
     }
@@ -1513,5 +1744,82 @@ class EKenderaanController extends Controller
         $countScale = eKenderaanFeedbackService::where('ekn_assigned_driver_id', $id)->whereYear('created_at', '=', $year)
                       ->whereMonth('created_at', '=', $monthConvert)->get();
         return view('eKenderaan.driver-report-pdf', compact('details', 'question', 'countScale', 'driver'));
+    }
+
+    public function operationCancelApplication(Request $request)
+    {
+        $user = Auth::user();
+
+        $updateApplication = eKenderaan::where('id', $request->id)->first();
+        $updateApplication->update([
+            'status'     =>'6',
+            'updated_by' => Auth::user()->id
+        ]);
+
+        eKenderaanLog::create([
+            'ekn_details_id'  => $request->id,
+            'name' => Auth::user()->name,
+            'activity'  => 'Cancel Application',
+            'created_by' => Auth::user()->id
+        ]);
+
+        $detail = eKenderaan::where('id', $request->id)->first();
+        $passenger = eKenderaanPassengers::where('ekn_details_id', $request->id)->get();
+        $vehicle = eKenderaanAssignVehicle::where('ekn_details_id', $request->id)->get();
+        $waitingArea = eKenderaanWaitingArea::where('ekn_details_id', $request->id)->get();
+
+        $details = eKenderaanAssignDriver::where('ekn_details_id', $request->id)->get();
+        $driver_assign    = array_column($details->toArray(), 'driver_id');
+        $driver          = eKenderaanDrivers::whereIn('id', $driver_assign)->get();
+
+
+        if (isset($driver)) {
+            foreach ($driver as $d) {
+                $user_email = $d->driverDetails->staff_email;
+
+                $data = [
+                    'receivers'   => $d->driverDetails->staff_name,
+                    'emel'        => 'Untuk makluman, penugasan pada butiran tersebut telah dibatalkan.',
+                    'departDate'  => date(' d/m/Y ', strtotime($updateApplication->depart_date)),
+                    'departTime'  => date(' h:i A ', strtotime($updateApplication->depart_time)),
+                    'returnDate'  => date(' d/m/Y ', strtotime($updateApplication->return_date)),
+                    'returnTime'  => date(' h:i A ', strtotime($updateApplication->return_time)),
+                    'destination' => $updateApplication->destination,
+                    'driver'      => $driver,
+                    'waitingArea' => $waitingArea,
+                    'purpose'     => $updateApplication->purpose,
+                    'passenger'   => $passenger,
+                    'vehicle'     => $vehicle,
+                    'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                ];
+
+                Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
+                    $message->subject('EKENDERAAN: PEMBATALAN TUGASAN');
+                    $message->from('operasi@intec.edu.my');
+                    $message->to($user_email);
+                });
+
+                $d->delete();
+                $d->update(['deleted_by' => Auth::user()->id]);
+            }
+        }
+
+        $staff = User::where('id', $detail->intec_id)->first();
+        $staff_email =  $staff->email;
+
+        $data = [
+            'receivers' => $staff->name,
+            'emel'      => 'Untuk makluman, permohonan anda untuk membatalkan permohonan e-Kenderaan telah dilaksanakan pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+            'footer'    => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256.',
+        ];
+
+        Mail::send('eKenderaan.email_announcement', $data, function ($message) use ($staff_email) {
+            $message->subject('EKENDERAAN: PERMOHONAN DIBATALKAN');
+            $message->from('operasi@intec.edu.my');
+            $message->to($staff_email);
+        });
+
+
+        return response() ->json(['success' => 'Application Cancelled!']);
     }
 }

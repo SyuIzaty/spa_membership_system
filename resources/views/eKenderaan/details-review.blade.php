@@ -172,7 +172,7 @@
                                                         </select>
                                                             <span>
                                                                 <p style="margin-top: 10px">Other Waiting Area (if any):</p>
-                                                                <textarea class="form-control border border-danger" id="example-textarea" rows="2" name="others">{{ $other_waiting_area }}</textarea>
+                                                                <textarea class="form-control" id="example-textarea" rows="2" name="others">{{ $other_waiting_area }}</textarea>
                                                                 <span style="color: red">For other waiting area, please provide <b>details location</b>. If you want to cancel, please make sure the text field is <b>empty</b>.</span>
                                                             </span>
                                                     </td>
