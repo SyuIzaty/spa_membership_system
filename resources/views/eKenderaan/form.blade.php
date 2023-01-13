@@ -102,9 +102,15 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Date</th>
                                                     <td>
-                                                        <input type="text" class="form-control border border-danger" id="departdate"
-                                                            name="departdate" placeholder="Please insert departure date"
-                                                            autocomplete="off" value="{{ old('departdate') }}" required>
+                                                        @if ($user->hasAnyRole(['eKenderaan Admin']))
+                                                            <input type="text" class="form-control border border-danger" id="departdateAdmin"
+                                                                name="departdate" placeholder="Please insert departure date"
+                                                                autocomplete="off" value="{{ old('departdate') }}" required>
+                                                        @else
+                                                            <input type="text" class="form-control border border-danger" id="departdate"
+                                                                name="departdate" placeholder="Please insert departure date"
+                                                                autocomplete="off" value="{{ old('departdate') }}" required>
+                                                        @endif
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Time</th>
@@ -118,8 +124,13 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Date</th>
                                                     <td>
-                                                        <input type="text" class="form-control border border-danger" id="returndate" name="returndate"
-                                                         placeholder="Please insert return date" autocomplete="off" value="{{ old('returndate') }}" required>
+                                                        @if ($user->hasAnyRole(['eKenderaan Admin']))
+                                                            <input type="text" class="form-control border border-danger" id="returndateAdmin" name="returndate"
+                                                            placeholder="Please insert return date" autocomplete="off" value="{{ old('returndate') }}" required>
+                                                        @else
+                                                            <input type="text" class="form-control border border-danger" id="returndate" name="returndate"
+                                                            placeholder="Please insert return date" autocomplete="off" value="{{ old('returndate') }}" required>
+                                                        @endif
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Time</th>
@@ -136,7 +147,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th style="vertical-align: middle"><span class="text-danger">*</span>Waiting Area</th>
+                                                    <th style="vertical-align: middle"><span class="text-danger">*</span> Waiting Area</th>
                                                     <td colspan="5">
                                                         <span style="color: red">User can select multiple waiting area on the below.</span>
                                                         <select class="form-control border border-danger waitingArea" name="waitingarea[]"
@@ -450,7 +461,7 @@
     //     });
 
 
-    //datepicker & timepicker
+    //datepicker & timepicker for staff & student
         $("#departdate").datepicker({
             dateFormat: "dd/mm/yy",
             changeMonth: true,
@@ -469,6 +480,7 @@
 
         $('#departtime').timepicker({
             timeFormat: 'h:mm p',
+            interval: '15',
             minTime: '6',
             maxTime: '11:55pm',
             startTime: '6:00',
@@ -479,6 +491,7 @@
 
         $('#returntime').timepicker({
             timeFormat: 'h:mm p',
+            interval: '15',
             minTime: '6',
             maxTime: '11:55pm',
             startTime: '6:00',
@@ -493,5 +506,22 @@
         $('#returndate').on('change', function() {
         $('#departdate').datepicker("option", "maxDate", $('#returndate').datepicker('getDate'));
         });
+
+
+    //datepicker & timepicker for admin
+        $("#departdateAdmin").datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: "+1y",
+        });
+
+        $("#returndateAdmin").datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: "+1y",
+        });
+
     </script>
 @endsection

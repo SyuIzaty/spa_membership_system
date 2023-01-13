@@ -1099,6 +1099,7 @@ class EKenderaanController extends Controller
 
         ]);
 
+
         $user = Auth::user();
 
         if ($user->category == "STF") {

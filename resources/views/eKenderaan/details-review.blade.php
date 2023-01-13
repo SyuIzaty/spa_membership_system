@@ -112,9 +112,15 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Date</th>
                                                     <td>
-                                                        <input type="text" class="form-control" id="departdate"
-                                                            name="departdate" placeholder="Please insert departure date"
-                                                            autocomplete="off" value="{{ $departdate }}" required>
+                                                        @if ($user->hasAnyRole(['eKenderaan Admin']))
+                                                            <input type="text" class="form-control" id="departdateAdmin"
+                                                                name="departdate" placeholder="Please insert departure date"
+                                                                autocomplete="off" value="{{ $departdate }}" required>
+                                                        @else
+                                                            <input type="text" class="form-control" id="departdate"
+                                                                name="departdate" placeholder="Please insert departure date"
+                                                                autocomplete="off" value="{{ $departdate }}" required>
+                                                        @endif
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Time</th>
@@ -128,8 +134,13 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Date</th>
                                                     <td>
-                                                        <input type="text" class="form-control" id="returndate" name="returndate"
-                                                         placeholder="Please insert return date" autocomplete="off" value="{{ $returndate }}" required>
+                                                        @if ($user->hasAnyRole(['eKenderaan Admin']))
+                                                            <input type="text" class="form-control" id="returndateAdmin" name="returndate"
+                                                            placeholder="Please insert return date" autocomplete="off" value="{{ $returndate }}" required>
+                                                        @else
+                                                            <input type="text" class="form-control" id="returndate" name="returndate"
+                                                            placeholder="Please insert return date" autocomplete="off" value="{{ $returndate }}" required>
+                                                        @endif
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Time</th>
@@ -560,8 +571,8 @@
 
    });
 
-    //datepicker & timepicker
-        $("#departdate").datepicker({
+       //datepicker & timepicker for staff & student
+       $("#departdate").datepicker({
             dateFormat: "dd/mm/yy",
             changeMonth: true,
             changeYear: true,
@@ -579,7 +590,7 @@
 
         $('#departtime').timepicker({
             timeFormat: 'h:mm p',
-            interval: 5,
+            interval: '15',
             minTime: '6',
             maxTime: '11:55pm',
             startTime: '6:00',
@@ -590,7 +601,7 @@
 
         $('#returntime').timepicker({
             timeFormat: 'h:mm p',
-            interval: 5,
+            interval: '15',
             minTime: '6',
             maxTime: '11:55pm',
             startTime: '6:00',
@@ -604,6 +615,22 @@
         });
         $('#returndate').on('change', function() {
         $('#departdate').datepicker("option", "maxDate", $('#returndate').datepicker('getDate'));
+        });
+
+
+    //datepicker & timepicker for admin
+        $("#departdateAdmin").datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: "+1y",
+        });
+
+        $("#returndateAdmin").datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: "+1y",
         });
 
         $(".btn_cancel").on('click', function(e) {
