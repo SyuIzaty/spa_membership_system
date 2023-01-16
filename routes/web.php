@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/log-eKenderaan/{id}', 'EKenderaanController@log');
     Route::post('/log-eKenderaan-list/{id}', 'EKenderaanController@logList');
     Route::get('/student-list-excel-format', 'EKenderaanController@getFile');
+    Route::get('/user-manual', 'EKenderaanController@getUserManual');
     Route::post('/review-application', 'EKenderaanController@review');
     Route::get('/temp-file/{id}', 'EKenderaanController@getTempFile');
     Route::delete('/cancel-application/{id}', 'EKenderaanController@cancelApplication');

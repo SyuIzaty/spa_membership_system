@@ -242,6 +242,13 @@
                                 <span class="nav-link-text" data-i18n="nav.eKenderaan-form">Application</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="/user-manual" title="User Manual" data-filter-tags="User Manual"
+                                target="_blank" style="text-decoration: none!important">
+                                <i class="fal fa-info"></i>
+                                <span class="nav-link-text" data-i18n="nav.user-manual">User Manual</span>
+                            </a>
+                        </li>
                         @role('eKenderaan Admin')
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">

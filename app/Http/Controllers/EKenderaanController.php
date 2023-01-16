@@ -1209,6 +1209,21 @@ class EKenderaanController extends Controller
         return $response;
     }
 
+    public function getUserManual()
+    {
+        $file = "E-KENDERAAN USER MANUAL (STAFF & STUDENT).pdf";
+
+        $path = storage_path().'/ekenderaan/'.$file;
+
+        $form = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($form, 200);
+        $response->header("Content-Type", $filetype);
+
+        return $response;
+    }
+
     public function getTempFile($id)
     {
         $file = eKenderaanAttachments::where('id', $id)->first();
