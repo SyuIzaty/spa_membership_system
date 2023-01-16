@@ -112,7 +112,7 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Date</th>
                                                     <td>
-                                                        @if ($user->hasAnyRole(['eKenderaan Admin']))
+                                                        @if ($user->hasAnyRole(['eKenderaan Admin']) || ($user->id == '14020099'))
                                                             <input type="text" class="form-control" id="departdateAdmin"
                                                                 name="departdate" placeholder="Please insert departure date"
                                                                 autocomplete="off" value="{{ $departdate }}" required>
@@ -134,7 +134,7 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Date</th>
                                                     <td>
-                                                        @if ($user->hasAnyRole(['eKenderaan Admin']))
+                                                        @if ($user->hasAnyRole(['eKenderaan Admin']) || ($user->id == '14020099'))
                                                             <input type="text" class="form-control" id="returndateAdmin" name="returndate"
                                                             placeholder="Please insert return date" autocomplete="off" value="{{ $returndate }}" required>
                                                         @else

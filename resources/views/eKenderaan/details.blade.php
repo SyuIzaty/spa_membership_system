@@ -129,7 +129,7 @@
                                                     <button type="submit"
                                                         class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed"
                                                         id="cancel" style="margin-bottom:10px;"><i
-                                                            class="fal fa-times-circle"></i> Request for Cancellation</button>
+                                                            class="fal fa-times-circle"></i> Cancel Application</button>
                                                 </form>
                                             @endcanany
                                         @endif
