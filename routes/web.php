@@ -766,6 +766,10 @@ Route::group(['middleware' => 'auth'], function () {
     })->where('vue_capture', '[\/\w\.-]*');
 });
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('/library/arkib', 'Library\Arkib\ArkibController');
+});
+
 //SCM - Public View
 Route::get('/category/subcategories/{category_id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@getSubCategories');
 Route::get('/category/subcategory/topics/{subcategory_id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@getTopics');

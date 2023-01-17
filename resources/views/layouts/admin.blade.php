@@ -891,6 +891,25 @@
                                 </ul>
                             </li>
                         @endcan
+                        <li class="nav-title">LIBRARY</li>
+                            <li class="open">
+                                <a href="#" title="List" data-filter-tags="list">
+                                    <i class="fal fa-book"></i>
+                                    <span class="nav-link-text" data-i18n="nav.list">Arkib</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/library/arkib/create" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Create File</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/library/arkib" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Arkib List</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         {{-- End Inventory --}}
 
                         {{-- Start Computer Grant Management --}}
