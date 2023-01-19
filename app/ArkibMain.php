@@ -18,7 +18,7 @@ class ArkibMain extends Model
 
     public function arkibAttachments()
     {
-        return $this->hasMany('ArkibAttachment','arkib_main_id','id');
+        return $this->hasMany('App\ArkibAttachment','arkib_main_id','id');
     }
 
     public function department()

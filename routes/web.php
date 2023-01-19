@@ -769,6 +769,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::any('/library/arkib/search', 'Library\Arkib\ArkibController@search');
     Route::resource('/library/arkib', 'Library\Arkib\ArkibController');
+    Route::post('/get-arkib', 'Library\Arkib\ArkibController@getArkib');
     Route::resource('/library/arkib-main', 'Library\Arkib\ArkibMainController');
 });
 
