@@ -891,6 +891,7 @@
                                 </ul>
                             </li>
                         @endcan
+                        @canany(['Manage Arkib', 'View Arkib'])
                         <li class="nav-title">LIBRARY</li>
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
@@ -904,12 +905,14 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/library/arkib" title="Arkib" data-filter-tags="Arkib">
+                                        <a href="/library/arkib/search" title="Arkib" data-filter-tags="Arkib">
                                             <span class="nav-link-text" data-i18n="nav.arkib">Arkib List</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
+                        </li>
+                        @endcanany
                         {{-- End Inventory --}}
 
                         {{-- Start Computer Grant Management --}}

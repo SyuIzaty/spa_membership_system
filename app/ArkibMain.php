@@ -15,4 +15,14 @@ class ArkibMain extends Model
     {
         return $this->hasOne('App\ArkibStatus','arkib_status','status');
     }
+
+    public function arkibAttachments()
+    {
+        return $this->hasMany('ArkibAttachment','arkib_main_id','id');
+    }
+
+    public function department()
+    {
+        return $this->hasOne('App\Departments','department_code','department_code');
+    }
 }
