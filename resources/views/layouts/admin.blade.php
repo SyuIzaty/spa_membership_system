@@ -900,8 +900,8 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/library/arkib/create" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Create File</span>
+                                        <a href="/library/arkib-main" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Manage Arkib</span>
                                         </a>
                                     </li>
                                     <li>

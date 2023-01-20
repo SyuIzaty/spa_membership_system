@@ -15,4 +15,9 @@ class ArkibAttachment extends Model
     {
         return $this->hasOne('App\ArkibMain','id','arkin_main_id');
     }
+
+    public function scopeArkibMainId($query, $arkib_main_id)
+    {
+        return $query->where('arkib_main_id',$arkib_main_id);
+    }
 }

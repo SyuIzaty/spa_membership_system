@@ -79,11 +79,7 @@ class ArkibController extends Controller
      */
     public function create()
     {
-        $department = Departments::all();
-
-        $status = ArkibStatus::all();
-
-        return view('library.arkib.create',compact('department','status'));
+        //
     }
 
     /**
@@ -147,6 +143,14 @@ class ArkibController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $attach = ArkibAttachment::find($id);
+
+        if(Storage::exists($attach->web_path) == 'true'){
+            Storage::delete($attach->web_path); 
+        }
+
+        $attach->delete();
+
+        return redirect()->back()->with('message','Deleted');
     }
 }

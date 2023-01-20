@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Library\Arkib;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Imagick;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use App\Departments;
 use App\ArkibMain;
+use App\ArkibStatus;
 use App\ArkibAttachment;
+use Response;
 
 class ArkibMainController extends Controller
 {
@@ -24,7 +28,73 @@ class ArkibMainController extends Controller
 
     public function index()
     {
-        //
+        $draft = ArkibMain::Unpublished()->count();
+        
+        $publish = ArkibMain::Published()->count();
+
+        $total = ArkibMain::count();
+
+        $department = Departments::all();
+
+        $status = ArkibStatus::all();
+
+        return view('library.arkib-main.index',compact('total','publish','draft','department','status'));
+    }
+
+    public function data_publishedarkib()
+    {
+        $paper = ArkibMain::with('department','arkibStatus')->Published()->select('arkib_mains.*');
+
+        return datatables()::of($paper)
+        ->addColumn('dept', function($paper){
+            return isset($paper->department->department_name) ? Str::title($paper->department->department_name) : '';
+        })
+        ->addColumn('stat', function($paper){
+            return isset($paper->arkibStatus->arkib_description) ? Str::title($paper->arkibStatus->arkib_description) : '';
+        })
+        ->editColumn('created_at', function ($paper) {
+            return isset($paper->created_at) ? $paper->created_at->format('Y-m-d') : '';
+        })
+        ->addColumn('action', function ($paper) {
+            
+            return '
+            <div class="btn-group">
+            <a href="/library/arkib-main/'.$paper->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
+            <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/library/arkib-main/' . $paper->id . '"> <i class="fal fa-trash"></i></button>
+            </div>'
+            ;
+
+        })
+        ->rawColumns(['action','dept'])
+        ->make(true);
+    }
+
+    public function data_draftarkib()
+    {
+        $paper = ArkibMain::with('department','arkibStatus')->Unpublished()->select('arkib_mains.*');
+
+        return datatables()::of($paper)
+        ->addColumn('dept', function($paper){
+            return isset($paper->department->department_name) ? Str::title($paper->department->department_name) : '';
+        })
+        ->addColumn('stat', function($paper){
+            return isset($paper->arkibStatus->arkib_description) ? Str::title($paper->arkibStatus->arkib_description) : '';
+        })
+        ->editColumn('created_at', function ($paper) {
+            return isset($paper->created_at) ? $paper->created_at->format('Y-m-d') : '';
+        })
+        ->addColumn('action', function ($paper) {
+            
+            return '
+            <div class="btn-group">
+            <a href="/library/arkib-main/'.$paper->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
+            <button class="btn btn-sm btn-danger btn-delete2 delete" data-remote="/library/arkib-main/' . $paper->id . '"> <i class="fal fa-trash"></i></button>
+            </div>'
+            ;
+
+        })
+        ->rawColumns(['action','dept'])
+        ->make(true);
     }
 
     /**
@@ -57,22 +127,13 @@ class ArkibMainController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'status' => $request->status,
+            'created_at' => Carbon::now(),
         ]);
 
         if(isset($request->arkib_attachment)){
-            foreach($request->arkib_attachment as $attach){
-                $file_save = date('dmyhis').$attach->getClientOriginalName();
-                $file_size = $attach->getSize();
-                $attach->storeAs('/arkib',$file_save);
-                ArkibAttachment::create([
-                    'arkib_main_id' => $group_id,
-                    'file_name' => $file_save,
-                    'file_size' => $file_size,
-                    'web_path' => "arkib/".$file_save,
-                ]);
-            }
+            $this->uploadAttachment($arkib_attach, $group_id);
         }
-
+        
         return redirect()->back()->with('message','Data Added');
     }
 
@@ -95,7 +156,15 @@ class ArkibMainController extends Controller
      */
     public function edit($id)
     {
-        //
+        $department = Departments::all();
+
+        $status = ArkibStatus::all();
+
+        $arkib = ArkibMain::find($id);
+
+        $attach = ArkibAttachment::ArkibMainId($id)->get();
+
+        return view('library.arkib.edit',compact('department','status','arkib','attach'));
     }
 
     /**
@@ -107,7 +176,42 @@ class ArkibMainController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'department_code' => 'required',
+            'title' => 'required|max:100',
+            'description' => 'required|max:100',
+            'status' => 'required',
+        ]);
+
+        ArkibMain::where('id',$id)->update([
+            'department_code' => $request->department_code,
+            'title' => $request->title,
+            'description' => $request->description,
+            'status' => $request->status,
+        ]);
+
+        $arkib_attach = $request->arkib_attachment;
+
+        if(isset($request->arkib_attachment)){
+            $this->uploadAttachment($arkib_attach, $id);
+        }
+
+        return redirect()->back()->with('message','Updated');
+    }
+
+    public function uploadAttachment($arkib_attach, $group_id)
+    {
+        foreach($arkib_attach as $attach){
+            $file_save = date('dmyhis').$attach->getClientOriginalName();
+            $file_size = $attach->getSize();
+            $attach->storeAs('/arkib',$file_save);
+            ArkibAttachment::create([
+                'arkib_main_id' => $group_id,
+                'file_name' => $file_save,
+                'file_size' => $file_size,
+                'web_path' => "arkib/".$file_save,
+            ]);
+        }
     }
 
     /**
@@ -118,6 +222,18 @@ class ArkibMainController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $paper = ArkibMain::find($id);
+
+        $attach = ArkibAttachment::ArkibMainId($id)->get();
+
+        foreach($attach as $attaches){
+            if(Storage::exists($attaches->web_path) == 'true'){
+                Storage::delete($attaches->web_path); 
+            }
+
+            $attaches->delete();
+        }
+
+        $paper->delete();
     }
 }
