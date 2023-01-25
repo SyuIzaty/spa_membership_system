@@ -909,6 +909,11 @@
                                             <span class="nav-link-text" data-i18n="nav.arkib">Arkib List</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="/library/report/arkib" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </li>

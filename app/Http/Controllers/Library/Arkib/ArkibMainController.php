@@ -97,6 +97,65 @@ class ArkibMainController extends Controller
         ->make(true);
     }
 
+    public function reportArkib(Request $request)
+    {
+        $department = Departments::all();
+
+        $status = ArkibStatus::all();
+
+        return view('library.arkib.report',compact('department','status','request'));
+    }
+
+    public function data_exportarkib(Request $request)
+    {
+        $cond = "1";
+
+        if($request->from && $request->from != "All")
+        {
+            $cond .= " AND (arkib_mains.created_at >= '".$request->from."')";
+        }
+
+        if($request->to && $request->to != "All")
+        {
+            $cond .= " AND (arkib_mains.created_at <= '".$request->to."')";
+        }
+        
+        if($request->status && $request->status != "All")
+        {
+            $cond .= " AND (status = '".$request->status."')";
+        }
+
+        if($request->department && $request->department != "All")
+        {
+            $cond .= " AND (department_code = '".$request->department."')";
+        }
+
+        $paper = ArkibMain::whereRaw($cond)->with('department','arkibStatus')->select('arkib_mains.*');
+
+        return datatables()::of($paper)
+            ->addColumn('title',function($paper)
+            {
+                return isset($paper->title) ? Str::title($paper->title) : '';
+            })
+            ->addColumn('description',function($paper)
+            {
+                return isset($paper->description) ? Str::title($paper->description) : '';
+            })
+            ->addColumn('dept',function($paper)
+            {
+                return isset($paper->department->department_name) ? Str::title($paper->department->department_name) : '';
+            })
+            ->addColumn('stat',function($paper)
+            {
+                return isset($paper->arkibStatus->arkib_description) ? Str::title($paper->arkibStatus->arkib_description) : '';
+            })
+            ->editColumn('created_at', function ($announcement) {
+                return $announcement->created_at;
+            })
+           ->rawColumns(['dept','stat'])
+           ->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -120,6 +179,7 @@ class ArkibMainController extends Controller
             'title' => 'required|max:100',
             'description' => 'required|max:100',
             'status' => 'required',
+            'arkib_attachment.*' => 'mimes:pdf'
         ]);
 
         $group_id = ArkibMain::insertGetId([
@@ -131,6 +191,8 @@ class ArkibMainController extends Controller
         ]);
 
         if(isset($request->arkib_attachment)){
+            $arkib_attach = $request->arkib_attachment;
+
             $this->uploadAttachment($arkib_attach, $group_id);
         }
         
@@ -181,6 +243,7 @@ class ArkibMainController extends Controller
             'title' => 'required|max:100',
             'description' => 'required|max:100',
             'status' => 'required',
+            'arkib_attachment.*' => 'mimes:pdf'
         ]);
 
         ArkibMain::where('id',$id)->update([
@@ -190,9 +253,9 @@ class ArkibMainController extends Controller
             'status' => $request->status,
         ]);
 
-        $arkib_attach = $request->arkib_attachment;
-
         if(isset($request->arkib_attachment)){
+            $arkib_attach = $request->arkib_attachment;
+
             $this->uploadAttachment($arkib_attach, $id);
         }
 
