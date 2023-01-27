@@ -9,7 +9,7 @@
     </div>
     {!! Form::open(['action' => ['Library\Arkib\ArkibController@search'], 'method' => 'POST'])!!}
     <div class="row">
-      <div class="col-md-4 mb-5">
+      <div class="col-md-3 mb-5">
         <h3><b>Department</b></h3>
         <select class="form-control" name="department" id="department">
           <option disabled selected>Please Select</option>
@@ -23,8 +23,11 @@
         <h3><b>Search</b></h3>
         <input type="text" class="form-control" name="search_data" value="{{ \Request::get('search_data') }}">
       </div>
-      <div class="col-md-1 mt-5">
-        <button class="btn btn-success btn-sm"><i class="fal fa-search"></i> Search</button>
+      <div class="col-md-2 mt-5">
+        <div class="row">
+          <button class="btn btn-success btn-sm mr-2"><i class="fal fa-search"></i> Search</button>
+          <a href="/library/arkib/search" class="btn btn-warning btn-sm"><i class="fal fa-search"></i> Reset</a>
+        </div>
       </div>
     </div>
     {!! Form::close() !!}
@@ -163,7 +166,7 @@
                   $('#arkib_description').html(data.description);
                   $('#arkib_department').html(data.department.department_name);
                   $('#arkib_status').html(data.arkib_status.arkib_description);
-                  $('#arkib_date').html(data.created_at);
+                  $('#arkib_date').html(new Date(data.created_at));
                   $('#existfile').empty();
                   data.arkib_attachments.forEach(function(ele){
                       $('#existfile').append(`
