@@ -775,6 +775,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/data_draftarkib', 'Library\Arkib\ArkibMainController@data_draftarkib');
     Route::get('/library/report/arkib', 'Library\Arkib\ArkibMainController@reportArkib');
     Route::post('/data_exportarkib', 'Library\Arkib\ArkibMainController@data_exportarkib');
+
+    Route::get('/library/dashboard','Library\Arkib\ArkibDashboardController@index');
 });
 
 //SCM - Public View

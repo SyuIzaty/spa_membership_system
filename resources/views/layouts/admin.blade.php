@@ -900,6 +900,11 @@
                                 </a>
                                 <ul>
                                     <li>
+                                        <a href="/library/dashboard" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Analysis Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/library/arkib-main" title="Arkib" data-filter-tags="Arkib">
                                             <span class="nav-link-text" data-i18n="nav.arkib">Manage Arkib</span>
                                         </a>

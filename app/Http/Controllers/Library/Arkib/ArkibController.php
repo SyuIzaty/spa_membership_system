@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use App\ArkibMain;
+use App\ArkibView;
 use App\ArkibAttachment;
 use App\ArkibStatus;
 use App\Departments;
 use Response;
+use Auth;
+use DB;
 
 class ArkibController extends Controller
 {
@@ -101,7 +104,22 @@ class ArkibController extends Controller
      */
     public function show($id)
     {
+        $attach = ArkibAttachment::where('file_name',$id)->first();
+
+        $check = ArkibView::UserId(Auth::user()->id)->AttachmentId($attach->id)->first();
+
+        if(isset($check)){
+            $check->increment('total','1');
+        }else{
+            ArkibView::create([
+                'user_id' => Auth::user()->id,
+                'arkib_attachment_id' => $attach->id,
+                'total' => 1,
+            ]);
+        }
+
         return Storage::response('arkib/'.$id);
+        // return Storage::download('arkib/'.$id);
     }
 
     /**
