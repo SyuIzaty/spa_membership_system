@@ -34,7 +34,7 @@ class ArkibDashboardController extends Controller
         $category = DB::table('departments as categories')
         ->select('categories.department_name','claims.department_code', DB::raw('COUNT(claims.department_code) as count'))
         ->leftJoin('arkib_mains as claims','categories.department_code','=','claims.department_code')
-        ->where(DB::raw('YEAR(claims.created_at)'), '=', $selected_year)
+        ->where(DB::raw('YEAR(claims.created_at)'), '<=', $selected_year)
         ->groupBy('categories.department_code', 'categories.department_name', 'claims.department_code')
         ->get();
 
@@ -47,7 +47,7 @@ class ArkibDashboardController extends Controller
         $type = DB::table('arkib_statuses as types')
         ->select('types.arkib_description','claims.status', DB::raw('COUNT(claims.status) as count'))
         ->leftJoin('arkib_mains as claims','types.arkib_status','=','claims.status')
-        ->where(DB::raw('YEAR(claims.created_at)'), '=', $selected_year)
+        ->where(DB::raw('YEAR(claims.created_at)'), '<=', $selected_year)
         ->groupBy('types.arkib_status', 'types.arkib_description', 'claims.status')
         ->get();
 

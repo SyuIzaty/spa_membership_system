@@ -124,7 +124,7 @@
                   <thead>
                       <tr>
                           <th>Rank</th>
-                          <th>File</th>
+                          <th>Staff Name</th>
                           <th>Total View</th>
                       </tr>
                   </thead>
