@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Library\Arkib;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\ArkibMain;
+use App\ArkibAttachment;
 use App\ArkibView;
 use Carbon\Carbon;
 use DB;
@@ -31,11 +32,13 @@ class ArkibDashboardController extends Controller
 
         $selected_year = Carbon::now()->format('Y');
 
-        $category = DB::table('departments as categories')
-        ->select('categories.department_name','claims.department_code', DB::raw('COUNT(claims.department_code) as count'))
-        ->leftJoin('arkib_mains as claims','categories.department_code','=','claims.department_code')
+        $category = DB::table('arkib_mains as types')
+        ->select('types.department_code', DB::raw('COUNT(claims.id) as count'), 'dept.department_name')
+        ->leftJoin('arkib_attachments as claims','types.id','=','claims.arkib_main_id')
+        ->leftJoin('departments as dept','types.department_code','=','dept.department_code')
         ->where(DB::raw('YEAR(claims.created_at)'), '<=', $selected_year)
-        ->groupBy('categories.department_code', 'categories.department_name', 'claims.department_code')
+        ->where('claims.deleted_at',NULL)
+        ->groupBy('types.department_code', 'dept.department_name')
         ->get();
 
         $results[] = ['Department','Total Document'];
@@ -48,6 +51,7 @@ class ArkibDashboardController extends Controller
         ->select('types.arkib_description','claims.status', DB::raw('COUNT(claims.status) as count'))
         ->leftJoin('arkib_mains as claims','types.arkib_status','=','claims.status')
         ->where(DB::raw('YEAR(claims.created_at)'), '<=', $selected_year)
+        ->where('claims.deleted_at',NULL)
         ->groupBy('types.arkib_status', 'types.arkib_description', 'claims.status')
         ->get();
 
@@ -58,7 +62,7 @@ class ArkibDashboardController extends Controller
         // End PieCart
 
         $arkib_rank = ArkibMain::select('department_code', DB::raw('COUNT(status) as total'))
-                        ->where( DB::raw('YEAR(created_at)'), '=', $selected_year )
+                        ->where( DB::raw('YEAR(created_at)'), '<=', $selected_year )
                         ->groupBy('department_code')
                         ->limit(5)
                         ->orderBy('total', 'desc')

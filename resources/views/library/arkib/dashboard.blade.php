@@ -27,7 +27,7 @@
       <div class="row">
         <div class="col-md-8 mb-4">
             <div class="card">
-                <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> Department Arkib {{ $selected_year }}</div>
+                <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> Department File {{ $selected_year }}</div>
                 <div class="card-body">
                     <div id="barchart" style="height: 400px;"></div>
                 </div>

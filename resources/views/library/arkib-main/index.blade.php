@@ -189,7 +189,7 @@
                                             <tr>
                                                 <td>Attachment(s)</td>
                                                 <td>
-                                                    <input type="file" name="arkib_attachment[]" multiple>
+                                                    <input type="file" name="arkib_attachment[]" multiple required>
                                                 </td>
                                             </tr>
                                         </table>
