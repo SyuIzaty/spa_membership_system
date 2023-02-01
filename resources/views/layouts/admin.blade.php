@@ -899,6 +899,7 @@
                                     <span class="nav-link-text" data-i18n="nav.list">Arkib</span>
                                 </a>
                                 <ul>
+                                    @canany(['Manage Arkib'])
                                     <li>
                                         <a href="/library/dashboard" title="Arkib" data-filter-tags="Arkib">
                                             <span class="nav-link-text" data-i18n="nav.arkib">Analysis Dashboard</span>
@@ -909,16 +910,21 @@
                                             <span class="nav-link-text" data-i18n="nav.arkib">Manage Arkib</span>
                                         </a>
                                     </li>
+                                    @endcanany
+                                    @canany(['Manage Arkib', 'View Arkib'])
                                     <li>
                                         <a href="/library/arkib/search" title="Arkib" data-filter-tags="Arkib">
                                             <span class="nav-link-text" data-i18n="nav.arkib">Arkib List</span>
                                         </a>
                                     </li>
+                                    @endcanany
+                                    @canany(['Manage Arkib'])
                                     <li>
                                         <a href="/library/report/arkib" title="Arkib" data-filter-tags="Arkib">
                                             <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
                                         </a>
                                     </li>
+                                    @endcanany
                                 </ul>
                             </li>
                         </li>
