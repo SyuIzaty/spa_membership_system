@@ -155,7 +155,7 @@
                                         {!! Form::open(['action' => 'Library\Arkib\ArkibMainController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                         <table class="table table-bordered">
                                             <tr>
-                                                <td>Department</td>
+                                                <td>Department <span class="text-danger">*</span></td>
                                                 <td>
                                                     <select class="form-control" name="department_code" id="department_code">
                                                         <option disabled selected>Please Select</option>
@@ -167,15 +167,15 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Title</td>
+                                                <td>Title <span class="text-danger">*</span></td>
                                                 <td><input type="text" class="form-control" name="title" value="{{ old('title') }}"></td>
                                             </tr>
                                             <tr>
-                                                <td>Description</td>
+                                                <td>Description <span class="text-danger">*</span></td>
                                                 <td><input type="text" class="form-control" name="description" value="{{ old('description') }}"></td>
                                             </tr>
                                             <tr>
-                                                <td>Status</td>
+                                                <td>Status <span class="text-danger">*</span></td>
                                                 <td>
                                                     <select class="form-control" name="status" id="status">
                                                         <option disabled selected>Please Select</option>
@@ -187,7 +187,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Attachment(s)</td>
+                                                <td>Attachment(s) <span class="text-danger">*</span></td>
                                                 <td>
                                                     <input type="file" name="arkib_attachment[]" multiple required>
                                                 </td>
