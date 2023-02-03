@@ -48,7 +48,7 @@
                                 <p></p>
                             </ol>
                             <tr>
-                                <td>Department</td>
+                                <td>Department <span class="text-danger">*</span></td>
                                 <td>
                                     <select class="form-control" name="department_code" id="department_code">
                                         <option disabled selected>Please Select</option>
@@ -60,15 +60,19 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Title</td>
+                                <td>File Classification No <span class="text-danger">*</span></td>
+                                <td><input type="text" class="form-control" name="file_classification_no" value="{{ $arkib->file_classification_no }}"></td>
+                            </tr>
+                            <tr>
+                                <td>Title <span class="text-danger">*</span></td>
                                 <td><input type="text" class="form-control" name="title" value="{{ $arkib->title }}"></td>
                             </tr>
                             <tr>
-                                <td>Description</td>
+                                <td>Description <span class="text-danger">*</span></td>
                                 <td><input type="text" class="form-control" name="description" value="{{ $arkib->description }}"></td>
                             </tr>
                             <tr>
-                                <td>Status</td>
+                                <td>Status <span class="text-danger">*</span></td>
                                 <td>
                                     <select class="form-control" name="status" id="status">
                                         @foreach($status as $statuses)

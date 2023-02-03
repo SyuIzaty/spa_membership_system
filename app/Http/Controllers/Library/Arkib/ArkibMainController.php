@@ -176,6 +176,7 @@ class ArkibMainController extends Controller
     {
         $this->validate($request, [
             'department_code' => 'required',
+            'file_classification_no' => 'required',
             'title' => 'required|max:100',
             'description' => 'required|max:100',
             'status' => 'required',
@@ -184,6 +185,7 @@ class ArkibMainController extends Controller
 
         $group_id = ArkibMain::insertGetId([
             'department_code' => $request->department_code,
+            'file_classification_no' => $request->file_classification_no,
             'title' => $request->title,
             'description' => $request->description,
             'status' => $request->status,
@@ -240,6 +242,7 @@ class ArkibMainController extends Controller
     {
         $this->validate($request, [
             'department_code' => 'required',
+            'file_classification_no' => 'required',
             'title' => 'required|max:100',
             'description' => 'required|max:100',
             'status' => 'required',
@@ -248,6 +251,7 @@ class ArkibMainController extends Controller
 
         ArkibMain::where('id',$id)->update([
             'department_code' => $request->department_code,
+            'file_classification_no' => $request->file_classification_no,
             'title' => $request->title,
             'description' => $request->description,
             'status' => $request->status,

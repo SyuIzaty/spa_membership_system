@@ -46,11 +46,11 @@ class ArkibController extends Controller
             foreach($data as $datas){
                 if(isset($departments)){
                     $arkib = ArkibMain::where(function($query) use ($datas,$departments){
-                        $query->where('title', 'LIKE', "%{$datas}%")->orwhere('description', 'LIKE', "%{$datas}%");
+                        $query->where('title', 'LIKE', "%{$datas}%")->orwhere('file_classification_no', 'LIKE', "%{$datas}%");
                     })->where('department_code',$departments)->get();
                 }else{
                     $arkib = ArkibMain::where(function($query) use ($datas,$department){
-                        $query->where('title', 'LIKE', "%{$datas}%")->orwhere('description', 'LIKE', "%{$datas}%");
+                        $query->where('title', 'LIKE', "%{$datas}%")->orwhere('file_classification_no', 'LIKE', "%{$datas}%");
                     })->get();
                 }
     

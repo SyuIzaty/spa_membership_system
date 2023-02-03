@@ -49,14 +49,14 @@
                 <div class="col-12">
                     <table class="table w-10 mt-2">  
                       <tr>
-                        <td style="width:30px">Title</td>
+                        <td style="width:150px">Title</td>
                         <td style="width:20px">:</td>
                         <td>{{ Str::title($mains->title) }}</td>
                       </tr>
                       <tr>
-                        <td>Description</td>
+                        <td>File Classification No</td>
                         <td>:</td>
-                        <td>{{ Str::title($mains->description) }}</td>
+                        <td>{{ ucfirst($mains->file_classification_no) }}</td>
                       </tr>
                       <tr>
                         <td>Department</td>
@@ -104,6 +104,10 @@
                   <tr>
                     <td>Title</td>
                     <td id="arkib_title"></td>
+                  </tr>
+                  <tr>
+                    <td>File Classification No</td>
+                    <td id="arkib_classification"></td>
                   </tr>
                   <tr>
                     <td>Description</td>
@@ -163,6 +167,7 @@
               success:function(data){
                   $('#arkib_id').html(data.id);
                   $('#arkib_title').html(data.title);
+                  $('#arkib_classification').html(data.file_classification_no);
                   $('#arkib_description').html(data.description);
                   $('#arkib_department').html(data.department.department_name);
                   $('#arkib_status').html(data.arkib_status.arkib_description);

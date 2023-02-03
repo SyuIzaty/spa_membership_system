@@ -93,7 +93,7 @@
                                               <thead>
                                                   <tr class="bg-primary-50 text-center">
                                                       <th>TITLE</th>
-                                                      <th>DESCRIPTION</th>
+                                                      <th>FILE CLASSIFICATION NO</th>
                                                       <th>DEPARTMENT</th>
                                                       <th>STATUS</th>
                                                       <th>DATE</th>
@@ -101,7 +101,7 @@
                                                   </tr>
                                                   <tr>
                                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Title"></td>
-                                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Description"></td>
+                                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search File Classification No"></td>
                                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
                                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Status"></td>
                                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
@@ -119,7 +119,7 @@
                                               <thead>
                                                 <tr class="bg-primary-50 text-center">
                                                     <th>TITLE</th>
-                                                    <th>DESCRIPTION</th>
+                                                    <th>FILE CLASSIFICATION NO</th>
                                                     <th>DEPARTMENT</th>
                                                     <th>STATUS</th>
                                                     <th>DATE</th>
@@ -127,7 +127,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Title"></td>
-                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Description"></td>
+                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search File Classification No"></td>
                                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
                                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Status"></td>
                                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
@@ -142,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex float-right">
-                                <a class="btn btn-primary float-right btn-sm" href="javascript:;" data-toggle="modal" id="new">New Arkib</a>
+                                <a class="btn btn-primary float-right btn-sm" href="javascript:;" data-toggle="modal" id="new">New Archive</a>
                             </div>
                         </div>
                         <div class="modal fade" id="crud-modal" aria-hidden="true" >
@@ -165,6 +165,10 @@
                                                         @endforeach
                                                     </select>
                                                 </td>
+                                            </tr>
+                                            <tr>
+                                                <td>File Classification No <span class="text-danger">*</span></td>
+                                                <td><input type="text" class="form-control" name="file_classification_no" value="{{ old('file_classification_no') }}"></td>
                                             </tr>
                                             <tr>
                                                 <td>Title <span class="text-danger">*</span></td>
@@ -244,7 +248,7 @@
             },
             columns: [
                     { data: 'title', name: 'title'},
-                    { data: 'description', name: 'description'},
+                    { data: 'file_classification_no', name: 'file_classification_no'},
                     { data: 'dept', name: 'department.department_name'},
                     { data: 'stat', name: 'arkibStatus.arkib_description'},
                     { data: 'created_at', name: 'created_at'},
@@ -283,7 +287,7 @@
             },
             columns: [
                     { data: 'title', name: 'title'},
-                    { data: 'description', name: 'description'},
+                    { data: 'file_classification_no', name: 'file_classification_no'},
                     { data: 'dept', name: 'department.department_name'},
                     { data: 'stat', name: 'arkibStatus.arkib_description'},
                     { data: 'created_at', name: 'created_at'},
