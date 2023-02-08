@@ -102,11 +102,10 @@
     }
 </style>
 
-<body style="background-image:url('img/card-backgrounds/staff_card_front.jpg');background-size: cover;margin:0;padding:0;">
+{{-- <body style="background-image:url('img/card-backgrounds/staff_card_front.jpg');background-size: cover;margin:0;padding:0;">
   <div id="staff-card-front">
       @isset($staff->user)
           <img src="{{ isset($user->image_path) ? 'sims.intec.edu.my/'.(('storage/card/'.$user->image_path)) : '' }}" id="profile_picture">
-          {{-- <img src="{{ isset($user->image_path) ? 'sims.intec.edu.my/storage/card/1656994685.png' : '' }}" id="profile_picture"> --}}
       @endisset
       <div class="category">Staff</div>
       <div class="name">{{ isset($user->short_name) ? $user->short_name : '' }}</div>
@@ -114,7 +113,7 @@
       <div class="barcode">
       </div>
   </div>
-</body>
+</body> --}}
 <body style="background-image:url('img/card-backgrounds/staff_card_back.jpg');background-size: cover;margin:0;padding:0;">
   <div class="card-body" id="student-card-back">
       <table class="details">
