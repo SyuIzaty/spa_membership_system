@@ -21,7 +21,7 @@
         "laravelcollective/html": "^6.1",
         "league/flysystem-aws-s3-v3": "~1.0",
         "maatwebsite/excel": "^3.1",
-        "milon/barcode": "7.0.*",
+        "milon/barcode": "^10.0",
         "nesbot/carbon": "^2.40",
         "rap2hpoutre/fast-excel": "^4.1",
         "select2/select2": "^4.0",
