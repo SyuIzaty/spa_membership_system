@@ -99,6 +99,14 @@
                                 <span class="nav-link-text" data-i18n="nav.application_intel">Dashboard</span>
                             </a>
                         </li>
+                        @canany(['View Card'])
+                        <li>
+                            <a href="/card/staff" title="Staff Card" data-filter-tags="Staff Card">
+                                <i class="fal fa-id-card"></i>
+                                <span class="nav-link-text" data-i18n="nav.staff_card">Staff Card</span>
+                            </a>
+                        </li>
+                        @endcanany
 
                         {{-- Start Aduan --}}
                         @php

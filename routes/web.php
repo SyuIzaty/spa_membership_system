@@ -37,6 +37,7 @@ Route::get('/test', 'ApplicantController@test');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home', 'DashboardController@index');
 
+    Route::resource('/card/staff','Card\StaffCardController');
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');
     Route::post('/eKenderaan-application', 'EKenderaanController@store');
