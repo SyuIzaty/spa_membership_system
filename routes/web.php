@@ -767,7 +767,11 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::match(['get', 'post'],'/library/arkib/search', 'Library\Arkib\ArkibController@search');
+    // Route::match(['get', 'post'],'/library/arkib/search', 'Library\Arkib\ArkibController@search');
+    Route::match(array('GET', 'POST', 'PUT'), "/library/arkib/search", array(
+        'uses' => 'Library\Arkib\ArkibController@search',
+        'as' => 'arkibsearch'
+    ));
     Route::resource('/library/arkib', 'Library\Arkib\ArkibController');
     Route::post('/get-arkib', 'Library\Arkib\ArkibController@getArkib');
     Route::resource('/library/arkib-main', 'Library\Arkib\ArkibMainController');
