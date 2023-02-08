@@ -271,7 +271,8 @@ class ArkibMainController extends Controller
         foreach($arkib_attach as $attach){
             $file_save = date('dmyhis').$attach->getClientOriginalName();
             $file_size = $attach->getSize();
-            $attach->storeAs('/arkib',$file_save);
+            // $attach->storeAs('/arkib',$file_save);
+            Storage::disk('minio')->put("/arkib/".$file_save, file_get_contents($attach));
             ArkibAttachment::create([
                 'arkib_main_id' => $group_id,
                 'file_name' => $file_save,
@@ -294,8 +295,8 @@ class ArkibMainController extends Controller
         $attach = ArkibAttachment::ArkibMainId($id)->get();
 
         foreach($attach as $attaches){
-            if(Storage::exists($attaches->web_path) == 'true'){
-                Storage::delete($attaches->web_path); 
+            if(Storage::disk('minio')->exists($attaches->web_path) == 'true'){
+                Storage::disk('minio')->delete($attaches->web_path); 
             }
 
             $attaches->delete();

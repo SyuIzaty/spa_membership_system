@@ -118,7 +118,7 @@ class ArkibController extends Controller
             ]);
         }
 
-        return Storage::response('arkib/'.$id);
+        return Storage::disk('minio')->response('arkib/'.$id);
         // return Storage::download('arkib/'.$id);
     }
 
@@ -163,8 +163,8 @@ class ArkibController extends Controller
     {
         $attach = ArkibAttachment::find($id);
 
-        if(Storage::exists($attach->web_path) == 'true'){
-            Storage::delete($attach->web_path); 
+        if(Storage::disk('minio')->exists($attach->web_path) == 'true'){
+            Storage::disk('minio')->delete($attach->web_path); 
         }
 
         $attach->delete();
