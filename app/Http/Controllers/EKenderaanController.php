@@ -639,6 +639,37 @@ class EKenderaanController extends Controller
             $message2->to($staff_email);
         });
 
+        if ($detail->intec_id == '14020099') {
+            if (isset($passenger)) {
+                foreach ($passenger as $p) {
+                    $passengers = User::where('id', $p->intec_id)->first();
+                    $passenger_email =  $passengers->email;
+
+                    $data3 = [
+                        'receivers'   => $passengers->name,
+                        'emel'        => 'Untuk makluman, berikut merupakan maklumat permohonan kenderaan:-',
+                        'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
+                        'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
+                        'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
+                        'returnTime'  => date(' h:i A ', strtotime($detail->return_time)),
+                        'destination' => $detail->destination,
+                        'driver'      => $drivers,
+                        'waitingArea' => $waitingArea,
+                        'purpose'     => $detail->purpose,
+                        'passenger'   => $passenger,
+                        'vehicle'     => $vehicle,
+                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                    ];
+
+                    Mail::send('eKenderaan.email', $data3, function ($message3) use ($passenger_email) {
+                        $message3->subject('EKENDERAAN: MAKLUMAT KENDERAAN');
+                        $message3->from('operasi@intec.edu.my');
+                        $message3->to($passenger_email);
+                    });
+                }
+            }
+        }
+
         return redirect()->back()->with('message', 'Successfully Verified!');
     }
 
@@ -1392,6 +1423,37 @@ class EKenderaanController extends Controller
             $message2->to($staff_email);
         });
 
+        if ($details->intec_id == '14020099') {
+            if (isset($passenger)) {
+                foreach ($passenger as $p) {
+                    $passengers = User::where('id', $p->intec_id)->first();
+                    $passenger_email =  $passengers->email;
+
+                    $data3 = [
+                        'receivers'   => $passengers->name,
+                        'emel'        => 'Untuk makluman, berikut merupakan maklumat permohonan kenderaan:-',
+                        'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
+                        'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
+                        'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
+                        'returnTime'  => date(' h:i A ', strtotime($details->return_time)),
+                        'destination' => $details->destination,
+                        'driver'      => $drivers,
+                        'waitingArea' => $waitingArea,
+                        'purpose'     => $details->purpose,
+                        'passenger'   => $passenger,
+                        'vehicle'     => $vehicle,
+                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                    ];
+
+                    Mail::send('eKenderaan.email', $data3, function ($message3) use ($passenger_email) {
+                        $message3->subject('EKENDERAAN: PERUBAHAN PEMANDU');
+                        $message3->from('operasi@intec.edu.my');
+                        $message3->to($passenger_email);
+                    });
+                }
+            }
+        }
+
         return redirect()->back()->with('message', 'Successfully Assigned New Driver!');
     }
 
@@ -1612,6 +1674,37 @@ class EKenderaanController extends Controller
             $message2->from('operasi@intec.edu.my');
             $message2->to($staff_email);
         });
+
+        if ($detail->intec_id == '14020099') {
+            if (isset($passenger)) {
+                foreach ($passenger as $p) {
+                    $passengers = User::where('id', $p->intec_id)->first();
+                    $passenger_email =  $passengers->email;
+
+                    $data3 = [
+                        'receivers'   => $passengers->name,
+                        'emel'        => 'Untuk makluman, berikut merupakan maklumat permohonan kenderaan:-',
+                        'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
+                        'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
+                        'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
+                        'returnTime'  => date(' h:i A ', strtotime($detail->return_time)),
+                        'destination' => $detail->destination,
+                        'driver'      => $drivers,
+                        'waitingArea' => $waitingArea,
+                        'purpose'     => $detail->purpose,
+                        'passenger'   => $passenger,
+                        'vehicle'     => $vehicle,
+                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                    ];
+
+                    Mail::send('eKenderaan.email', $data3, function ($message3) use ($passenger_email) {
+                        $message3->subject('EKENDERAAN: PERUBAHAN KENDERAAN');
+                        $message3->from('operasi@intec.edu.my');
+                        $message3->to($passenger_email);
+                    });
+                }
+            }
+        }
 
 
         return redirect()->back()->with('message', 'Assigned Vehicle Update Successfully');
