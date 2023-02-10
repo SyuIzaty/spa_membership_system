@@ -921,7 +921,7 @@
                                     @endcanany
                                     @canany(['Manage Arkib', 'View Arkib'])
                                     <li>
-                                        <a href="/library/arkib/search" title="Arkib" data-filter-tags="Arkib">
+                                        <a href="/library/arkib" title="Arkib" data-filter-tags="Arkib">
                                             <span class="nav-link-text" data-i18n="nav.arkib">Arkib List</span>
                                         </a>
                                     </li>
