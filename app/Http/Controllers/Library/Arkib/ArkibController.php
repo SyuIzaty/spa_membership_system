@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use App\ArkibMain;
 use App\ArkibView;
 use App\ArkibAttachment;
@@ -30,49 +31,29 @@ class ArkibController extends Controller
 
     public function index()
     {
-        //
+        return view('library.arkib.search');
     }
 
-    public function search(Request $request)
+    public function data_userarkib()
     {
-        $department = Departments::all();
+        $paper = ArkibMain::with('department','arkibStatus')->Published()->select('arkib_mains.*');
 
-        $data = explode(" ",$request->search_data);
+        return datatables()::of($paper)
+        ->addColumn('dept', function($paper){
+            return isset($paper->department->department_name) ? Str::title($paper->department->department_name) : '';
+        })
+        ->editColumn('created_at', function ($paper) {
+            return isset($paper->created_at) ? $paper->created_at->format('Y-m-d') : '';
+        })
+        ->addColumn('action', function ($paper) {
+            
+            return '<button class="btn btn-primary btn-sm edit_data float-right mb-2" data-toggle="modal" data-id='.$paper->id.' id="edit" name="edit">
+            <i class="fal fa-file-pdf"></i> View
+          </button>';
 
-        $arkibs = new Collection();
-        $departments = $request->department;
-
-        if((isset($request->search_data)) || (isset($request->department))){
-            foreach($data as $datas){
-                if(isset($departments)){
-                    $arkib = ArkibMain::where(function($query) use ($datas,$departments){
-                        $query->where('title', 'LIKE', "%{$datas}%")->orwhere('file_classification_no', 'LIKE', "%{$datas}%");
-                    })->where('department_code',$departments)->get();
-                }else{
-                    $arkib = ArkibMain::where(function($query) use ($datas,$department){
-                        $query->where('title', 'LIKE', "%{$datas}%")->orwhere('file_classification_no', 'LIKE', "%{$datas}%");
-                    })->get();
-                }
-    
-                $arkibs = $arkibs->merge($arkib);
-            }
-
-            $arkibs = $arkibs->pluck('id');
-
-            $main = ArkibMain::where('status','P')->whereIn('id',$arkibs)->paginate(10);
-        }else{
-
-            $main = ArkibMain::where('status','P')->paginate(10);
-        }
-
-        $main->appends(array('department'=> $request->department, 'search_data' => $request->search_data));
-
-        if(count($main )>0){
-            return view('library.arkib.index',['main'=>$main, 'department' => $department]);
-        }
-        if(count($main )<=0){
-            return redirect()->back()->with('message','No Record');
-        }
+        })
+        ->rawColumns(['action','dept'])
+        ->make(true);
     }
 
     /**
@@ -170,5 +151,47 @@ class ArkibController extends Controller
         $attach->delete();
 
         return redirect()->back()->with('message','Deleted');
+    }
+
+    public function search(Request $request)
+    {
+        $department = Departments::all();
+
+        $data = explode(" ",$request->search_data);
+
+        $arkibs = new Collection();
+        $departments = $request->department;
+
+        if((isset($request->search_data)) || (isset($request->department))){
+            foreach($data as $datas){
+                if(isset($departments)){
+                    $arkib = ArkibMain::where(function($query) use ($datas,$departments){
+                        $query->where('title', 'LIKE', "%{$datas}%")->orwhere('file_classification_no', 'LIKE', "%{$datas}%");
+                    })->where('department_code',$departments)->get();
+                }else{
+                    $arkib = ArkibMain::where(function($query) use ($datas,$department){
+                        $query->where('title', 'LIKE', "%{$datas}%")->orwhere('file_classification_no', 'LIKE', "%{$datas}%");
+                    })->get();
+                }
+    
+                $arkibs = $arkibs->merge($arkib);
+            }
+
+            $arkibs = $arkibs->pluck('id');
+
+            $main = ArkibMain::where('status','P')->whereIn('id',$arkibs)->paginate(10);
+        }else{
+
+            $main = ArkibMain::where('status','P')->paginate(10);
+        }
+
+        $main->appends(array('department'=> $request->department, 'search_data' => $request->search_data));
+
+        if(count($main )>0){
+            return view('library.arkib.index',['main'=>$main, 'department' => $department]);
+        }
+        if(count($main )<=0){
+            return redirect()->back()->with('message','No Record');
+        }
     }
 }
