@@ -280,7 +280,6 @@
                                                 </tr>
                                                 <tr class="text-center">
                                                     <th>ID</th>
-                                                    <th>IC</th>
                                                     <th>NAME</th>
                                                     <th>PROGRAMME</th>
                                                     <th></th>
@@ -403,7 +402,6 @@
                         'id': studID
                     },
                     success: function(data) {
-                        $('.stud_ic' + b).val(data.students_ic);
                         $('.stud_name' + b).val(data.students_name);
                         $('.stud_dept' + b).val(data.programmes.programme_name);
 
@@ -423,9 +421,6 @@
                                 <option value="{{ $s->students_id }}">{{ $s->students_id }}</option>
                             @endforeach
                         </select>
-                    </td>
-                    <td>
-                        <input type="text" id="stud_ic" name="stud_ic[]" class="form-control stud_ic${s}" disabled>
                     </td>
                     <td>
                         <input type="text" id="stud_name" name="stud_name[]" class="form-control stud_name${s}" disabled>
