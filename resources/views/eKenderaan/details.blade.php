@@ -280,13 +280,11 @@
                                                         <th class="text-center">NO.</th>
                                                         <th class="text-center">NAME</th>
                                                         <th class="text-center">FACULTY/PROGRAMME</th>
-                                                        <th class="text-center">IC</th>
                                                         <th class="text-center">ID</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td class="hasinput"></td>
                                                         <td class="hasinput"></td>
                                                         <td class="hasinput"></td>
                                                         <td class="hasinput"></td>
@@ -1030,11 +1028,6 @@
                         className: 'text-left',
                         data: 'progfac',
                         name: 'progfac'
-                    },
-                    {
-                        className: 'text-center',
-                        data: 'ic',
-                        name: 'ic'
                     },
                     {
                         className: 'text-center',

@@ -237,7 +237,6 @@
                                                 </tr>
                                                 <tr class="text-center">
                                                     <th>ID</th>
-                                                    <th>IC</th>
                                                     <th>NAME</th>
                                                     <th>DEPARTMENT</th>
                                                     <th></th>
@@ -253,9 +252,6 @@
                                                                 <td>
                                                                     <input type="text" id="staff_id" name="staff_id[]" class="form-control staff_id{{$staff->staff_id}}" value ="{{$staff->staff_id}}" disabled>
                                                                     <input type="hidden" name="passenger_staff[]" value="{{ $staff->staff_id }}">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" id="staff_ic" name="staff_ic[]" class="form-control staff_ic{{$staff->staff_id}}" value ="{{$staff->staff_id}}" disabled>
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" id="staff_name" name="staff_name[]" class="form-control staff_name{{$staff->staff_name}}" value ="{{$staff->staff_name}}" disabled>
@@ -418,7 +414,6 @@
                     data:{'id':staffID},
                     success:function(data)
                     {
-                        $('.staff_ic'+a).val(data.staff_ic);
                         $('.staff_name'+a).val(data.staff_name);
                         $('.staff_dept'+a).val(data.staff_dept);
 
@@ -443,9 +438,6 @@
                                 <option value="{{ $s->staff_id }}">{{ $s->staff_id }} - {{ $s->staff_name }}</option>
                             @endforeach
                         </select>
-                    </td>
-                    <td>
-                        <input type="text" id="staff_ic" name="staff_ic[]" class="form-control staff_ic${i}" disabled>
                     </td>
                     <td>
                         <input type="text" id="staff_name" name="staff_name[]" class="form-control staff_name${i}" disabled>

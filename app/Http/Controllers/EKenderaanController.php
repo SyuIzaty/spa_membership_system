@@ -211,7 +211,7 @@ class EKenderaanController extends Controller
 
     public function findStaffID(Request $request)
     {
-        $data = Staff::select('staff_ic', 'staff_name', 'staff_dept')
+        $data = Staff::select('staff_name', 'staff_dept')
             ->where('staff_id', $request->id)
             ->first();
 
@@ -520,18 +520,6 @@ class EKenderaanController extends Controller
                 $details = Student::where('students_id', $data->intec_id)->first();
 
                 return isset($details->programmes->programme_name) ? $details->programmes->programme_name : 'N/A';
-            }
-        })
-
-        ->editColumn('ic', function ($data) {
-            if ($data->category == "STF") {
-                $details = Staff::where('staff_id', $data->intec_id)->first();
-
-                return isset($details->staff_ic) ? $details->staff_ic : 'N/A';
-            } elseif ($data->category == "STD") {
-                $details = Student::where('students_id', $data->intec_id)->first();
-
-                return isset($details->students_ic) ? $details->students_ic : 'N/A';
             }
         })
 

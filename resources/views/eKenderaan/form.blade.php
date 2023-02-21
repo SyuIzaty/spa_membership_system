@@ -6,7 +6,7 @@
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
 
     <style>
-        .hide{
+        .hide {
             display: none;
         }
     </style>
@@ -51,7 +51,7 @@
                                         class="icon fal fa-check-circle"></i> {{ $message }}</div>
                             @enderror
 
-                            @if($errors->any())
+                            @if ($errors->any())
                                 <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
                                     <i class="icon fal fa-exclamation-circle"></i> {{ $errors->first() }}
                                 </div>
@@ -93,8 +93,8 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         H/P No.</th>
                                                     <td colspan="2">
-                                                        <input class="form-control border border-danger" id="hp_no" name="hp_no"
-                                                            value="{{ old('hp_no') }}"
+                                                        <input class="form-control border border-danger" id="hp_no"
+                                                            name="hp_no" value="{{ old('hp_no') }}"
                                                             placeholder="Please insert phone no. eg: 0123456789" required>
                                                     </td>
                                                 </tr>
@@ -102,66 +102,83 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Date</th>
                                                     <td>
-                                                        @if ($user->hasAnyRole(['eKenderaan Admin']) || ($user->id == '14020099'))
-                                                            <input type="text" class="form-control border border-danger" id="departdateAdmin"
-                                                                name="departdate" placeholder="Please insert departure date"
+                                                        @if ($user->hasAnyRole(['eKenderaan Admin']) || $user->id == '14020099')
+                                                            <input type="text" class="form-control border border-danger"
+                                                                id="departdateAdmin" name="departdate"
+                                                                placeholder="Please insert departure date"
                                                                 autocomplete="off" value="{{ old('departdate') }}" required>
                                                         @else
-                                                            <input type="text" class="form-control border border-danger" id="departdate"
-                                                                name="departdate" placeholder="Please insert departure date"
-                                                                autocomplete="off" value="{{ old('departdate') }}" required>
+                                                            <input type="text" class="form-control border border-danger"
+                                                                id="departdate" name="departdate"
+                                                                placeholder="Please insert departure date"
+                                                                autocomplete="off" value="{{ old('departdate') }}"
+                                                                required>
                                                         @endif
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Departure Time</th>
                                                     <td colspan="2">
-                                                        <input class="form-control border border-danger" type="text" id="departtime"
-                                                            name="departtime" placeholder="Please insert departure time"
-                                                            autocomplete="off" value="{{ old('departtime') }}" required>
+                                                        <input class="form-control border border-danger" type="text"
+                                                            id="departtime" name="departtime"
+                                                            placeholder="Please insert departure time" autocomplete="off"
+                                                            value="{{ old('departtime') }}" required>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Date</th>
                                                     <td>
-                                                        @if ($user->hasAnyRole(['eKenderaan Admin']) || ($user->id == '14020099'))
-                                                            <input type="text" class="form-control border border-danger" id="returndateAdmin" name="returndate"
-                                                            placeholder="Please insert return date" autocomplete="off" value="{{ old('returndate') }}" required>
+                                                        @if ($user->hasAnyRole(['eKenderaan Admin']) || $user->id == '14020099')
+                                                            <input type="text"
+                                                                class="form-control border border-danger"
+                                                                id="returndateAdmin" name="returndate"
+                                                                placeholder="Please insert return date" autocomplete="off"
+                                                                value="{{ old('returndate') }}" required>
                                                         @else
-                                                            <input type="text" class="form-control border border-danger" id="returndate" name="returndate"
-                                                            placeholder="Please insert return date" autocomplete="off" value="{{ old('returndate') }}" required>
+                                                            <input type="text"
+                                                                class="form-control border border-danger" id="returndate"
+                                                                name="returndate" placeholder="Please insert return date"
+                                                                autocomplete="off" value="{{ old('returndate') }}"
+                                                                required>
                                                         @endif
                                                     </td>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Return Time</th>
                                                     <td colspan="2">
-                                                        <input class="form-control border border-danger" type="text" id="returntime" name="returntime"
-                                                            placeholder="Please insert return time" autocomplete="off" value="{{ old('returntime') }}" required>
-                                                        </td>
+                                                        <input class="form-control border border-danger" type="text"
+                                                            id="returntime" name="returntime"
+                                                            placeholder="Please insert return time" autocomplete="off"
+                                                            value="{{ old('returntime') }}" required>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Destination (Full Address)</th>
                                                     <td colspan="5" style="vertical-align: middle">
-                                                        <textarea class="form-control border border-danger" id="example-textarea" rows="3" name="destination" required>{{Request::old('destination')}}</textarea>
+                                                        <textarea class="form-control border border-danger" id="example-textarea" rows="3" name="destination"
+                                                            required>{{ Request::old('destination') }}</textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th style="vertical-align: middle"><span class="text-danger">*</span> Waiting Area</th>
+                                                    <th style="vertical-align: middle"><span class="text-danger">*</span>
+                                                        Waiting Area</th>
                                                     <td colspan="5">
-                                                        <span style="color: red">User can select multiple waiting area on the below.</span>
-                                                        <select class="form-control border border-danger waitingArea" name="waitingarea[]"
-                                                            id="waiting_area" multiple>
+                                                        <span style="color: red">User can select multiple waiting area on
+                                                            the below.</span>
+                                                        <select class="form-control border border-danger waitingArea"
+                                                            name="waitingarea[]" id="waiting_area" multiple>
                                                             @foreach ($waitingArea as $w)
                                                                 <option value="{{ $w->department_name }}"
-                                                                    {{ (collect(old('waitingarea'))->contains($w->department_name)) ? 'selected':'' }}>
+                                                                    {{ collect(old('waitingarea'))->contains($w->department_name) ? 'selected' : '' }}>
                                                                     {{ $w->department_name }}</option>
                                                             @endforeach
                                                         </select>
                                                         <span>
                                                             <p style="margin-top: 10px">Other Waiting Area (if any):</p>
                                                             <textarea class="form-control border border-danger" id="example-textarea" rows="2" name="others">{{ old('others') }}</textarea>
-                                                            <span style="color: red">For other waiting area, please provide <b>details location</b>. If you want to cancel, please make sure the text field is <b>empty</b>.</span>
+                                                            <span style="color: red">For other waiting area, please provide
+                                                                <b>details location</b>. If you want to cancel, please make
+                                                                sure the text field is <b>empty</b>.</span>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -169,18 +186,23 @@
                                                     <th style="vertical-align: middle"><span class="text-danger">*</span>
                                                         Purpose</th>
                                                     <td colspan="5" style="vertical-align: middle">
-                                                        <textarea class="form-control border border-danger" id="example-textarea" rows="3" name="purpose" required>{{Request::old('purpose')}}</textarea>
+                                                        <textarea class="form-control border border-danger" id="example-textarea" rows="3" name="purpose" required>{{ Request::old('purpose') }}</textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th style="vertical-align: middle"><span class="text-danger">*</span> Attachment (PDF format only)</th>
+                                                    <th style="vertical-align: middle"><span class="text-danger">*</span>
+                                                        Attachment (PDF format only)</th>
                                                     <td colspan="5">
-                                                        @if ($user->category == "STD")
-                                                            <input type="file" class="form-control" accept=".pdf" id="attachment" name="attachment" required>
-                                                            <span style="color: red">*Students are required to upload an approval letter from student affairs. </span>
+                                                        @if ($user->category == 'STD')
+                                                            <input type="file" class="form-control" accept=".pdf"
+                                                                id="attachment" name="attachment" required>
+                                                            <span style="color: red">*Students are required to upload an
+                                                                approval letter from student affairs. </span>
                                                         @else
-                                                            <input type="file" class="form-control" accept=".pdf" id="attachment" name="attachment">
-                                                            <span style="color: red">*Students are required to upload an approval letter from student affairs. </span>
+                                                            <input type="file" class="form-control" accept=".pdf"
+                                                                id="attachment" name="attachment">
+                                                            <span style="color: red">*Students are required to upload an
+                                                                approval letter from student affairs. </span>
                                                         @endif
                                                         @error('attachment')
                                                             <p style="color: red">{{ $message }}</p>
@@ -198,16 +220,20 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th style="vertical-align: middle">Bulk Upload (for Student passenger only. Please refer the excel format)
+                                                    <th style="vertical-align: middle">Bulk Upload (for Student passenger
+                                                        only. Please refer the excel format)
                                                         <span style="margin-left: 10px">
-                                                            <a href="/student-list-excel-format" target="_blank" class="btn btn-warning btn-sm waves-effect waves-themed" style="box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);">
+                                                            <a href="/student-list-excel-format" target="_blank"
+                                                                class="btn btn-warning btn-sm waves-effect waves-themed"
+                                                                style="box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);">
                                                                 <i class="fal fa-eye"> Excel Format</i>
                                                             </a>
                                                         </span>
                                                     </th>
 
                                                     <td colspan="5">
-                                                        <input type="file" name="import_file" accept=".xlsx" class="form-control mb-3">
+                                                        <input type="file" name="import_file" accept=".xlsx"
+                                                            class="form-control mb-3">
                                                     </td>
                                                 </tr>
                                             </thead>
@@ -219,7 +245,9 @@
                                                 <th colspan="6" class="bg-primary-50 text-center">STAFF
                                                 </th>
                                                 <tr class="bg-info-50">
-                                                    <td colspan="6">Click plus button on the right to add staff id. Total of passenger including staff & student limited to 24 persons only.
+                                                    <td colspan="6">Click plus button on the right to add staff id.
+                                                        Total of passenger including staff & student limited to 24 persons
+                                                        only.
                                                         <button type="button" id="btnstf"
                                                             class="btn btn-sm btn-warning btn-icon rounded-circle waves-effect waves-themed float-right"><i
                                                                 class="fal fa-plus"></i>
@@ -228,7 +256,6 @@
                                                 </tr>
                                                 <tr class="text-center">
                                                     <th>ID</th>
-                                                    <th>IC</th>
                                                     <th>NAME</th>
                                                     <th>DEPARTMENT</th>
                                                     <th></th>
@@ -242,7 +269,9 @@
                                                     STUDENT
                                                 </th>
                                                 <tr class="bg-info-50">
-                                                    <td colspan="6">Click plus button on the right to add student id. Total of passenger including staff & student limited to 24 persons only.
+                                                    <td colspan="6">Click plus button on the right to add student id.
+                                                        Total of passenger including staff & student limited to 24 persons
+                                                        only.
                                                         <button type="button" id="btnstd"
                                                             class="btn btn-sm btn-warning btn-icon rounded-circle waves-effect waves-themed float-right"><i
                                                                 class="fal fa-plus"></i>
@@ -283,43 +312,39 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
     <script>
+        $(document).ready(function() {
+            $('#waiting_area').select2();
 
-   $(document).ready(function()
-   {
-    $('#waiting_area').select2();
-
-    if($('.staff_id').val()!=''){
+            if ($('.staff_id').val() != '') {
                 findID($('.staff_id'));
             }
-            $(document).on('change','.staff_id',function(){
+            $(document).on('change', '.staff_id', function() {
                 var a = $(this).attr("id");
                 findID($(this), a);
             });
 
-            function findID(elem, a){
-                var staffID=elem.val();
+            function findID(elem, a) {
+                var staffID = elem.val();
 
                 $.ajax({
-                    type:'get',
-                    url:'{!!URL::to('findStaffID')!!}',
-                    data:{'id':staffID},
-                    success:function(data)
-                    {
+                    type: 'get',
+                    url: '{!! URL::to('findStaffID') !!}',
+                    data: {
+                        'id': staffID
+                    },
+                    success: function(data) {
                         console.log(a)
-                        $('.staff_ic'+a).val(data.staff_ic);
-                        $('.staff_name'+a).val(data.staff_name);
-                        $('.staff_dept'+a).val(data.staff_dept);
+                        $('.staff_name' + a).val(data.staff_name);
+                        $('.staff_dept' + a).val(data.staff_dept);
 
                     },
                 });
             }
-       //table staff
-        $('#btnstf').click(function()
-        {
-            i++;
-            if (i<25)
-            {
-                $('#staff').append(`
+            //table staff
+            $('#btnstf').click(function() {
+                i++;
+                if (i < 25) {
+                    $('#staff').append(`
             <tr id="row${i}">
                 <div class="form-group">
                     <td>
@@ -329,9 +354,6 @@
                                 <option value="{{ $s->staff_id }}">{{ $s->staff_id }} - {{ $s->staff_name }}</option>
                             @endforeach
                         </select>
-                    </td>
-                    <td>
-                        <input type="text" id="staff_ic" name="staff_ic[]" class="form-control staff_ic${i}" disabled>
                     </td>
                     <td>
                         <input type="text" id="staff_name" name="staff_name[]" class="form-control staff_name${i}" disabled>
@@ -344,56 +366,54 @@
                     </td>
                 </div>
             </tr>`);
-            }
-            $('.staff_id').select2();
-        });
+                }
+                $('.staff_id').select2();
+            });
 
-        var i=0;
+            var i = 0;
 
-        $(document).on('click', '.btn_remove', function()
-        {
-            var button_id = $(this).attr("id");
-            $('#row'+button_id+'').remove();
-        });
+            $(document).on('click', '.btn_remove', function() {
+                var button_id = $(this).attr("id");
+                $('#row' + button_id + '').remove();
+            });
 
-        $('input[name="stf"]').change(function () {
-        if($("#stf").is(':checked')) {
-            var val = $("#stf").val();
-            $(".tablestaff").show();
-        }
-        });
+            $('input[name="stf"]').change(function() {
+                if ($("#stf").is(':checked')) {
+                    var val = $("#stf").val();
+                    $(".tablestaff").show();
+                }
+            });
 
-        //table student
-        if($('.stud_id').val()!=''){
+            //table student
+            if ($('.stud_id').val() != '') {
                 findStudID($('.stud_id'));
             }
-            $(document).on('change','.stud_id',function(){
+            $(document).on('change', '.stud_id', function() {
                 var b = $(this).attr("id");
                 findStudID($(this), b);
             });
 
-            function findStudID(elem, b){
-                var studID=elem.val();
+            function findStudID(elem, b) {
+                var studID = elem.val();
 
                 $.ajax({
-                    type:'get',
-                    url:'{!!URL::to('findStudendID')!!}',
-                    data:{'id':studID},
-                    success:function(data)
-                    {
-                        $('.stud_ic'+b).val(data.students_ic);
-                        $('.stud_name'+b).val(data.students_name);
-                        $('.stud_dept'+b).val(data.programmes.programme_name);
+                    type: 'get',
+                    url: '{!! URL::to('findStudendID') !!}',
+                    data: {
+                        'id': studID
+                    },
+                    success: function(data) {
+                        $('.stud_ic' + b).val(data.students_ic);
+                        $('.stud_name' + b).val(data.students_name);
+                        $('.stud_dept' + b).val(data.programmes.programme_name);
 
                     },
                 });
             }
-        $('#btnstd').click(function()
-        {
-            s++;
-            if (s<25)
-            {
-                $('#student').append(`
+            $('#btnstd').click(function() {
+                s++;
+                if (s < 25) {
+                    $('#student').append(`
                 <tr id="rowStudent${s}" name="rowStudent${s}">
                 <div class="form-group">
                     <td>
@@ -418,50 +438,49 @@
                     </td>
                 </div>
             </tr>`);
-            }
-            $('.stud_id').select2();
+                }
+                $('.stud_id').select2();
+            });
+
+            var s = 0;
+
+            $(document).on('click', '.btn_remove_stud', function() {
+                var button_stud = $(this).attr("id");
+                $("[name='rowStudent" + button_stud + "']").remove();
+            });
+
+            $('input[name="std"]').change(function() {
+                if ($("#std").is(':checked')) {
+                    $(".tablestudent").show();
+                }
+            });
+
         });
 
-        var s=0;
-
-        $(document).on('click', '.btn_remove_stud', function()
-        {
-            var button_stud = $(this).attr("id");
-            $("[name='rowStudent"+button_stud+"']").remove();
-        });
-
-        $('input[name="std"]').change(function () {
-            if($("#std").is(':checked')) {
-                $(".tablestudent").show();
-            }
-        });
-
-   });
-
-//    $('select[name="waitingarea[]"]').change(function () {
-//     var val = document.getElementById('waiting_area').value;
-//     if(val=='Others'){
-//         console.log("val");
-//             $('#othersWA').show();
-//         }
-//     });
+        //    $('select[name="waitingarea[]"]').change(function () {
+        //     var val = document.getElementById('waiting_area').value;
+        //     if(val=='Others'){
+        //         console.log("val");
+        //             $('#othersWA').show();
+        //         }
+        //     });
 
 
 
-    // $(document).on('click', '.btn_remove_staff', function()
-    //     {
-    //         var button_id = $(this).attr("id");
-    //         $('#staff').hide();
-    //     });
+        // $(document).on('click', '.btn_remove_staff', function()
+        //     {
+        //         var button_id = $(this).attr("id");
+        //         $('#staff').hide();
+        //     });
 
 
-    // $(document).on('click', '.btn_remove_student', function()
-    //     {
-    //         $(".tablestudent").hide();
-    //     });
+        // $(document).on('click', '.btn_remove_student', function()
+        //     {
+        //         $(".tablestudent").hide();
+        //     });
 
 
-    //datepicker & timepicker for staff & student
+        //datepicker & timepicker for staff & student
         $("#departdate").datepicker({
             dateFormat: "dd/mm/yy",
             changeMonth: true,
@@ -501,14 +520,14 @@
         });
 
         $('#departdate').on('change', function() {
-        $('#returndate').datepicker("option", "minDate", $('#departdate').datepicker('getDate'));
+            $('#returndate').datepicker("option", "minDate", $('#departdate').datepicker('getDate'));
         });
         $('#returndate').on('change', function() {
-        $('#departdate').datepicker("option", "maxDate", $('#returndate').datepicker('getDate'));
+            $('#departdate').datepicker("option", "maxDate", $('#returndate').datepicker('getDate'));
         });
 
 
-    //datepicker & timepicker for admin
+        //datepicker & timepicker for admin
         $("#departdateAdmin").datepicker({
             dateFormat: "dd/mm/yy",
             changeMonth: true,
@@ -522,6 +541,5 @@
             changeYear: true,
             maxDate: "+1y",
         });
-
     </script>
 @endsection
