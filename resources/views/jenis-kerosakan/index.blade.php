@@ -206,7 +206,7 @@
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { className: 'text-center', data: 'kategori_aduan', name: 'kategori_aduan' },
+                    { className: 'text-center', data: 'kategori_aduan', name: 'kategori.nama_kategori' },
                     { className: 'text-center', data: 'jenis_kerosakan', name: 'jenis_kerosakan' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],

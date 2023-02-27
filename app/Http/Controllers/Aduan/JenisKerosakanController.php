@@ -26,7 +26,7 @@ class JenisKerosakanController extends Controller
 
     public function data_jenis()
     {
-        $jenis = JenisKerosakan::all();
+        $jenis = JenisKerosakan::with(['kategori'])->select('cms_jenis_kerosakan.*');;
 
         return datatables()::of($jenis)
         ->addColumn('action', function ($jenis) {
@@ -42,14 +42,14 @@ class JenisKerosakanController extends Controller
                 return '<a href="" data-target="#crud-modals" data-toggle="modal" data-jenis="'.$jenis->id.'" data-kategori="'.$jenis->kategori_aduan.'" data-kerosakan="'.$jenis->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
                         <button class="btn btn-sm btn-danger btn-delete" data-remote="/jenis-kerosakan/' . $jenis->id . '"><i class="fal fa-trash"></i></button>';
             }
-            
+
         })
 
         ->editColumn('kategori_aduan', function ($jenis) {
 
             return $jenis->kategori->nama_kategori;
        })
-            
+
         ->make(true);
     }
 
@@ -64,26 +64,26 @@ class JenisKerosakanController extends Controller
 
         JenisKerosakan::create([
                 'kategori_aduan'     => $request->kategori_aduan,
-                'jenis_kerosakan'    => $request->jenis_kerosakan, 
+                'jenis_kerosakan'    => $request->jenis_kerosakan,
             ]);
-        
+
         Session::flash('message', 'Data Jenis Kerosakan Berjaya Ditambah');
         return redirect('jenis-kerosakan');
     }
 
-    public function kemaskiniJenis(Request $request) 
+    public function kemaskiniJenis(Request $request)
     {
         $jenis = JenisKerosakan::where('id', $request->jenis_id)->first();
-        
+
         $request->validate([
             'jenis_kerosakan'      => 'required|max:255',
         ]);
 
         $jenis->update([
             // 'kategori_aduan'     => $request->kategori_aduan,
-            'jenis_kerosakan'    => $request->jenis_kerosakan, 
+            'jenis_kerosakan'    => $request->jenis_kerosakan,
         ]);
-        
+
         Session::flash('notification', 'Data Jenis Kerosakan Berjaya Dikemaskini');
         return redirect('jenis-kerosakan');
     }

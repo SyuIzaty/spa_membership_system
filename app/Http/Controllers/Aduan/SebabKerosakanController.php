@@ -37,7 +37,7 @@ class SebabKerosakanController extends Controller
 
     public function data_sebab()
     {
-        $sebab = SebabKerosakan::all();
+        $sebab = SebabKerosakan::with(['kategori'])->select('cms_sebab_kerosakan.*');;
 
         return datatables()::of($sebab)
         ->addColumn('action', function ($sebab) {
@@ -53,7 +53,7 @@ class SebabKerosakanController extends Controller
                 return '<a href="" data-target="#crud-modals" data-toggle="modal" data-sebab="'.$sebab->id.'" data-kategori="'.$sebab->kategori_aduan.'" data-kerosakan="'.$sebab->sebab_kerosakan.'" data-jenis="'.$sebab->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
                 <button class="btn btn-sm btn-danger btn-delete" data-remote="/sebab-kerosakan/' . $sebab->id . '"><i class="fal fa-trash"></i></button>';
             }
-            
+
         })
 
         ->editColumn('kategori_aduan', function ($sebab) {
@@ -65,7 +65,7 @@ class SebabKerosakanController extends Controller
 
         //     return $sebab->jenis->jenis_kerosakan;
         // })
-            
+
         ->make(true);
     }
 
@@ -82,27 +82,27 @@ class SebabKerosakanController extends Controller
         SebabKerosakan::create([
                 'kategori_aduan'     => $request->kategori_aduan,
                 // 'jenis_kerosakan'    => $request->jenis_kerosakan,
-                'sebab_kerosakan'    => $request->sebab_kerosakan, 
+                'sebab_kerosakan'    => $request->sebab_kerosakan,
             ]);
-        
+
         Session::flash('message', 'Data Sebab Kerosakan Berjaya Ditambah');
         return redirect('sebab-kerosakan');
     }
 
-    public function kemaskiniSebab(Request $request) 
+    public function kemaskiniSebab(Request $request)
     {
         $sebab = SebabKerosakan::where('id', $request->sebab_id)->first();
 
         $request->validate([
             'sebab_kerosakan'       => 'required|max:255',
         ]);
-        
+
         $sebab->update([
             // 'kategori_aduan'     => $request->kategori_aduan,
             // 'jenis_kerosakan'    => $request->jenis_kerosakan,
-            'sebab_kerosakan'    => $request->sebab_kerosakan, 
+            'sebab_kerosakan'    => $request->sebab_kerosakan,
         ]);
-        
+
         Session::flash('notification', 'Data Sebab Kerosakan Berjaya Dikemaskini');
         return redirect('sebab-kerosakan');
     }

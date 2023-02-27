@@ -71,7 +71,7 @@
                             <td colspan="4">
                                 <select name="kategori_aduan" id="kategori_aduan" class="kategori form-control" required>
                                     <option value="">Pilih Kategori Aduan</option>
-                                    @foreach ($kategori as $kat) 
+                                    @foreach ($kategori as $kat)
                                         <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
                                     @endforeach
                                  </select>
@@ -100,7 +100,7 @@
                                 @enderror
                             </td>
                         </div>
-                     
+
                     <div class="footer">
                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
@@ -127,7 +127,7 @@
                         <td colspan="4">
                             <select name="kategori_aduan" id="kategoris" class="form-control" disabled>
                                 <option value="">Pilih Kategori Aduan</option>
-                                @foreach ($kategori as $kat) 
+                                @foreach ($kategori as $kat)
                                     <option value="{{ $kat->kod_kategori }}" {{ $sebab->kategori_aduan == $kat->kod_kategori ? 'selected="selected"' : '' }} >{{ $kat->nama_kategori }}</option>
                                 @endforeach
                              </select>
@@ -142,7 +142,7 @@
                         <td colspan="4">
                             <select name="jenis_kerosakan" id="jeniss" class="form-control" disabled>
                                 <option value="">Pilih Kategori Aduan</option>
-                                @foreach ($jenis as $jen) 
+                                @foreach ($jenis as $jen)
                                     <option value="{{ $jen->id }}" {{ $sebab->jenis_kerosakan == $jen->id ? 'selected="selected"' : '' }} >{{ $jen->jenis_kerosakan }}</option>
                                 @endforeach
                              </select>
@@ -160,7 +160,7 @@
                             @enderror
                         </td>
                     </div>
-                    
+
                     <div class="footer">
                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Kemaskini</button>
                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
@@ -180,25 +180,25 @@
 <script>
     $(document).ready(function()
     {
-        $('.kategori, .jenis, .kategoris, .jeniss').select2({ 
-            dropdownParent: $('#crud-modal') 
-        }); 
+        $('.kategori, .jenis, .kategoris, .jeniss').select2({
+            dropdownParent: $('#crud-modal')
+        });
 
         $('#new').click(function () {
             $('#crud-modal').modal('show');
         });
 
         $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var sebab = button.data('sebab') 
+            var button = $(event.relatedTarget)
+            var sebab = button.data('sebab')
             var kategori = button.data('kategori')
             var kerosakan = button.data('kerosakan')
             var jenis = button.data('jenis')
 
-            $('.modal-body #sebab').val(sebab); 
-            $('.modal-body #kategoris').val(kategori); 
-            $('.modal-body #sebabs').val(kerosakan); 
-            $('.modal-body #jeniss').val(jenis); 
+            $('.modal-body #sebab').val(sebab);
+            $('.modal-body #kategoris').val(kategori);
+            $('.modal-body #sebabs').val(kerosakan);
+            $('.modal-body #jeniss').val(jenis);
         })
 
         if($('.kategori').val()!=''){
@@ -210,7 +210,7 @@
 
             function updateJenis(elem){
             var katid=elem.val();
-            var op=" "; 
+            var op=" ";
 
             $.ajax({
                 type:'get',
@@ -270,7 +270,7 @@
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { className: 'text-center', data: 'kategori_aduan', name: 'kategori_aduan' },
+                    { className: 'text-center', data: 'kategori_aduan', name: 'kategori.nama_kategori' },
                     // { className: 'text-center', data: 'jenis_kerosakan', name: 'jenis_kerosakan' },
                     { className: 'text-center', data: 'sebab_kerosakan', name: 'sebab_kerosakan' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
@@ -279,7 +279,7 @@
                 "order": [[ 0, "asc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#sebab').on('click', '.btn-delete[data-remote]', function (e) {
