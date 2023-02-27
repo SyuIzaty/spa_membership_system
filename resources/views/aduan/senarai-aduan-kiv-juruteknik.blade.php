@@ -72,7 +72,7 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
                                                             <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
                                                                 <option value="">SEMUA</option>
-                                                                <option value="ADUAN KIV">ADUAN KIV</option>
+                                                                <option value="AK">ADUAN KIV</option>
                                                             </select></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
@@ -117,7 +117,7 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
                                                             <td class="hasinput"><select id="status_aduan_pelajar" name="status_aduan_pelajar" class="form-control">
                                                                 <option value="">SEMUA</option>
-                                                                <option value="ADUAN KIV">ADUAN KIV</option>
+                                                                <option value="AK">ADUAN KIV</option>
                                                             </select></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
@@ -201,17 +201,17 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/senaraiKiv",
+                url: "/senaraiKivJuruteknik",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { data: 'nama_pelapor', name: 'nama_pelapor' },
-                    { data: 'kategori_aduan', name: 'kategori.nama_kategori' },
-                    { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
-                    { className: 'text-center', data: 'status_aduan', name: 'status.nama_status' },
-                    { className: 'text-center', data: 'tahap_kategori', name: 'tahap.jenis_tahap', orderable: false, searchable: false },
+                    { data: 'nama_pelapor', name: 'aduan.nama_pelapor' },
+                    { data: 'kategori_aduan', name: 'aduan.kategori.nama_kategori' },
+                    { className: 'text-center', data: 'tarikh_laporan', name: 'aduan.tarikh_laporan' },
+                    { className: 'text-center', data: 'status_aduan', name: 'aduan.status.nama_status' },
+                    { className: 'text-center', data: 'tahap_kategori', name: 'aduan.tahap.jenis_tahap', orderable: false, searchable: false },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
@@ -290,17 +290,17 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/senaraiKivPelajar",
+                url: "/senaraiKivJuruteknikPelajar",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { data: 'nama_pelapor', name: 'nama_pelapor' },
-                    { data: 'kategori_aduan', name: 'kategori.nama_kategori' },
-                    { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
-                    { className: 'text-center', data: 'status_aduan', name: 'status.nama_status' },
-                    { className: 'text-center', data: 'tahap_kategori', name: 'tahap.jenis_tahap', orderable: false, searchable: false },
+                    { data: 'nama_pelapor', name: 'aduan.nama_pelapor' },
+                    { data: 'kategori_aduan', name: 'aduan.kategori.nama_kategori' },
+                    { className: 'text-center', data: 'tarikh_laporan', name: 'aduan.tarikh_laporan' },
+                    { className: 'text-center', data: 'status_aduan', name: 'aduan.status.nama_status' },
+                    { className: 'text-center', data: 'tahap_kategori', name: 'aduan.tahap.jenis_tahap', orderable: false, searchable: false },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,

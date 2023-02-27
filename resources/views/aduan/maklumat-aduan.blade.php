@@ -41,11 +41,11 @@
                                 {
                                     <span class="badge badge-success">{{ strtoupper($aduan->status->nama_status) }}</span>
                                 }
-                                @elseif($aduan->status_aduan=='LK') 
+                                @elseif($aduan->status_aduan=='LK')
                                 {
                                     <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                                 }
-                                @elseif($aduan->status_aduan=='LU') 
+                                @elseif($aduan->status_aduan=='LU')
                                 {
                                     <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                                 }
@@ -53,7 +53,7 @@
                                 {
                                     <span class="badge badge-kiv">{{ strtoupper($aduan->status->nama_status) }}</span>
                                 }
-                                @else 
+                                @else
                                 {
                                     <span class="badge badge-duplicate">{{ strtoupper($aduan->status->nama_status) }}</span>
                                 }
@@ -83,7 +83,7 @@
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->nama_pelapor)}}</td>
-                                                <th width="20%" style="vertical-align: middle">ID Staf : </th>
+                                                <th width="20%" style="vertical-align: middle">@if(Auth::user()->hasRole('Staff') ) ID Staf : @endif @if(Auth::user()->hasRole('Student') ) ID Pelajar : @endif</th>
                                                 <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->id_pelapor)}}</td>
                                             </tr>
                                             <tr>
@@ -130,9 +130,9 @@
                                                 <th width="20%" style="vertical-align: middle">Jenis Kerosakan : </th>
                                                 <td colspan="2" style="vertical-align: middle">
                                                     <div>{{ strtoupper($aduan->jenis->jenis_kerosakan) }}</div word-break: break-all>
-                                                    @if($aduan->jenis->jenis_kerosakan == 'Lain-lain') 
+                                                    @if($aduan->jenis->jenis_kerosakan == 'Lain-lain')
                                                         <div> Penerangan : {{ strtoupper($aduan->jk_penerangan ?? '--') }}</div>
-                                                    @endif 
+                                                    @endif
                                                 </td>
                                             </tr>
 
@@ -147,7 +147,7 @@
                                                 <th width="20%" style="vertical-align: middle">Kuantiti/Unit : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{ $aduan->kuantiti_unit}}</td>
                                             </tr>
-                                        
+
                                             <tr>
                                                 <th width="20%" style="vertical-align: top">Maklumat Tambahan : </th>
                                                 <td colspan="4" style="vertical-align: middle; text-transform: uppercase">{{ isset($aduan->maklumat_tambahan) ? $aduan->maklumat_tambahan : '-'}}</td>
@@ -176,7 +176,7 @@
                                                 <td colspan="2" style="text-transform: uppercase">
                                                     @if(isset($imej->first()->upload_image))
                                                         @foreach($imej as $imejAduan)
-                                                            <img src="/get-file-resit/{{ $imejAduan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
+                                                            <a data-fancybox="gallery" href="/get-file-resit/{{ $imejAduan->upload_image }}"><img src="/get-file-resit/{{ $imejAduan->upload_image }}" style="width:150px; height:130px" class="img-fluid mr-2"></a>
                                                         @endforeach
                                                     @else
                                                         <span>Tiada Gambar Sokongan</span>
@@ -187,14 +187,14 @@
                                                 <td colspan="2" style="text-transform: uppercase">
                                                     @if(isset($resit->first()->nama_fail))
                                                         @foreach ($resit as $failResit)
-                                                            <a target="_blank" href="{{ url('resit')."/".$failResit->nama_fail }}/Download"">{{ $failResit->nama_fail }}</a>
+                                                            <a target="_blank" href="{{ url('resit')."/".$failResit->nama_fail }}/Download">{{ $failResit->nama_fail }}</a>
                                                         @endforeach
                                                     @else
                                                         <span>Tiada Dokumen Sokongan</span>
                                                     @endif
                                                 </td>
                                             </tr>
-                                            
+
                                         </thead>
                                     </table>
                                 </div>
@@ -204,7 +204,7 @@
                                         <li>
                                             <a href="#" disabled style="pointer-events: none">
                                                 <label class="form-label">
-                                                    <i class="fal fa-check-circle"></i> STATUS TERKINI ADUAN : 
+                                                    <i class="fal fa-check-circle"></i> STATUS TERKINI ADUAN :
                                                         @if($aduan->status_aduan=='BS')
                                                         {
                                                         <span class="badge badge-new">{{ strtoupper($aduan->status->nama_status) }}</span>
@@ -221,11 +221,11 @@
                                                         {
                                                             <span class="badge badge-success">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                         }
-                                                        @elseif($aduan->status_aduan=='LK') 
+                                                        @elseif($aduan->status_aduan=='LK')
                                                         {
                                                             <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                         }
-                                                        @elseif($aduan->status_aduan=='LU') 
+                                                        @elseif($aduan->status_aduan=='LU')
                                                         {
                                                             <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                         }
@@ -233,7 +233,7 @@
                                                         {
                                                             <span class="badge badge-kiv">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                         }
-                                                        @else 
+                                                        @else
                                                         {
                                                             <span class="badge badge-duplicate">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                         }
@@ -248,7 +248,7 @@
                                             {{-- <tr>
                                                 <td colspan="5" class="bg-primary-50">
                                                     <label class="form-label">
-                                                        <i class="fal fa-check-circle"></i> STATUS TERKINI ADUAN : 
+                                                        <i class="fal fa-check-circle"></i> STATUS TERKINI ADUAN :
                                                             @if($aduan->status_aduan=='BS')
                                                             {
                                                             <span class="badge badge-new">{{ strtoupper($aduan->status->nama_status) }}</span>
@@ -265,11 +265,11 @@
                                                             {
                                                                 <span class="badge badge-success">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                             }
-                                                            @elseif($aduan->status_aduan=='LK') 
+                                                            @elseif($aduan->status_aduan=='LK')
                                                             {
                                                                 <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                             }
-                                                            @elseif($aduan->status_aduan=='LU') 
+                                                            @elseif($aduan->status_aduan=='LU')
                                                             {
                                                                 <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                             }
@@ -277,7 +277,7 @@
                                                             {
                                                                 <span class="badge badge-kiv">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                             }
-                                                            @else 
+                                                            @else
                                                             {
                                                                 <span class="badge badge-duplicate">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                             }
@@ -303,7 +303,7 @@
                                                     @endif
                                                 </td>
                                             </tr>
-                                            {!! Form::open(['action' => 'Aduan\AduanController@simpanPengesahan', 'method' => 'POST']) !!}
+                                            {!! Form::open(['action' => 'Aduan\AduanController@simpanPengesahan', 'method' => 'POST', 'id' => 'data']) !!}
                                             <input type="hidden" name="id" value="{{ $aduan->id }}">
                                                 @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK'|| $aduan->status_aduan == 'DP')
                                                     @if(isset($aduan->pengesahan_pembaikan))
@@ -311,7 +311,7 @@
                                                             <div class="form-group">
                                                                 <td colspan="5"><p class="form-label">
                                                                 <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px" type="checkbox" checked disabled>
-                                                                SAYA, <b><u>{{ strtoupper($aduan->nama_pelapor) }}</u></b> MENGESAHKAN BAHAWA ADUAN YANG DIBUAT TELAH DILAKUKAN PEMBAIKAN. </p> 
+                                                                SAYA, <b><u>{{ strtoupper($aduan->nama_pelapor) }}</u></b> MENGESAHKAN BAHAWA ADUAN YANG DIBUAT TELAH DILAKUKAN PEMBAIKAN. </p>
                                                             </div>
                                                         </tr>
                                                     @else
@@ -319,14 +319,14 @@
                                                             <div class="form-group">
                                                                 <td colspan="5"><p class="form-label" for="pengesahan_pembaikan">
                                                                 <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="pengesahan_pembaikan" id="chk" required onclick="btn()"/>
-                                                                SAYA, <b><u>{{ strtoupper($aduan->nama_pelapor) }}</u></b> MENGESAHKAN BAHAWA ADUAN YANG DIBUAT TELAH DILAKUKAN PEMBAIKAN. </p> 
+                                                                SAYA, <b><u>{{ strtoupper($aduan->nama_pelapor) }}</u></b> MENGESAHKAN BAHAWA ADUAN YANG DIBUAT TELAH DILAKUKAN PEMBAIKAN. </p>
                                                                 <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Hantar Pengesahan</button></td>
                                                             </div>
                                                         </tr>
                                                     @endif
                                                 @endif
                                             {!! Form::close() !!}
-                                                
+
                                         </thead>
                                     </table>
                                 </div>
@@ -366,6 +366,13 @@
             printWindow.print();
         }, true);
     }
+
+    $(document).ready(function () {
+        $("#data").submit(function () {
+            $("#submit").attr("disabled", true);
+            return true;
+        });
+    });
 
 </script>
 @endsection

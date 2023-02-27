@@ -15,6 +15,11 @@
         /* overflow: auto; */
         visibility: visible;
     }
+
+    .td-green td {background-color: rgb(67, 250, 67);}
+    .td-yellow td {background-color: rgb(139, 255, 139);}
+    .td-red td {background-color: rgb(176, 245, 176);}
+
 </style>
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
 
@@ -36,138 +41,65 @@
                     <div class="panel-content">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-tools">
-                                    <ul class="nav nav-pills ml-auto">
-                                    <li class="nav-item">
-                                        <a style="border: solid 1px; border-radius: 0" class="nav-link active test" href="#pie-chart" data-toggle="tab">Carta Pie</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a style="border: solid 1px; border-radius: 0" class="nav-link" href="#bar-chart" data-toggle="tab">Carta Bar</a>
-                                    </li>
+                                <div class="col-md-2 float-right" style="font-size: 12px">
+                                    <form action="{{ route('dashAduan') }}" method="GET" id="form_find">
+                                        <select class="selectfilter form-control" name="year" id="year">
+                                            @foreach ($years as $yrs)
+                                                <option value="{{ $yrs->year }}" {{ $selectedYear == $yrs->year ? 'selected' : '' }}>{{ $yrs->year }}</option>
+                                            @endforeach
+                                        </select>
+                                    </form>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="tab-content p-0">
-                                    <div class="chart tab-pane active" id="pie-chart" >
-                                        <div class="row">
-                                            @role('Technical Admin')
-                                                <div class="col-md-6 col-sm-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
-                                                        <div class="card-body">
-                                                            <div id="chart1" style="height: 500px"></div>
-                                                        </div>
-                                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12 mb-4">
+                                            <div class="card">
+                                                <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> JUMLAH ADUAN MENGIKUT KATEGORI {{$selectedYear}}</div>
+                                                <div class="card-body">
+                                                    <div id="chart1" style="height: 500px"></div>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI</div>
-                                                        <div class="card-body">
-                                                            <div id="chart2" style="height: 500px"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endrole
-
-                                            @role('Technical Staff')
-                                                <div class="col-md-6 col-sm-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
-                                                        <div class="card-body">
-                                                            <div id="chart5" style="height: 500px"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endrole
-                                        </div>
-                                    </div>
-
-                                    <div class="chart tab-pane" id="bar-chart" >
-                                        <div class="row">
-                                            @role('Technical Admin')
-                                                <div class="col-md-6 col-sm-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
-                                                        <div class="card-body">
-                                                            <div id="chart3" style="height: 500px"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI</div>
-                                                        <div class="card-body">
-                                                            <div id="chart4" style="height: 500px"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endrole
-
-                                            @role('Technical Staff')
-                                                <div class="col-md-6 col-sm-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS</div>
-                                                        <div class="card-body">
-                                                            <div id="chart6" style="height: 500px"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endrole
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                @role('Technical Admin')
-                    <div class="panel-container show">
-                        <div class="panel-content">
-
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="accordion accordion-outline" id="js_demo_accordion-3">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <a href="javascript:void(0);" class="card-title" data-toggle="collapse" data-target="#dJ" aria-expanded="true">
-                                                    <i class="fal fa-users width-2 fs-xl"></i>
-                                                    SENARAI JURUTEKNIK
-                                                    <span class="ml-auto">
-                                                        <span class="collapsed-reveal">
-                                                            <i class="fal fa-minus fs-xl"></i>
-                                                        </span>
-                                                        <span class="collapsed-hidden">
-                                                            <i class="fal fa-plus fs-xl"></i>
-                                                        </span>
-                                                    </span>
-                                                </a>
                                             </div>
-                                            <div id="dJ" class="collapse show" data-parent="#dJ">
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 mb-4">
+                                            <div class="card">
+                                                <div class="card-header bg-primary-500"><i class="fal fa-burn"></i> JUMLAH ADUAN TERKUMPUL JURUTEKNIK {{$selectedYear}}</div>
+                                                <div class="card-body">
+                                                    <div id="chart2" style="height: 500px"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 mb-4">
+                                            <div class="card">
+                                                <div class="card-header bg-primary-500">
+                                                    <i class="fal fa-adjust width-2 fs-xl"></i>
+                                                    KEDUDUKAN 5 STAF TERTINGGI {{$selectedYear}}
+                                                </div>
                                                 <div class="card-body">
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered" style="width: 100%" id="dJ_list">
-                                                            <thead class="text-center">
-                                                                <tr class="bg-primary-50">
-                                                                    <td>ID</td>
-                                                                    <td>NAMA</td>
-                                                                    <td>NO TELEFON</td>
-                                                                    <td>EMEL</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
-                                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
-                                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
-                                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Emel"></td>
+                                                        <table class="table m-0">
+                                                            <thead>
+                                                                <tr class="text-center bg-primary-50">
+                                                                    <th>KEDUDUKAN</th>
+                                                                    <th>JURUTEKNIK</th>
+                                                                    <th>JUMLAH ADUAN SELESAI</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                @foreach ($senarai as $dJ)
-                                                                    <tr>
-                                                                        <td class="text-center">{{ $dJ->id }}</td>
-                                                                        <td>{{ $dJ->name }}</td>
-                                                                        <td>{{ isset($dJ->staff->staff_phone) ? $dJ->staff->staff_phone : '--'}}</td>
-                                                                        <td>{{ isset($dJ->staff->staff_email) ? $dJ->staff->staff_email : '--'}}</td>
+                                                                @foreach($rank as $ranks)
+                                                                    <tr class="
+                                                                        @if($loop->iteration == 1)
+                                                                            {{ 'td-green' }}
+                                                                        @elseif($loop->iteration == 2)
+                                                                            {{ 'td-yellow' }}
+                                                                        @elseif($loop->iteration == 3)
+                                                                            {{ 'td-red' }}
+                                                                        @endif
+                                                                    ">
+                                                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                                                        <td class="text-left">{{ $ranks->juruteknik->name }}</td>
+                                                                        <td class="text-center">{{ $ranks->total }}</td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -176,29 +108,60 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <i class="fal fa-adjust width-2 fs-xl"></i>
-                                                JUMLAH STATUS TERKINI
-                                            </div>
-
+                                        <div class="col-md-6 col-sm-12 mb-4">
+                                            <div class="card">
+                                                <div class="card-header bg-primary-500">
+                                                    <i class="fal fa-adjust width-2 fs-xl"></i>
+                                                    JUMLAH ADUAN MENGIKUT STATUS {{$selectedYear}}
+                                                </div>
                                                 <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-xl-6">
+                                                            <div class="p-3 rounded overflow-hidden position-relative text-black mb-g" style="border-style:dotted">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    {{\App\Aduan::whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->where(DB::raw('YEAR(cms_aduan.tarikh_laporan)'), '=', $selectedYear)->count()}}
+                                                                    <small class="m-0 l-h-n">FASILITI</small>
+                                                                </h3>
+                                                                <i class="fal fa-cog position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-xl-6">
+                                                            <div class="p-3 rounded overflow-hidden position-relative text-black mb-g" style="border-style:dotted">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    {{\App\Aduan::whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->where(DB::raw('YEAR(cms_aduan.tarikh_laporan)'), '=', $selectedYear)->count()}}
+                                                                    <small class="m-0 l-h-n">IITU</small>
+                                                                </h3>
+                                                                <i class="fal fa-cog position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered" style="width: 100%" >
                                                             <thead>
                                                                 <tr class="text-center bg-primary-50">
-                                                                    <td>STATUS</td>
-                                                                    <td>JUMLAH TERKUMPUL</td>
+                                                                    <th>STATUS</th>
+                                                                    <th>JUMLAH TERKUMPUL</th>
+                                                                    <th>STAF</th>
+                                                                    <th>PELAJAR</th>
                                                                 </tr>
                                                                 @foreach(\App\StatusAduan::all() as $all)
+                                                                <?php
+                                                                    $cnt = \App\Aduan::where('status_aduan', $all->kod_status)->where(DB::raw('YEAR(cms_aduan.tarikh_laporan)'), '=', $selectedYear)->count();
+
+                                                                    $user = \App\User::where('category', 'STF')->pluck('id');
+
+                                                                    $cnt_stf = \App\Aduan::whereIn('id_pelapor',$user)->where('status_aduan', $all->kod_status)->where(DB::raw('YEAR(cms_aduan.tarikh_laporan)'), '=', $selectedYear)->count();
+
+                                                                    $users = \App\User::where('category', 'STD')->pluck('id');
+
+                                                                    $cnt_std = \App\Aduan::whereIn('id_pelapor',$users)->where('status_aduan', $all->kod_status)->where(DB::raw('YEAR(cms_aduan.tarikh_laporan)'), '=', $selectedYear)->with(['pelapor_pelajar'])->count();
+                                                                ?>
+
                                                                     <tr @if($all->kod_status == 'BS' || $all->kod_status == 'DJ') style="background-color: red; color:white" @endif>
                                                                         <td>{{ $all->kod_status }} - {{ $all->nama_status}}</td>
-                                                                        <td class="text-center">{{ \App\Aduan::where('status_aduan', $all->kod_status)->count() }}</td>
+                                                                        <td class="text-center">{{$cnt}}</td>
+                                                                        <td class="text-center">{{$cnt_stf}}</td>
+                                                                        <td class="text-center">{{$cnt_std}}</td>
                                                                     </tr>
                                                                 @endforeach
                                                                 <tr>
@@ -206,64 +169,7 @@
                                                         </table>
                                                     </div>
                                                 </div>
-
-                                        </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                @endrole
-
-                @role('Technical Staff')
-                <div class="col-md-12 mt-5">
-                    <div class="panel-content">
-                        <div class="accordion accordion-outline" id="js_demo_accordion-3">
-                            <div class="card">
-                                <div class="card-header">
-                                    <a href="javascript:void(0);" class="card-title" data-toggle="collapse" data-target="#dJ" aria-expanded="true" style="color: maroon">
-                                        <i class="fal fa-users width-2 fs-xl"></i>
-                                        Senarai Admin Operasi
-                                        <span class="ml-auto">
-                                            <span class="collapsed-reveal">
-                                                <i class="fal fa-minus fs-xl"></i>
-                                            </span>
-                                            <span class="collapsed-hidden">
-                                                <i class="fal fa-plus fs-xl"></i>
-                                            </span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div id="dJ" class="collapse show" data-parent="#dJ">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" style="width: 100%" id="dJ_list">
-                                                <thead class="text-center">
-                                                    <tr style="background-color: #880000; color:white">
-                                                        <td>ID</td>
-                                                        <td>NAMA</td>
-                                                        <td>NO TELEFON</td>
-                                                        <td>EMEL</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
-                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
-                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
-                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Emel"></td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($senaraiAdmin as $sA)
-                                                        <tr>
-                                                            <td class="text-center">{{ $sA->id }}</td>
-                                                            <td>{{ $sA->name }}</td>
-                                                            <td>{{ isset($sA->staff->staff_phone) ? $sA->staff->staff_phone : 'No Data'}}</td>
-                                                            <td>{{ isset($sA->staff->staff_email) ? $sA->staff->staff_email : 'No Data'}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -271,7 +177,79 @@
                         </div>
                     </div>
                 </div>
-                @endrole
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="accordion accordion-outline" id="js_demo_accordion-3">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <a href="javascript:void(0);" class="card-title" data-toggle="collapse" data-target="#dJ" aria-expanded="true">
+                                                <i class="fal fa-users width-2 fs-xl"></i>
+                                                SENARAI JURUTEKNIK
+                                                <span class="ml-auto">
+                                                    <span class="collapsed-reveal">
+                                                        <i class="fal fa-minus fs-xl"></i>
+                                                    </span>
+                                                    <span class="collapsed-hidden">
+                                                        <i class="fal fa-plus fs-xl"></i>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div id="dJ" class="collapse show" data-parent="#dJ">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" style="width: 100%" id="dJ_list">
+                                                        <thead class="text-center">
+                                                            <tr class="bg-primary-50">
+                                                                <th>ID</th>
+                                                                <th>NAMA</th>
+                                                                <th>NO TELEFON</th>
+                                                                <th>EMEL</th>
+                                                                <th>JABATAN</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
+                                                                <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
+                                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Emel"></td>
+                                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Jabatan"></td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($senarai as $dJ)
+                                                                <?php $jab = \App\Staff::where('staff_id', $dJ->id)->first() ?>
+                                                                <tr>
+                                                                    <td class="text-center">{{ $dJ->id }}</td>
+                                                                    <td>{{ $dJ->name }}</td>
+                                                                    <td>{{ isset($dJ->staff->staff_phone) ? $dJ->staff->staff_phone : '--'}}</td>
+                                                                    <td>{{ isset($dJ->staff->staff_email) ? $dJ->staff->staff_email : '--'}}</td>
+                                                                    <td>
+                                                                        @if(isset($jab->staff_code))
+                                                                            @if($jab->staff_code == 'IITU')
+                                                                                IITU
+                                                                            @endif
+                                                                            @if($jab->staff_code == 'OFM')
+                                                                                FASILITI
+                                                                            @endif
+                                                                        @else
+                                                                            --
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -282,6 +260,14 @@
 @section('script')
 
 <script>
+
+    $(document).ready(function()
+    {
+        $("#year").change(function(){
+            $("#form_find").submit();
+        })
+        $('#year').select2();
+    });
 
     $(document).ready(function() {
 
@@ -321,41 +307,14 @@
     });
 
     $(function () {
-        var aduan = <?php echo $aduan; ?>;
-        console.log(aduan);
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart1);
-        function drawChart1() {
-            var data = google.visualization.arrayToDataTable(aduan);
-            var options = {
-            // title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
-            titleTextStyle: {
-                color: '333333',
-                fontName: 'Arial',
-                fontSize: 16,
-            },
-            bar: {groupWidth: "80%"},
-            borderColor:
-                'rgb(135, 48, 14)',
-            legend: { position: 'bottom'},
-            is3D: true,
-            }
-            var chart = new google.visualization.PieChart(document.getElementById('chart1'));
-            chart.draw(data, options);
-
-        }
-
-    })
-
-    $(function () {
         var list = <?php echo $list; ?>;
-        console.log(list);
+
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart2);
         function drawChart2() {
             var data = google.visualization.arrayToDataTable(list);
             var options = {
-            // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
+
             titleTextStyle: {
                 color: '333333',
                 fontName: 'Arial',
@@ -371,37 +330,13 @@
     })
 
     $(function () {
-        var juruteknik = <?php echo $juruteknik; ?>;
-        console.log(juruteknik);
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart5);
-        function drawChart5() {
-            var data = google.visualization.arrayToDataTable(juruteknik);
-            var options = {
-            // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',
-            titleTextStyle: {
-                color: '333333',
-                fontName: 'Arial',
-                fontSize: 16,
-            },
-            bar: {groupWidth: "80%"},
-            legend: { position: 'bottom'},
-            is3D: true,
-            }
-            var chart = new google.visualization.PieChart(document.getElementById('chart5'));
-            chart.draw(data, options);
-        }
-    })
+        var category = <?php echo $category; ?>;
 
-    $(function () {
-        var aduan = <?php echo $aduan; ?>;
-        console.log(aduan);
         google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart3);
-        function drawChart3() {
-            var data = google.visualization.arrayToDataTable(aduan);
+        google.charts.setOnLoadCallback(drawChart1);
+        function drawChart1() {
+            var data = google.visualization.arrayToDataTable(category);
             var options = {
-            // title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
             titleTextStyle: {
                 color: '333333',
                 fontName: 'Arial',
@@ -411,56 +346,104 @@
             borderColor:
                 'rgb(135, 48, 14)',
             legend: { position: 'bottom'},
+            is3D: true,
             }
-            var chart = new google.visualization.BarChart(document.getElementById('chart3'));
+            var chart = new google.visualization.PieChart(document.getElementById('chart1'));
             chart.draw(data, options);
-        }
 
-    })
-
-    $(function () {
-        var list = <?php echo $list; ?>;
-        console.log(list);
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart4);
-        function drawChart4() {
-            var data = google.visualization.arrayToDataTable(list);
-            var options = {
-            // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
-            titleTextStyle: {
-                color: '333333',
-                fontName: 'Arial',
-                fontSize: 16,
-            },
-            bar: {groupWidth: "80%"},
-            legend: { position: 'bottom'},
-            }
-            var chart = new google.visualization.BarChart(document.getElementById('chart4'));
-            chart.draw(data, options);
         }
     })
 
-    $(function () {
-        var juruteknik = <?php echo $juruteknik; ?>;
-        console.log(juruteknik);
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart6);
-        function drawChart6() {
-            var data = google.visualization.arrayToDataTable(juruteknik);
-            var options = {
-            // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',
-            titleTextStyle: {
-                color: '333333',
-                fontName: 'Arial',
-                fontSize: 16,
-            },
-            bar: {groupWidth: "80%"},
-            legend: { position: 'bottom'},
-            }
-            var chart = new google.visualization.BarChart(document.getElementById('chart6'));
-            chart.draw(data, options);
-        }
-    })
+    // $(function () {
+
+    //     console.log(juruteknik);
+    //     google.charts.load('current', {'packages':['corechart']});
+    //     google.charts.setOnLoadCallback(drawChart5);
+    //     function drawChart5() {
+    //         var data = google.visualization.arrayToDataTable(juruteknik);
+    //         var options = {
+    //         titleTextStyle: {
+    //             color: '333333',
+    //             fontName: 'Arial',
+    //             fontSize: 16,
+    //         },
+    //         bar: {groupWidth: "80%"},
+    //         legend: { position: 'bottom'},
+    //         is3D: true,
+    //         }
+    //         var chart = new google.visualization.PieChart(document.getElementById('chart5'));
+    //         chart.draw(data, options);
+    //     }
+    // })
+
+    // $(function () {
+
+    //     console.log(aduan);
+    //     google.charts.load('current', {'packages':['corechart']});
+    //     google.charts.setOnLoadCallback(drawChart3);
+    //     function drawChart3() {
+    //         var data = google.visualization.arrayToDataTable(aduan);
+    //         var options = {
+    //         // title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
+    //         titleTextStyle: {
+    //             color: '333333',
+    //             fontName: 'Arial',
+    //             fontSize: 16,
+    //         },
+    //         bar: {groupWidth: "80%"},
+    //         borderColor:
+    //             'rgb(135, 48, 14)',
+    //         legend: { position: 'bottom'},
+    //         }
+    //         var chart = new google.visualization.BarChart(document.getElementById('chart3'));
+    //         chart.draw(data, options);
+    //     }
+
+    // })
+
+    // $(function () {
+
+    //     console.log(list);
+    //     google.charts.load('current', {'packages':['corechart']});
+    //     google.charts.setOnLoadCallback(drawChart4);
+    //     function drawChart4() {
+    //         var data = google.visualization.arrayToDataTable(list);
+    //         var options = {
+    //         // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
+    //         titleTextStyle: {
+    //             color: '333333',
+    //             fontName: 'Arial',
+    //             fontSize: 16,
+    //         },
+    //         bar: {groupWidth: "80%"},
+    //         legend: { position: 'bottom'},
+    //         }
+    //         var chart = new google.visualization.BarChart(document.getElementById('chart4'));
+    //         chart.draw(data, options);
+    //     }
+    // })
+
+    // $(function () {
+
+    //     console.log(juruteknik);
+    //     google.charts.load('current', {'packages':['corechart']});
+    //     google.charts.setOnLoadCallback(drawChart6);
+    //     function drawChart6() {
+    //         var data = google.visualization.arrayToDataTable(juruteknik);
+    //         var options = {
+    //         // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',
+    //         titleTextStyle: {
+    //             color: '333333',
+    //             fontName: 'Arial',
+    //             fontSize: 16,
+    //         },
+    //         bar: {groupWidth: "80%"},
+    //         legend: { position: 'bottom'},
+    //         }
+    //         var chart = new google.visualization.BarChart(document.getElementById('chart6'));
+    //         chart.draw(data, options);
+    //     }
+    // })
 
 </script>
 @endsection

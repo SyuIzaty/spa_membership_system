@@ -26,10 +26,23 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="row">
-                            @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK' || $aduan->status_aduan == 'LU')
-                                <div class="col-md-12">
-                            @else
-                                <div class="@if(Auth::user()->hasRole('Technical Admin') || $juru->jenis_juruteknik == 'K' ) col-md-7 @else col-md-12 @endif ">
+                            @if(Auth::user()->hasRole('Technical Admin'))
+                                @if($aduan->status_aduan == 'BS' || $aduan->status_aduan == 'TD')
+                                    <div class="col-md-7">
+                                @else
+                                    <div class="col-md-12">
+                                @endif
+                            @endif
+                            @if(Auth::user()->hasRole('Technical Staff'))
+                                @if($juru->jenis_juruteknik == 'K')
+                                    @if($aduan->status_aduan == 'DJ')
+                                        <div class="col-md-7">
+                                    @else
+                                        <div class="col-md-12">
+                                    @endif
+                                @else
+                                    <div class="col-md-12">
+                                @endif
                             @endif
                                 <div class="card card-primary card-outline p-4">
                                     <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
@@ -91,7 +104,7 @@
                                                         <tr>
                                                             <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
                                                             <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->nama_pelapor)}}</td>
-                                                            <th width="20%" style="vertical-align: middle">ID Staf : </th>
+                                                            <th width="20%" style="vertical-align: middle">@if($pengadu->category == 'STF') ID Staf : @endif @if($pengadu->category == 'STD') ID Pelajar : @endif</th>
                                                             <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->id_pelapor)}}</td>
                                                         </tr>
                                                         <tr>
@@ -182,7 +195,7 @@
                                                             <td colspan="2" style="text-transform: uppercase">
                                                                 @if(isset($imej->first()->upload_image))
                                                                     @foreach($imej as $imejAduan)
-                                                                        <img src="/get-file-resit/{{ $imejAduan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
+                                                                        <a data-fancybox="gallery" href="/get-file-resit/{{ $imejAduan->upload_image }}"><img src="/get-file-resit/{{ $imejAduan->upload_image }}" style="width:150px; height:130px" class="img-fluid mr-2"></a>
                                                                     @endforeach
                                                                 @else
                                                                     <span>TIADA GAMBAR SOKONGAN</span>
@@ -193,7 +206,7 @@
                                                             <td colspan="2" style="text-transform: uppercase">
                                                                 @if(isset($resit->first()->nama_fail))
                                                                     @foreach ($resit as $failResit)
-                                                                        <a target="_blank" href="{{ url('resit')."/".$failResit->nama_fail }}/Download"">{{ $failResit->nama_fail }}</a>
+                                                                        <a target="_blank" href="{{ url('resit')."/".$failResit->nama_fail }}/Download">{{ $failResit->nama_fail }}</a>
                                                                     @endforeach
                                                                 @else
                                                                     <span>TIADA DOKUMEN SOKONGAN</span>
@@ -231,7 +244,7 @@
                                                             <th width="20%" style="vertical-align: middle"> Juruteknik Bertugas :</th>
                                                             <td colspan="4" style="text-transform: uppercase">
                                                                 @if(isset($senarai_juruteknik->first()->juruteknik_bertugas))
-                                                                    <ol style="margin-bottom: 0rem">
+                                                                    <ol style="margin-bottom: 0rem; margin-left: -25px">
                                                                         @foreach($senarai_juruteknik as $senarai)
                                                                             <li style="line-height: 30px"> {{ $senarai->juruteknik->name}}
                                                                                 ( @if ($senarai->jenis_juruteknik == 'K') KETUA @endif
@@ -271,7 +284,7 @@
 
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td width="20%"><label class="form-label" for="laporan_pembaikan">Laporan Pembaikan :</label></td>
+                                                                <td width="20%"><label class="form-label" for="laporan_pembaikan">Laporan Penambahbaikan:</label></td>
                                                                 <td colspan="2">{{ $aduan->laporan_pembaikan ?? '--'   }}</td>
                                                                 <td width="20%"><label class="form-label" for="bahan_alat">Bahan/ Alat Ganti :</label></td>
                                                                 <td colspan="2">
@@ -324,7 +337,7 @@
                                                             <td colspan="4">
                                                                 @if(isset($gambar->first()->upload_image))
                                                                     @foreach($gambar as $imejPembaikan)
-                                                                        <img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
+                                                                        <a data-fancybox="gallery" href="/get-file-gambar/{{ $imejPembaikan->upload_image }}"><img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:150px; height:130px" class="img-fluid mr-2"></a>
                                                                     @endforeach
                                                                 @else
                                                                     <span>TIADA GAMBAR SOKONGAN</span>
@@ -334,9 +347,9 @@
 
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td width="20%"><label class="form-label" for="tarikh_selesai_aduan">Tarikh Selesai Pembaikan :</label></td>
+                                                                <td width="20%"><label class="form-label" for="tarikh_selesai_aduan">Tarikh Selesai Penambahbaikan:</label></td>
                                                                 <td colspan="2">{{ isset($aduan->tarikh_selesai_aduan) ? date(' j F Y ', strtotime($aduan->tarikh_selesai_aduan)) : '--' }}</td>
-                                                                <td width="20%"><label class="form-label" for="tarikh_selesai_aduan">Masa Selesai Pembaikan :</label></td>
+                                                                <td width="20%"><label class="form-label" for="tarikh_selesai_aduan">Masa Selesai Penambahbaikan:</label></td>
                                                                 <td colspan="2">{{ isset($aduan->tarikh_selesai_aduan) ? date('h:i:s A ', strtotime($aduan->tarikh_selesai_aduan)) : '--' }}</td>
                                                             </div>
                                                         </tr>
@@ -367,7 +380,7 @@
                                                         <tr>
                                                             <div class="form-group">
                                                                 <td width="20%"><label class="form-label" for="catatan_pembaikan">Catatan :</label></td>
-                                                                <td colspan="4" style="text-transform: uppercase"><b>{{ $aduan->catatan_pembaikan ?? '--'   }}</b></td>
+                                                                <td colspan="4" style="text-transform: uppercase">{{ $aduan->catatan_pembaikan ?? '--'   }}</td>
                                                             </div>
                                                         </tr>
                                                     </thead>
@@ -407,7 +420,7 @@
                             </div>
                             <div class="col-md-5 col-sm-12">
                                 @can('view technical admin')
-                                    @if($aduan->status_aduan == 'BS' || $aduan->status_aduan == 'DJ')
+                                    @if($aduan->status_aduan == 'BS')
                                         <div class="card card-primary card-outline">
                                             <div class="card-header">
                                                 <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>PENYERAHAN ADUAN</h5>
@@ -426,8 +439,8 @@
                                                                 <tr>
                                                                     <div class="form-group">
                                                                         <td colspan="2" style="vertical-align: middle">
-                                                                            <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori">
-                                                                                <option value="">Pilih Tahap Aduan</option>
+                                                                            <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori" required>
+                                                                                <option value="" disabled selected>Pilih Tahap Aduan</option>
                                                                                 @foreach ($tahap as $thp)
                                                                                     <option value="{{ $thp->kod_tahap }}" {{ $aduan->tahap_kategori == $thp->kod_tahap ? 'selected="selected"' : '' }}>{{ $thp->jenis_tahap }}</option>
                                                                                 @endforeach
@@ -446,7 +459,7 @@
                                                                 <tr>
                                                                     <div class="form-group">
                                                                         <td colspan="2" style="padding-top: 20px; padding-left: 0px">
-                                                                            <input class="ml-5" type="radio" name="caj_kerosakan" id="caj_kerosakan" value="Ya" {{ $aduan->caj_kerosakan == "Ya" ? 'checked="checked"' : '' }}> Ya
+                                                                            <input class="ml-5" type="radio" name="caj_kerosakan" id="caj_kerosakan" required value="Ya" {{ $aduan->caj_kerosakan == "Ya" ? 'checked="checked"' : '' }}> Ya
                                                                             <input class="ml-5" type="radio" name="caj_kerosakan" id="caj_kerosakan" value="Tidak" {{ $aduan->caj_kerosakan == "Tidak" ? 'checked="checked"' : '' }}> Tidak
                                                                         </td>
                                                                     </div>
@@ -470,7 +483,7 @@
                                                                                         <tr>
                                                                                             <td>
                                                                                                 <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" required>
-                                                                                                    <option value="">Pilih Juruteknik</option>
+                                                                                                    <option value="" disabled selected>Pilih Juruteknik</option>
                                                                                                     @foreach ($juruteknik as $juru)
                                                                                                     <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
                                                                                                             {{ $juru->name }}</option>
@@ -479,9 +492,9 @@
                                                                                             </td>
                                                                                             <td>
                                                                                                 <select class="form-control jenis_juruteknik" name="jenis_juruteknik[]" required>
-                                                                                                    <option value="">Pilih Tugas</option>
+                                                                                                    <option value="" disabled selected>Pilih Tugas</option>
                                                                                                     <option value="K">Ketua</option>
-                                                                                                    <option value="P">Pembantu</option>
+                                                                                                    {{-- <option value="P">Pembantu</option> --}}
                                                                                                 </select>
                                                                                             </td>
                                                                                             <td class="text-center"><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
@@ -541,26 +554,26 @@
                                 @can('view technical staff')
                                  @if(isset($juru))
                                         @if($juru->jenis_juruteknik == 'K')
-                                            @if(($aduan->status_aduan == 'DJ' || $aduan->status_aduan == 'TD' || $aduan->status_aduan == 'AK') && ($aduan->status_aduan != 'AS' || $aduan->status_aduan != 'LK' || $aduan->status_aduan != 'LU') )
+                                            @if($aduan->status_aduan == 'DJ')
                                                 <div class="card card-primary card-outline">
                                                     <div class="card-header">
                                                         <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>BORANG PENAMBAHBAIKAN</h5>
                                                     </div>
                                                     <div class="card-body">
-                                                        {!! Form::open(['action' => 'Aduan\AduanController@kemaskiniPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                                        {!! Form::open(['action' => 'Aduan\AduanController@kemaskiniPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'datas']) !!}
                                                         {{Form::hidden('idp', $aduan->id)}}
                                                         <div class="table-responsive">
                                                             <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                 <thead>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td colspan="2"><label class="form-label" for="laporan_pembaikan"><span class="text-danger">*</span> Laporan Pembaikan :</label></td>
+                                                                            <td colspan="2"><label class="form-label" for="laporan_pembaikan"><span class="text-danger">*</span> Laporan Penambahbaikan:</label></td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
                                                                             <td colspan="2">
-                                                                                <textarea rows="5" class="form-control" id="laporan_pembaikan" name="laporan_pembaikan">{{ $aduan->laporan_pembaikan }}</textarea>
+                                                                                <textarea rows="5" class="form-control" id="laporan_pembaikan" name="laporan_pembaikan" required>{{ $aduan->laporan_pembaikan }}</textarea>
                                                                                 @error('laporan_pembaikan')
                                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                 @enderror
@@ -569,7 +582,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td colspan="2"><label class="form-label" for="laporan_pembaikan"><span class="text-danger">*</span> Bahan/ Alat Ganti :</label></td>
+                                                                            <td colspan="2"><label class="form-label" for="laporan_pembaikan"> Bahan/ Alat Ganti :</label></td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
@@ -619,13 +632,13 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td colspan="2"><label class="form-label" for="upload_image"><span class="text-danger">*</span> Gambar Pembaikan :</label></td>
+                                                                            <td colspan="2"><label class="form-label" for="upload_image"><span class="text-danger">*</span> Gambar Penambahbaikan:</label></td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
                                                                             <td colspan="2" style="vertical-align: middle">
-                                                                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple><br>
+                                                                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required><br>
                                                                                 <div class="card-body">
                                                                                     @if(session()->has('messages'))
                                                                                     <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
@@ -696,16 +709,16 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td colspan="2"><label class="form-label" for="upload_image"><span class="text-danger">*</span> Tarikh Selesai Pembaikan :</label></td>
+                                                                            <td colspan="2"><label class="form-label" for="upload_image"><span class="text-danger">*</span> Tarikh Selesai Penambahbaikan:</label></td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
                                                                             <td colspan="2">
                                                                             @if(isset($aduan->tarikh_selesai_aduan))
-                                                                                <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ date('Y-m-d\TH:i', strtotime($aduan->tarikh_selesai_aduan)) }}" />
+                                                                                <input type="datetime-local" class="form-control" required id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ date('Y-m-d\TH:i', strtotime($aduan->tarikh_selesai_aduan)) }}" />
                                                                             @else
-                                                                                <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ old('tarikh_selesai_aduan') }}">
+                                                                                <input type="datetime-local" class="form-control" required id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ old('tarikh_selesai_aduan') }}">
                                                                             @endif
                                                                         </div>
                                                                     </tr>
@@ -717,8 +730,8 @@
                                                                     <tr>
                                                                         <div class="form-group">
                                                                             <td colspan="2">
-                                                                                <select class="form-control status_aduan" name="status_aduan" id="status_aduan" >
-                                                                                <option value="">Pilih Status Aduan</option>
+                                                                                <select class="form-control status_aduan" name="status_aduan" id="status_aduan" required>
+                                                                                <option value="" disabled selected>Pilih Status Aduan</option>
                                                                                     @foreach($status as $stt)
                                                                                         <option value="{{$stt->kod_status}}"  {{ $aduan->status_aduan == $stt->kod_status ? 'selected="selected"' : '' }}>{{$stt->nama_status}}</option>
                                                                                     @endforeach
@@ -734,7 +747,7 @@
                                                                 </thead>
                                                             </table>
                                                         </div>
-                                                        <button type="submit" class="btn btn-danger float-right"><i class="fal fa-save"></i> Simpan Penambahbaikan</button>
+                                                        <button type="submit" class="btn btn-danger float-right" id="submitheads"><i class="fal fa-save"></i> Simpan Penambahbaikan</button>
                                                         {!! Form::close() !!}
                                                     </div>
                                                 </div>
@@ -750,7 +763,7 @@
                                                 <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>PENGESAHAN PENAMBAHBAIKAN</h5>
                                             </div>
                                             <div class="card-body">
-                                                {!! Form::open(['action' => 'Aduan\AduanController@simpanStatus', 'method' => 'POST']) !!}
+                                                {!! Form::open(['action' => 'Aduan\AduanController@simpanStatus', 'method' => 'POST', 'id' => 'datass']) !!}
                                                 {{Form::hidden('ide', $aduan->id)}}
                                                 <div class="table-responsive">
                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
@@ -778,8 +791,8 @@
                                                             <tr>
                                                                 <div class="form-group">
                                                                     <td colspan="2">
-                                                                        <select class="form-control status_adu" name="status_aduan" id="status_aduan" >
-                                                                            <option value="">Pilih Status Aduan</option>
+                                                                        <select class="form-control status_adu" name="status_aduan" id="status_aduan" required>
+                                                                            <option value="" disabled selected>Pilih Status Aduan</option>
                                                                             @foreach ($tukarStatus as $stats)
                                                                             <option value="{{ $stats->kod_status }}" {{ old('status_aduan') ? 'selected' : '' }}>
                                                                                     {{ $stats->nama_status }}</option>
@@ -795,7 +808,7 @@
                                                         </thead>
                                                     </table>
                                                 </div>
-                                                    <button type="submit" class="btn btn-danger float-right"><i class="fal fa-save"></i> Simpan Pengesahan</button>
+                                                    <button type="submit" class="btn btn-danger float-right" id="submitheadss"><i class="fal fa-save"></i> Simpan Pengesahan</button>
                                                 {!! Form::close() !!}
                                             </div>
                                         </div>
@@ -830,7 +843,7 @@
                 <tr id="row${i}" class="head-added">
                 <td>
                     <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" required>
-                        <option value="">Pilih Juruteknik</option>
+                        <option value="" disabled selected>Pilih Juruteknik</option>
                         @foreach ($juruteknik as $juru)
                         <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
                                 {{ $juru->name }}</option>
@@ -839,8 +852,7 @@
                 </td>
                 <td>
                     <select class="form-control jenis_juruteknik" name="jenis_juruteknik[]" required>
-                        <option disabled selected>Pilih Tugas</option>
-                        <option value="K">Ketua</option>
+                        <option value="" disabled selected>Pilih Tugas</option>
                         <option value="P">Pembantu</option>
                     </select>
                 </td>
@@ -908,11 +920,25 @@
         }
 
         $(document).ready(function () {
-        $("#data").submit(function () {
-            $("#submithead").attr("disabled", true);
-            return true;
+            $("#data").submit(function () {
+                $("#submithead").attr("disabled", true);
+                return true;
+            });
         });
-    });
+
+        $(document).ready(function () {
+            $("#datas").submit(function () {
+                $("#submitheads").attr("disabled", true);
+                return true;
+            });
+        });
+
+        $(document).ready(function () {
+            $("#datass").submit(function () {
+                $("#submitheadss").attr("disabled", true);
+                return true;
+            });
+        });
 
     </script>
 @endsection

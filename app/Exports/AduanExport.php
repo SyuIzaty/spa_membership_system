@@ -2,16 +2,19 @@
 
 namespace App\Exports;
 
-use App\Aduan;
+use DB;
 use App\JuruteknikBertugas;
+use App\Aduan;
 use App\AlatanPembaikan;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use DB;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class AduanExport implements FromCollection, WithHeadings
+class AduanExport implements FromCollection, WithHeadings, WithMapping, WithEvents, ShouldAutoSize
 {
     use Exportable;
     public function __construct(String $kategori = null , String $status = null , String $tahap = null , String $bulan = null)
@@ -26,118 +29,97 @@ class AduanExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        $cond = "1";
+        $data = $datas = $datass =  '';
 
-        if($this->kategori && $this->kategori != "All")
+        if($this->kategori || $this->status || $this->tahap || $this->bulan)
         {
-            $cond .= " AND kategori_aduan = '".$this->kategori."' ";
-        }
+            $result = new Aduan();
 
-        if( $this->status != "" && $this->status != "All")
-        {
-            $cond .= " AND status_aduan = '".$this->status."' ";
-        }
-
-        if( $this->tahap != "" && $this->tahap != "All")
-        {
-            $cond .= " AND tahap_kategori = '".$this->tahap."' ";
-        }
-
-        if( $this->bulan != "" && $this->bulan != "All")
-        {
-            $cond .= " AND bulan_laporan = '".$this->bulan."' ";
-        }  
-
-        $list =  Aduan::whereRaw($cond)
-        ->join('kategori_aduan','cms_kategori_aduan.kod_kategori','=','cdd_covid_declarations.kategori_aduan')
-        ->join('status_aduan','cms_status_aduan.kod_status','=','cdd_covid_declarations.status_aduan')
-        ->join('tahap_kategori','cms_tahap_kategori.kod_tahap','=','cdd_covid_declarations.tahap_kategori')
-        ->join('sebab_kerosakan','cms_sebab_kerosakan.id','=','cdd_covid_declarations.sebab_kerosakan')
-        ->join('jenis_kerosakan','cms_jenis_kerosakan.id','=','cdd_covid_declarations.jenis_kerosakan')
-        ->get();
-
-        $collected1 = collect($list)->groupBy('id')->toarray();
-
-        $collected = collect($list)->groupBy('id')->transform(function($item,$key){
-            $data = [
-                'Id'                    => "",
-                'Nama'                  => "",
-                'Emel'                  => "",
-                'No_telefon'            => "",
-                'Tarikh_laporan'        => "",
-                'Bilik'                 => "",
-                'Aras'                  => "",
-                'Blok'                  => "",
-                'Lokasi'                => "",
-                'Kategori'              => "",
-                'Jenis'                 => "",
-                'Sebab'                 => "",
-                'Kuantiti'              => "",
-                'Caj'                   => "",
-                'Maklumat_tambahan'     => "",
-                'Pengesahan_aduan'      => "",
-                'Tahap_kategori'        => "",
-                'Tarikh_serahan'        => "",
-                'Laporan_pembaikan'     => "",
-                'Bahan_alat'            => "",
-                'Kos_upah'              => "",
-                'Kos_bahan'             => "",
-                'Jumlah_kos'            => "",
-                'Tarikh_selesai'        => "",
-                'Catatan'               => "",
-                'Pengesahan_pembaikan'  => "",
-                'Status'                => "",
-                'Sebab_pembatalan'      => "",
-                'Penukaran_status'      => "",
-                'Juruteknik'            => "",
-            ];
-            foreach($item as $ikey => $ivalue)
+            if($this->tahap != "")
             {
-                if($ikey == 0)
-                {
-                    $data['Id'] =$ivalue->id;
-                    $data['Nama'] =$ivalue->nama_pelapor;
-                    $data['Emel'] =$ivalue->emel_pelapor;
-                    $data['No_telefon'] =$ivalue->no_tel_pelapor;
-                    $data['Tarikh_laporan'] =$ivalue->tarikh_laporan;
-                    $data['Bilik'] =$ivalue->nama_bilik;
-                    $data['Aras'] =$ivalue->aras_aduan;
-                    $data['Blok'] =$ivalue->blok_aduan;
-                    $data['Lokasi'] =$ivalue->lokasi_aduan;
-                    $data['Kategori'] =$ivalue->kategori_aduan;
-                    $data['Jenis'] =$ivalue->jenis_kerosakan;
-                    $data['Sebab'] =$ivalue->sebab_kerosakan;
-                    $data['Kuantiti'] =$ivalue->kuantiti_unit;
-                    $data['Caj'] =$ivalue->caj_kerosakan;
-                    $data['Maklumat_tambahan'] =$ivalue->maklumat_tambahan;
-                    $data['Pengesahan_aduan'] =$ivalue->pengesahan_aduan;
-                    $data['Tahap_kategori'] =$ivalue->tahap_kategori;
-                    $data['Tarikh_serahan'] =$ivalue->tarikh_serahan_aduan;
-                    $data['Laporan_pembaikan'] =$ivalue->laporan_pembaikan;
-                    $data['Bahan_alat'] =$ivalue->laporan_pembaikan;
-                    $data['Kos_upah'] =$ivalue->ak_upah;
-                    $data['Kos_bahan'] =$ivalue->ak_bahan_alat;
-                    $data['Jumlah_kos'] =$ivalue->jumlah_kos;
-                    $data['Tarikh_selesai'] =$ivalue->tarikh_selesai_aduan;
-                    $data['Catatan'] =$ivalue->catatan_pembaikan;
-                    $data['Pengesahan_pembaikan'] =$ivalue->pengesahan_pembaikan;
-                    $data['Status'] =$ivalue->status_aduan;
-                    $data['Sebab_pembatalan'] =$ivalue->sebab_pembatalan;
-                    $data['Penukaran_status'] =$ivalue->tukar_status;
-                    $data['Juruteknik'] =$ivalue->status_aduan;
-                }
-
+                $result = $result->where('tahap_kategori', $this->tahap);
             }
-            return $data;
-        });
 
-        return $collected;
+            if($this->status != "")
+            {
+                $result = $result->where('status_aduan', $this->status);
+            }
+
+            if($this->kategori != "")
+            {
+                $result = $result->where('kategori_aduan', $this->kategori);
+            }
+
+            if($this->bulan != "")
+            {
+                $result = $result->where('bulan_laporan', $this->bulan);
+            }
+
+            $data = $result->get();
+        }
+
+        else {
+            $data = Aduan::all();
+        }
+
+        return collect($data);
+    }
+
+    public function map($data): array
+    {
+        if(!empty($data)) {
+            $datas = AlatanPembaikan::where('id_aduan', $data->id)->get();
+            $alat = '';
+            foreach($datas as $datass){
+                $alat .= strtoupper($datass->alat->alat_ganti).', ';
+            }
+
+            $dataz = JuruteknikBertugas::where('id_aduan', $data->id)->get();
+            $juru = '';
+            foreach($dataz as $datazz){
+                $juru .= strtoupper($datazz->juruteknik->name).', ';
+            }
+        }
+
+        return [
+            isset($data->id) ? $data->id : '--',
+            isset($juru) ? $juru : '--',
+            isset($data->nama_pelapor) ? strtoupper($data->nama_pelapor) : '--',
+            isset($data->emel_pelapor) ? strtoupper($data->emel_pelapor) : '--',
+            isset($data->id_pelapor) ? strtoupper($data->id_pelapor) : '--',
+            isset($data->no_tel_pelapor) ? strtoupper($data->no_tel_pelapor) : '--',
+            isset($data->tarikh_laporan) ? date(' d-m-Y ', strtotime($data->tarikh_laporan)) : '--',
+            isset($data->nama_bilik) ? strtoupper($data->nama_bilik) : '--',
+            isset($data->aras_aduan) ? strtoupper($data->aras_aduan) : '--',
+            isset($data->blok_aduan) ? strtoupper($data->blok_aduan) : '--',
+            isset($data->lokasi_aduan) ?strtoupper( $data->lokasi_aduan) : '--',
+            isset($data->kategori->nama_kategori) ? strtoupper($data->kategori->nama_kategori) : '--',
+            isset($data->jenis->jenis_kerosakan) ? strtoupper($data->jenis->jenis_kerosakan) : '--',
+            isset($data->sebab->sebab_kerosakan) ? strtoupper($data->sebab->sebab_kerosakan) : '--',
+            isset($data->kuantiti_unit) ? $data->kuantiti_unit : '--',
+            isset($data->caj_kerosakan) ? strtoupper($data->caj_kerosakan) : '--',
+            isset($data->maklumat_tambahan) ? strtoupper($data->maklumat_tambahan) : '--',
+            isset($data->pengesahan_aduan) ? strtoupper($data->pengesahan_aduan) : '--',
+            isset($data->tahap->jenis_tahap) ? $data->tahap->jenis_tahap : '--',
+            isset($data->tarikh_serahan_aduan) ? date(' d-m-Y ', strtotime($data->tarikh_serahan_aduan)) : '--',
+            isset($data->laporan_pembaikan) ? strtoupper($data->laporan_pembaikan) : '--',
+            isset($alat) ? $alat : '--',
+            isset($data->ak_upah) ? $data->ak_upah : '--',
+            isset($data->ak_bahan_alat) ? $data->ak_bahan_alat : '--',
+            isset($data->jumlah_kos) ? $data->jumlah_kos : '--',
+            isset($data->tarikh_selesai_aduan) ? date(' d-m-Y ', strtotime($data->tarikh_selesai_aduan)) : '--',
+            isset($data->pengesahan_pembaikan) ? strtoupper($data->pengesahan_pembaikan) : '--',
+            isset($data->catatan_pembaikan) ? strtoupper($data->catatan_pembaikan) : '--',
+            isset($data->status->nama_status) ? strtoupper($data->status->nama_status) : '--',
+        ];
+
     }
 
     public function headings(): array
     {
         return [
             'ID',
+            'JURUTEKNIK BERTUGAS',
             'NAMA PELAPOR',
             'EMEL PELAPOR',
             'ID PELAPOR',
@@ -150,7 +132,7 @@ class AduanExport implements FromCollection, WithHeadings
             'KATEGORI ADUAN',
             'JENIS KEROSAKAN',
             'SEBAB KEROSAKAN',
-            'KUANTITI / UNIT',
+            'KUANTITI/UNIT',
             'CAJ KEROSAKAN',
             'MAKLUMAT TAMBAHAN',
             'PENGESAHAN ADUAN',
@@ -158,17 +140,36 @@ class AduanExport implements FromCollection, WithHeadings
             'TARIKH SERAHAN ADUAN',
             'LAPORAN PEMBAIKAN',
             'BAHAN/ALAT GANTI',
-            'KOS UPAH',
-            'KOS BAHAN / ALAT GANTI',
-            'JUMLAH KOS',
+            'KOS UPAH (RM)',
+            'KOS BAHAN (RM)',
+            'JUMLAH KOS (RM)',
             'TARIKH SELESAI ADUAN',
             'CATATAN PEMBAIKAN',
             'PENGESAHAN PEMBAIKAN',
-            'STATUS TERKINI',
-            'SEBAB PEMBATALAN',
-            'PENUKARAN STATUS',
-            'JURUTEKNIK BERTUGAS',
+            'STATUS',
+        ];
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function(AfterSheet $event) {
+                $all = Aduan::get()->count() + 1;
+                $cellRange = 'A1:AC'.$all.'';
+                $head_title = 'A1:AC1';
+                $event->sheet->getDelegate()->getStyle($head_title)->getFont()->setBold(true)->setName('Arial');
+                $event->sheet->getDelegate()->getStyle($head_title)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('80e5ff');
+                $event->sheet->getStyle($cellRange)->applyFromArray([
+                    'borders' => [
+                        'allBorders' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ]);
+            },
         ];
     }
 }
+
 

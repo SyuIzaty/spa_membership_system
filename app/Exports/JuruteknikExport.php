@@ -34,7 +34,7 @@ class JuruteknikExport implements FromCollection, WithHeadings, WithMapping, Wit
         if($this->juruteknik || $this->stat || $this->kate || $this->bul)
         {
             $result = new JuruteknikBertugas();
-            
+
             if($this->juruteknik != "")
             {
                 $result = $result->where('juruteknik_bertugas', $this->juruteknik);
@@ -64,8 +64,6 @@ class JuruteknikExport implements FromCollection, WithHeadings, WithMapping, Wit
             $data = $result->get();
         }
 
-        // dd($data);
-        
         return collect($data);
     }
 
@@ -110,7 +108,7 @@ class JuruteknikExport implements FromCollection, WithHeadings, WithMapping, Wit
             isset($data->aduan->catatan_pembaikan) ? strtoupper($data->aduan->catatan_pembaikan) : '--',
             isset($data->aduan->status->nama_status) ? strtoupper($data->aduan->status->nama_status) : '--',
         ];
-                            
+
     }
 
     public function headings(): array

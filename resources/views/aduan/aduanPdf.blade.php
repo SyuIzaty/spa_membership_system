@@ -1,10 +1,10 @@
 @extends('layouts.applicant')
-    
+
 @section('content')
 <main id="js-page-content" role="main" class="page-content">
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
-                
+
             <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
             <h4 style="text-align: center">
                 <b>BORANG E-ADUAN BAGI TIKET #{{$aduan->id}}</b>
@@ -27,11 +27,11 @@
                     {
                         <span class="badge badge-success">{{ strtoupper($aduan->status->nama_status) }}</span>
                     }
-                    @elseif($aduan->status_aduan=='LK') 
+                    @elseif($aduan->status_aduan=='LK')
                     {
                         <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                     }
-                    @elseif($aduan->status_aduan=='LU') 
+                    @elseif($aduan->status_aduan=='LU')
                     {
                         <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                     }
@@ -39,7 +39,7 @@
                     {
                         <span class="badge badge-kiv">{{ strtoupper($aduan->status->nama_status) }}</span>
                     }
-                    @else 
+                    @else
                     {
                         <span class="badge badge-duplicate">{{ strtoupper($aduan->status->nama_status) }}</span>
                     }
@@ -54,8 +54,9 @@
                 <tr>
                     <div class="form-group">
                         <td width="20%"><label class="form-label" for="nama_pelapor">Nama Pelapor :</label></td>
-                        <td colspan="4">{{ strtoupper($aduan->nama_pelapor ?? '--')  }}</td>
-                        
+                        <td colspan="2">{{ strtoupper($aduan->nama_pelapor ?? '--')  }}</td>
+                        <td width="20%"><label class="form-label" for="nama_pelapor">@if($pengadu->category == 'STF') ID Staf Pelapor : @endif @if($pengadu->category == 'STD') ID Pelajar Pelapor : @endif</label></td>
+                        <td colspan="2">{{ strtoupper($aduan->id_pelapor ?? '--')  }}</td>
                     </div>
                 </tr>
                 <tr>
@@ -93,7 +94,7 @@
                         <td width="20%"><label class="form-label" for="tarikh_laporan">Jenis :</label></td>
                         <td colspan="2">
                             {{ strtoupper($aduan->jenis->jenis_kerosakan) }}<br>
-                            @if($aduan->jenis->jenis_kerosakan == 'Lain-lain') 
+                            @if($aduan->jenis->jenis_kerosakan == 'Lain-lain')
                                 <div> PENERANGAN : <b>{{ strtoupper($aduan->jk_penerangan ?? '--') }}</b></div>
                             @endif
                         </td>
@@ -217,7 +218,7 @@
                                 <td colspan="2" style="vertical-align: middle">
                                     <ol style="margin-left: -25px">
                                         @foreach($juruteknik as $senarai)
-                                            <li style="line-height: 30px"> {{ $senarai->juruteknik->name ?? '--'}} 
+                                            <li style="line-height: 30px"> {{ $senarai->juruteknik->name ?? '--'}}
                                                 ( @if ($senarai->jenis_juruteknik == 'K') KETUA @endif
                                                     @if ($senarai->jenis_juruteknik == 'P') PEMBANTU @endif )
                                             </li>
@@ -237,7 +238,7 @@
                                     <span>TIADA GAMBAR SOKONGAN</span>
                                 @endif
                             </td>
-                        </tr> 
+                        </tr>
                     </tr>
                 </table>
 

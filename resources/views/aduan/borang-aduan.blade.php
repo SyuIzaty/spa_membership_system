@@ -66,14 +66,14 @@
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
                                                     <td colspan="2" style="vertical-align: middle">{{ strtoupper($user->name)}}</td>
-                                                    <th width="20%" style="vertical-align: middle">ID Staf : </th>
+                                                    <th width="20%" style="vertical-align: middle">@if(Auth::user()->hasRole('Staff') ) ID Staf : @endif @if(Auth::user()->hasRole('Student') ) ID Pelajar : @endif</th>
                                                     <td colspan="2" style="vertical-align: middle">{{ strtoupper($user->id)}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle">Emel : </th>
                                                     <td colspan="2" style="vertical-align: middle">{{ $user->email}}</td>
-                                                    <th width="20%" style="vertical-align: middle">No. Telefon : </th>
-                                                    <td colspan="2"><input class="form-control" id="no_tel_pelapor" name="no_tel_pelapor"  value="{{ old('no_tel_pelapor') }}"></td>
+                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> No. Telefon : </th>
+                                                    <td colspan="2"><input class="form-control" id="no_tel_pelapor" name="no_tel_pelapor"  value="{{ old('no_tel_pelapor') }}" required></td>
                                                 </tr>
                                             </thead>
                                         </table>

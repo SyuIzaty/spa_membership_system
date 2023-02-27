@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
-<main id="js-page-content" role="main" class="page-content">
+<main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-list'></i>PENGURUSAN ADUAN KIV
+        <i class='subheader-icon fal fa-list'></i>PENGURUSAN ADUAN DALAM TINDAKAN
         </h1>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        SENARAI <span class="fw-300"><i>ADUAN KIV</i></span>
+                        SENARAI <span class="fw-300"><i>ADUAN DALAM TINDAKAN</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -36,12 +36,15 @@
                                 </div>
                             </div>
 
+                            @if (Session::has('status'))
+                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('status') }}</div>
+                            @endif
                             <div class="col">
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane mt-1 active" id="staf" role="tabpanel"><br>
                                         <div class="col-sm-12 mb-4">
                                             <div class="table-responsive">
-                                                <table id="kiv" class="table table-bordered table-hover table-striped w-100" style="white-space: nowrap">
+                                                <table id="senarai" class="table table-bordered table-hover table-striped w-100" style="white-space: nowrap">
                                                     <thead>
                                                         <tr class="text-center bg-primary-50">
                                                             <th>#TIKET</th>
@@ -50,6 +53,7 @@
                                                             <th>TARIKH</th>
                                                             <th>STATUS</th>
                                                             <th>TAHAP</th>
+                                                            <th>TEMPOH KELEWATAN</th>
                                                             <th>TINDAKAN</th>
                                                         </tr>
                                                         <tr>
@@ -72,8 +76,11 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
                                                             <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
                                                                 <option value="">SEMUA</option>
-                                                                <option value="ADUAN KIV">ADUAN KIV</option>
+                                                                <option value="BS">BELUM SELESAI</option>
+                                                                <option value="DJ">DISERAHKAN KEPADA JURUTEKNIK</option>
+                                                                <option value="TD">TINDAKAN TELAH DIAMBIL</option>
                                                             </select></td>
+                                                            <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
                                                         </tr>
@@ -82,7 +89,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="tab-pane mt-1" id="pelajar" role="tabpanel"><br>
                                         <div class="col-sm-12 mb-4">
                                             <div class="table-responsive">
@@ -95,6 +101,7 @@
                                                             <th>TARIKH</th>
                                                             <th>STATUS</th>
                                                             <th>TAHAP</th>
+                                                            <th>TEMPOH KELEWATAN</th>
                                                             <th>TINDAKAN</th>
                                                         </tr>
                                                         <tr>
@@ -117,8 +124,11 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
                                                             <td class="hasinput"><select id="status_aduan_pelajar" name="status_aduan_pelajar" class="form-control">
                                                                 <option value="">SEMUA</option>
-                                                                <option value="ADUAN KIV">ADUAN KIV</option>
+                                                                <option value="BS">BELUM SELESAI</option>
+                                                                <option value="DJ">DISERAHKAN KEPADA JURUTEKNIK</option>
+                                                                <option value="TD">TINDAKAN TELAH DIAMBIL</option>
                                                             </select></td>
+                                                            <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
                                                         </tr>
@@ -129,6 +139,41 @@
                                     </div>
                                 </div>
                             </div>
+                    </div>
+
+                    <div class="modal fade" id="crud-modals" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> PENUKARAN STATUS</h5>
+                                </div>
+                                <div class="modal-body">
+                                    {!! Form::open(['action' => 'Aduan\AduanController@tukarStatus', 'method' => 'POST']) !!}
+                                    <input type="hidden" name="status_id" id="id">
+                                    <i><b>PERHATIAN!</b></i> : Pastikan maklumat disahkan benar sebelum membuat sebarang penukaran status.
+                                    <br><br>
+                                    <p><span class="text-danger">*</span> Wajib diisi</p>
+                                    <div class="form-group int">
+                                        <td width="15%"><label class="form-label" for="kod_status"><span class="text-danger">*</span> Status :</label></td>
+                                        <td colspan="7">
+                                            <select class="form-control kod_status" name="kod_status" id="kod_status" required>
+                                                <option value="" disabled selected> Please select </option>
+                                                @foreach ($status as $stat)
+                                                    <option value="{{ $stat->kod_status }}" {{ old('kod_status') ==  $stat->kod_status  ? 'selected' : '' }}>{{ $stat->nama_status }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('kod_status')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="footer">
+                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
+                                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- Start Petunjuk --}}
@@ -171,7 +216,18 @@
     {
         $('#status_aduan, #tahap_kategori, #kategori_aduan').select2();
 
-        $('#kiv thead tr .hasinput').each(function(i)
+        $('#kod_status').select2({
+            dropdownParent: $('#crud-modals')
+        });
+
+        $('#crud-modals').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+
+            $('.modal-body #id').val(id);
+        });
+
+        $('#senarai thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -197,21 +253,22 @@
         });
 
 
-        var table = $('#kiv').DataTable({
+        var table = $('#senarai').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/senaraiKiv",
+                url: "/senaraiAduanJuruteknik",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { data: 'nama_pelapor', name: 'nama_pelapor' },
-                    { data: 'kategori_aduan', name: 'kategori.nama_kategori' },
-                    { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
-                    { className: 'text-center', data: 'status_aduan', name: 'status.nama_status' },
-                    { className: 'text-center', data: 'tahap_kategori', name: 'tahap.jenis_tahap', orderable: false, searchable: false },
+                    { data: 'nama_pelapor', name: 'aduan.nama_pelapor' },
+                    { data: 'kategori_aduan', name: 'aduan.kategori.nama_kategori' },
+                    { className: 'text-center', data: 'tarikh_laporan', name: 'aduan.tarikh_laporan' },
+                    { className: 'text-center', data: 'status_aduan', name: 'aduan.status.nama_status' },
+                    { className: 'text-center', data: 'tahap_kategori', name: 'aduan.tahap.jenis_tahap', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'tempoh', name: 'tempoh', orderable: false, searchable: false},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
@@ -221,7 +278,7 @@
                 }
         });
 
-        $('#kiv').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#senarai').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -248,7 +305,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#kiv').DataTable().draw(false);
+                        $('#senarai').DataTable().draw(false);
                     });
                 }
             })
@@ -290,17 +347,18 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/senaraiKivPelajar",
+                url: "/senaraiAduanJuruteknikPelajar",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { data: 'nama_pelapor', name: 'nama_pelapor' },
-                    { data: 'kategori_aduan', name: 'kategori.nama_kategori' },
-                    { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
-                    { className: 'text-center', data: 'status_aduan', name: 'status.nama_status' },
-                    { className: 'text-center', data: 'tahap_kategori', name: 'tahap.jenis_tahap', orderable: false, searchable: false },
+                    { data: 'nama_pelapor', name: 'aduan.nama_pelapor' },
+                    { data: 'kategori_aduan', name: 'aduan.kategori.nama_kategori' },
+                    { className: 'text-center', data: 'tarikh_laporan', name: 'aduan.tarikh_laporan' },
+                    { className: 'text-center', data: 'status_aduan', name: 'aduan.status.nama_status' },
+                    { className: 'text-center', data: 'tahap_kategori', name: 'aduan.tahap.jenis_tahap', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'tempoh', name: 'tempoh', orderable: false, searchable: false},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
@@ -345,6 +403,14 @@
 
     });
 
+    function Print(button)
+        {
+            var url = $(button).data('page');
+            var printWindow = window.open( '{{url("/")}}'+url+'', 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+            printWindow.addEventListener('load', function(){
+                printWindow.print();
+            }, true);
+        }
 
 </script>
 
