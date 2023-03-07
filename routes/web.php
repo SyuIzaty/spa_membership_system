@@ -37,7 +37,7 @@ Route::get('/test', 'ApplicantController@test');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home', 'DashboardController@index');
 
-    Route::resource('/card/staff','Card\StaffCardController');
+    Route::resource('/card/staff', 'Card\StaffCardController');
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');
     Route::post('/eKenderaan-application', 'EKenderaanController@store');
@@ -157,7 +157,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/individuExport/{stats?}/{kates?}/{buls?}', 'Aduan\AduanController@individu');
     Route::post('/individuExport/{stats?}/{kates?}/{buls?}', 'Aduan\AduanController@individu');
     Route::get('aduanIndividu/{stats?}/{kates?}/{buls?}', 'Aduan\AduanController@individu');
-    Route::get('/dashboard-aduan', 'Aduan\AduanController@index')->name('dashAduan');;
+    Route::get('/dashboard-aduan', 'Aduan\AduanController@index')->name('dashAduan');
+    ;
     Route::get('/download/{id}', 'Aduan\AduanController@downloadBorang')->name('downloadBorang');
     Route::get('pembaikan/{filename}/{type}', 'Aduan\AduanController@failPembaikan');
     Route::get('padamGambar/{id}/{id_aduan}', 'Aduan\AduanController@padamGambar')->name('padamGambar');
@@ -559,7 +560,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get-doc/{file}', 'DocumentManagementController@getDoc');
     Route::get('upload', 'DocumentManagementController@upload');
     Route::get('upload/{id}', 'DocumentManagementController@getUpload');
-    Route::post('/store-doc', 'DocumentManagementController@storeDoc');
+    Route::post('store-doc', 'DocumentManagementController@storeDoc');
     Route::delete('/delete-doc/{id}', 'DocumentManagementController@deleteDoc');
     Route::post('/update-title', 'DocumentManagementController@updateTitle');
     Route::post('/edit', 'DocumentManagementController@edit');
@@ -568,6 +569,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('update-admin/{id}', 'DocumentManagementController@adminList');
     Route::delete('destroy/{id}', 'DocumentManagementController@destroy')->name('destroy');
     Route::post('/store', 'DocumentManagementController@store');
+    Route::post('/create-folder', 'DocumentManagementController@createFolder');
+    Route::get('/folder/{id}', 'DocumentManagementController@folder');
+    Route::post('/store-file-folder', 'DocumentManagementController@storeFileFolder');
+
+
+
 
     //eAduan Korporat
     Route::get('/lists/{id}', 'AduanKorporatController@list');
@@ -777,7 +784,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::match(['get', 'post'],'/library/arkib/search', 'Library\Arkib\ArkibController@search');
+    Route::match(['get', 'post'], '/library/arkib/search', 'Library\Arkib\ArkibController@search');
     Route::resource('/library/arkib', 'Library\Arkib\ArkibController');
     Route::post('data_userarkib', 'Library\Arkib\ArkibController@data_userarkib');
     Route::post('/get-arkib', 'Library\Arkib\ArkibController@getArkib');
@@ -787,7 +794,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/library/report/arkib', 'Library\Arkib\ArkibMainController@reportArkib');
     Route::post('/data_exportarkib', 'Library\Arkib\ArkibMainController@data_exportarkib');
 
-    Route::get('/library/dashboard','Library\Arkib\ArkibDashboardController@index');
+    Route::get('/library/dashboard', 'Library\Arkib\ArkibDashboardController@index');
 });
 
 //SCM - Public View

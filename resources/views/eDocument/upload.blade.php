@@ -44,7 +44,7 @@
 
                     <div class="panel-container show">
                         <div class="panel-content">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <button class="btn btn-success dropdown-toggle waves-effect waves-themed" type="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @if ($id != '')
@@ -62,9 +62,50 @@
                                         @endif
                                     @endforeach
                                 </div>
+                                <a href="#" data-target="#addFolder" data-toggle="modal"
+                                    class="btn btn-danger waves-effect waves-themed float-right"><i
+                                        class="fal fa-plus-square"></i> Create New Folder</a>
+
                             </div>
-                            <br>
+                            <div class="col-md-12" style="margin-top:15px;">
+                                @if (Session::has('message'))
+                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;">
+                                        <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}
+                                    </div>
+                                @endif
+                            </div>
                             @if ($id != '')
+                                <div class="row" style="margin-bottom:15px;">
+                                    <div class="col-md-12">
+                                        <div class="row mt-5">
+                                            <div class="col-md-12">
+                                                <div class="card card-success card-outline">
+                                                    <div class="card-header bg-info text-white">
+                                                        <h5 class="card-title w-100"><i
+                                                                class="fal fa-folder width-2 fs-xl"></i>FOLDERS</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        @if (isset($folder))
+                                                            @foreach ($folder as $f)
+                                                                <div style="display: inline-block; padding: 10px;">
+                                                                    <a href="/folder/{{ $f->id }}">
+
+                                                                        <div class="text-center">
+                                                                            <img src="{{ asset('img/folder.png') }}">
+                                                                        </div>
+                                                                        <div class="text-center">
+                                                                            {{ $f->title }}
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row" style="margin-bottom:15px;">
                                     <div class="col-md-12">
                                         <div class="row mt-5">
@@ -117,181 +158,253 @@
                                                                 <tbody>
                                                                     @foreach ($file as $f)
                                                                         <tr>
-                                                                            <td class="text-center">{{ $i }}</td>
+                                                                            <td class="text-center">{{ $i }}
+                                                                            </td>
                                                                             <td style="display:none"><input
-                                                                                    name="id">{{ $f->id }}</td>
+                                                                                    name="id">{{ $f->id }}
+                                                                            </td>
                                                                             <td class='title'>{{ $f->title }}</td>
                                                                             <td class="text-center">{{ $f->file_ext }}
                                                                             </td>
                                                                             <td class="category"
                                                                                 data-selected="{{ $f->category }}"></td>
                                                                             <td class="text-center">
-                                                                                @if (file_exists(storage_path() . '/app/eDocument/' . $f->upload))
-                                                                                    <a target="_blank"
-                                                                                        href="/get-doc/{{ $f->id }}"
-                                                                                        class="btn btn-info btn-xs"><i
-                                                                                            class="fal fa-eye"></i></a>
+                                                                                <a target="_blank"
+                                                                                    href="/get-doc/{{ $f->id }}"
+                                                                                    class="btn btn-info btn-xs"><i
+                                                                                        class="fal fa-eye"></i></a>
+
                                                                             </td>
-                                                                        @else
-                                                                            <a href="#"
-                                                                                class="btn btn-info btn-xs nofile"><i
-                                                                                    class="fal fa-eye"></i></a></td>
-                                                                    @endif
-                                                                    </td>
+                                                                        </tr>
+
+                                                                        @php $i++; @endphp
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    @else
+                                                        <div class="card-body">
+                                                            <p class="text-center"><b>NO FILE UPLOADED</b></p>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <a style="margin-top: 10px; margin-right: 12px;" href="/index"
+                                                class="btn btn-info ml-auto float-right"><i
+                                                    class="fal fa-arrow-alt-left"></i> Back</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="row" style="margin-bottom:15px;">
+                                    <div class="col-md-12">
+                                        <div class="row mt-5">
+                                            <div class="col-md-12">
+                                                <div class="card card-success card-outline">
+                                                    <div class="card-header bg-info text-white">
+                                                        <h5 class="card-title w-100"><i
+                                                                class="fal fa-folder width-2 fs-xl"></i>FOLDERS</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        @if (isset($folder))
+                                                            @foreach ($folder as $f)
+                                                                <div style="display: inline-block; padding: 10px;">
+                                                                    <a href="/folder/{{ $f->id }}">
+
+                                                                        <div class="text-center">
+                                                                            <img src="{{ asset('img/folder.png') }}">
+                                                                        </div>
+                                                                        <div class="text-center">
+                                                                            {{ $f->title }}
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom:15px;">
+                                    <div class="col-md-12">
+                                        <div class="row mt-5">
+                                            <div class="col-md-12">
+                                                <div class="card card-success card-outline">
+                                                    <div class="card-header bg-info text-white">
+                                                        <h5 class="card-title w-100"><i
+                                                                class="fal fa-upload width-2 fs-xl"></i>UPLOAD FILE
+                                                        </h5>
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <form method="post" action="{{ url('store-doc') }}"
+                                                            enctype="multipart/form-data"
+                                                            class="dropzone needsclick dz-clickable" id="dropzone">
+                                                            @csrf
+                                                            <input type="hidden" name="id"
+                                                                value="{{ $admin->department_id }}">
+                                                            <div class="dz-message needsclick">
+                                                                <i class="fal fa-cloud-upload text-muted mb-3"></i> <br>
+                                                                <span class="text-uppercase">Drop files here or click to
+                                                                    upload.</span>
+                                                                <br>
+                                                                <span class="fs-sm text-muted">This is a dropzone. Selected
+                                                                    files
+                                                                    <strong>.pdf,.doc,.docx,.jpeg,.jpg,.png</strong> are
+                                                                    actually uploaded.</span>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <div class="card card-success card-outline">
+                                                    <div class="card-header bg-info text-white">
+                                                        <h5 class="card-title w-100"><i
+                                                                class="fal fa-file width-2 fs-xl"></i>FILE LIST</h5>
+                                                    </div>
+                                                    @if (isset($file))
+                                                        @php $i = 1; @endphp
+                                                        <div class="card-body">
+                                                            <table class="table table-bordered editable" id="editable">
+                                                                <thead class="bg-info-50">
+                                                                    <tr class="text-center">
+                                                                        <td>No.</td>
+                                                                        <td>File</td>
+                                                                        <td>File Ext.</td>
+                                                                        <td>Category</td>
+                                                                        <td>View</td>
                                                                     </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($file as $f)
+                                                                        <tr>
+                                                                            <td class="text-center">{{ $i }}
+                                                                            </td>
+                                                                            <td style="display:none"><input
+                                                                                    name="id">{{ $f->id }}
+                                                                            </td>
+                                                                            <td class='title'>{{ $f->title }}</td>
+                                                                            <td class="text-center">{{ $f->file_ext }}
+                                                                            </td>
+                                                                            <td class="category"
+                                                                                data-selected="{{ $f->category }}"></td>
+                                                                            <td class="text-center">
+                                                                                <a target="_blank"
+                                                                                    href="/get-doc/{{ $f->id }}"
+                                                                                    class="btn btn-info btn-xs"><i
+                                                                                        class="fal fa-eye"></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        @php $i++; @endphp
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    @else
+                                                        <div class="card-body">
+                                                            <p class="text-center"><b>NO FILE UPLOADED</b></p>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <a style="margin-top: 10px; margin-right: 12px;" href="/index"
+                                                class="btn btn-info ml-auto float-right"><i
+                                                    class="fal fa-arrow-alt-left"></i> Back</a>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                                    @php $i++; @endphp
-                                                    @endforeach
-                                                    </tbody>
-                                                    </table>
-                                                </div>
-                                            @else
-                                                <div class="card-body">
-                                                    <p class="text-center"><b>NO FILE UPLOADED</b></p>
-                                                </div>
                             @endif
-                        </div>
-                    </div>
-                    <a style="margin-top: 10px; margin-right: 12px;" href="/index"
-                        class="btn btn-info ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>
-                </div>
-            </div>
-        </div>
-    @else
-        <div class="row" style="margin-bottom:15px;">
-            <div class="col-md-12">
-                <div class="row mt-5">
-                    <div class="col-md-12">
-                        <div class="card card-success card-outline">
-                            <div class="card-header bg-info text-white">
-                                <h5 class="card-title w-100"><i class="fal fa-upload width-2 fs-xl"></i>UPLOAD FILE
-                                </h5>
-                            </div>
 
-                            <div class="card-body">
-                                <form method="post" action="{{ url('store-doc') }}" enctype="multipart/form-data"
-                                    class="dropzone needsclick dz-clickable" id="dropzone">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $admin->department_id }}">
-                                    <div class="dz-message needsclick">
-                                        <i class="fal fa-cloud-upload text-muted mb-3"></i> <br>
-                                        <span class="text-uppercase">Drop files here or click to upload.</span>
-                                        <br>
-                                        <span class="fs-sm text-muted">This is a dropzone. Selected files
-                                            <strong>.pdf,.doc,.docx,.jpeg,.jpg,.png</strong> are actually uploaded.</span>
+                            <div class="modal fade" id="addModal" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="card-header">
+                                            <h5 class="card-title w-100">Edit Title</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="form-title">
+                                                @csrf
+                                                <input type="hidden" name="id" id="id" />
+
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">Title</span>
+                                                        </div>
+                                                        <input class="form-control" name="title" id="title">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">Category</span>
+                                                        </div>
+                                                        <select class="custom-select form-control" name="category"
+                                                            id="category">
+                                                            <option disabled selected value="">Select Category
+                                                            </option>
+                                                            @foreach ($category as $c)
+                                                                <option value="{{ $c->id }}">{{ $c->description }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="footer">
+                                                    <button type="submit" id="saves"
+                                                        class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i
+                                                            class="fal fa-save"></i> Save</button>
+                                                    <button type="button"
+                                                        class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                                        data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                        Close</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-3">
-                        <div class="card card-success card-outline">
-                            <div class="card-header bg-info text-white">
-                                <h5 class="card-title w-100"><i class="fal fa-file width-2 fs-xl"></i>FILE LIST</h5>
-                            </div>
-                            @if (isset($file))
-                                @php $i = 1; @endphp
-                                <div class="card-body">
-                                    <table class="table table-bordered editable" id="editable">
-                                        <thead class="bg-info-50">
-                                            <tr class="text-center">
-                                                <td>No.</td>
-                                                <td>File</td>
-                                                <td>File Ext.</td>
-                                                <td>Category</td>
-                                                <td>View</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($file as $f)
-                                                <tr>
-                                                    <td class="text-center">{{ $i }}</td>
-                                                    <td style="display:none"><input name="id">{{ $f->id }}
-                                                    </td>
-                                                    <td class='title'>{{ $f->title }}</td>
-                                                    <td class="text-center">{{ $f->file_ext }}</td>
-                                                    <td class="category" data-selected="{{ $f->category }}"></td>
-                                                    <td class="text-center">
-                                                        @if (file_exists(storage_path() . '/app/eDocument/' . $f->upload))
-                                                            <a target="_blank" href="/get-doc/{{ $f->id }}"
-                                                                class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a>
-                                                    </td>
-                                                @else
-                                                    <a href="#" class="btn btn-info btn-xs nofile"><i
-                                                            class="fal fa-eye"></i></a></td>
-                                            @endif
-                                            </tr>
-                                            @php $i++; @endphp
-                            @endforeach
-                            </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <div class="card-body">
-                            <p class="text-center"><b>NO FILE UPLOADED</b></p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <a style="margin-top: 10px; margin-right: 12px;" href="/index"
-                    class="btn btn-info ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>
-            </div>
-        </div>
-        </div>
+                            <div class="modal fade" id="addFolder" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="card-header">
+                                            <h5 class="card-title w-100">Create New Folder</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            {!! Form::open(['action' => 'DocumentManagementController@createFolder', 'method' => 'POST']) !!}
+                                            <input type="hidden" name="id" id="id"
+                                                value="{{ $department_id }}" />
+                                            <div class="form-group">
+                                                <label class="form-label"><span class="text-danger">*</span> Title</label>
+                                                <input type="text" id="folderTitle" name="folderTitle"
+                                                    class="form-control" required>
+                                            </div>
 
-        @endif
-
-        <div class="modal fade" id="addModal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="card-header">
-                        <h5 class="card-title w-100">Edit Title</h5>
-                    </div>
-                    <div class="modal-body">
-                        <form id="form-title">
-                            @csrf
-                            <input type="hidden" name="id" id="id" />
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Title</span>
+                                            <div class="footer">
+                                                <button type="submit" id="btn_search"
+                                                    class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i
+                                                        class="fal fa-save"></i> Save</button>
+                                                <button type="button"
+                                                    class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                                    data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                    Close</button>
+                                            </div>
+                                            {!! Form::close() !!}
+                                        </div>
                                     </div>
-                                    <input class="form-control" name="title" id="title">
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Category</span>
-                                    </div>
-                                    <select class="custom-select form-control" name="category" id="category">
-                                        <option disabled selected value="">Select Category</option>
-                                        @foreach ($category as $c)
-                                            <option value="{{ $c->id }}">{{ $c->description }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="footer">
-                                <button type="submit" id="saves"
-                                    class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i
-                                        class="fal fa-save"></i> Save</button>
-                                <button type="button"
-                                    class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
-                                    data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
         </div>
     </main>
 @endsection
@@ -426,6 +539,8 @@
                 onSuccess: function(data, textStatus, jqXHR) {
                     if (data.action == 'delete') {
                         $('#' + data.id).remove();
+                        location.reload();
+
                     }
                 }
             });

@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\DocumentManagement;
-use App\DocumentCategory;
-use App\DepartmentList;
-use App\DocumentAdmin;
-use App\User;
+use DB;
 use File;
+use App\User;
 use Response;
+use App\DocumentAdmin;
+use App\DepartmentList;
+use App\DocumentFolder;
+use App\DocumentCategory;
+use App\DocumentManagement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentManagementController extends Controller
 {
@@ -28,14 +30,14 @@ class DocumentManagementController extends Controller
         $count = DepartmentList::select('id', 'name')->withCount('document')->orderByDesc('document_count')->get();
 
         $category = DocumentCategory::all();
-        
+
         $admins = DocumentAdmin::where('admin_id', Auth::user()->id)->get();
 
-        $superAdmin = User::where('id', Auth::user()->id)->whereHas('roles', function($query){
+        $superAdmin = User::where('id', Auth::user()->id)->whereHas('roles', function ($query) {
             $query->where('id', 'DMS001');
         })->get();
 
-        return view('eDocument.index', compact('list','department','count','category','admins','superAdmin'));
+        return view('eDocument.index', compact('list', 'department', 'count', 'category', 'admins', 'superAdmin'));
     }
 
     public function upload()
@@ -47,55 +49,76 @@ class DocumentManagementController extends Controller
 
         $admin = DocumentAdmin::where('admin_id', Auth::user()->id)->first();
 
-        $file = DocumentManagement::wherehas('admin.department', function($query) use ($admin){
-            $query->where('id',$admin->department_id);})->get();
+        $file = DocumentManagement::whereNull('folder_id')->wherehas('admin.department', function ($query) use ($admin) {
+            $query->where('id', $admin->department_id);
+        })->get();
 
-        $superAdmin = User::where('id', Auth::user()->id)->whereHas('roles', function($query){
+        $folder = DocumentFolder::wherehas('admin.department', function ($query) use ($admin) {
+            $query->where('id', $admin->department_id);
+        })->get();
+
+
+        $superAdmin = User::where('id', Auth::user()->id)->whereHas('roles', function ($query) {
             $query->where('id', 'DMS001');
         })->get();
-    
 
-        return view('eDocument.upload', compact('id','department','category','admins','file','admin','superAdmin'));
+        $department_id = $admin->department_id;
+
+        return view('eDocument.upload', compact('id', 'department', 'category', 'admins', 'file', 'admin', 'superAdmin', 'department_id', 'folder'));
     }
 
     public function getUpload($id)
     {
         $category = DocumentCategory::all();
-        $file = DocumentManagement::where('department_id', $id)->orderBy('category', 'ASC')->get();
-        $getDepartment = DepartmentList::where('id',$id)->first();
+        $file = DocumentManagement::where('department_id', $id)->get();
+        $folder = DocumentFolder::where('department_id', $id)->get();
+
+        $getDepartment = DepartmentList::where('id', $id)->first();
         $department = DepartmentList::all();
 
         $admins = DocumentAdmin::where('admin_id', Auth::user()->id)->get();
 
-        $superAdmin = User::where('id', Auth::user()->id)->whereHas('roles', function($query){
+        $superAdmin = User::where('id', Auth::user()->id)->whereHas('roles', function ($query) {
             $query->where('id', 'DMS001');
         })->get();
 
-        return view('eDocument.upload', compact('id','file','getDepartment','department','category','admins','superAdmin'));
+        $department_id = $id;
+        return view('eDocument.upload', compact('id', 'file', 'getDepartment', 'department', 'category', 'admins', 'superAdmin', 'department_id', 'folder'));
     }
-    
+
     public function storeDoc(Request $request)
     {
         $file = $request->file('file');
-       
-        $path = storage_path()."/eDocument/";
-
-        if (isset($file)) { 
+        if (isset($file)) {
             $originalName = $file->getClientOriginalName();
             $fileName = date('dmY_Hi')."_".$originalName;
             $title = current(explode(".", $originalName));
             $ext = substr($originalName, strpos($originalName, ".") + 1);
             $file_ext = str_pad(".", STR_PAD_LEFT) . $ext;
-            $file->storeAs('/eDocument', $fileName);
+            // $request->file('file')->storeAs('/eDocument', $fileName);
+            // $file->move(('/eDocument'), $fileName);
+            // DocumentManagement::create([
+            //     'department_id' => $request->id,
+            //     'upload'        => $fileName,
+            //     'title'         => $title,
+            //     'file_ext'      => $file_ext,
+            //     'original_name' => $originalName,
+            //     'web_path'      => "eDocument/".$fileName,
+            //     'created_by'    => Auth::user()->id
+            // ]);
+
+            Storage::put("/eDocument/".$fileName, file_get_contents($file));
+            // $file->storeAs('/eDocument', date('dmyhi').' - '.$fileName);
+
             DocumentManagement::create([
                 'department_id' => $request->id,
                 'upload'        => $fileName,
                 'title'         => $title,
                 'file_ext'      => $file_ext,
                 'original_name' => $originalName,
-                'web_path'      => "app/eDocument/".$fileName,
+                'web_path'      => "eDocument/".$fileName,
                 'created_by'    => Auth::user()->id
-            ]);
+        ]);
         }
 
         return response()->json(['success'=>$originalName]);
@@ -103,16 +126,21 @@ class DocumentManagementController extends Controller
 
     public function getDoc($id)
     {
+        // $file = DocumentManagement::where('id', $id)->first();
+        // $path = storage_path().'/eDocument/'.$file->upload;
+
+        // $doc = File::get($path);
+        // $filetype = File::mimeType($path);
+
+        // $response = Response::make($doc, 200);
+        // $response->header("Content-Type", $filetype);
+
+        // return $response;
+
+
         $file = DocumentManagement::where('id', $id)->first();
-        $path = storage_path().'/'.'app'.'/eDocument/'.$file->upload;
-
-        $doc = File::get($path);
-        $filetype = File::mimeType($path);
-
-        $response = Response::make($doc, 200);
-        $response->header("Content-Type", $filetype);
-        
-        return $response;
+        // dd($file);
+        return Storage::response($file->web_path);
     }
 
     public function deleteDoc($id)
@@ -126,9 +154,8 @@ class DocumentManagementController extends Controller
 
     public function updateTitle(Request $request)
     {
-        
-        if($request->ajax()){
-            if($request->action == 'edit'){
+        if ($request->ajax()) {
+            if ($request->action == 'edit') {
                 $update = DocumentManagement::where('id', $request->id)->first();
                 $update->update([
                     'title' => $request->title,
@@ -137,7 +164,7 @@ class DocumentManagementController extends Controller
                 ]);
             }
 
-            if($request->action == 'delete'){
+            if ($request->action == 'delete') {
                 DocumentManagement::find($request->id)->delete();
             }
 
@@ -154,7 +181,7 @@ class DocumentManagementController extends Controller
             'updated_by'  => Auth::user()->id
         ]);
 
-        return redirect()->back()->with('message','Update Successfully');
+        return redirect()->back()->with('message', 'Update Successfully');
     }
 
     public function departmentList()
@@ -168,18 +195,15 @@ class DocumentManagementController extends Controller
 
         return datatables()::of($department)
 
-            ->editColumn('department',function($department)
-            {
+            ->editColumn('department', function ($department) {
                 return $department->name;
             })
 
-            ->editColumn('total',function($department)
-            {
-                return DocumentAdmin::where('department_id',$department->id)->count();
+            ->editColumn('total', function ($department) {
+                return DocumentAdmin::where('department_id', $department->id)->count();
             })
 
             ->addColumn('update', function ($department) {
-
                 return '<a href="/update-admin/'.$department->id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
@@ -189,14 +213,14 @@ class DocumentManagementController extends Controller
 
     public function adminList($id)
     {
-        $department = DepartmentList::where('id',$id)->first();
-        $mainAdmin =  User::whereHas('roles', function($query){
+        $department = DepartmentList::where('id', $id)->first();
+        $mainAdmin =  User::whereHas('roles', function ($query) {
             $query->where('id', 'DMS002');
-        })->get(); 
+        })->get();
 
-        $admin = DocumentAdmin::where('department_id',$id)->get();
+        $admin = DocumentAdmin::where('department_id', $id)->get();
 
-        return view('eDocument.admin-list', compact('id','department','mainAdmin','admin'));
+        return view('eDocument.admin-list', compact('id', 'department', 'mainAdmin', 'admin'));
     }
 
     public function store(Request $request)
@@ -204,16 +228,11 @@ class DocumentManagementController extends Controller
         $error = [];
         $message = '';
 
-        foreach($request->admin as $key => $value)
-        {
-            if (DocumentAdmin::where('department_id',$request->id)->where('admin_id', $value)->count() > 0)
-            {
-                $staff = User::where('id',$value)->first();
+        foreach ($request->admin as $key => $value) {
+            if (DocumentAdmin::where('department_id', $request->id)->where('admin_id', $value)->count() > 0) {
+                $staff = User::where('id', $value)->first();
                 $error[] = $staff->name;
-            }
-            
-            else
-            {
+            } else {
                 DocumentAdmin::create([
                     'admin_id'      => $value,
                     'department_id' => $request->id,
@@ -223,19 +242,14 @@ class DocumentManagementController extends Controller
             }
         }
 
-        if($error)
-        {
-            $message = "[".implode(',',$error)."] already inserted";
+        if ($error) {
+            $message = "[".implode(',', $error)."] already inserted";
         }
 
-        if($message)
-        {
+        if ($message) {
             return redirect()->back()->withErrors([$message]);
-        }
-
-        else
-        {
-            return redirect()->back()->with('message','Admin Added!');
+        } else {
+            return redirect()->back()->with('message', 'Admin Added!');
         }
     }
 
@@ -250,37 +264,51 @@ class DocumentManagementController extends Controller
         return redirect('update-admin/'.$admin->department_id);
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function createFolder(Request $request)
     {
-        //
+        DocumentFolder::create([
+            'department_id' => $request->id,
+            'title'         => $request->folderTitle,
+            'created_by'    => Auth::user()->id,
+            'updated_by'    => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Folder Created!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\DocumentManagementSystem  $documentManagementSystem
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DocumentManagementSystem $documentManagementSystem)
+    public function folder($id)
     {
-        //
+        $category = DocumentCategory::all();
+        $file = DocumentManagement::where('folder_id', $id)->orderBy('category', 'ASC')->get();
+        $folder = DocumentFolder::where('id', $id)->first();
+
+        return view('eDocument.folder_upload', compact('category', 'file', 'folder'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\DocumentManagementSystem  $documentManagementSystem
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, DocumentManagementSystem $documentManagementSystem)
+    public function storeFileFolder(Request $request)
     {
-        //
+        $file = $request->file('file');
+        if (isset($file)) {
+            $originalName = $file->getClientOriginalName();
+            $fileName = date('dmY_Hi')."_".$originalName;
+            $title = current(explode(".", $originalName));
+            $ext = substr($originalName, strpos($originalName, ".") + 1);
+            $file_ext = str_pad(".", STR_PAD_LEFT) . $ext;
+
+            Storage::put("/eDocument/".$fileName, file_get_contents($file));
+
+            DocumentManagement::create([
+                'department_id' => $request->dept_id,
+                'folder_id'    => $request->fol_id,
+                'upload'        => $fileName,
+                'title'         => $title,
+                'file_ext'      => $file_ext,
+                'original_name' => $originalName,
+                'web_path'      => "eDocument/".$fileName,
+                'created_by'    => Auth::user()->id
+        ]);
+        }
+
+        return response()->json(['success'=>$originalName]);
     }
 }
