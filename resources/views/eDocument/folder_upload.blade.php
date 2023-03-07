@@ -40,17 +40,24 @@
                                 data-original-title="Close"></button>
                         </div>
                     </div>
-
+                    <form id="form-id">
+                        @csrf
+                        <input type="hidden" id="id" name="id" value="{{ $folder->id }}" required>
+                        <button type="submit" class="btn btn-danger ml-auto float-right waves-effect waves-themed"
+                            id="deleteFol" style="margin-top:10px; margin-right: 20px;"><i class="fal fa-times-circle"></i>
+                            Delete
+                            Folder</button>
+                    </form>
                     <div class="panel-container show">
                         <div class="panel-content">
-                            <div class="col-md-12" style="margin-top:15px;">
+                            <div class="col-md-12">
                                 @if (Session::has('message'))
                                     <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;">
                                         <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}
                                     </div>
                                 @endif
                             </div>
-                            <div class="row" style="margin-bottom:15px;">
+                            <div class="row">
                                 <div class="col-md-12">
                                     <div class="row mt-5">
                                         <div class="col-md-12">
@@ -372,6 +379,51 @@
             })
 
             // End: Edit title & category
+        });
+
+        $("#deleteFol").on('click', function(e) {
+            e.preventDefault();
+
+            var datas = $('#form-id').serialize();
+
+            Swal.fire({
+                title: 'Are you sure you want to delete this folder?',
+                text: "All files cannot be restored!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+
+                if (result.value) {
+                    Swal.fire({
+                        title: 'Loading..',
+                        text: 'Please wait..',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        onOpen: () => {
+                            Swal.showLoading()
+                        }
+                    })
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('delete-folder') }}",
+                        data: datas,
+                        dataType: "json",
+                        success: function(response) {
+                            console.log(response);
+                            if (response) {
+                                Swal.fire(response.success);
+                                window.location = "/upload";
+                            }
+                        }
+                    });
+                }
+            })
         });
     </script>
 @endsection

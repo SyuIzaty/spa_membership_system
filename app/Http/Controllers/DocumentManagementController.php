@@ -323,4 +323,22 @@ class DocumentManagementController extends Controller
 
         return response()->json(['success'=>$originalName]);
     }
+
+    public function deleteFolder(Request $request)
+    {
+        $folder = DocumentFolder::find($request->id);
+        $folder->update(['deleted_by' => Auth::user()->id]);
+        $folder->delete();
+
+        $file = DocumentManagement::where('folder_id', $request->id)->get();
+
+        if (isset($file)) {
+            foreach ($file as $f) {
+                $f->update(['deleted_by' => Auth::user()->id]);
+                $f->delete();
+            }
+        }
+
+        return response()->json(['success' => 'Deleted!']);
+    }
 }

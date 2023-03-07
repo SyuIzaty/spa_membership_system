@@ -63,7 +63,7 @@
                                     @endforeach
                                 </div>
                                 <a href="#" data-target="#addFolder" data-toggle="modal"
-                                    class="btn btn-danger waves-effect waves-themed float-right"><i
+                                    class="btn btn-primary waves-effect waves-themed float-right"><i
                                         class="fal fa-plus-square"></i> Create New Folder</a>
 
                             </div>

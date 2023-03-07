@@ -572,9 +572,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/create-folder', 'DocumentManagementController@createFolder');
     Route::get('/folder/{id}', 'DocumentManagementController@folder');
     Route::post('/store-file-folder', 'DocumentManagementController@storeFileFolder');
-
-
-
+    Route::post('/delete-folder', 'DocumentManagementController@deleteFolder');
 
     //eAduan Korporat
     Route::get('/lists/{id}', 'AduanKorporatController@list');
