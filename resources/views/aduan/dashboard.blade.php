@@ -12,14 +12,12 @@
 
     .tab-content>.active {
         height: auto;
-        /* overflow: auto; */
         visibility: visible;
     }
 
     .td-green td {background-color: rgb(67, 250, 67);}
     .td-yellow td {background-color: rgb(139, 255, 139);}
     .td-red td {background-color: rgb(176, 245, 176);}
-
 </style>
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
 
@@ -258,7 +256,6 @@
 @endsection
 
 @section('script')
-
 <script>
 
     $(document).ready(function()
@@ -314,15 +311,7 @@
         function drawChart2() {
             var data = google.visualization.arrayToDataTable(list);
             var options = {
-
-            titleTextStyle: {
-                color: '333333',
-                fontName: 'Arial',
-                fontSize: 16,
-            },
-            bar: {groupWidth: "80%"},
-            legend: { position: 'bottom'},
-            is3D: true,
+                pieHole: 0.4,
             }
             var chart = new google.visualization.PieChart(document.getElementById('chart2'));
             chart.draw(data, options);
@@ -337,113 +326,13 @@
         function drawChart1() {
             var data = google.visualization.arrayToDataTable(category);
             var options = {
-            titleTextStyle: {
-                color: '333333',
-                fontName: 'Arial',
-                fontSize: 16,
-            },
-            bar: {groupWidth: "80%"},
-            borderColor:
-                'rgb(135, 48, 14)',
-            legend: { position: 'bottom'},
-            is3D: true,
+                pieHole: 0.4,
             }
             var chart = new google.visualization.PieChart(document.getElementById('chart1'));
             chart.draw(data, options);
 
         }
     })
-
-    // $(function () {
-
-    //     console.log(juruteknik);
-    //     google.charts.load('current', {'packages':['corechart']});
-    //     google.charts.setOnLoadCallback(drawChart5);
-    //     function drawChart5() {
-    //         var data = google.visualization.arrayToDataTable(juruteknik);
-    //         var options = {
-    //         titleTextStyle: {
-    //             color: '333333',
-    //             fontName: 'Arial',
-    //             fontSize: 16,
-    //         },
-    //         bar: {groupWidth: "80%"},
-    //         legend: { position: 'bottom'},
-    //         is3D: true,
-    //         }
-    //         var chart = new google.visualization.PieChart(document.getElementById('chart5'));
-    //         chart.draw(data, options);
-    //     }
-    // })
-
-    // $(function () {
-
-    //     console.log(aduan);
-    //     google.charts.load('current', {'packages':['corechart']});
-    //     google.charts.setOnLoadCallback(drawChart3);
-    //     function drawChart3() {
-    //         var data = google.visualization.arrayToDataTable(aduan);
-    //         var options = {
-    //         // title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
-    //         titleTextStyle: {
-    //             color: '333333',
-    //             fontName: 'Arial',
-    //             fontSize: 16,
-    //         },
-    //         bar: {groupWidth: "80%"},
-    //         borderColor:
-    //             'rgb(135, 48, 14)',
-    //         legend: { position: 'bottom'},
-    //         }
-    //         var chart = new google.visualization.BarChart(document.getElementById('chart3'));
-    //         chart.draw(data, options);
-    //     }
-
-    // })
-
-    // $(function () {
-
-    //     console.log(list);
-    //     google.charts.load('current', {'packages':['corechart']});
-    //     google.charts.setOnLoadCallback(drawChart4);
-    //     function drawChart4() {
-    //         var data = google.visualization.arrayToDataTable(list);
-    //         var options = {
-    //         // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
-    //         titleTextStyle: {
-    //             color: '333333',
-    //             fontName: 'Arial',
-    //             fontSize: 16,
-    //         },
-    //         bar: {groupWidth: "80%"},
-    //         legend: { position: 'bottom'},
-    //         }
-    //         var chart = new google.visualization.BarChart(document.getElementById('chart4'));
-    //         chart.draw(data, options);
-    //     }
-    // })
-
-    // $(function () {
-
-    //     console.log(juruteknik);
-    //     google.charts.load('current', {'packages':['corechart']});
-    //     google.charts.setOnLoadCallback(drawChart6);
-    //     function drawChart6() {
-    //         var data = google.visualization.arrayToDataTable(juruteknik);
-    //         var options = {
-    //         // title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',
-    //         titleTextStyle: {
-    //             color: '333333',
-    //             fontName: 'Arial',
-    //             fontSize: 16,
-    //         },
-    //         bar: {groupWidth: "80%"},
-    //         legend: { position: 'bottom'},
-    //         }
-    //         var chart = new google.visualization.BarChart(document.getElementById('chart6'));
-    //         chart.draw(data, options);
-    //     }
-    // })
 
 </script>
 @endsection

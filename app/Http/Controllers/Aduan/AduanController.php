@@ -2340,7 +2340,7 @@ class AduanController extends Controller
                     $query->where(DB::raw('YEAR(tarikh_laporan)'), '=', $selectedYear);
                 })->limit(5)->orderBy('total', 'desc')->get();
 
-        return view('aduan.dashboard', compact('years','selectedYear','senarai','rank'))->with('list',json_encode($results))->with('category',json_encode($result));
+        return view('aduan.dashboard', compact('years','selectedYear','rank','senarai'))->with('list',json_encode($results))->with('category',json_encode($result));
     }
 
     /**
