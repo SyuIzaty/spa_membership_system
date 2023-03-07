@@ -8,6 +8,7 @@ use App\User;
 use Response;
 use App\Staff;
 use App\DocumentAdmin;
+use App\DocumentStaff;
 use App\DepartmentList;
 use App\DocumentFolder;
 use App\DocumentCategory;
@@ -26,7 +27,7 @@ class DocumentManagementController extends Controller
     public function index()
     {
         $department = DepartmentList::all();
-        $list = DocumentManagement::orderBy('category', 'ASC')->get(); //then orderby doc name
+        $list = DocumentManagement::whereNull('folder_id')->orderBy('category', 'ASC')->get(); //then orderby doc name
 
         $count = DepartmentList::select('id', 'name')->withCount('document')->orderByDesc('document_count')->get();
 
@@ -38,7 +39,11 @@ class DocumentManagementController extends Controller
             $query->where('id', 'DMS001');
         })->get();
 
-        return view('eDocument.index', compact('list', 'department', 'count', 'category', 'admins', 'superAdmin'));
+        $folder = DocumentFolder::wherehas('staffDept', function ($query) {
+            $query->where('staff_id', Auth::user()->id);
+        });
+
+        return view('eDocument.index', compact('list', 'department', 'count', 'category', 'admins', 'superAdmin', 'folder'));
     }
 
     public function upload()
@@ -221,8 +226,9 @@ class DocumentManagementController extends Controller
 
         $staff = Staff::get();
         $admin = DocumentAdmin::where('department_id', $id)->get();
+        $staffs = DocumentStaff::where('department_id', $id)->get();
 
-        return view('eDocument.admin-list', compact('id', 'department', 'staff', 'admin'));
+        return view('eDocument.admin-list', compact('id', 'department', 'staff', 'admin', 'staffs'));
     }
 
     public function store(Request $request)
@@ -340,5 +346,44 @@ class DocumentManagementController extends Controller
         }
 
         return response()->json(['success' => 'Deleted!']);
+    }
+
+    public function storeStaff(Request $request)
+    {
+        $error = [];
+        $message = '';
+
+        foreach ($request->staff as $key => $value) {
+            if (DocumentStaff::where('department_id', $request->id)->where('staff_id', $value)->count() > 0) {
+                $staff = User::where('id', $value)->first();
+                $error[] = $staff->name;
+            } else {
+                DocumentStaff::create([
+                    'staff_id'      => $value,
+                    'department_id' => $request->id,
+                    'created_by'    => Auth::user()->id,
+                    'updated_by'    => Auth::user()->id
+                ]);
+            }
+        }
+
+        if ($error) {
+            $message = "[".implode(',', $error)."] already inserted";
+        }
+
+        if ($message) {
+            return redirect()->back()->withErrors([$message]);
+        } else {
+            return redirect()->back()->with('message', 'Staff Added!');
+        }
+    }
+
+    public function deleteStaff($id)
+    {
+        $exist = DocumentStaff::find($id);
+        $exist->delete();
+        $exist->update(['deleted_by' => Auth::user()->id]);
+
+        return redirect()->back();
     }
 }

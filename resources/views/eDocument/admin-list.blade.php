@@ -26,26 +26,25 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
+                            @if (Session::has('message'))
+                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i
+                                        class="icon fal fa-check-circle"></i> {{ Session::get('message') }}
+                                </div>
+                            @endif
+
+                            @if ($errors->any())
+                                <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;">
+                                    <i class="icon fal fa-exclamation-circle"></i> {{ $errors->first() }}
+                                </div>
+                            @endif
+
+
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="card card-primary card-outline">
                                         <div class="card-header">
                                             <p class="card-title w-100" style="font-weight: 500">Add Admin</p>
                                         </div>
-
-                                        @if (Session::has('message'))
-                                            <div class="alert alert-success"
-                                                style="color: #3b6324; background-color: #d3fabc;"> <i
-                                                    class="icon fal fa-check-circle"></i> {{ Session::get('message') }}
-                                            </div>
-                                        @endif
-
-                                        @if ($errors->any())
-                                            <div class="alert alert-success"
-                                                style="color: #000000; background-color: #ffdf89;">
-                                                <i class="icon fal fa-exclamation-circle"></i> {{ $errors->first() }}
-                                            </div>
-                                        @endif
 
                                         {!! Form::open(['action' => 'DocumentManagementController@store', 'method' => 'POST']) !!}
                                         <input type="hidden" name="id" value="{{ $id }}">
@@ -123,13 +122,102 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <a href="/department-list" class="btn btn-dark btn-sm mr-auto ml-3 mb-3"><i
-                                                class="fal fa-arrow-alt-left"></i> Back</a>
                                     </div>
                                 </div>
                             </div>
+
+                            @role('Super Admin')
+                                <div class="row" style="margin-top: 20px;">
+                                    <div class="col-sm-12">
+                                        <div class="card card-primary card-outline">
+                                            <div class="card-header">
+                                                <p class="card-title w-100" style="font-weight: 500">Add Staff</p>
+                                            </div>
+
+                                            {!! Form::open(['action' => 'DocumentManagementController@storeStaff', 'method' => 'POST']) !!}
+                                            <input type="hidden" name="id" value="{{ $id }}">
+                                            <div class="card-body">
+                                                <table class="table table-borderless text-center">
+                                                    <tr>
+                                                        <div class="form-group">
+                                                            <td style="vertical-align: middle"><label
+                                                                    class="form-label float-right" for="staff">Add
+                                                                    Staff:</label></td>
+                                                            <td colspan="4">
+                                                                <select class="form-control staff" name="staff[]" multiple>
+                                                                    @foreach ($staff as $s)
+                                                                        <option value="{{ $s->staff_id }}">
+                                                                            {{ $s->staff_name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @error('staff')
+                                                                    <p style="color: red"><strong> * {{ $message }} </strong>
+                                                                    </p>
+                                                                @enderror
+                                                            </td>
+                                                            <td><button type="submit"
+                                                                    class="btn btn-primary ml-auto float-left"><i
+                                                                        class="fal fa-save"></i> Save</button></td>
+                                                        </div>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            {!! Form::close() !!}
+
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary-50 text-center">
+                                                        <tr>
+                                                            <td>No</td>
+                                                            <td>Staff</td>
+                                                            <td>Action</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @php $i = 1; @endphp
+
+                                                        @if ($staffs->isNotEmpty())
+                                                            @foreach ($staffs as $a)
+                                                                <tr class="data-row">
+                                                                    <td style="text-align: center">{{ $i }}</td>
+                                                                    <td>
+                                                                        <b>{{ isset($a->staff->staff_name) ? $a->staff->staff_name : '--' }}</b><br>
+                                                                        Staff ID :
+                                                                        {{ $a->staff_id }}<br>
+                                                                        Email :
+                                                                        {{ isset($a->staff->staff_email) ? $a->staff->staff_email : '--' }}
+                                                                    </td>
+                                                                    <td style="vertical-align: middle" class="text-center">
+                                                                        <form action="{{ route('delete-staff', $a->id) }}"
+                                                                            method="POST" class="deleteStaff">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger btn-sm delete-alert"><i
+                                                                                    class="fal fa-trash"></i> Delete</button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                                @php $i++; @endphp
+                                                            @endforeach
+                                                        @else
+                                                            <tr class="data-row">
+                                                                <td colspan="3" class="text-center">NO STAFF</td>
+                                                            </tr>
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endrole
                         </div>
                     </div>
+                    <a href="/department-list" class="btn btn-dark btn-sm mr-auto ml-3 mb-3"><i
+                            class="fal fa-arrow-alt-left"></i> Back</a>
+
                 </div>
             </div>
         </div>
@@ -140,6 +228,8 @@
     <script>
         $(document).ready(function() {
             $('.admin').select2();
+            $('.staff').select2();
+
 
             $("form.deleteAdmin").submit(function(e) {
                 e.preventDefault();
@@ -163,6 +253,30 @@
                         }
                     });
             });
+
+            $("form.deleteStaff").submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    })
+                    .then((willDelete) => {
+                        if (willDelete.value) {
+                            form[0].submit();
+                            Swal.fire({
+                                text: "Staff deleted!",
+                                icon: 'success'
+                            });
+                        }
+                    });
+            });
+
         });
     </script>
 @endsection

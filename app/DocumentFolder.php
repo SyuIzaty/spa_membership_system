@@ -24,4 +24,9 @@ class DocumentFolder extends Model
     {
         return $this->hasOne('App\DocumentAdmin', 'department_id', 'department_id');
     }
+
+    public function staffDept()
+    {
+        return $this->hasOne('App\DocumentStaff', 'department_id', 'department_id');
+    }
 }

@@ -100,12 +100,12 @@
                             </a>
                         </li>
                         @canany(['View Card'])
-                        <li>
-                            <a href="/card/staff" title="Staff Card" data-filter-tags="Staff Card">
-                                <i class="fal fa-id-card"></i>
-                                <span class="nav-link-text" data-i18n="nav.staff_card">Staff Card</span>
-                            </a>
-                        </li>
+                            <li>
+                                <a href="/card/staff" title="Staff Card" data-filter-tags="Staff Card">
+                                    <i class="fal fa-id-card"></i>
+                                    <span class="nav-link-text" data-i18n="nav.staff_card">Staff Card</span>
+                                </a>
+                            </li>
                         @endcanany
 
                         {{-- Start Aduan --}}
@@ -368,7 +368,6 @@
                                 </a>
                             </li>
                         @endrole
-
                         <!-- End eDocument Management System -->
 
                         <!-- Start eVoting Management System -->
@@ -542,38 +541,38 @@
                         <!-- End ShortCourse Management System -->
 
                         {{-- Start Aduan --}}
-                            <li class="nav-title">E-ADUAN</li>
+                        <li class="nav-title">E-ADUAN</li>
+                        @can('view technical admin')
+                            <li>
+                                <a href="/dashboard-aduan" title="Application Intel"
+                                    data-filter-tags="application intel">
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Dashboard Aduan</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view complaint form')
+                            <li>
+                                <a href="#" title="Aduan" data-filter-tags="aduan">
+                                    <i class="fal fa-users"></i>
+                                    <span class="nav-link-text" data-i18n="nav.aduan">Permohonan Aduan</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/borang-aduan" title="Borang Aduan" data-filter-tags="borang">
+                                            <span class="nav-link-text" data-i18n="nav.borang"> Borang Aduan</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/aduan" title="Senarai Aduan" data-filter-tags="senarai">
+                                            <span class="nav-link-text" data-i18n="nav.senarai"> Senarai Aduan</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endcan
+                        @can('view complaint list')
                             @can('view technical admin')
-                                <li>
-                                    <a href="/dashboard-aduan" title="Application Intel"
-                                        data-filter-tags="application intel">
-                                        <i class="fal fa-chart-pie"></i>
-                                        <span class="nav-link-text" data-i18n="nav.application_intel">Dashboard Aduan</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('view complaint form')
-                                <li>
-                                    <a href="#" title="Aduan" data-filter-tags="aduan">
-                                        <i class="fal fa-users"></i>
-                                        <span class="nav-link-text" data-i18n="nav.aduan">Permohonan Aduan</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="/borang-aduan" title="Borang Aduan" data-filter-tags="borang">
-                                                <span class="nav-link-text" data-i18n="nav.borang"> Borang Aduan</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/aduan" title="Senarai Aduan" data-filter-tags="senarai">
-                                                <span class="nav-link-text" data-i18n="nav.senarai"> Senarai Aduan</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            @endcan
-                            @can('view complaint list')
-                                @can('view technical admin')
                                 <li class="open">
                                     <a href="#" title="Aduan" data-filter-tags="aduan">
                                         <i class="fal fa-list"></i>
@@ -604,46 +603,48 @@
                                         </li>
                                     </ul>
                                 </li>
-                                @endcan
-                                @can('view technical staff')
-                                    <li class="open">
-                                        <a href="#" title="Aduan" data-filter-tags="aduan">
-                                            <i class="fal fa-list"></i>
-                                            <span class="nav-link-text" data-i18n="nav.aduan">Pengurusan Aduan Juruteknik</span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="/senarai-aduan-juruteknik" title="Dalam Tindakan" data-filter-tags="dlm_tindakan">
-                                                    <span class="nav-link-text" data-i18n="nav.dlm_tindakan"> Dalam
-                                                        Tindakan</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/senarai-selesai-juruteknik" title="Aduan Selesai" data-filter-tags="selesai">
-                                                    <span class="nav-link-text" data-i18n="nav.selesai"> Selesai</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/senarai-kiv-juruteknik" title="Aduan KIV" data-filter-tags="kiv">
-                                                    <span class="nav-link-text" data-i18n="nav.kiv"> KIV </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/senarai-bertindih-juruteknik" title="Aduan Bertindih"
-                                                    data-filter-tags="bertindih">
-                                                    <span class="nav-link-text" data-i18n="nav.bertindih"> Bertindih</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                @endcan
-                                <li>
-                                    <a href="#" title="Laporan" data-filter-tags="laporan">
-                                        <i class="fal fa-file-excel"></i>
-                                        <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
+                            @endcan
+                            @can('view technical staff')
+                                <li class="open">
+                                    <a href="#" title="Aduan" data-filter-tags="aduan">
+                                        <i class="fal fa-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.aduan">Pengurusan Aduan Juruteknik</span>
                                     </a>
                                     <ul>
-                                        @can('view technical admin')
+                                        <li>
+                                            <a href="/senarai-aduan-juruteknik" title="Dalam Tindakan"
+                                                data-filter-tags="dlm_tindakan">
+                                                <span class="nav-link-text" data-i18n="nav.dlm_tindakan"> Dalam
+                                                    Tindakan</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/senarai-selesai-juruteknik" title="Aduan Selesai"
+                                                data-filter-tags="selesai">
+                                                <span class="nav-link-text" data-i18n="nav.selesai"> Selesai</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/senarai-kiv-juruteknik" title="Aduan KIV" data-filter-tags="kiv">
+                                                <span class="nav-link-text" data-i18n="nav.kiv"> KIV </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/senarai-bertindih-juruteknik" title="Aduan Bertindih"
+                                                data-filter-tags="bertindih">
+                                                <span class="nav-link-text" data-i18n="nav.bertindih"> Bertindih</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endcan
+                            <li>
+                                <a href="#" title="Laporan" data-filter-tags="laporan">
+                                    <i class="fal fa-file-excel"></i>
+                                    <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
+                                </a>
+                                <ul>
+                                    @can('view technical admin')
                                         <li>
                                             <a href="/export_aduan" title="Kategori" data-filter-tags="kategori">
                                                 <span class="nav-link-text" data-i18n="nav.kategori">Keseluruhan</span>
@@ -654,47 +655,47 @@
                                                 <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
                                             </a>
                                         </li>
-                                        @endcan
-                                        @can('view technical staff')
-                                            <li>
-                                                <a href="/export_aduan_staf" title="Kategori" data-filter-tags="kategori">
-                                                    <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
-                                                </a>
-                                            </li>
-                                        @endcan
+                                    @endcan
+                                    @can('view technical staff')
+                                        <li>
+                                            <a href="/export_aduan_staf" title="Kategori" data-filter-tags="kategori">
+                                                <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </li>
+                            @can('view complaint parameter')
+                                <li>
+                                    <a href="#" title="Parameter" data-filter-tags="parameter">
+                                        <i class="fal fa-list-alt"></i>
+                                        <span class="nav-link-text" data-i18n="nav.parameter">Pengurusan Parameter</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/kategori-aduan" title="Kategori" data-filter-tags="kategori">
+                                                <span class="nav-link-text" data-i18n="nav.kategori">Kategori Aduan</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/jenis-kerosakan" title="Jenis" data-filter-tags="jenis">
+                                                <span class="nav-link-text" data-i18n="nav.jenis">Jenis Kerosakan</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/sebab-kerosakan" title="Sebab" data-filter-tags="sebab">
+                                                <span class="nav-link-text" data-i18n="nav.sebab">Sebab Kerosakan</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/alat-ganti" title="Sebab" data-filter-tags="sebab">
+                                                <span class="nav-link-text" data-i18n="nav.sebab">Alat/Bahan Ganti</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
-                                @can('view complaint parameter')
-                                    <li>
-                                        <a href="#" title="Parameter" data-filter-tags="parameter">
-                                            <i class="fal fa-list-alt"></i>
-                                            <span class="nav-link-text" data-i18n="nav.parameter">Pengurusan Parameter</span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="/kategori-aduan" title="Kategori" data-filter-tags="kategori">
-                                                    <span class="nav-link-text" data-i18n="nav.kategori">Kategori Aduan</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/jenis-kerosakan" title="Jenis" data-filter-tags="jenis">
-                                                    <span class="nav-link-text" data-i18n="nav.jenis">Jenis Kerosakan</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/sebab-kerosakan" title="Sebab" data-filter-tags="sebab">
-                                                    <span class="nav-link-text" data-i18n="nav.sebab">Sebab Kerosakan</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/alat-ganti" title="Sebab" data-filter-tags="sebab">
-                                                    <span class="nav-link-text" data-i18n="nav.sebab">Alat/Bahan Ganti</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                @endcan
                             @endcan
+                        @endcan
                         {{-- End Aduan --}}
 
                         {{-- Start Training --}}
@@ -932,7 +933,7 @@
                             </li>
                         @endcan
                         @canany(['Manage Arkib', 'View Arkib'])
-                        <li class="nav-title">LIBRARY</li>
+                            <li class="nav-title">LIBRARY</li>
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-book"></i>
@@ -940,34 +941,34 @@
                                 </a>
                                 <ul>
                                     @canany(['Manage Arkib'])
-                                    <li>
-                                        <a href="/library/dashboard" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Analysis Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/library/arkib-main" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Manage Arkib</span>
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a href="/library/dashboard" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Analysis Dashboard</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/library/arkib-main" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Manage Arkib</span>
+                                            </a>
+                                        </li>
                                     @endcanany
                                     @canany(['Manage Arkib', 'View Arkib'])
-                                    <li>
-                                        <a href="/library/arkib" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Arkib List</span>
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a href="/library/arkib" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Arkib List</span>
+                                            </a>
+                                        </li>
                                     @endcanany
                                     @canany(['Manage Arkib'])
-                                    <li>
-                                        <a href="/library/report/arkib" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a href="/library/report/arkib" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
+                                            </a>
+                                        </li>
                                     @endcanany
                                 </ul>
                             </li>
-                        </li>
+                            </li>
                         @endcanany
                         {{-- End Inventory --}}
 

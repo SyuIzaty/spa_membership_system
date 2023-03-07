@@ -558,8 +558,10 @@ Route::group(['middleware' => 'auth'], function () {
     //eDocument Management System
     Route::resource('/index', 'DocumentManagementController');
     Route::get('get-doc/{file}', 'DocumentManagementController@getDoc');
-    Route::get('upload', 'DocumentManagementController@upload');
-    Route::get('upload/{id}', 'DocumentManagementController@getUpload');
+    Route::group(['middleware' => ['auth'], ['permission:upload file']], function () {
+        Route::get('upload', 'DocumentManagementController@upload');
+        Route::get('upload/{id}', 'DocumentManagementController@getUpload');
+    });
     Route::post('store-doc', 'DocumentManagementController@storeDoc');
     Route::delete('/delete-doc/{id}', 'DocumentManagementController@deleteDoc');
     Route::post('/update-title', 'DocumentManagementController@updateTitle');
@@ -573,6 +575,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/folder/{id}', 'DocumentManagementController@folder');
     Route::post('/store-file-folder', 'DocumentManagementController@storeFileFolder');
     Route::post('/delete-folder', 'DocumentManagementController@deleteFolder');
+    Route::post('/store-staff', 'DocumentManagementController@storeStaff');
+    Route::delete('delete-staff/{id}', 'DocumentManagementController@deleteStaff')->name('delete-staff');
+
 
     //eAduan Korporat
     Route::get('/lists/{id}', 'AduanKorporatController@list');
