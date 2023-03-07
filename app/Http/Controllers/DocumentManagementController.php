@@ -6,6 +6,7 @@ use DB;
 use File;
 use App\User;
 use Response;
+use App\Staff;
 use App\DocumentAdmin;
 use App\DepartmentList;
 use App\DocumentFolder;
@@ -214,13 +215,14 @@ class DocumentManagementController extends Controller
     public function adminList($id)
     {
         $department = DepartmentList::where('id', $id)->first();
-        $mainAdmin =  User::whereHas('roles', function ($query) {
-            $query->where('id', 'DMS002');
-        })->get();
+        // $mainAdmin =  User::whereHas('roles', function ($query) {
+        //     $query->where('id', 'DMS002');
+        // })->get();
 
+        $staff = Staff::get();
         $admin = DocumentAdmin::where('department_id', $id)->get();
 
-        return view('eDocument.admin-list', compact('id', 'department', 'mainAdmin', 'admin'));
+        return view('eDocument.admin-list', compact('id', 'department', 'staff', 'admin'));
     }
 
     public function store(Request $request)
@@ -239,6 +241,12 @@ class DocumentManagementController extends Controller
                     'created_by'    => Auth::user()->id,
                     'updated_by'    => Auth::user()->id
                 ]);
+
+                $user = User::find($value);
+
+                if (!$user->hasRole('eDocument (Admin)')) {
+                    $user->assignRole('eDocument (Admin)');
+                }
             }
         }
 
@@ -256,6 +264,10 @@ class DocumentManagementController extends Controller
     public function destroy($id)
     {
         $admin = DocumentAdmin::where('id', $id)->first();
+
+        $user = User::find($admin->admin_id);
+
+        $user->removeRole('eDocument (Admin)');
 
         $exist = DocumentAdmin::find($id);
         $exist->delete();

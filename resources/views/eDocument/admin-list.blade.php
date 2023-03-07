@@ -58,8 +58,8 @@
                                                                 Admin:</label></td>
                                                         <td colspan="4">
                                                             <select class="form-control admin" name="admin[]" multiple>
-                                                                @foreach ($mainAdmin as $m)
-                                                                    <option value="{{ $m->id }}">{{ $m->name }}
+                                                                @foreach ($staff as $s)
+                                                                    <option value="{{ $s->staff_id }}">{{ $s->staff_name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
