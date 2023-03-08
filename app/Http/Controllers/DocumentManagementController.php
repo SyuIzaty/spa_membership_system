@@ -78,7 +78,7 @@ class DocumentManagementController extends Controller
     public function getUpload($id)
     {
         $category = DocumentCategory::all();
-        $file = DocumentManagement::where('department_id', $id)->get();
+        $file = DocumentManagement::whereNull('folder_id')->where('department_id', $id)->get();
         $folder = DocumentFolder::where('department_id', $id)->get();
 
         $getDepartment = DepartmentList::where('id', $id)->first();
