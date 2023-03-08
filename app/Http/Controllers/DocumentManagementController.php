@@ -39,11 +39,13 @@ class DocumentManagementController extends Controller
             $query->where('id', 'DMS001');
         })->get();
 
-        $folder = DocumentFolder::wherehas('staffDept', function ($query) {
+        $privateFolder = DocumentFolder::where('category', 'p')->wherehas('staffDept', function ($query) {
             $query->where('staff_id', Auth::user()->id);
         })->get();
 
-        return view('eDocument.index', compact('list', 'department', 'count', 'category', 'admins', 'superAdmin', 'folder'));
+        $publicFolder =  DocumentFolder::get();
+
+        return view('eDocument.index', compact('list', 'department', 'count', 'category', 'admins', 'superAdmin', 'privateFolder', 'publicFolder'));
     }
 
     public function upload()

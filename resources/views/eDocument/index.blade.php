@@ -42,7 +42,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if ($c->document_count != 0)
+                                            @if ($list->where('department_id', $c->id)->count() > 0)
                                                 @foreach ($list->where('department_id', $c->id) as $l)
                                                     <tr>
                                                         <td class="text-center col-md-1">{{ $i }}</td>
@@ -90,30 +90,52 @@
                                         </tbody>
                                     </table>
                                     <br>
-                                    @if ($folder->where('department_id', $c->id)->count() > 0)
+                                    @if (
+                                        $publicFolder->where('department_id', $c->id)->whereNull('category')->count() > 0 ||
+                                            $privateFolder->where('department_id', $c->id)->count() < 0 ||
+                                            $privateFolder->where('department_id', $c->id)->count() > 0)
                                         <div class="row" style="margin-bottom:15px;">
                                             <div class="col-md-12">
                                                 <div class="row mt-5">
                                                     <div class="col-md-12">
                                                         <div class="card card-success card-outline">
                                                             <div class="card-header bg-info text-white">
-                                                                <h5 class="card-title w-100"><i
-                                                                        class="fal fa-folder width-2 fs-xl"></i>FOLDERS</h5>
+                                                                <p class="card-title"><i class="fal fa-folder"></i>
+                                                                    FOLDERS</p>
                                                             </div>
                                                             <div class="card-body">
-                                                                @foreach ($folder->where('department_id', $c->id) as $f)
-                                                                    <div style="display: inline-block; padding: 10px;">
-                                                                        <a href="/folder/{{ $f->id }}">
+                                                                @if ($privateFolder->where('department_id', $c->id)->count() > 0)
+                                                                    @foreach ($privateFolder->where('department_id', $c->id) as $f)
+                                                                        <div style="display: inline-block; padding: 10px;">
+                                                                            <a href="/folder/{{ $f->id }}">
 
-                                                                            <div class="text-center">
-                                                                                <img src="{{ asset('img/folder.png') }}">
-                                                                            </div>
-                                                                            <div class="text-center">
-                                                                                {{ $f->title }}
-                                                                            </div>
-                                                                        </a>
-                                                                    </div>
-                                                                @endforeach
+                                                                                <div class="text-center">
+                                                                                    <img
+                                                                                        src="{{ asset('img/folder.png') }}">
+                                                                                </div>
+                                                                                <div class="text-center">
+                                                                                    {{ $f->title }}
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    @endforeach
+                                                                @endif
+                                                                @if ($publicFolder->where('department_id', $c->id)->whereNull('category')->count() > 0)
+                                                                    @foreach ($publicFolder->where('department_id', $c->id)->whereNull('category') as $f)
+                                                                        <div style="display: inline-block; padding: 10px;">
+                                                                            <a href="/folder/{{ $f->id }}">
+
+                                                                                <div class="text-center">
+                                                                                    <img
+                                                                                        src="{{ asset('img/folder.png') }}">
+                                                                                </div>
+                                                                                <div class="text-center">
+                                                                                    {{ $f->title }}
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    @endforeach
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>

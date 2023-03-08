@@ -17,6 +17,10 @@
         li:hover #edit {
             display: inline;
         }
+
+        .hide {
+            display: none;
+        }
     </style>
 
     <main id="js-page-content" role="main" class="page-content">
@@ -40,14 +44,31 @@
                                 data-original-title="Close"></button>
                         </div>
                     </div>
-                    <form id="form-id">
-                        @csrf
-                        <input type="hidden" id="id" name="id" value="{{ $folder->id }}" required>
-                        <button type="submit" class="btn btn-danger ml-auto float-right waves-effect waves-themed"
-                            id="deleteFol" style="margin-top:10px; margin-right: 20px;"><i class="fal fa-times-circle"></i>
-                            Delete
-                            Folder</button>
-                    </form>
+                    @if ($folder->category == 'P')
+                        <div class="hide">
+                            <form id="form-id">
+                                @csrf
+                                <input type="hidden" id="id" name="id" value="{{ $folder->id }}" required>
+                                <button type="submit" class="btn btn-danger ml-auto float-right waves-effect waves-themed"
+                                    id="deleteFol" style="margin-top:10px; margin-right: 20px;"><i
+                                        class="fal fa-times-circle"></i>
+                                    Delete
+                                    Folder</button>
+                            </form>
+                        </div>
+                    @else
+                        <div>
+                            <form id="form-id">
+                                @csrf
+                                <input type="hidden" id="id" name="id" value="{{ $folder->id }}" required>
+                                <button type="submit" class="btn btn-danger ml-auto float-right waves-effect waves-themed"
+                                    id="deleteFol" style="margin-top:10px; margin-right: 20px;"><i
+                                        class="fal fa-times-circle"></i>
+                                    Delete
+                                    Folder</button>
+                            </form>
+                        </div>
+                    @endif
                     <div class="panel-container show">
                         <div class="panel-content">
                             <div class="col-md-12">

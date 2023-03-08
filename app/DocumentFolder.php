@@ -12,7 +12,7 @@ class DocumentFolder extends Model
     protected $table = 'dms_folder';
     protected $primarykey = 'id';
     protected $fillable = [
-        'department_id', 'title', 'created_by', 'updated_by', 'deleted_by'
+        'department_id', 'category', 'title', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function department()
