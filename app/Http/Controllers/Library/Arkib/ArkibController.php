@@ -11,7 +11,8 @@ use App\ArkibMain;
 use App\ArkibView;
 use App\ArkibAttachment;
 use App\ArkibStatus;
-use App\Departments;
+use App\DepartmentList;
+use App\DocumentStaff;
 use Response;
 use Auth;
 use DB;
@@ -36,11 +37,14 @@ class ArkibController extends Controller
 
     public function data_userarkib()
     {
-        $paper = ArkibMain::with('department','arkibStatus')->Published()->select('arkib_mains.*');
+        $staff = DocumentStaff::where('staff_id',Auth::user()->id)->pluck('department_id')->toArray();
+        
+        $paper = ArkibMain::with('department','arkibStatus')->whereIn('department_code',$staff)
+        ->Published()->select('arkib_mains.*');
 
         return datatables()::of($paper)
         ->addColumn('dept', function($paper){
-            return isset($paper->department->department_name) ? Str::title($paper->department->department_name) : '';
+            return isset($paper->department->name) ? Str::title($paper->department->name) : '';
         })
         ->editColumn('created_at', function ($paper) {
             return isset($paper->created_at) ? $paper->created_at->format('Y-m-d') : '';
@@ -155,7 +159,7 @@ class ArkibController extends Controller
 
     public function search(Request $request)
     {
-        $department = Departments::all();
+        $department = DepartmentList::all();
 
         $data = explode(" ",$request->search_data);
 

@@ -33,17 +33,17 @@ class ArkibDashboardController extends Controller
         $selected_year = Carbon::now()->format('Y');
 
         $category = DB::table('arkib_mains as types')
-        ->select('types.department_code', DB::raw('COUNT(claims.id) as count'), 'dept.department_name')
+        ->select('types.department_code', DB::raw('COUNT(claims.id) as count'), 'dept.name')
         ->leftJoin('arkib_attachments as claims','types.id','=','claims.arkib_main_id')
-        ->leftJoin('departments as dept','types.department_code','=','dept.department_code')
+        ->leftJoin('department as dept','types.department_code','=','dept.id')
         ->where(DB::raw('YEAR(claims.created_at)'), '<=', $selected_year)
         ->where('claims.deleted_at',NULL)
-        ->groupBy('types.department_code', 'dept.department_name')
+        ->groupBy('types.department_code', 'dept.name')
         ->get();
 
         $results[] = ['Department','Total Document'];
         foreach ($category as $key => $value) {
-            $results[++$key] = [$value->department_name, (int)$value->count];
+            $results[++$key] = [$value->name, (int)$value->count];
         }
 
         // Start PieChart

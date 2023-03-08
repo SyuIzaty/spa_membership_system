@@ -53,8 +53,8 @@
                                     <select class="form-control" name="department_code" id="department_code">
                                         <option disabled selected>Please Select</option>
                                         @foreach($department as $departments)
-                                        <option value="{{ $departments->department_code }}" {{ $arkib->department_code == $departments->department_code ? 'selected="selected"' : ''}}>
-                                            {{ $departments->department_name }}</option>
+                                        <option value="{{ $departments->id }}" {{ $arkib->department_code == $departments->id ? 'selected="selected"' : ''}}>
+                                            {{ $departments->name }}</option>
                                         @endforeach
                                     </select>
                                 </td>

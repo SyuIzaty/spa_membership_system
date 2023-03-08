@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-use App\Departments;
+use App\DepartmentList;
 use App\ArkibMain;
 use App\ArkibStatus;
 use App\ArkibAttachment;
@@ -34,7 +34,7 @@ class ArkibMainController extends Controller
 
         $total = ArkibMain::count();
 
-        $department = Departments::all();
+        $department = DepartmentList::all();
 
         $status = ArkibStatus::all();
 
@@ -47,7 +47,7 @@ class ArkibMainController extends Controller
 
         return datatables()::of($paper)
         ->addColumn('dept', function($paper){
-            return isset($paper->department->department_name) ? Str::title($paper->department->department_name) : '';
+            return isset($paper->department->name) ? Str::title($paper->department->name) : '';
         })
         ->addColumn('stat', function($paper){
             return isset($paper->arkibStatus->arkib_description) ? Str::title($paper->arkibStatus->arkib_description) : '';
@@ -75,7 +75,7 @@ class ArkibMainController extends Controller
 
         return datatables()::of($paper)
         ->addColumn('dept', function($paper){
-            return isset($paper->department->department_name) ? Str::title($paper->department->department_name) : '';
+            return isset($paper->department->name) ? Str::title($paper->department->name) : '';
         })
         ->addColumn('stat', function($paper){
             return isset($paper->arkibStatus->arkib_description) ? Str::title($paper->arkibStatus->arkib_description) : '';
@@ -99,7 +99,7 @@ class ArkibMainController extends Controller
 
     public function reportArkib(Request $request)
     {
-        $department = Departments::all();
+        $department = DepartmentList::all();
 
         $status = ArkibStatus::all();
 
@@ -220,7 +220,7 @@ class ArkibMainController extends Controller
      */
     public function edit($id)
     {
-        $department = Departments::all();
+        $department = DepartmentList::all();
 
         $status = ArkibStatus::all();
 

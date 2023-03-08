@@ -181,7 +181,7 @@
             columns: [
                     { data: 'title', className: "card", name: 'title'},
                     { data: 'file_classification_no', name: 'file_classification_no'},
-                    { data: 'dept', name: 'department.department_name'},
+                    { data: 'dept', name: 'department.name'},
                     { data: 'created_at', name: 'created_at'},
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
@@ -194,17 +194,6 @@
                         labels.push($(this).text());
                     });
 
-                    $("#paper tbody tr").each(function () {
-						$(this)
-							.find("td")
-							.each(function (column) {
-                                if(labels[column] !== "ACTION") {
-                                    $("<span class='colHeader'>" + labels[column] + ": </span>").prependTo(
-                                        $(this)
-                                    );
-                                }
-							});
-					});
                 },
                 "drawCallback": function(settings) {
                     var labels = [];
@@ -246,7 +235,7 @@
                   $('#arkib_title').html(data.title);
                   $('#arkib_classification').html(data.file_classification_no);
                   $('#arkib_description').html(data.description);
-                  $('#arkib_department').html(data.department.department_name);
+                  $('#arkib_department').html(data.department.name);
                   $('#arkib_status').html(data.arkib_status.arkib_description);
                   $('#arkib_date').html(new Date(data.created_at));
                   $('#existfile').empty();

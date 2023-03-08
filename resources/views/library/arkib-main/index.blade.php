@@ -160,8 +160,8 @@
                                                     <select class="form-control" name="department_code" id="department_code">
                                                         <option disabled selected>Please Select</option>
                                                         @foreach($department as $departments)
-                                                        <option value="{{ $departments->department_code }}" {{ old('department_code') ? 'selected' : '' }}>
-                                                            {{ $departments->department_name }}</option>
+                                                        <option value="{{ $departments->id }}" {{ old('department_code') ? 'selected' : '' }}>
+                                                            {{ $departments->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </td>
@@ -240,7 +240,6 @@
         var table = $('#paper').DataTable({
             processing: true,
             serverSide: true,
-            stateSave: true,
             ajax: {
                 url: "/data_publishedarkib",
                 type: 'POST',
@@ -249,7 +248,7 @@
             columns: [
                     { data: 'title', name: 'title'},
                     { data: 'file_classification_no', name: 'file_classification_no'},
-                    { data: 'dept', name: 'department.department_name'},
+                    { data: 'dept', name: 'department.name'},
                     { data: 'stat', name: 'arkibStatus.arkib_description'},
                     { data: 'created_at', name: 'created_at'},
                     { data: 'action', name: 'action', orderable: false, searchable: false}
@@ -288,7 +287,7 @@
             columns: [
                     { data: 'title', name: 'title'},
                     { data: 'file_classification_no', name: 'file_classification_no'},
-                    { data: 'dept', name: 'department.department_name'},
+                    { data: 'dept', name: 'department.name'},
                     { data: 'stat', name: 'arkibStatus.arkib_description'},
                     { data: 'created_at', name: 'created_at'},
                     { data: 'action', name: 'action', orderable: false, searchable: false}

@@ -21,9 +21,14 @@ class ArkibMain extends Model
         return $this->hasMany('App\ArkibAttachment','arkib_main_id','id');
     }
 
+    // public function department()
+    // {
+    //     return $this->hasOne('App\Departments','department_code','department_code');
+    // }
+
     public function department()
     {
-        return $this->hasOne('App\Departments','department_code','department_code');
+        return $this->hasOne('App\DepartmentList','id','department_code');
     }
 
     public function scopeUnpublished($query)
