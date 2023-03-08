@@ -148,7 +148,7 @@ class DocumentManagementController extends Controller
 
         $file = DocumentManagement::where('id', $id)->first();
         // dd($file);
-        return Storage::response($file->web_path);
+        return Storage::response('eDocument/'.$file->upload);
     }
 
     public function deleteDoc($id)
