@@ -90,7 +90,7 @@
                                         </tbody>
                                     </table>
                                     <br>
-                                    @if ($folder->where('department_id', $c->id)->exists())
+                                    @if ($folder->where('department_id', $c->id)->count() > 0)
                                         <div class="row" style="margin-bottom:15px;">
                                             <div class="col-md-12">
                                                 <div class="row mt-5">
@@ -101,7 +101,7 @@
                                                                         class="fal fa-folder width-2 fs-xl"></i>FOLDERS</h5>
                                                             </div>
                                                             <div class="card-body">
-                                                                @foreach ($folder->get()->where('department_id', $c->id) as $f)
+                                                                @foreach ($folder->where('department_id', $c->id) as $f)
                                                                     <div style="display: inline-block; padding: 10px;">
                                                                         <a href="/folder/{{ $f->id }}">
 

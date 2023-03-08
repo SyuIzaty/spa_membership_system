@@ -41,7 +41,7 @@ class DocumentManagementController extends Controller
 
         $folder = DocumentFolder::wherehas('staffDept', function ($query) {
             $query->where('staff_id', Auth::user()->id);
-        });
+        })->get();
 
         return view('eDocument.index', compact('list', 'department', 'count', 'category', 'admins', 'superAdmin', 'folder'));
     }
