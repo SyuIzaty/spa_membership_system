@@ -302,7 +302,8 @@ class DocumentManagementController extends Controller
         $file = DocumentManagement::where('folder_id', $id)->orderBy('category', 'ASC')->get();
         $folder = DocumentFolder::where('id', $id)->first();
 
-        return view('eDocument.folder_upload', compact('category', 'file', 'folder'));
+        $staff = DocumentAdmin::where('admin_id', Auth::user()->id)->where('department_id', $folder->department_id)->first();
+        return view('eDocument.folder_upload', compact('category', 'file', 'folder', 'staff'));
     }
 
     public function storeFileFolder(Request $request)

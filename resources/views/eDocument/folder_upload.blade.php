@@ -29,7 +29,6 @@
                 <i class='subheader-icon fal fa-folder'></i> eDocument Management
             </h1>
         </div>
-
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
@@ -44,30 +43,34 @@
                                 data-original-title="Close"></button>
                         </div>
                     </div>
-                    @if ($folder->category == 'P')
-                        <div class="hide">
-                            <form id="form-id">
-                                @csrf
-                                <input type="hidden" id="id" name="id" value="{{ $folder->id }}" required>
-                                <button type="submit" class="btn btn-danger ml-auto float-right waves-effect waves-themed"
-                                    id="deleteFol" style="margin-top:10px; margin-right: 20px;"><i
-                                        class="fal fa-times-circle"></i>
-                                    Delete
-                                    Folder</button>
-                            </form>
-                        </div>
-                    @else
-                        <div>
-                            <form id="form-id">
-                                @csrf
-                                <input type="hidden" id="id" name="id" value="{{ $folder->id }}" required>
-                                <button type="submit" class="btn btn-danger ml-auto float-right waves-effect waves-themed"
-                                    id="deleteFol" style="margin-top:10px; margin-right: 20px;"><i
-                                        class="fal fa-times-circle"></i>
-                                    Delete
-                                    Folder</button>
-                            </form>
-                        </div>
+                    @if (isset($staff) || Auth::user()->hasRole('eDocument (Super Admin)'))
+                        @if ($folder->category == 'P')
+                            <div class="hide">
+                                <form id="form-id">
+                                    @csrf
+                                    <input type="hidden" id="id" name="id" value="{{ $folder->id }}"
+                                        required>
+                                    <button type="submit"
+                                        class="btn btn-danger ml-auto float-right waves-effect waves-themed" id="deleteFol"
+                                        style="margin-top:10px; margin-right: 20px;"><i class="fal fa-times-circle"></i>
+                                        Delete
+                                        Folder</button>
+                                </form>
+                            </div>
+                        @else
+                            <div>
+                                <form id="form-id">
+                                    @csrf
+                                    <input type="hidden" id="id" name="id" value="{{ $folder->id }}"
+                                        required>
+                                    <button type="submit"
+                                        class="btn btn-danger ml-auto float-right waves-effect waves-themed" id="deleteFol"
+                                        style="margin-top:10px; margin-right: 20px;"><i class="fal fa-times-circle"></i>
+                                        Delete
+                                        Folder</button>
+                                </form>
+                            </div>
+                        @endif
                     @endif
                     <div class="panel-container show">
                         <div class="panel-content">
@@ -81,34 +84,37 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="row mt-5">
-                                        <div class="col-md-12">
-                                            <div class="card card-success card-outline">
-                                                <div class="card-header bg-info text-white">
-                                                    <h5 class="card-title w-100"><i
-                                                            class="fal fa-upload width-2 fs-xl"></i>UPLOAD FILE</h5>
-                                                </div>
-                                                <div class="card-body">
-                                                    <form method="post" action="{{ url('store-file-folder') }}"
-                                                        enctype="multipart/form-data"
-                                                        class="dropzone needsclick dz-clickable" id="dropzone">
-                                                        @csrf
-                                                        <input type="hidden" name="dept_id"
-                                                            value="{{ $folder->department_id }}">
-                                                        <input type="hidden" name="fol_id" value="{{ $folder->id }}">
+                                        @if (isset($staff) || Auth::user()->hasRole('eDocument (Super Admin)'))
+                                            <div class="col-md-12">
+                                                <div class="card card-success card-outline">
+                                                    <div class="card-header bg-info text-white">
+                                                        <h5 class="card-title w-100"><i
+                                                                class="fal fa-upload width-2 fs-xl"></i>UPLOAD FILE</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <form method="post" action="{{ url('store-file-folder') }}"
+                                                            enctype="multipart/form-data"
+                                                            class="dropzone needsclick dz-clickable" id="dropzone">
+                                                            @csrf
+                                                            <input type="hidden" name="dept_id"
+                                                                value="{{ $folder->department_id }}">
+                                                            <input type="hidden" name="fol_id"
+                                                                value="{{ $folder->id }}">
 
-                                                        <div class="dz-message needsclick">
-                                                            <i class="fal fa-cloud-upload text-muted mb-3"></i> <br>
-                                                            <span class="text-uppercase">Drop files here or click to
-                                                                upload.</span>
-                                                            <br>
-                                                            <span class="fs-sm text-muted">This is a dropzone. Selected
-                                                                files <strong>.pdf,.doc,.docx,.jpeg,.jpg,.png</strong>
-                                                                are actually uploaded.</span>
-                                                        </div>
-                                                    </form>
+                                                            <div class="dz-message needsclick">
+                                                                <i class="fal fa-cloud-upload text-muted mb-3"></i> <br>
+                                                                <span class="text-uppercase">Drop files here or click to
+                                                                    upload.</span>
+                                                                <br>
+                                                                <span class="fs-sm text-muted">This is a dropzone. Selected
+                                                                    files <strong>.pdf,.doc,.docx,.jpeg,.jpg,.png</strong>
+                                                                    are actually uploaded.</span>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         <div class="col-md-12 mt-3">
                                             <div class="card card-success card-outline">
                                                 <div class="card-header bg-info text-white">
@@ -118,38 +124,76 @@
                                                 @if ($file->isNotEmpty())
                                                     @php $i = 1; @endphp
                                                     <div class="card-body">
-                                                        <table class="table table-bordered editable" id="editable">
-                                                            <thead class="bg-info-50">
-                                                                <tr class="text-center">
-                                                                    <td>No.</td>
-                                                                    <td>File</td>
-                                                                    <td>File Ext.</td>
-                                                                    <td>Category</td>
-                                                                    <td>View</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($file as $f)
-                                                                    <tr>
-                                                                        <td class="text-center">{{ $i }}</td>
-                                                                        <td style="display:none"><input
-                                                                                name="id">{{ $f->id }}</td>
-                                                                        <td class='title'>{{ $f->title }}</td>
-                                                                        <td class="text-center">{{ $f->file_ext }}
-                                                                        </td>
-                                                                        <td class="category"
-                                                                            data-selected="{{ $f->category }}"></td>
-                                                                        <td class="text-center">
-                                                                            <a target="_blank"
-                                                                                href="/get-doc/{{ $f->id }}"
-                                                                                class="btn btn-info btn-xs"><i
-                                                                                    class="fal fa-eye"></i></a>
-                                                                        </td>
+                                                        @if (isset($staff) || Auth::user()->hasRole('eDocument (Super Admin)'))
+                                                            <table class="table table-bordered editable" id="editable">
+                                                                <thead class="bg-info-50">
+                                                                    <tr class="text-center">
+                                                                        <td>No.</td>
+                                                                        <td>File</td>
+                                                                        <td>File Ext.</td>
+                                                                        <td>Category</td>
+                                                                        <td>View</td>
                                                                     </tr>
-                                                                    @php $i++; @endphp
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($file as $f)
+                                                                        <tr>
+                                                                            <td class="text-center">{{ $i }}</td>
+                                                                            <td style="display:none"><input
+                                                                                    name="id">{{ $f->id }}</td>
+                                                                            <td class='title'>{{ $f->title }}</td>
+                                                                            <td class="text-center">{{ $f->file_ext }}
+                                                                            </td>
+                                                                            <td class="category"
+                                                                                data-selected="{{ $f->category }}"></td>
+                                                                            <td class="text-center">
+                                                                                <a target="_blank"
+                                                                                    href="/get-doc/{{ $f->id }}"
+                                                                                    class="btn btn-info btn-xs"><i
+                                                                                        class="fal fa-eye"></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        @php $i++; @endphp
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        @else
+                                                            <table class="table table-bordered">
+                                                                <thead class="bg-info-50">
+                                                                    <tr class="text-center">
+                                                                        <td>No.</td>
+                                                                        <td>File</td>
+                                                                        <td>File Ext.</td>
+                                                                        <td>Category</td>
+                                                                        <td>View</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($file as $f)
+                                                                        <tr>
+                                                                            <td class="text-center">{{ $i }}
+                                                                            </td>
+                                                                            <td style="display:none"><input
+                                                                                    name="id">{{ $f->id }}
+                                                                            </td>
+                                                                            <td class='title'>{{ $f->title }}</td>
+                                                                            <td class="text-center">{{ $f->file_ext }}
+                                                                            </td>
+                                                                            <td class="category"
+                                                                                data-selected="{{ $f->category }}"></td>
+                                                                            <td class="text-center">
+                                                                                <a target="_blank"
+                                                                                    href="/get-doc/{{ $f->id }}"
+                                                                                    class="btn btn-info btn-xs"><i
+                                                                                        class="fal fa-eye"></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        @php $i++; @endphp
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        @endif
+
                                                     </div>
                                                 @else
                                                     <div class="card-body">
