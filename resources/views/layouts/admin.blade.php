@@ -107,7 +107,35 @@
                                 </a>
                             </li>
                         @endcanany
+                        @canany(['Rent Form'])
+                        <li>
+                            <a href="#" title="Rent Form" data-filter-tags="Rent Form">
+                                <i class="fal fa-clipboard-list"></i>
+                                <span class="nav-link-text" data-i18n="nav.rent_form">ICT Equipment Rental</span>
+                            </a> 
+                            <ul>
+                                @canany(['Rent Form'])
 
+                                <li>
+                                    <a href="/test2" title="Rental Form" data-filter-tags="Rental Form">
+                                        <i class="fal fa-file-alt"></i>
+                                        <span class="nav-link-text" data-i18n="nav.rental_form">Rental Form</span>
+                                    </a>
+                                </li>
+                                @endcanany
+                                @canany(['Manage Rent Form'])
+
+                                <li>
+                                    <a href="/show" title="View Record" data-filter-tags="View Record">
+                                        <i class="ni ni-users"></i>
+                                        <span class="nav-link-text" data-i18n="nav.view_record">View Record</span>
+                                    </a>
+                                </li>
+                                @endcanany
+                            </ul>
+                        </li>
+                        
+                        @endcanany
                         {{-- Start Aduan --}}
                         @php
                             // $user = Auth()->user();

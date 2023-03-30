@@ -78,6 +78,6 @@
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'montserrat' => array(
-    'normal' => $fontDir . '/montserrat-normal_fba27e083a8fbd183e2dc31fb09445c4',
+    'normal' => $fontDir . '/montserrat-normal_d1b09cf646cd7c03d731e7caa8a2cb14',
   ),
 ) ?>

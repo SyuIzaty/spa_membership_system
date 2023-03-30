@@ -20,6 +20,14 @@ Route::view('/reset_password', 'auth.passwords.email')->name('reset_password');
 
 Auth::routes();
 
+Route::resource('/test2', 'TestController');
+Route::get('/show', 'TestController@show');
+Route::get('/view_record', 'TestController@search')->name('searchApplication');
+Route::delete('declareDelete/{id}', 'TestController@declareDelete');
+Route::get('/edit_record/{id}', 'TestController@edit')->name('test.edit_record');
+Route::post('/update_record', 'TestController@updateApplication');
+Route::post('/data_rental', 'TestController@data_rental');
+
 //ROLE
 Route::resource('/role', 'RoleController');
 Route::post('/data_allrole', 'RoleController@data_allrole');
