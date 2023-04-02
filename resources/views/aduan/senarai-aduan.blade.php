@@ -36,14 +36,15 @@
                                 </div>
                             </div>
 
-                            @if (Session::has('status'))
-                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('status') }}</div>
-                            @endif
+
                             <div class="col">
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane mt-1 active" id="staf" role="tabpanel"><br>
                                         <div class="col-sm-12 mb-4">
                                             <div class="table-responsive">
+                                                @if (Session::has('status'))
+                                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('status') }}</div>
+                                                @endif
                                                 <table id="senarai" class="table table-bordered table-hover table-striped w-100" style="white-space: nowrap">
                                                     <thead>
                                                         <tr class="text-center bg-primary-50">
@@ -150,14 +151,14 @@
                                 <div class="modal-body">
                                     {!! Form::open(['action' => 'Aduan\AduanController@tukarStatus', 'method' => 'POST']) !!}
                                     <input type="hidden" name="status_id" id="id">
-                                    <i><b>PERHATIAN!</b></i> : Pastikan maklumat disahkan benar sebelum membuat sebarang penukaran status.
+                                    <b>PERHATIAN!</b> : Pastikan maklumat disahkan benar sebelum membuat sebarang penukaran status.
                                     <br><br>
                                     <p><span class="text-danger">*</span> Wajib diisi</p>
                                     <div class="form-group int">
                                         <td width="15%"><label class="form-label" for="kod_status"><span class="text-danger">*</span> Status :</label></td>
                                         <td colspan="7">
                                             <select class="form-control kod_status" name="kod_status" id="kod_status" required>
-                                                <option value="" disabled selected> Please select </option>
+                                                <option value="" disabled selected> Sila Pilih </option>
                                                 @foreach ($status as $stat)
                                                     <option value="{{ $stat->kod_status }}" {{ old('kod_status') ==  $stat->kod_status  ? 'selected' : '' }}>{{ $stat->nama_status }}</option>
                                                 @endforeach
@@ -165,6 +166,16 @@
                                             @error('kod_status')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
+                                        </td>
+                                    </div>
+                                    <div class="form-group int">
+                                        <td width="15%"><label class="form-label" for="sebab_tukar_status"><span class="text-danger">*</span> Sebab :</label></td>
+                                        <td colspan="7">
+                                            <textarea rows="5" cols="30" class="form-control" name="sebab_tukar_status" id="sebab_tukar_status" required></textarea>
+                                            @error('sebab_tukar_status')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                        </td>
                                     </div>
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>

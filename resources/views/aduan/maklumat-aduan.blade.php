@@ -303,6 +303,12 @@
                                                     @endif
                                                 </td>
                                             </tr>
+                                            @if($aduan->notis_juruteknik != null)
+                                            <tr>
+                                                <th width="20%" style="vertical-align: middle">Notis Juruteknik : </th>
+                                                <td colspan="4" style="vertical-align: middle">{{ $aduan->notis_juruteknik ?? '-'}}</td>
+                                            </tr>
+                                            @endif
                                             {!! Form::open(['action' => 'Aduan\AduanController@simpanPengesahan', 'method' => 'POST', 'id' => 'data']) !!}
                                             <input type="hidden" name="id" value="{{ $aduan->id }}">
                                                 @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK'|| $aduan->status_aduan == 'DP')

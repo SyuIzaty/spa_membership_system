@@ -53,6 +53,7 @@
                                                             <th>TARIKH</th>
                                                             <th>STATUS</th>
                                                             <th>TAHAP</th>
+                                                            <th>NOTIS</th>
                                                             <th>TEMPOH KELEWATAN</th>
                                                             <th>TINDAKAN</th>
                                                         </tr>
@@ -83,6 +84,7 @@
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
+                                                            <td class="hasinput"></td>
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -101,6 +103,7 @@
                                                             <th>TARIKH</th>
                                                             <th>STATUS</th>
                                                             <th>TAHAP</th>
+                                                            <th>NOTIS</th>
                                                             <th>TEMPOH KELEWATAN</th>
                                                             <th>TINDAKAN</th>
                                                         </tr>
@@ -131,6 +134,7 @@
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
+                                                            <td class="hasinput"></td>
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -145,26 +149,22 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="card-header bg-primary text-white">
-                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> PENUKARAN STATUS</h5>
+                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> PENGHANTARAN NOTIS</h5>
                                 </div>
                                 <div class="modal-body">
-                                    {!! Form::open(['action' => 'Aduan\AduanController@tukarStatus', 'method' => 'POST']) !!}
-                                    <input type="hidden" name="status_id" id="id">
-                                    <i><b>PERHATIAN!</b></i> : Pastikan maklumat disahkan benar sebelum membuat sebarang penukaran status.
+                                    {!! Form::open(['action' => 'Aduan\AduanController@hantarNotis', 'method' => 'POST']) !!}
+                                    <input type="hidden" name="ids" id="ids">
+                                    <b>PERHATIAN!</b> : Pastikan maklumat disahkan benar sebelum menghantar notis kepada pengadu.
                                     <br><br>
                                     <p><span class="text-danger">*</span> Wajib diisi</p>
                                     <div class="form-group int">
-                                        <td width="15%"><label class="form-label" for="kod_status"><span class="text-danger">*</span> Status :</label></td>
+                                        <td width="15%"><label class="form-label" for="notis_juruteknik"><span class="text-danger">*</span> Notis :</label></td>
                                         <td colspan="7">
-                                            <select class="form-control kod_status" name="kod_status" id="kod_status" required>
-                                                <option value="" disabled selected> Please select </option>
-                                                @foreach ($status as $stat)
-                                                    <option value="{{ $stat->kod_status }}" {{ old('kod_status') ==  $stat->kod_status  ? 'selected' : '' }}>{{ $stat->nama_status }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('kod_status')
+                                            <textarea rows="5" cols="30" class="form-control" name="notis_juruteknik" id="notis_juruteknik" required></textarea>
+                                            @error('notis_juruteknik')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
+                                        </td>
                                     </div>
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
@@ -216,15 +216,13 @@
     {
         $('#status_aduan, #tahap_kategori, #kategori_aduan').select2();
 
-        $('#kod_status').select2({
-            dropdownParent: $('#crud-modals')
-        });
-
         $('#crud-modals').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
             var id = button.data('id')
+            var notis = button.data('notis')
 
-            $('.modal-body #id').val(id);
+            $('.modal-body #ids').val(id);
+            $('.modal-body #notis_juruteknik').val(notis);
         });
 
         $('#senarai thead tr .hasinput').each(function(i)
@@ -252,7 +250,6 @@
             });
         });
 
-
         var table = $('#senarai').DataTable({
             processing: true,
             serverSide: true,
@@ -268,6 +265,7 @@
                     { className: 'text-center', data: 'tarikh_laporan', name: 'aduan.tarikh_laporan' },
                     { className: 'text-center', data: 'status_aduan', name: 'aduan.status.nama_status' },
                     { className: 'text-center', data: 'tahap_kategori', name: 'aduan.tahap.jenis_tahap', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'notis', name: 'notis', orderable: false, searchable: false},
                     { className: 'text-center', data: 'tempoh', name: 'tempoh', orderable: false, searchable: false},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
@@ -342,7 +340,6 @@
             });
         });
 
-
         var table = $('#senarai_pelajar').DataTable({
             processing: true,
             serverSide: true,
@@ -358,6 +355,7 @@
                     { className: 'text-center', data: 'tarikh_laporan', name: 'aduan.tarikh_laporan' },
                     { className: 'text-center', data: 'status_aduan', name: 'aduan.status.nama_status' },
                     { className: 'text-center', data: 'tahap_kategori', name: 'aduan.tahap.jenis_tahap', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'notis', name: 'notis', orderable: false, searchable: false},
                     { className: 'text-center', data: 'tempoh', name: 'tempoh', orderable: false, searchable: false},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],

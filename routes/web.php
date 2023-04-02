@@ -117,6 +117,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/aduan', 'Aduan\AduanController@aduan')->name('aduan');
     Route::post('data_aduan', 'Aduan\AduanController@data_aduan');
     Route::post('batalAduan', 'Aduan\AduanController@batalAduan');
+    Route::post('hantarNotis', 'Aduan\AduanController@hantarNotis');
     Route::get('/maklumat-aduan/{id}', 'Aduan\AduanController@maklumatAduan')->name('maklumatAduan');
     Route::get('resit/{filename}/{type}', 'Aduan\AduanController@failResit');
     Route::get('get-file-resit/{filename}', 'Aduan\AduanController@getImej');
@@ -166,7 +167,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/individuExport/{stats?}/{kates?}/{buls?}', 'Aduan\AduanController@individu');
     Route::get('aduanIndividu/{stats?}/{kates?}/{buls?}', 'Aduan\AduanController@individu');
     Route::get('/dashboard-aduan', 'Aduan\AduanController@index')->name('dashAduan');
-    ;
     Route::get('/download/{id}', 'Aduan\AduanController@downloadBorang')->name('downloadBorang');
     Route::get('pembaikan/{filename}/{type}', 'Aduan\AduanController@failPembaikan');
     Route::get('padamGambar/{id}/{id_aduan}', 'Aduan\AduanController@padamGambar')->name('padamGambar');

@@ -360,6 +360,12 @@
                                                                 <td colspan="4">{{ $aduan->penukaran->staff_name ?? '--' }}</td>
                                                             </div>
                                                         </tr>
+                                                        <tr>
+                                                            <div class="form-group">
+                                                                <td width="20%"><label class="form-label" for="tarikh_selesai_aduan">Sebab Penukaran Status :</label></td>
+                                                                <td colspan="4">{{ $aduan->sebab_tukar_status ?? '--' }}</td>
+                                                            </div>
+                                                        </tr>
                                                         @endif
                                                     </thead>
                                                 </table>
@@ -440,7 +446,7 @@
                                                                     <div class="form-group">
                                                                         <td colspan="2" style="vertical-align: middle">
                                                                             <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori" required>
-                                                                                <option value="" disabled selected>Pilih Tahap Aduan</option>
+                                                                                <option value="" disabled selected>Sila Pilih</option>
                                                                                 @foreach ($tahap as $thp)
                                                                                     <option value="{{ $thp->kod_tahap }}" {{ $aduan->tahap_kategori == $thp->kod_tahap ? 'selected="selected"' : '' }}>{{ $thp->jenis_tahap }}</option>
                                                                                 @endforeach
@@ -483,7 +489,7 @@
                                                                                         <tr>
                                                                                             <td>
                                                                                                 <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" required>
-                                                                                                    <option value="" disabled selected>Pilih Juruteknik</option>
+                                                                                                    <option value="" disabled selected>Sila Pilih</option>
                                                                                                     @foreach ($juruteknik as $juru)
                                                                                                     <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
                                                                                                             {{ $juru->name }}</option>
@@ -492,7 +498,7 @@
                                                                                             </td>
                                                                                             <td>
                                                                                                 <select class="form-control jenis_juruteknik" name="jenis_juruteknik[]" required>
-                                                                                                    <option value="" disabled selected>Pilih Tugas</option>
+                                                                                                    <option value="" disabled selected>Sila Pilih</option>
                                                                                                     <option value="K">Ketua</option>
                                                                                                     {{-- <option value="P">Pembantu</option> --}}
                                                                                                 </select>
@@ -731,7 +737,7 @@
                                                                         <div class="form-group">
                                                                             <td colspan="2">
                                                                                 <select class="form-control status_aduan" name="status_aduan" id="status_aduan" required>
-                                                                                <option value="" disabled selected>Pilih Status Aduan</option>
+                                                                                <option value="" disabled selected>Sila Pilih</option>
                                                                                     @foreach($status as $stt)
                                                                                         <option value="{{$stt->kod_status}}"  {{ $aduan->status_aduan == $stt->kod_status ? 'selected="selected"' : '' }}>{{$stt->nama_status}}</option>
                                                                                     @endforeach
@@ -792,7 +798,7 @@
                                                                 <div class="form-group">
                                                                     <td colspan="2">
                                                                         <select class="form-control status_adu" name="status_aduan" id="status_aduan" required>
-                                                                            <option value="" disabled selected>Pilih Status Aduan</option>
+                                                                            <option value="" disabled selected>Sila Pilih</option>
                                                                             @foreach ($tukarStatus as $stats)
                                                                             <option value="{{ $stats->kod_status }}" {{ old('status_aduan') ? 'selected' : '' }}>
                                                                                     {{ $stats->nama_status }}</option>
@@ -843,7 +849,7 @@
                 <tr id="row${i}" class="head-added">
                 <td>
                     <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" required>
-                        <option value="" disabled selected>Pilih Juruteknik</option>
+                        <option value="" disabled selected>Sila Pilih</option>
                         @foreach ($juruteknik as $juru)
                         <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
                                 {{ $juru->name }}</option>
@@ -852,7 +858,7 @@
                 </td>
                 <td>
                     <select class="form-control jenis_juruteknik" name="jenis_juruteknik[]" required>
-                        <option value="" disabled selected>Pilih Tugas</option>
+                        <option value="" disabled selected>Sila Pilih</option>
                         <option value="P">Pembantu</option>
                     </select>
                 </td>

@@ -38,7 +38,7 @@ use App\Exports\eAduanExport;
 
 class AduanController extends Controller
 {
-    //Aduan Individu
+    // Aduan Individu
 
     public function borangAduan()
     {
@@ -85,8 +85,8 @@ class AduanController extends Controller
             'kategori_aduan'     => 'required',
             'jenis_kerosakan'    => 'required',
             'sebab_kerosakan'    => 'required',
-            'upload_image'       => 'nullable|mimes:jpg,png,jpeg,gif,svg',
-            'resit_file'         => 'nullable|mimes:pdf,docx',
+            'upload_image'       => 'required', //|mimes:jpeg,jpg,png
+            // 'resit_file'         => 'nullable|mimes:pdf,doc,dot,docx',
         ]);
 
         $aduan = Aduan::create([
@@ -161,7 +161,7 @@ class AduanController extends Controller
 
         if($aduan->kategori_aduan == 'AWM' || $aduan->kategori_aduan == 'ELK' || $aduan->kategori_aduan == 'MKL' || $aduan->kategori_aduan == 'PKH' || $aduan->kategori_aduan == 'TKM'){
 
-            $admin_staff = Staff::whereIn('staff_id', $admin)->where('staff_code', 'OFM')->get();
+            $admin_staff = Staff::whereIn('staff_id', $admin)->whereIn('staff_code', ['OFM','AA'])->get();
         }
 
         foreach($admin_staff as $value)
@@ -254,7 +254,7 @@ class AduanController extends Controller
                 foreach($data as $test){
                     $staff = Staff::where('staff_id', $test->juruteknik_bertugas)->first();
 
-                    $all .= isset($test->juruteknik->name) ? '<div word-break: break-all>'.$test->juruteknik->name.'<br>'.'- '.$staff->staff_email.'<br>'.'- '.$staff->staff_phone.'</div>' : '--';
+                    $all .= isset($test->juruteknik->name) ? '<div word-break: break-all>'.$test->juruteknik->name.'<br>[ '.$staff->staff_phone.' ]</div>' : '--';
                 }
                 return $all;
 
@@ -403,7 +403,7 @@ class AduanController extends Controller
         return Storage::response('pembaikan/'.$filename);
     }
 
-    //Senarai Aduan
+    // Senarai Aduan Admin
 
     public function senaraiAduan(Request $request)
     {
@@ -421,7 +421,7 @@ class AduanController extends Controller
         if($staff->staff_code == 'IITU') {
 
             $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereIn('id_pelapor', $stf)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
-        } elseif($staff->staff_code == 'OFM') {
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
 
             $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereIn('id_pelapor', $stf)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
         } else {
@@ -524,7 +524,7 @@ class AduanController extends Controller
         if($staff->staff_code == 'IITU') {
 
             $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->with(['kategori','status','tahap'])->whereIn('id_pelapor', $std)->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
-        } elseif($staff->staff_code == 'OFM') {
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
 
             $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->with(['kategori','status','tahap'])->whereIn('id_pelapor', $std)->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
         } else {
@@ -719,11 +719,17 @@ class AduanController extends Controller
 
     public function tukarStatus(Request $request)
     {
+        $request->validate([
+            'kod_status'         => 'required',
+            'sebab_tukar_status' => 'required',
+        ]);
+
         $id = Auth::user()->id;
 
         $aduan = Aduan::where('id', $request->status_id)->update([
             'status_aduan'          => $request->kod_status,
             'tukar_status'          => $id,
+            'sebab_tukar_status'    => $request->sebab_tukar_status,
             'tarikh_selesai_aduan'  => Carbon::now()->toDateTimeString(),
         ]);
 
@@ -792,7 +798,7 @@ class AduanController extends Controller
 
         if($aduan->kategori_aduan == 'AWM' || $aduan->kategori_aduan == 'ELK' || $aduan->kategori_aduan == 'MKL' || $aduan->kategori_aduan == 'PKH' || $aduan->kategori_aduan == 'TKM'){
 
-            $admin_staff = Staff::whereIn('staff_id', $admin)->where('staff_code', 'OFM')->get();
+            $admin_staff = Staff::whereIn('staff_id', $admin)->whereIn('staff_code', ['OFM','AA'])->get();
         }
 
         foreach($admin_staff as $value)
@@ -860,7 +866,7 @@ class AduanController extends Controller
         if($staff->staff_code == 'IITU') {
 
             $list = Aduan::whereIn('status_aduan', ['AS','LK','LU'])->whereIn('id_pelapor', $stf)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
-        } elseif($staff->staff_code == 'OFM') {
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
 
             $list = Aduan::whereIn('status_aduan', ['AS','LK','LU'])->whereIn('id_pelapor', $stf)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
         } else {
@@ -901,21 +907,18 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->status_aduan=='BS')
+            if($list->status_aduan=='AS')
             {
-                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                return '<span class="badge badge-success">' . strtoupper($list->status->nama_status) . '</span>';
 
             }
-            if($list->status_aduan=='DJ')
+            if($list->status_aduan=='LK')
             {
-                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                return '<span class="badge badge-success2">' . strtoupper($list->status->nama_status) . '</span>';
             }
             else
             {
-                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                return '<span class="badge badge-success2">' . strtoupper($list->status->nama_status) . '</span>';
             }
         })
 
@@ -948,7 +951,7 @@ class AduanController extends Controller
         if($staff->staff_code == 'IITU') {
 
             $list = Aduan::whereIn('status_aduan', ['AS','LK','LU'])->whereIn('id_pelapor', $std)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
-        } elseif($staff->staff_code == 'OFM') {
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
 
             $list = Aduan::whereIn('status_aduan', ['AS','LK','LU'])->whereIn('id_pelapor', $std)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
         } else {
@@ -989,21 +992,18 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->status_aduan=='BS')
+            if($list->status_aduan=='AS')
             {
-                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                return '<span class="badge badge-success">' . strtoupper($list->status->nama_status) . '</span>';
 
             }
-            if($list->status_aduan=='DJ')
+            if($list->status_aduan=='LK')
             {
-                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                return '<span class="badge badge-success2">' . strtoupper($list->status->nama_status) . '</span>';
             }
             else
             {
-                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                return '<span class="badge badge-success2">' . strtoupper($list->status->nama_status) . '</span>';
             }
         })
 
@@ -1041,7 +1041,7 @@ class AduanController extends Controller
         if($staff->staff_code == 'IITU') {
 
             $list = Aduan::whereIn('status_aduan', ['AK'])->whereIn('id_pelapor', $stf)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
-        } elseif($staff->staff_code == 'OFM') {
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
 
             $list = Aduan::whereIn('status_aduan', ['AK'])->whereIn('id_pelapor', $stf)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
         } else {
@@ -1082,22 +1082,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-
-            }
-            if($list->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
+            return '<span class="badge badge-kiv">' . strtoupper($list->status->nama_status) . '</span>';
         })
 
         ->editColumn('tahap_kategori', function ($list) {
@@ -1129,7 +1114,7 @@ class AduanController extends Controller
         if($staff->staff_code == 'IITU') {
 
             $list = Aduan::whereIn('status_aduan', ['AK'])->whereIn('id_pelapor', $std)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
-        } elseif($staff->staff_code == 'OFM') {
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
 
             $list = Aduan::whereIn('status_aduan', ['AK'])->whereIn('id_pelapor', $std)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
         } else {
@@ -1170,22 +1155,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-
-            }
-            if($list->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
+            return '<span class="badge badge-kiv">' . strtoupper($list->status->nama_status) . '</span>';
         })
 
         ->editColumn('tahap_kategori', function ($list) {
@@ -1222,7 +1192,7 @@ class AduanController extends Controller
         if($staff->staff_code == 'IITU') {
 
             $list = Aduan::whereIn('status_aduan', ['DP'])->whereIn('id_pelapor', $stf)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
-        } elseif($staff->staff_code == 'OFM') {
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
 
             $list = Aduan::whereIn('status_aduan', ['DP'])->whereIn('id_pelapor', $stf)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
         } else {
@@ -1263,22 +1233,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-
-            }
-            if($list->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
+            return '<span class="badge badge-duplicate">' . strtoupper($list->status->nama_status) . '</span>';
         })
 
         ->editColumn('tahap_kategori', function ($list) {
@@ -1310,7 +1265,7 @@ class AduanController extends Controller
         if($staff->staff_code == 'IITU') {
 
             $list = Aduan::whereIn('status_aduan', ['DP'])->whereIn('id_pelapor', $std)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
-        } elseif($staff->staff_code == 'OFM') {
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
 
             $list = Aduan::whereIn('status_aduan', ['DP'])->whereIn('id_pelapor', $std)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
         } else {
@@ -1351,22 +1306,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-
-            }
-            if($list->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
+            return '<span class="badge badge-duplicate">' . strtoupper($list->status->nama_status) . '</span>';
         })
 
         ->editColumn('tahap_kategori', function ($list) {
@@ -1424,7 +1364,21 @@ class AduanController extends Controller
         return redirect()->back()->with('messages', 'Imej Pembaikan Berjaya Dipadam');
     }
 
-    // Juruteknik
+    // Senarai Aduan Juruteknik
+
+    public function hantarNotis(Request $request)
+    {
+        $request->validate([
+            'notis_juruteknik'         => 'required',
+        ]);
+
+        $aduan = Aduan::where('id', $request->ids)->update([
+            'notis_juruteknik'          => $request->notis_juruteknik,
+        ]);
+
+        Session::flash('notis', 'Notis aduan telah berjaya ditukar. Notis akan dipaparkan dalam senarai aduan pengadu.');
+        return redirect('/senarai-aduan-juruteknik');
+    }
 
     public function senaraiAduanJuruteknik()
     {
@@ -1519,7 +1473,12 @@ class AduanController extends Controller
             }
         })
 
-        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tempoh', 'tarikh_laporan'])
+        ->addColumn('notis', function ($list) {
+
+            return '<a href="" class="btn btn-sm btn-warning" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id_aduan.'" data-notis="'. $list->aduan->notis_juruteknik.'"><i class="fal fa-pencil"></i></a>';
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tempoh', 'tarikh_laporan','notis'])
         ->make(true);
     }
 
@@ -1610,7 +1569,12 @@ class AduanController extends Controller
             }
         })
 
-        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tempoh', 'tarikh_laporan'])
+        ->addColumn('notis', function ($list) {
+
+            return '<a href="" class="btn btn-sm btn-warning" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'" data-notis="'. $list->aduan->notis_juruteknik.'"><i class="fal fa-pencil"></i></a>';
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tempoh', 'tarikh_laporan','notis'])
         ->make(true);
     }
 
@@ -1667,17 +1631,17 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->aduan->status_aduan=='BS')
+            if($list->aduan->status_aduan=='AS')
             {
-                return '<span class="badge badge-new">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+                return '<span class="badge badge-success">' . strtoupper($list->aduan->status->nama_status) . '</span>';
             }
-            if($list->aduan->status_aduan=='DJ')
+            if($list->aduan->status_aduan=='LK')
             {
-                return '<span class="badge badge-sent">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+                return '<span class="badge badge-success2">' . strtoupper($list->aduan->status->nama_status) . '</span>';
             }
             else
             {
-                return '<span class="badge badge-done">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+                return '<span class="badge badge-success2">' . strtoupper($list->aduan->status->nama_status) . '</span>';
             }
 
         })
@@ -1743,17 +1707,17 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->aduan->status_aduan=='BS')
+            if($list->aduan->status_aduan=='AS')
             {
-                return '<span class="badge badge-new">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+                return '<span class="badge badge-success">' . strtoupper($list->aduan->status->nama_status) . '</span>';
             }
-            if($list->aduan->status_aduan=='DJ')
+            if($list->aduan->status_aduan=='LK')
             {
-                return '<span class="badge badge-sent">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+                return '<span class="badge badge-success2">' . strtoupper($list->aduan->status->nama_status) . '</span>';
             }
             else
             {
-                return '<span class="badge badge-done">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+                return '<span class="badge badge-success2">' . strtoupper($list->aduan->status->nama_status) . '</span>';
             }
         })
 
@@ -1823,18 +1787,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->aduan->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
-            if($list->aduan->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
+            return '<span class="badge badge-kiv">' . strtoupper($list->aduan->status->nama_status) . '</span>';
         })
 
         ->editColumn('tahap_kategori', function ($list) {
@@ -1898,19 +1851,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->aduan->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
-            if($list->aduan->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
-
+            return '<span class="badge badge-kiv">' . strtoupper($list->aduan->status->nama_status) . '</span>';
         })
 
         ->editColumn('tahap_kategori', function ($list) {
@@ -1979,18 +1920,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->aduan->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
-            if($list->aduan->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
+            return '<span class="badge badge-duplicate">' . strtoupper($list->aduan->status->nama_status) . '</span>';
         })
 
         ->editColumn('tahap_kategori', function ($list) {
@@ -2054,18 +1984,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->aduan->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
-            if($list->aduan->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->aduan->status->nama_status) . '</span>';
-            }
+            return '<span class="badge badge-duplicate">' . strtoupper($list->aduan->status->nama_status) . '</span>';
         })
 
         ->editColumn('tahap_kategori', function ($list) {
