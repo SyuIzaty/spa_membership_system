@@ -107,35 +107,35 @@
                                 </a>
                             </li>
                         @endcanany
-                        @canany(['Rent Form'])
-                        <li>
-                            <a href="#" title="Rent Form" data-filter-tags="Rent Form">
-                                <i class="fal fa-clipboard-list"></i>
-                                <span class="nav-link-text" data-i18n="nav.rent_form">ICT Equipment Rental</span>
-                            </a> 
-                            <ul>
-                                @canany(['Rent Form'])
 
+                        @role('Super Admin')
+                            @canany(['Rent Form'])
                                 <li>
-                                    <a href="/test2" title="Rental Form" data-filter-tags="Rental Form">
-                                        <i class="fal fa-file-alt"></i>
-                                        <span class="nav-link-text" data-i18n="nav.rental_form">Rental Form</span>
+                                    <a href="#" title="Rent Form" data-filter-tags="Rent Form">
+                                        <i class="fal fa-clipboard-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.rent_form">ICT Equipment Rental</span>
                                     </a>
+                                    <ul>
+                                        @canany(['Rent Form'])
+                                            <li>
+                                                <a href="/test2" title="Rental Form" data-filter-tags="Rental Form">
+                                                    <i class="fal fa-file-alt"></i>
+                                                    <span class="nav-link-text" data-i18n="nav.rental_form">Rental Form</span>
+                                                </a>
+                                            </li>
+                                        @endcanany
+                                        @canany(['Manage Rent Form'])
+                                            <li>
+                                                <a href="/show" title="View Record" data-filter-tags="View Record">
+                                                    <i class="ni ni-users"></i>
+                                                    <span class="nav-link-text" data-i18n="nav.view_record">View Record</span>
+                                                </a>
+                                            </li>
+                                        @endcanany
+                                    </ul>
                                 </li>
-                                @endcanany
-                                @canany(['Manage Rent Form'])
-
-                                <li>
-                                    <a href="/show" title="View Record" data-filter-tags="View Record">
-                                        <i class="ni ni-users"></i>
-                                        <span class="nav-link-text" data-i18n="nav.view_record">View Record</span>
-                                    </a>
-                                </li>
-                                @endcanany
-                            </ul>
-                        </li>
-                        
-                        @endcanany
+                            @endcanany
+                        @endrole
                         {{-- Start Aduan --}}
                         @php
                             // $user = Auth()->user();
@@ -143,6 +143,35 @@
                             // echo ($user);
                             // echo ($permission);
                         @endphp
+
+                        @role('Super Admin')
+                            <li class="nav-title">SOP Management</li>
+                            <li>
+                                <a href="/sop" style="text-decoration: none!important;" title="SOP"
+                                    data-filter-tags="list">
+                                    <i class="ni ni-briefcase"></i>
+                                    <span class="nav-link-text" data-i18n="nav.sop">SOP</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="#" title="SOP Admin" data-filter-tags="list">
+                                    <i class="fal fa-user"></i>
+                                    <span class="nav-link-text" data-i18n="nav.list">Admin</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/sop-list" title="SOP List" data-filter-tags="sopList">
+                                            <span class="nav-link-text" data-i18n="nav.sopList">SOP List</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/department-list" title="Department List" data-filter-tags="department">
+                                            <span class="nav-link-text" data-i18n="nav.department">Department</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endrole
 
                         <!-- Start eAduan Korporat System -->
                         @role('eAduan Super Admin')
