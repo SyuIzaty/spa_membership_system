@@ -625,6 +625,12 @@
                                             <span class="nav-link-text" data-i18n="nav.senarai"> Senarai Aduan</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="/manual-aduan" title="Manual Pengguna" data-filter-tags="Manual Pengguna"
+                                            target="_blank" style="text-decoration: none!important">
+                                            <span class="nav-link-text" data-i18n="nav.user-manual">Manual Pengguna</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         @endcan

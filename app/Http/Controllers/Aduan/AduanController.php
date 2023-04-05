@@ -344,7 +344,7 @@ class AduanController extends Controller
 
         if($aduan->kategori_aduan == 'AWM' || $aduan->kategori_aduan == 'ELK' || $aduan->kategori_aduan == 'MKL' || $aduan->kategori_aduan == 'PKH' || $aduan->kategori_aduan == 'TKM'){
 
-            $admin_staff = Staff::whereIn('staff_id', $admin)->where('staff_code', 'OFM')->get();
+            $admin_staff = Staff::whereIn('staff_id', $admin)->whereIn('staff_code', ['OFM','AA'])->get();
         }
 
         foreach($admin_staff as $value)
@@ -401,6 +401,21 @@ class AduanController extends Controller
     public function failPembaikan($filename,$type)
     {
         return Storage::response('pembaikan/'.$filename);
+    }
+
+    public function manualAduan()
+    {
+        $file = "E-ADUAN MANUAL PENGGUNA (STAF & PELAJAR).pdf";
+
+        $path = storage_path().'/app/aduan/'.$file;
+
+        $form = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($form, 200);
+        $response->header("Content-Type", $filetype);
+
+        return $response;
     }
 
     // Senarai Aduan Admin
@@ -813,7 +828,7 @@ class AduanController extends Controller
             ];
 
             Mail::send('aduan.emel-aduan', $data, function ($message) use ($admin_email) {
-                $message->subject('EADUAN: PELAKSANAAN PENAMBAIKAN ADUAN');
+                $message->subject('EADUAN: PELAKSANAAN PENAMBAHBAIKAN ADUAN');
                 $message->from(Auth::user()->email);
                 $message->to($admin_email);
             });

@@ -178,25 +178,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/download/{id}', 'Aduan\AduanController@downloadBorang')->name('downloadBorang');
     Route::get('pembaikan/{filename}/{type}', 'Aduan\AduanController@failPembaikan');
     Route::get('padamGambar/{id}/{id_aduan}', 'Aduan\AduanController@padamGambar')->name('padamGambar');
-
+    Route::get('/manual-aduan', 'Aduan\AduanController@manualAduan');
     // Kategori
     Route::resource('kategori-aduan', 'Aduan\KategoriAduanController');
     Route::post('kategoriAduan', 'Aduan\KategoriAduanController@data_kategori');
     Route::post('tambahKategori', 'Aduan\KategoriAduanController@tambahKategori');
     Route::post('kemaskiniKategori', 'Aduan\KategoriAduanController@kemaskiniKategori');
-
     // Jenis
     Route::resource('jenis-kerosakan', 'Aduan\JenisKerosakanController');
     Route::post('jenisKerosakan', 'Aduan\JenisKerosakanController@data_jenis');
     Route::post('tambahJenis', 'Aduan\JenisKerosakanController@tambahJenis');
     Route::post('kemaskiniJenis', 'Aduan\JenisKerosakanController@kemaskiniJenis');
-
     // Sebab
     Route::resource('sebab-kerosakan', 'Aduan\SebabKerosakanController');
     Route::post('sebabKerosakan', 'Aduan\SebabKerosakanController@data_sebab');
     Route::post('tambahSebab', 'Aduan\SebabKerosakanController@tambahSebab');
     Route::post('kemaskiniSebab', 'Aduan\SebabKerosakanController@kemaskiniSebab');
-
     // Alat
     Route::resource('alat-ganti', 'Aduan\AlatGantiController');
     Route::post('alatGanti', 'Aduan\AlatGantiController@data_alat');
