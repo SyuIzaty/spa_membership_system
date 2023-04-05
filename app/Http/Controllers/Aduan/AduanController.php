@@ -407,7 +407,7 @@ class AduanController extends Controller
     {
         $file = "E-ADUAN MANUAL PENGGUNA (STAF & PELAJAR).pdf";
 
-        $path = storage_path().'/app/aduan/'.$file;
+        $path = storage_path().'/eaduan/'.$file;
 
         $form = File::get($path);
         $filetype = File::mimeType($path);
