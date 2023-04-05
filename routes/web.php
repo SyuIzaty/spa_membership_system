@@ -46,6 +46,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home', 'DashboardController@index');
 
     Route::resource('/card/staff', 'Card\StaffCardController');
+
+    //SOP
+    Route::resource('/sop', 'SOPController');
+    Route::post('/get-sop-list', 'SOPController@getSOPList');
+    Route::post('/get-sop-lists', 'SOPController@getSOPLists');
+    Route::get('/sop/{id}', 'SOPController@getSOP');
+    Route::get('/sop/{id}/log', 'SOPController@getLog');
+
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');
     Route::post('/eKenderaan-application', 'EKenderaanController@store');

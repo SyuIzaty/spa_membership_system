@@ -9,4 +9,10 @@ class SopList extends Model
 {
     use SoftDeletes;
     protected $fillable = ['sop','department_id','active','created_by','updated_by','deleted_by'];
+
+    public function department()
+    {
+        return $this->hasOne(SopDepartment::class, 'id', 'department_id');
+    }
+
 }
