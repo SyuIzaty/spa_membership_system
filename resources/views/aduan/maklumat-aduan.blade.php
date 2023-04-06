@@ -311,7 +311,7 @@
                                             @endif
                                             {!! Form::open(['action' => 'Aduan\AduanController@simpanPengesahan', 'method' => 'POST', 'id' => 'data']) !!}
                                             <input type="hidden" name="id" value="{{ $aduan->id }}">
-                                                @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK'|| $aduan->status_aduan == 'DP')
+                                                @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK'|| $aduan->status_aduan == 'DP'|| $aduan->status_aduan == 'LU')
                                                     @if(isset($aduan->pengesahan_pembaikan))
                                                         <tr>
                                                             <div class="form-group">

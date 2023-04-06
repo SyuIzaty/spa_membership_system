@@ -638,13 +638,13 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td colspan="2"><label class="form-label" for="upload_image"><span class="text-danger">*</span> Gambar Penambahbaikan:</label></td>
+                                                                            <td colspan="2"><label class="form-label" for="upload_image"> Gambar Penambahbaikan:</label></td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
                                                                             <td colspan="2" style="vertical-align: middle">
-                                                                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required><br>
+                                                                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple><br>
                                                                                 <div class="card-body">
                                                                                     @if(session()->has('messages'))
                                                                                     <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
