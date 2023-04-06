@@ -126,7 +126,7 @@
                                                         <div class="col-sm-12 col-xl-6">
                                                             <div class="p-3 rounded overflow-hidden position-relative text-black mb-g" style="border-style:dotted">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    {{\App\Aduan::whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-SYS','IITU-OPR','IITU-OPR_EMEL','IITU-OPR_SFWR','IITU-NTWK WIRELESS'])->where(DB::raw('YEAR(cms_aduan.tarikh_laporan)'), '=', $selectedYear)->count()}}
+                                                                    {{\App\Aduan::whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->where(DB::raw('YEAR(cms_aduan.tarikh_laporan)'), '=', $selectedYear)->count()}}
                                                                     <small class="m-0 l-h-n">IITU</small>
                                                                 </h3>
                                                                 <i class="fal fa-cog position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>

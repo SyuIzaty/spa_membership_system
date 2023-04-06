@@ -64,9 +64,7 @@
                                                                 <option value="TELEKOMUNIKASI">TELEKOMUNIKASI</option>
                                                                 <option value="IITU-PERKAKASAN IT">IITU-PERKAKASAN IT</option>
                                                                 <option value="IITU-RANGKAIAN BERWAYAR">IITU-RANGKAIAN BERWAYAR</option>
-                                                                <option value="IITU-SISTEM">IITU-SISTEM</option>
                                                                 <option value="IITU-EMEL">IITU-EMEL</option>
-                                                                <option value="IITU-PERISIAN">IITU-PERISIAN</option>
                                                                 <option value="IITU-RANGKAIAN TANPA WAYAR">IITU-RANGKAIAN TANPA WAYAR</option>
                                                             </select></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
@@ -111,9 +109,7 @@
                                                                 <option value="TELEKOMUNIKASI">TELEKOMUNIKASI</option>
                                                                 <option value="IITU-PERKAKASAN IT">IITU-PERKAKASAN IT</option>
                                                                 <option value="IITU-RANGKAIAN BERWAYAR">IITU-RANGKAIAN BERWAYAR</option>
-                                                                <option value="IITU-SISTEM">IITU-SISTEM</option>
                                                                 <option value="IITU-EMEL">IITU-EMEL</option>
-                                                                <option value="IITU-PERISIAN">IITU-PERISIAN</option>
                                                                 <option value="IITU-RANGKAIAN TANPA WAYAR">IITU-RANGKAIAN TANPA WAYAR</option>
                                                             </select></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
