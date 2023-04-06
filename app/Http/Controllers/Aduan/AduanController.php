@@ -451,9 +451,22 @@ class AduanController extends Controller
 
     public function senaraiAduan(Request $request)
     {
-        $status = StatusAduan::whereIn('kod_status', ['AS', 'LK', 'LU'])->get();
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
-        return view('aduan.senarai-aduan', compact('status'));
+        if($staff->staff_code == 'IITU') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
+        $status = StatusAduan::whereIn('kod_status', ['BS', 'DJ', 'TD'])->get();
+
+        return view('aduan.senarai-aduan', compact('status','kategori'));
     }
 
     public function data_senarai()
@@ -911,13 +924,22 @@ class AduanController extends Controller
 
     public function senaraiSelesai(Request $request)
     {
-        $aduan = Aduan::all();
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
-        $juruteknik = User::whereHas('roles', function($query){
-            $query->where('id', 'CMS002');
-        })->get();
+        if($staff->staff_code == 'IITU') {
 
-        return view('aduan.senarai-aduan-selesai', compact('aduan', 'juruteknik'))->with('no', 1);
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
+        $status = StatusAduan::whereIn('kod_status', ['AS', 'LK', 'LU'])->get();
+
+        return view('aduan.senarai-aduan-selesai', compact('status', 'kategori'));
     }
 
     public function data_selesai()
@@ -1092,7 +1114,22 @@ class AduanController extends Controller
 
     public function senaraiKiv(Request $request)
     {
-        return view('aduan.senarai-aduan-kiv');
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
+        $status = StatusAduan::whereIn('kod_status', ['AK'])->get();
+
+        return view('aduan.senarai-aduan-kiv', compact('status','kategori'));
     }
 
     public function data_kiv()
@@ -1243,7 +1280,22 @@ class AduanController extends Controller
 
     public function senaraiBertindih(Request $request)
     {
-        return view('aduan.senarai-aduan-bertindih');
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
+        $status = StatusAduan::whereIn('kod_status', ['DP'])->get();
+
+        return view('aduan.senarai-aduan-bertindih', compact('status','kategori'));
     }
 
     public function data_bertindih()
@@ -1445,9 +1497,22 @@ class AduanController extends Controller
 
     public function senaraiAduanJuruteknik()
     {
-        $status = StatusAduan::whereIn('kod_status', ['AS', 'LK', 'LU'])->get();
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
-        return view('aduan.senarai-aduan-juruteknik', compact('status'));
+        if($staff->staff_code == 'IITU') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
+        $status = StatusAduan::whereIn('kod_status', ['BS','DJ','TD'])->get();
+
+        return view('aduan.senarai-aduan-juruteknik', compact('status','kategori'));
     }
 
     public function data_senarai_juruteknik()
@@ -1643,13 +1708,22 @@ class AduanController extends Controller
 
     public function senaraiSelesaiJuruteknik()
     {
-        $aduan = Aduan::all();
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
-        $juruteknik = User::whereHas('roles', function($query){
-            $query->where('id', 'CMS002');
-        })->get();
+        if($staff->staff_code == 'IITU') {
 
-        return view('aduan.senarai-aduan-selesai-juruteknik', compact('aduan', 'juruteknik'))->with('no', 1);
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
+        $status = StatusAduan::whereIn('kod_status', ['AS','LK','LU'])->get();
+
+        return view('aduan.senarai-aduan-selesai-juruteknik', compact('kategori', 'status'));
     }
 
     public function data_selesai_juruteknik()
@@ -1806,7 +1880,22 @@ class AduanController extends Controller
 
     public function senaraiKivJuruteknik()
     {
-        return view('aduan.senarai-aduan-kiv-juruteknik');
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
+        $status = StatusAduan::whereIn('kod_status', ['AK'])->get();
+
+        return view('aduan.senarai-aduan-kiv-juruteknik', compact('status', 'kategori'));
     }
 
     public function data_kiv_juruteknik()
@@ -1939,7 +2028,22 @@ class AduanController extends Controller
 
     public function senaraiBertindihJuruteknik()
     {
-        return view('aduan.senarai-aduan-bertindih-juruteknik');
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
+        $status = StatusAduan::whereIn('kod_status', ['DP'])->get();
+
+        return view('aduan.senarai-aduan-bertindih-juruteknik', compact('kategori','status'));
     }
 
     public function data_bertindih_juruteknik()
@@ -2093,9 +2197,23 @@ class AduanController extends Controller
 
     public function aduan_all(Request $request)
     {
-        $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
         $status = StatusAduan::select('kod_status', 'nama_status')->get();
+
         $tahap = TahapKategori::select('kod_tahap', 'jenis_tahap')->get();
+
         $bulan = Aduan::select('bulan_laporan')->groupBy('bulan_laporan')->orderBy('bulan_laporan', 'ASC')->get();
 
         $req_kategori = $request->kategori;
@@ -2130,8 +2248,6 @@ class AduanController extends Controller
             }
 
             $data = $result->get();
-        } else {
-            $data = Aduan::all();
         }
 
         $this->aduans($request->kategori,$request->status,$request->tahap,$request->bulan);
@@ -2141,17 +2257,42 @@ class AduanController extends Controller
 
     public function aduan_all_staff(Request $request)
     {
-        $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+
+            $exist = Staff::select('staff_id')->where('staff_code', 'IITU')->pluck('staff_id')->toArray();
+
+            $juruteknik = User::select('id', 'name')->whereIn('id', $exist)->whereHas('roles', function($query){
+                $query->where('id', 'CMS002');
+            })->get();
+
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+
+            $exist = Staff::select('staff_id')->whereIn('staff_code', ['OFM','AA'])->pluck('staff_id')->toArray();
+
+            $juruteknik = User::select('id', 'name')->whereIn('id', $exist)->whereHas('roles', function($query){
+                $query->where('id', 'CMS002');
+            })->get();
+
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+
+            $juruteknik = User::select('id', 'name')->whereHas('roles', function($query){
+                $query->where('id', 'CMS002');
+            })->get();
+        }
 
         $status = StatusAduan::select('kod_status', 'nama_status')->get();
 
         $tahap = TahapKategori::select('kod_tahap', 'jenis_tahap')->get();
 
         $bulan = Aduan::select('bulan_laporan')->groupBy('bulan_laporan')->orderBy('bulan_laporan', 'ASC')->get();
-
-        $juruteknik = User::select('id', 'name')->whereHas('roles', function($query){
-            $query->where('id', 'CMS002');
-        })->get();
 
         $req_juruteknik = $request->juruteknik;
         $req_status = $request->stat;

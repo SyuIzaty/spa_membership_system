@@ -57,20 +57,16 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
                                                             <td class="hasinput"><select id="kategori_aduan" name="kategori_aduan" class="form-control">
                                                                 <option value="">SEMUA</option>
-                                                                <option value="KERJA-KERJA AWAM">KERJA-KERJA AWAM</option>
-                                                                <option value="KERJA-KERJA ELEKTRIK">KERJA-KERJA ELEKTRIK</option>
-                                                                <option value="KERJA-KERJA MEKANIKAL">KERJA-KERJA MEKANIKAL</option>
-                                                                <option value="PERKHIDMATAN">PERKHIDMATAN</option>
-                                                                <option value="TELEKOMUNIKASI">TELEKOMUNIKASI</option>
-                                                                <option value="IITU-PERKAKASAN IT">IITU-PERKAKASAN IT</option>
-                                                                <option value="IITU-RANGKAIAN BERWAYAR">IITU-RANGKAIAN BERWAYAR</option>
-                                                                <option value="IITU-EMEL">IITU-EMEL</option>
-                                                                <option value="IITU-RANGKAIAN TANPA WAYAR">IITU-RANGKAIAN TANPA WAYAR</option>
+                                                                @foreach($kategori as $kat)
+                                                                    <option value="{{$kat->nama_kategori}}">{{$kat->nama_kategori}}</option>
+                                                                @endforeach
                                                             </select></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
                                                             <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
                                                                 <option value="">SEMUA</option>
-                                                                <option value="AK">ADUAN KIV</option>
+                                                                @foreach($status as $stt)
+                                                                    <option value="{{$stt->nama_status}}">{{$stt->nama_status}}</option>
+                                                                @endforeach
                                                             </select></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
@@ -100,20 +96,16 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
                                                             <td class="hasinput"><select id="kategori_aduan_pelajar" name="kategori_aduan_pelajar" class="form-control">
                                                                 <option value="">SEMUA</option>
-                                                                <option value="KERJA-KERJA AWAM">KERJA-KERJA AWAM</option>
-                                                                <option value="KERJA-KERJA ELEKTRIK">KERJA-KERJA ELEKTRIK</option>
-                                                                <option value="KERJA-KERJA MEKANIKAL">KERJA-KERJA MEKANIKAL</option>
-                                                                <option value="PERKHIDMATAN">PERKHIDMATAN</option>
-                                                                <option value="TELEKOMUNIKASI">TELEKOMUNIKASI</option>
-                                                                <option value="IITU-PERKAKASAN IT">IITU-PERKAKASAN IT</option>
-                                                                <option value="IITU-RANGKAIAN BERWAYAR">IITU-RANGKAIAN BERWAYAR</option>
-                                                                <option value="IITU-EMEL">IITU-EMEL</option>
-                                                                <option value="IITU-RANGKAIAN TANPA WAYAR">IITU-RANGKAIAN TANPA WAYAR</option>
+                                                                @foreach($kategori as $kat)
+                                                                    <option value="{{$kat->nama_kategori}}">{{$kat->nama_kategori}}</option>
+                                                                @endforeach
                                                             </select></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
                                                             <td class="hasinput"><select id="status_aduan_pelajar" name="status_aduan_pelajar" class="form-control">
                                                                 <option value="">SEMUA</option>
-                                                                <option value="AK">ADUAN KIV</option>
+                                                                @foreach($status as $stt)
+                                                                    <option value="{{$stt->nama_status}}">{{$stt->nama_status}}</option>
+                                                                @endforeach
                                                             </select></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>

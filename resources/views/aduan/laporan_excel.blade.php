@@ -49,7 +49,7 @@
                                                 <select class="custom-tahap form-control" name="tahap" id="tahap">
                                                     <option value="" disabled selected>Silih pilih</option>
                                                     @foreach($tahap as $thp)
-                                                        <option value="{{$thp->kod_tahap}}" {{ $req_tahap == $thp->kod_tahap  ? 'selected' : '' }}>{{strtoupper($kat->jenis_tahap)}}</option>
+                                                        <option value="{{$thp->kod_tahap}}" {{ $req_tahap == $thp->kod_tahap  ? 'selected' : '' }}>{{strtoupper($thp->jenis_tahap)}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
