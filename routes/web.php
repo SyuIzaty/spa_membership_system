@@ -51,8 +51,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/sop', 'SOPController');
     Route::post('/get-sop-list', 'SOPController@getSOPList');
     Route::post('/get-sop-lists', 'SOPController@getSOPLists');
+    Route::get('/sop-title', 'SOPController@SOPTitle');
+    Route::post('/get-sop-title', 'SOPController@getSOPTitle');
+    Route::post('/get-sop-titles', 'SOPController@getSOPTitles');
     Route::get('/sop/{id}', 'SOPController@getSOP');
     Route::get('/sop/{id}/log', 'SOPController@getLog');
+    Route::post('/store-sop-title', 'SOPController@addSOPTitle');
+    Route::post('/edit-sop-title', 'SOPController@editSOPTitle');
+    Route::post('/add', 'SOPController@add');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

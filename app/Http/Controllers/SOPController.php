@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\SopDepartment;
+use App\SopCrossDepartment;
 use App\SopList;
+use App\SopDepartment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class SOPController extends Controller
 {
@@ -12,7 +15,7 @@ class SOPController extends Controller
     {
         $selectedDepartment = $request->department;
 
-        $department = SopDepartment::where('active', 'Y')->get();
+        $department         = SopDepartment::where('active', 'Y')->get();
 
         return view('sop.index', compact('department', 'selectedDepartment'));
     }
@@ -73,6 +76,135 @@ class SOPController extends Controller
         ->addIndexColumn()
         ->rawColumns(['action','log'])
         ->make(true);
+    }
+
+    public function SOPTitle(Request $request)
+    {
+        $selectedDepartment = $request->department;
+
+        $department         = SopDepartment::where('active', 'Y')->get();
+
+        return view('sop.sop-title', compact('department', 'selectedDepartment'));
+    }
+
+    public function getSOPTitle()
+    {
+        $data = SopList::all();
+
+        return datatables()::of($data)
+            ->addColumn('sop', function ($data) {
+                return isset($data->sop) ? ($data->sop) : 'N/A';
+            })
+
+            ->addColumn('department', function ($data) {
+                return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
+            })
+
+            ->addColumn('cross_department', function ($data) {
+
+                $all = '';
+                foreach ($data->getCD as $c) {
+                    $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                }
+                return $all;
+            })
+
+            ->addColumn('status', function ($data) {
+                if ($data->active == 'Y') {
+                    return '<div style="color: green;"><b>Active</b></div>';
+                } else {
+                    return '<div style="color: red;"><b>Inactive</b></div>';
+                }
+            })
+
+            ->addColumn('action', function ($data) {
+                return '<a href="#" data-target="#edit" data-toggle="modal"
+                data-id="'.$data->id.'" data-department="'.$data->department_id.'"
+                data-title="'.$data->sop.'" data-status="'.$data->active.'"
+                class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->addIndexColumn()
+            ->rawColumns(['action','status','cross_department'])
+            ->make(true);
+    }
+
+    public function getSOPTitles(Request $request)
+    {
+        $cond = "1";
+
+        if ($request->department && $request->department != "All") {
+            $cond .= " AND (department_id = '".$request->department."')";
+        }
+
+        $data = SopList::whereRaw($cond);
+
+        return datatables()::of($data)
+        ->addColumn('sop', function ($data) {
+            return isset($data->sop) ? ($data->sop) : 'N/A';
+        })
+
+        ->addColumn('department', function ($data) {
+            return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
+        })
+
+        ->addColumn('status', function ($data) {
+            if ($data->active == 'Y') {
+                return '<div style="color: green;"><b>Active</b></div>';
+            } else {
+                return '<div style="color: red;"><b>Inactive</b></div>';
+            }
+        })
+
+        ->addColumn('action', function ($data) {
+            return '<a href="#" data-target="#edit" data-toggle="modal"
+            data-id="'.$data->id.'" data-department="'.$data->department_id.'"
+            data-title="'.$data->sop.'" data-status="'.$data->active.'"
+            class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+        })
+
+        ->addIndexColumn()
+        ->rawColumns(['action','status'])
+        ->make(true);
+    }
+
+    // public function add(Request $request)
+    // {
+    //     (new FastExcel())->import(request()->file('import_file'), function ($line) {
+    //         return SopList::create([
+    //             'sop' => $line['SOP'],
+    //             'department_id' => $line['Dept'],
+    //             'active' => $line['Active'],
+    //             'created_by'    => Auth::user()->id
+    //         ]);
+    //     });
+
+    //     return redirect()->back()->with('message', 'Add Successfully');
+    // }
+
+    public function addSOPTitle(Request $request)
+    {
+        SopList::create([
+            'sop'           => $request->title,
+            'department_id' => $request->department,
+            'active'        => $request->status,
+            'created_by'    => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Add Successfully');
+    }
+
+    public function editSOPTitle(Request $request)
+    {
+        $update = SopList::where('id', $request->id)->first();
+        $update->update([
+            'sop'           => $request->title,
+            'department_id' => $request->department,
+            'active'        => $request->status,
+            'updated_by'    => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Update Successfully');
     }
 
 }

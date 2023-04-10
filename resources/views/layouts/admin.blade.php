@@ -160,8 +160,8 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/sop-list" title="SOP List" data-filter-tags="sopList">
-                                            <span class="nav-link-text" data-i18n="nav.sopList">SOP List</span>
+                                        <a href="/sop-title" title="SOP Title" data-filter-tags="sopTitle">
+                                            <span class="nav-link-text" data-i18n="nav.sopTitle">SOP Title</span>
                                         </a>
                                     </li>
                                     <li>
@@ -626,8 +626,9 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/manual-aduan" title="Manual Pengguna" data-filter-tags="Manual Pengguna"
-                                            target="_blank" style="text-decoration: none!important">
+                                        <a href="/manual-aduan" title="Manual Pengguna"
+                                            data-filter-tags="Manual Pengguna" target="_blank"
+                                            style="text-decoration: none!important">
                                             <span class="nav-link-text" data-i18n="nav.user-manual">Manual Pengguna</span>
                                         </a>
                                     </li>
