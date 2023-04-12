@@ -153,6 +153,15 @@ class SOPController extends Controller
             return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
         })
 
+        ->addColumn('cross_department', function ($data) {
+
+            $all = '';
+            foreach ($data->getCD as $c) {
+                $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+            }
+            return $all;
+        })
+
         ->addColumn('status', function ($data) {
             if ($data->active == 'Y') {
                 return '<div style="color: green;"><b>Active</b></div>';
@@ -169,7 +178,7 @@ class SOPController extends Controller
         })
 
         ->addIndexColumn()
-        ->rawColumns(['action','status'])
+        ->rawColumns(['action','status','cross_department'])
         ->make(true);
     }
 

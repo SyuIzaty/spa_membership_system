@@ -165,7 +165,8 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/department-list" title="Department List" data-filter-tags="department">
+                                        <a href="/department-lists" title="Department List"
+                                            data-filter-tags="department">
                                             <span class="nav-link-text" data-i18n="nav.department">Department</span>
                                         </a>
                                     </li>
