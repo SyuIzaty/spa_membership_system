@@ -11,6 +11,7 @@ use App\User;
 use App\Aduan;
 use Carbon\Carbon;
 use App\Staff;
+use App\Student;
 use App\ImejAduan;
 use App\AlatGanti;
 use App\ResitAduan;
@@ -224,14 +225,14 @@ class AduanController extends Controller
         return redirect('/borang-aduan');
     }
 
-    public function aduan()
+    public function aduan_individu()
     {
         $status = StatusAduan::all();
 
         return view('aduan.aduan', compact('status'));
     }
 
-    public function data_aduan()
+    public function data_aduan_individu()
     {
         $aduan = Aduan::where('id_pelapor', Auth::user()->id)->select('cms_aduan.*');
 
@@ -449,7 +450,7 @@ class AduanController extends Controller
 
     // Senarai Aduan Admin
 
-    public function senaraiAduan(Request $request)
+    public function senarai_aduan(Request $request)
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
@@ -469,7 +470,7 @@ class AduanController extends Controller
         return view('aduan.senarai-aduan', compact('status','kategori'));
     }
 
-    public function data_senarai()
+    public function data_aduan()
     {
         $stf = User::where('category','STF')->pluck('id');
 
@@ -572,7 +573,7 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function data_senarai_pelajar()
+    public function data_aduan_pelajar()
     {
         $std = User::where('category','STD')->pluck('id');
 
@@ -652,6 +653,109 @@ class AduanController extends Controller
             }
 
             return $tempoh.' hari';
+        })
+
+        ->editColumn('tahap_kategori', function ($list) {
+
+            if($list->tahap_kategori=='B')
+            {
+                return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
+            }
+            elseif($list->tahap_kategori=='S')
+            {
+                return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
+            }
+            else
+            {
+                return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
+            }
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tempoh', 'tarikh_laporan'])
+        ->make(true);
+    }
+
+    public function data_luar()
+    {
+        $merge = User::whereIn('category',['STF','STD'])->pluck('id')->toArray();
+
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
+        } else {
+
+            $list = Aduan::whereIn('status_aduan', ['BS','DJ','TD'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->select('cms_aduan.*');
+        }
+
+        return datatables()::of($list)
+        ->addColumn('action', function ($list) {
+
+            if($list->status_aduan == 'DJ') {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
+                        <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
+            } else {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a></div>';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+
+            return '#'.$list->id;
+        })
+
+        ->editColumn('nama_pelapor', function ($list) {
+
+            return $list->nama_pelapor;
+        })
+
+        ->editColumn('tarikh_laporan', function ($list) {
+
+            return date(' Y-m-d ', strtotime($list->tarikh_laporan) );
+        })
+
+        ->editColumn('kategori_aduan', function ($list) {
+
+            return $list->kategori->nama_kategori ?? '';
+        })
+
+        ->editColumn('status_aduan', function ($list) {
+
+            if($list->status_aduan=='BS')
+            {
+                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
+                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+
+            }
+            if($list->status_aduan=='DJ')
+            {
+                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
+                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+            }
+            else
+            {
+                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
+                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+            }
+        })
+
+        ->editColumn('tempoh', function ($list) {
+
+            if(isset($list->tarikh_selesai_aduan))
+            {
+                $tempoh = Carbon::parse($list->tarikh_laporan)->diffInDays($list->tarikh_selesai_aduan);
+
+            } else {
+
+                $tempoh = Carbon::parse($list->tarikh_laporan)->diffInDays(Carbon::now());
+            }
+
+            return $tempoh.' hari';
+
         })
 
         ->editColumn('tahap_kategori', function ($list) {
@@ -922,7 +1026,7 @@ class AduanController extends Controller
         return Storage::response('pembaikan/'.$file);
     }
 
-    public function senaraiSelesai(Request $request)
+    public function senarai_selesai(Request $request)
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
@@ -1112,7 +1216,92 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function senaraiKiv(Request $request)
+    public function data_selesai_luar()
+    {
+        $merge = User::whereIn('category',['STF','STD'])->pluck('id')->toArray();
+
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $list = Aduan::whereIn('status_aduan', ['AS','LK','LU'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $list = Aduan::whereIn('status_aduan', ['AS','LK','LU'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
+        } else {
+
+            $list = Aduan::whereIn('status_aduan', ['AS','LK','LU'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->select('cms_aduan.*');
+        }
+
+        return datatables()::of($list)
+        ->addColumn('action', function ($list) {
+
+            if($list->status_aduan == 'DJ') {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
+                        <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
+            } else {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a></div>';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+
+            return '#'.$list->id;
+        })
+
+        ->editColumn('nama_pelapor', function ($list) {
+
+            return $list->nama_pelapor;
+        })
+
+        ->editColumn('tarikh_laporan', function ($list) {
+
+            return date(' Y-m-d ', strtotime($list->tarikh_laporan) );
+        })
+
+        ->editColumn('kategori_aduan', function ($list) {
+
+            return $list->kategori->nama_kategori ?? '';
+        })
+
+        ->editColumn('status_aduan', function ($list) {
+
+            if($list->status_aduan=='AS')
+            {
+                return '<span class="badge badge-success">' . strtoupper($list->status->nama_status) . '</span>';
+
+            }
+            if($list->status_aduan=='LK')
+            {
+                return '<span class="badge badge-success2">' . strtoupper($list->status->nama_status) . '</span>';
+            }
+            else
+            {
+                return '<span class="badge badge-success2">' . strtoupper($list->status->nama_status) . '</span>';
+            }
+        })
+
+        ->editColumn('tahap_kategori', function ($list) {
+
+            if($list->tahap_kategori=='B')
+            {
+                return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
+            }
+            elseif($list->tahap_kategori=='S')
+            {
+                return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
+            }
+            else
+            {
+                return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
+            }
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tarikh_laporan'])
+        ->make(true);
+    }
+
+    public function senarai_kiv(Request $request)
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
@@ -1278,7 +1467,80 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function senaraiBertindih(Request $request)
+    public function data_kiv_luar()
+    {
+        $merge = User::whereIn('category',['STF','STD'])->pluck('id')->toArray();
+
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $list = Aduan::whereIn('status_aduan', ['AK'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $list = Aduan::whereIn('status_aduan', ['AK'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
+        } else {
+
+            $list = Aduan::whereIn('status_aduan', ['AK'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->select('cms_aduan.*');
+        }
+
+        return datatables()::of($list)
+        ->addColumn('action', function ($list) {
+
+            if($list->status_aduan == 'DJ') {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
+                        <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
+            } else {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a></div>';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+
+            return '#'.$list->id;
+        })
+
+        ->editColumn('nama_pelapor', function ($list) {
+
+            return $list->nama_pelapor;
+        })
+
+        ->editColumn('tarikh_laporan', function ($list) {
+
+            return date(' Y-m-d ', strtotime($list->tarikh_laporan) );
+        })
+
+        ->editColumn('kategori_aduan', function ($list) {
+
+            return $list->kategori->nama_kategori ?? '';
+        })
+
+        ->editColumn('status_aduan', function ($list) {
+
+            return '<span class="badge badge-kiv">' . strtoupper($list->status->nama_status) . '</span>';
+        })
+
+        ->editColumn('tahap_kategori', function ($list) {
+
+            if($list->tahap_kategori=='B')
+            {
+                return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
+            }
+            elseif($list->tahap_kategori=='S')
+            {
+                return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
+            }
+            else
+            {
+                return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
+            }
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tarikh_laporan'])
+        ->make(true);
+    }
+
+    public function senarai_bertindih(Request $request)
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
@@ -1444,6 +1706,79 @@ class AduanController extends Controller
         ->make(true);
     }
 
+    public function data_bertindih_luar()
+    {
+        $merge = User::whereIn('category',['STF','STD'])->pluck('id')->toArray();
+
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $list = Aduan::whereIn('status_aduan', ['DP'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->select('cms_aduan.*');
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $list = Aduan::whereIn('status_aduan', ['DP'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->select('cms_aduan.*');
+        } else {
+
+            $list = Aduan::whereIn('status_aduan', ['DP'])->whereNotIn('id_pelapor', $merge)->with(['kategori','status','tahap'])->select('cms_aduan.*');
+        }
+
+        return datatables()::of($list)
+        ->addColumn('action', function ($list) {
+
+            if($list->status_aduan == 'DJ') {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
+                        <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
+            } else {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a></div>';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+
+            return '#'.$list->id;
+        })
+
+        ->editColumn('nama_pelapor', function ($list) {
+
+            return $list->nama_pelapor;
+        })
+
+        ->editColumn('tarikh_laporan', function ($list) {
+
+            return date(' Y-m-d ', strtotime($list->tarikh_laporan) );
+        })
+
+        ->editColumn('kategori_aduan', function ($list) {
+
+            return $list->kategori->nama_kategori ?? '';
+        })
+
+        ->editColumn('status_aduan', function ($list) {
+
+            return '<span class="badge badge-duplicate">' . strtoupper($list->status->nama_status) . '</span>';
+        })
+
+        ->editColumn('tahap_kategori', function ($list) {
+
+            if($list->tahap_kategori=='B')
+            {
+                return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
+            }
+            elseif($list->tahap_kategori=='S')
+            {
+                return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
+            }
+            else
+            {
+                return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
+            }
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tarikh_laporan'])
+        ->make(true);
+    }
+
     public function simpanStatus(Request $request)
     {
         $aduan = Aduan::where('id', $request->ide)->first();
@@ -1492,10 +1827,10 @@ class AduanController extends Controller
         ]);
 
         Session::flash('notis', 'Notis aduan telah berjaya ditukar. Notis akan dipaparkan dalam senarai aduan pengadu.');
-        return redirect('/senarai-aduan-juruteknik');
+        return redirect('/senarai-teknikal');
     }
 
-    public function senaraiAduanJuruteknik()
+    public function senarai_teknikal()
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
@@ -1512,10 +1847,10 @@ class AduanController extends Controller
 
         $status = StatusAduan::whereIn('kod_status', ['BS','DJ','TD'])->get();
 
-        return view('aduan.senarai-aduan-juruteknik', compact('status','kategori'));
+        return view('aduan.teknikal-aduan', compact('status','kategori'));
     }
 
-    public function data_senarai_juruteknik()
+    public function teknikal()
     {
         $stf = User::where('category','STF')->pluck('id');
 
@@ -1610,7 +1945,7 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function data_senarai_juruteknik_pelajar()
+    public function teknikal_pelajar()
     {
         $std = User::where('category','STD')->pluck('id');
 
@@ -1706,7 +2041,103 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function senaraiSelesaiJuruteknik()
+    public function teknikal_luar()
+    {
+        $merge = User::whereIn('category',['STF','STD'])->pluck('id')->toArray();
+
+        $list = JuruteknikBertugas::where('juruteknik_bertugas', Auth::user()->id)->whereHas('aduan', function($query) use($merge) {
+            $query->whereNotIn('id_pelapor', $merge)->whereIn('status_aduan', ['DJ','TD']);
+        })->with(['juruteknik','aduan.kategori','aduan.tahap','aduan.status','aduan'])->get();
+
+        return datatables()::of($list)
+        ->addColumn('action', function ($list) {
+
+            if($list->aduan->status_aduan=='DJ') {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
+                        <a data-page="/download/' . $list->id_aduan.'" class="btn btn-sm btn-primary text-white" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
+            } else {
+                return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
+            }
+
+        })
+
+        ->editColumn('id', function ($list) {
+
+            return '#'.$list->id_aduan;
+        })
+
+        ->editColumn('nama_pelapor', function ($list) {
+
+            return $list->aduan->nama_pelapor;
+        })
+
+        ->editColumn('tarikh_laporan', function ($list) {
+
+            return date(' Y-m-d ', strtotime($list->aduan->tarikh_laporan) );
+        })
+
+        ->editColumn('kategori_aduan', function ($list) {
+
+            return $list->aduan->kategori->nama_kategori ?? '';
+        })
+
+        ->editColumn('status_aduan', function ($list) {
+
+            if($list->aduan->status_aduan=='BS')
+            {
+                return '<span class="badge badge-new">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+            }
+            if($list->aduan->status_aduan=='DJ')
+            {
+                return '<span class="badge badge-sent">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+            }
+            else
+            {
+                return '<span class="badge badge-done">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+            }
+
+        })
+
+        ->editColumn('tempoh', function ($list) {
+
+            if(isset($list->aduan->tarikh_selesai_aduan))
+            {
+                $tempoh = Carbon::parse($list->aduan->tarikh_laporan)->diffInDays($list->aduan->tarikh_selesai_aduan);
+
+            } else {
+
+                $tempoh = Carbon::parse($list->aduan->tarikh_laporan)->diffInDays(Carbon::now());
+            }
+
+            return $tempoh.' hari';
+        })
+
+        ->editColumn('tahap_kategori', function ($list) {
+
+            if($list->aduan->tahap_kategori=='B')
+            {
+                return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
+            }
+            elseif($list->aduan->tahap_kategori=='S')
+            {
+                return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
+            }
+            else
+            {
+                return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
+            }
+        })
+
+        ->addColumn('notis', function ($list) {
+
+            return '<a href="" class="btn btn-sm btn-warning" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'" data-notis="'. $list->aduan->notis_juruteknik.'"><i class="fal fa-pencil"></i></a>';
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tempoh', 'tarikh_laporan','notis'])
+        ->make(true);
+    }
+
+    public function senarai_teknikal_selesai()
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
@@ -1723,10 +2154,10 @@ class AduanController extends Controller
 
         $status = StatusAduan::whereIn('kod_status', ['AS','LK','LU'])->get();
 
-        return view('aduan.senarai-aduan-selesai-juruteknik', compact('kategori', 'status'));
+        return view('aduan.teknikal-selesai', compact('kategori', 'status'));
     }
 
-    public function data_selesai_juruteknik()
+    public function teknikal_selesai()
     {
         $stf = User::where('category','STF')->pluck('id');
 
@@ -1803,7 +2234,7 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function data_selesai_juruteknik_pelajar()
+    public function teknikal_selesai_pelajar()
     {
         $std = User::where('category','STD')->pluck('id');
 
@@ -1878,7 +2309,82 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function senaraiKivJuruteknik()
+    public function teknikal_selesai_luar()
+    {
+        $merge = User::whereIn('category',['STF','STD'])->pluck('id')->toArray();
+
+        $list = JuruteknikBertugas::where('juruteknik_bertugas', Auth::user()->id)->whereHas('aduan', function($query) use($merge) {
+            $query->whereNotIn('id_pelapor', $merge)->whereIn('status_aduan', ['AS','LK','LU']);
+        })->with(['juruteknik','aduan.kategori','aduan.tahap','aduan.status','aduan'])->get();
+
+        return datatables()::of($list)
+        ->addColumn('action', function ($list) {
+
+            if($list->aduan->status_aduan=='DJ') {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
+                        <a data-page="/download/' . $list->id_aduan.'" class="btn btn-sm btn-primary text-white" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
+            } else {
+                return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+
+            return '#'.$list->id_aduan;
+        })
+
+        ->editColumn('nama_pelapor', function ($list) {
+
+            return $list->aduan->nama_pelapor;
+        })
+
+        ->editColumn('tarikh_laporan', function ($list) {
+
+            return date(' Y-m-d ', strtotime($list->aduan->tarikh_laporan) );
+        })
+
+        ->editColumn('kategori_aduan', function ($list) {
+
+            return $list->aduan->kategori->nama_kategori ?? '';
+        })
+
+        ->editColumn('status_aduan', function ($list) {
+
+            if($list->aduan->status_aduan=='AS')
+            {
+                return '<span class="badge badge-success">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+            }
+            if($list->aduan->status_aduan=='LK')
+            {
+                return '<span class="badge badge-success2">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+            }
+            else
+            {
+                return '<span class="badge badge-success2">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+            }
+        })
+
+        ->editColumn('tahap_kategori', function ($list) {
+
+            if($list->aduan->tahap_kategori=='B')
+            {
+                return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
+            }
+            elseif($list->aduan->tahap_kategori=='S')
+            {
+                return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
+            }
+            else
+            {
+                return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
+            }
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tarikh_laporan'])
+        ->make(true);
+    }
+
+    public function senarai_teknikal_kiv()
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
@@ -1895,10 +2401,10 @@ class AduanController extends Controller
 
         $status = StatusAduan::whereIn('kod_status', ['AK'])->get();
 
-        return view('aduan.senarai-aduan-kiv-juruteknik', compact('status', 'kategori'));
+        return view('aduan.teknikal-kiv', compact('status', 'kategori'));
     }
 
-    public function data_kiv_juruteknik()
+    public function teknikal_kiv()
     {
         $stf = User::where('category','STF')->pluck('id');
 
@@ -1962,7 +2468,7 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function data_kiv_juruteknik_pelajar()
+    public function teknikal_kiv_pelajar()
     {
         $std = User::where('category','STD')->pluck('id');
 
@@ -2026,7 +2532,71 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function senaraiBertindihJuruteknik()
+    public function teknikal_kiv_luar()
+    {
+        $merge = User::whereIn('category',['STF','STD'])->pluck('id')->toArray();
+
+        $list = JuruteknikBertugas::where('juruteknik_bertugas', Auth::user()->id)->whereHas('aduan', function($query) use($merge) {
+            $query->whereNotIn('id_pelapor', $merge)->whereIn('status_aduan', ['AK']);
+        })->with(['juruteknik','aduan.kategori','aduan.tahap','aduan.status','aduan'])->get();
+
+        return datatables()::of($list)
+        ->addColumn('action', function ($list) {
+
+            if($list->aduan->status_aduan=='DJ') {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
+                        <a data-page="/download/' . $list->id_aduan.'" class="btn btn-sm btn-primary text-white" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
+            } else {
+                return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+
+            return '#'.$list->id_aduan;
+        })
+
+        ->editColumn('nama_pelapor', function ($list) {
+
+            return $list->aduan->nama_pelapor;
+        })
+
+        ->editColumn('tarikh_laporan', function ($list) {
+
+            return date(' Y-m-d ', strtotime($list->aduan->tarikh_laporan) );
+        })
+
+        ->editColumn('kategori_aduan', function ($list) {
+
+            return $list->aduan->kategori->nama_kategori ?? '';
+        })
+
+        ->editColumn('status_aduan', function ($list) {
+
+            return '<span class="badge badge-kiv">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+        })
+
+        ->editColumn('tahap_kategori', function ($list) {
+
+            if($list->aduan->tahap_kategori=='B')
+            {
+                return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
+            }
+            elseif($list->aduan->tahap_kategori=='S')
+            {
+                return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
+            }
+            else
+            {
+                return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
+            }
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tarikh_laporan'])
+        ->make(true);
+    }
+
+    public function senarai_teknikal_bertindih()
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
@@ -2043,10 +2613,10 @@ class AduanController extends Controller
 
         $status = StatusAduan::whereIn('kod_status', ['DP'])->get();
 
-        return view('aduan.senarai-aduan-bertindih-juruteknik', compact('kategori','status'));
+        return view('aduan.teknikal-bertindih', compact('kategori','status'));
     }
 
-    public function data_bertindih_juruteknik()
+    public function teknikal_bertindih()
     {
         $stf = User::where('category','STF')->pluck('id');
 
@@ -2110,12 +2680,76 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function data_bertindih_juruteknik_pelajar()
+    public function teknikal_bertindih_pelajar()
     {
         $std = User::where('category','STD')->pluck('id');
 
         $list = JuruteknikBertugas::where('juruteknik_bertugas', Auth::user()->id)->whereHas('aduan', function($query) use($std) {
             $query->whereIn('id_pelapor', $std)->whereIn('status_aduan', ['DP']);
+        })->with(['juruteknik','aduan.kategori','aduan.tahap','aduan.status','aduan'])->get();
+
+        return datatables()::of($list)
+        ->addColumn('action', function ($list) {
+
+            if($list->aduan->status_aduan=='DJ') {
+                return '<div class="btn-group"><a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
+                        <a data-page="/download/' . $list->id_aduan.'" class="btn btn-sm btn-primary text-white" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
+            } else {
+                return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
+            }
+        })
+
+        ->editColumn('id', function ($list) {
+
+            return '#'.$list->id_aduan;
+        })
+
+        ->editColumn('nama_pelapor', function ($list) {
+
+            return $list->aduan->nama_pelapor;
+        })
+
+        ->editColumn('tarikh_laporan', function ($list) {
+
+            return date(' Y-m-d ', strtotime($list->aduan->tarikh_laporan) );
+        })
+
+        ->editColumn('kategori_aduan', function ($list) {
+
+            return $list->aduan->kategori->nama_kategori ?? '';
+        })
+
+        ->editColumn('status_aduan', function ($list) {
+
+            return '<span class="badge badge-duplicate">' . strtoupper($list->aduan->status->nama_status) . '</span>';
+        })
+
+        ->editColumn('tahap_kategori', function ($list) {
+
+            if($list->aduan->tahap_kategori=='B')
+            {
+                return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
+            }
+            elseif($list->aduan->tahap_kategori=='S')
+            {
+                return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
+            }
+            else
+            {
+                return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
+            }
+        })
+
+        ->rawColumns(['id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tarikh_laporan'])
+        ->make(true);
+    }
+
+    public function teknikal_bertindih_luar()
+    {
+        $merge = User::whereIn('category',['STF','STD'])->pluck('id')->toArray();
+
+        $list = JuruteknikBertugas::where('juruteknik_bertugas', Auth::user()->id)->whereHas('aduan', function($query) use($merge) {
+            $query->whereNotIn('id_pelapor', $merge)->whereIn('status_aduan', ['DP']);
         })->with(['juruteknik','aduan.kategori','aduan.tahap','aduan.status','aduan'])->get();
 
         return datatables()::of($list)
@@ -2192,7 +2826,7 @@ class AduanController extends Controller
 
         $pengadu = User::where('id', $aduan->id_pelapor)->first();
 
-        return view('aduan.aduanPdf', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik','alatan_ganti','pengadu'));
+        return view('aduan.aduan-pdf', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik','alatan_ganti','pengadu'));
     }
 
     public function aduan_all(Request $request)
@@ -2252,7 +2886,7 @@ class AduanController extends Controller
 
         $this->aduans($request->kategori,$request->status,$request->tahap,$request->bulan);
 
-        return view('aduan.laporan_excel', compact( 'tahap', 'kategori', 'status', 'bulan', 'data', 'req_kategori', 'req_status', 'req_tahap', 'req_bulan'));
+        return view('aduan.laporan-excel', compact( 'tahap', 'kategori', 'status', 'bulan', 'data', 'req_kategori', 'req_status', 'req_tahap', 'req_bulan'));
     }
 
     public function aduan_all_staff(Request $request)
@@ -2371,7 +3005,7 @@ class AduanController extends Controller
         $this->jurutekniks($request->juruteknik,$request->stat,$request->kate,$request->bul);
         $this->individu($request->sel_stat,$request->sel_kate,$request->sel_bul);
 
-        return view('aduan.laporan_excel_staf', compact('juruteknik', 'req_juruteknik', 'req_bulan', 'req_kategori', 'req_status', 'data', 'tahap', 'kategori',
+        return view('aduan.laporan-excel-staf', compact('juruteknik', 'req_juruteknik', 'req_bulan', 'req_kategori', 'req_status', 'data', 'tahap', 'kategori',
         'status', 'bulan', 'request', 'req_stat', 'req_kate', 'req_bul','dat'));
     }
 
@@ -2404,7 +3038,7 @@ class AduanController extends Controller
 
         $pengadu = User::where('id', $aduan->id_pelapor)->first();
 
-        return view('aduan.borangManual', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik', 'pengadu'));
+        return view('aduan.borang-manual', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik', 'pengadu'));
     }
 
     /**

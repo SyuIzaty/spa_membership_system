@@ -55,7 +55,13 @@
                     <div class="form-group">
                         <td width="20%"><label class="form-label" for="nama_pelapor">Nama Pelapor :</label></td>
                         <td colspan="2">{{ strtoupper($aduan->nama_pelapor ?? '--')  }}</td>
-                        <td width="20%"><label class="form-label" for="nama_pelapor">@if($pengadu->category == 'STF') ID Staf Pelapor : @endif @if($pengadu->category == 'STD') ID Pelajar Pelapor : @endif</label></td>
+                        <td width="20%"><label class="form-label" for="nama_pelapor">
+                            @if(isset($pengadu->category))
+                                @if($pengadu->category == 'STF') ID Staf : @else ID Pelajar : @endif
+                            @else
+                                No. Kad Pengenalan :
+                            @endif
+                        </label></td>
                         <td colspan="2">{{ strtoupper($aduan->id_pelapor ?? '--')  }}</td>
                     </div>
                 </tr>
@@ -125,6 +131,29 @@
                 </tr>
                 <tr>
                     <div class="form-group">
+                        <td width="15%"><label class="form-label" for="tahap_kategori">Tahap Aduan :</label></td>
+                        <td colspan="2">{{ $aduan->tahap->jenis_tahap ?? '--'}}</td>
+                        <td width="15%"><label class="form-label" for="caj_kerosakan">Caj Kerosakan :</label></td>
+                        <td colspan="2">{{ strtoupper($aduan->caj_kerosakan) ?? '--'}}</td>
+                    </div>
+                </tr>
+                <tr>
+                    <div class="form-group">
+                        <td width="15%" style="vertical-align: middle"><label class="form-label" for="juruteknik">Juruteknik :</label></td>
+                            <td colspan="4" style="vertical-align: middle">
+                                <ol style="margin-left: -25px">
+                                    @foreach($juruteknik as $senarai)
+                                        <li> {{ strtoupper($senarai->juruteknik->name) ?? '--'}}
+                                            ( @if ($senarai->jenis_juruteknik == 'K') KETUA @endif
+                                                @if ($senarai->jenis_juruteknik == 'P') PEMBANTU @endif )
+                                        </li>
+                                    @endforeach
+                                </ol>
+                            </td>
+                    </div>
+                </tr>
+                {{-- <tr>
+                    <div class="form-group">
                         <td width="20%" style="vertical-align: middle"><label class="form-label" for="maklumat_tambahan">Gambar :</label></td>
                         <td colspan="2">
                             @if(isset($imej->first()->upload_image))
@@ -146,123 +175,59 @@
                             @endif
                         </td>
                     </div>
-                </tr>
-                @if($aduan->status_aduan == 'AB')
-                <tr>
-                    <div class="form-group">
-                        <td width="20%"><label class="form-label" for="sebab_pembatalan">Sebab Pembatalan :</label></td>
-                        <td colspan="4" style="text-transform: uppercase">{{ $aduan->sebab_pembatalan ?? '--'  }}</td>
-                    </div>
-                </tr>
-                @endif
+                </tr> --}}
             </table>
 
-            @if($aduan->status_aduan != 'AB' && $aduan->status == 'BS')
-                <table class="table table-bordered table-hover w-100">
+            <table class="table table-bordered table-hover w-100">
+                <tr>
+                    <td colspan="6" style="background-color: rgb(228, 228, 228)"><label class="form-label">TINDAKAN PENAMBAHBAIKAN</label></td>
+                </tr>
+                <tr>
                     <tr>
-                        <td colspan="5" style="background-color: rgb(228, 228, 228)"><label class="form-label">INFO PENAMBAHBAIKAN</label></td>
-                    </tr>
-                    <tr>
-                        <tr>
-                            <div class="form-group">
-                                <td width="20%"><label class="form-label" for="lokasi_aduan">Tarikh Serahan Aduan :</label></td>
-                                <td colspan="2" style="text-transform: uppercase">{{ isset($aduan->tarikh_serahan_aduan) ? date(' j F Y | h:i:s A', strtotime($aduan->tarikh_serahan_aduan)) : '--' }}</td>
-                                <td width="20%"><label class="form-label" for="tarikh_selesai_aduan">Tarikh Selesai Pembaikan :</label></td>
-                                <td colspan="2" style="text-transform: uppercase">{{ isset($aduan->tarikh_selesai_aduan) ? date(' j F Y | h:i:s A ', strtotime($aduan->tarikh_selesai_aduan)) : '--'}}</td>
-                            </div>
-                        </tr>
-                        <tr>
-                            <div class="form-group">
-                                <td width="20%"><label class="form-label" for="tahap_kategori">Tahap Aduan :</label></td>
-                                <td colspan="2" style="text-transform: uppercase">{{ $aduan->tahap->jenis_tahap ?? '--'}}</td>
-                                <td width="20%"><label class="form-label" for="caj_kerosakan">Caj Kerosakan :</label></td>
-                                <td colspan="2">{{ strtoupper($aduan->caj_kerosakan) ?? '--'}}</td>
-                            </div>
-                        </tr>
-                        <tr>
-                            <div class="form-group">
-                                <td width="20%"><label class="form-label" for="laporan_pembaikan">Laporan Pembaikan :</label></td>
-                                <td colspan="2" style="text-transform: uppercase">{{ $aduan->laporan_pembaikan ?? '--'  }}</td>
-                                <td width="20%"><label class="form-label" for="bahan_alat">Bahan/ Alat Ganti :</label></td>
-                                <td colspan="2">
-                                    @if(isset($alatan_ganti->first()->alat_ganti))
-                                    <ol>
-                                        @foreach($alatan_ganti as $al)
-                                            <li style="text-transform: uppercase">{{ strtoupper($al->alat->alat_ganti) }}</li>
-                                        @endforeach
-                                    </ol>
-                                    @else
-                                        --
-                                    @endif
-                                </td>
-                            </div>
-                        </tr>
-                        <tr>
-                            <div class="form-group">
-                                <td colspan="3" style="background-color: #fbfbfb82"><label class="form-label" for="laporan_pembaikan"><i class="fal fa-money-bill"></i> Anggaran Kos</label></td>
-                                <td colspan="2" style="background-color: #fbfbfb82"><label class="form-label" for="juruteknik_bertugas"><i class="fal fa-users"></i> Juruteknik Bertugas</label></td>
-                            </div>
-                        </tr>
-                        <tr>
-                            <div class="form-group">
-                                <td width="20%">
-                                    <label class="form-label" for="ak_upah">Upah :</label><br>
-                                    <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label><br>
-                                    <label class="form-label" for="jumlah_kos"><b>(+) Jumlah Kos :</b></label>
-                                </td>
-                                <td colspan="2" style="line-height: 1.8">
-                                    RM {{ $aduan->ak_upah ?? '--'   }}<br>
-                                    RM {{ $aduan->ak_bahan_alat ?? '--'   }}<br>
-                                    RM {{ $aduan->jumlah_kos ?? '--'   }}
-                                </td>
-                                <td colspan="2" style="vertical-align: middle">
-                                    <ol style="margin-left: -25px">
-                                        @foreach($juruteknik as $senarai)
-                                            <li style="line-height: 30px"> {{ $senarai->juruteknik->name ?? '--'}}
-                                                ( @if ($senarai->jenis_juruteknik == 'K') KETUA @endif
-                                                    @if ($senarai->jenis_juruteknik == 'P') PEMBANTU @endif )
-                                            </li>
-                                        @endforeach
-                                    </ol>
-                                </td>
-                            </div>
-                        </tr>
-                        <tr>
-                            <th width="20%" style="vertical-align: middle"> Gambar : </th>
-                            <td colspan="4">
-                                @if(isset($gambar->first()->upload_image))
-                                    @foreach($gambar as $imejPembaikan)
-                                        <img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:100px; height:100px;" class="img-fluid mr-2">
-                                    @endforeach
-                                @else
-                                    <span>TIADA GAMBAR SOKONGAN</span>
-                                @endif
-                            </td>
-                        </tr>
-                    </tr>
-                </table>
-
-                <table class="table table-bordered table-hover w-100">
-                    <tr>
-                        <td colspan="5" style="background-color: rgb(228, 228, 228)"><label class="form-label">LAIN-LAIN INFO</label></td>
+                        <div class="form-group">
+                            <td width="20%"><label class="form-label" for="tarikh_serahan_aduan">Tarikh Serahan Aduan :</label></td>
+                            <td colspan="2"  style="text-transform: uppercase">{{ date(' j F Y | h:i:s A', strtotime($aduan->tarikh_serahan_aduan)) }}</td>
+                            <td width="20%"><label class="form-label" for="tarikh_selesai_aduan">Tarikh Selesai Pembaikan :</label></td>
+                            <td colspan="3"><input class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan"></td>
+                        </div>
                     </tr>
                     <tr>
                         <div class="form-group">
-                            <td width="20%"><label class="form-label" for="catatan_pembaikan">Catatan :</label></td>
-                            <td colspan="2" style="text-transform: uppercase">{{ $aduan->catatan_pembaikan ?? '--'  }}</td>
-                            <td width="20%"><label class="form-label" for="pengesahan_pembaikan">Pengesahan oleh Pelapor :</label></td>
-                            <td colspan="2"><b>
-                                @if(isset($aduan->pengesahan_pembaikan))
-                                    DISAHKAN
-                                @else
-                                    BELUM DISAHKAN
-                                @endif
-                            </b></td>
+                            <td width="20%"><label class="form-label" for="laporan_pembaikan">Laporan Pembaikan :</label></td>
+                            <td colspan="6"><textarea rows="8" class="form-control" id="laporan_pembaikan" name="laporan_pembaikan"></textarea></td>
                         </div>
                     </tr>
-                </table>
-            @endif
-
+                    <tr>
+                        <div class="form-group">
+                            <td width="20%"><label class="form-label" for="bahan_alat">Bahan/ Alat Ganti :</label></td>
+                            <td colspan="6"><textarea rows="8" class="form-control" id="bahan_alat" name="bahan_alat"></textarea></td>
+                        </div>
+                    </tr>
+                    <tr>
+                        <div class="form-group">
+                            <td colspan="3" style="background-color: #fbfbfb82"><label class="form-label" for="kos"> Anggaran Kos :</label></td>
+                            <td colspan="3" style="background-color: #fbfbfb82"><label class="form-label" for="status"> Status : </label></td>
+                        </div>
+                    </tr>
+                    <tr>
+                        <div class="form-group">
+                            <td width="20%">
+                                <label class="form-label" for="ak_upah">Upah :</label><br><br><br>
+                                <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label><br><br><br>
+                                <label class="form-label" for="jumlah_kos"><b>(+) Jumlah Kos :</b></label>
+                            </td>
+                            <td colspan="2" style="line-height: 1.8">
+                                <input class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan"><br>
+                                <input class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan"><br>
+                                <input class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan">
+                            </td>
+                            <td colspan="3">
+                                <textarea rows="7" class="form-control" id="status" name="status"></textarea>
+                            </td>
+                        </div>
+                    </tr>
+                </tr>
+            </table>
             <br>
             <div style="font-style: italic; font-size: 10px">
                 <p style="float: left">@ Copyright INTEC Education College</p>

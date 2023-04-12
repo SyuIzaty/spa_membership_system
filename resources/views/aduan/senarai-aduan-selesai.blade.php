@@ -33,6 +33,10 @@
                                         <i class="fal fa-road"></i>
                                         <span class="hidden-sm-down ml-1"> PELAJAR </span>
                                     </a>
+                                    <a class="nav-link mb-2" id="luar-tab" data-toggle="pill" href="#luar" role="tab" aria-controls="luar" aria-selected="false" style="border: 1px solid;">
+                                        <i class="fal fa-database"></i>
+                                        <span class="hidden-sm-down ml-1"> PENGGUNA LUAR </span>
+                                    </a>
                                 </div>
                             </div>
 
@@ -102,6 +106,44 @@
                                                             </select></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
                                                             <td class="hasinput"><select id="status_aduan_pelajar" name="status_aduan_pelajar" class="form-control">
+                                                                <option value="">SEMUA</option>
+                                                                @foreach($status as $stt)
+                                                                    <option value="{{$stt->nama_status}}">{{$stt->nama_status}}</option>
+                                                                @endforeach
+                                                            </select></td>
+                                                            <td class="hasinput"></td>
+                                                            <td class="hasinput"></td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane mt-1" id="luar" role="tabpanel"><br>
+                                        <div class="col-sm-12 mb-4">
+                                            <div class="table-responsive">
+                                                <table id="senarai_luar" class="table table-bordered table-hover table-striped w-100" style="white-space: nowrap">
+                                                    <thead>
+                                                        <tr class="text-center bg-primary-50">
+                                                            <th>#TIKET</th>
+                                                            <th>PELAPOR</th>
+                                                            <th>KATEGORI ADUAN</th>
+                                                            <th>TARIKH</th>
+                                                            <th>STATUS</th>
+                                                            <th>TAHAP</th>
+                                                            <th>TINDAKAN</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="hasinput"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
+                                                            <td class="hasinput"><select id="kategori_aduan_luar" name="kategori_aduan_luar" class="form-control">
+                                                                <option value="">SEMUA</option>
+                                                                @foreach($kategori as $kat)
+                                                                    <option value="{{$kat->nama_kategori}}">{{$kat->nama_kategori}}</option>
+                                                                @endforeach
+                                                            </select></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
+                                                            <td class="hasinput"><select id="status_aduan_luar" name="status_aduan_luar" class="form-control">
                                                                 <option value="">SEMUA</option>
                                                                 @foreach($status as $stt)
                                                                     <option value="{{$stt->nama_status}}">{{$stt->nama_status}}</option>
@@ -189,7 +231,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/senaraiSelesai",
+                url: "/data-selesai",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
@@ -278,7 +320,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/senaraiSelesaiPelajar",
+                url: "/data-selesai-pelajar",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
@@ -326,6 +368,94 @@
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
                         $('#senarai_pelajar').DataTable().draw(false);
+                    });
+                }
+            })
+        });
+
+    });
+
+    $(document).ready(function()
+    {
+        $('#status_aduan_luar, #tahap_kategori_luar, #kategori_aduan_luar').select2();
+
+        $('#senarai_luar thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#senarai_luar').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/aduan-selesai-luar",
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            },
+            columns: [
+                    { className: 'text-center', data: 'id', name: 'id' },
+                    { data: 'nama_pelapor', name: 'nama_pelapor' },
+                    { data: 'kategori_aduan', name: 'kategori.nama_kategori' },
+                    { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
+                    { className: 'text-center', data: 'status_aduan', name: 'status.nama_status' },
+                    { className: 'text-center', data: 'tahap_kategori', name: 'tahap.jenis_tahap', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
+                ],
+                orderCellsTop: true,
+                "order": [[ 3, "desc" ]],
+                "initComplete": function(settings, json) {
+
+                }
+        });
+
+        $('#senarai_luar').on('click', '.btn-delete[data-remote]', function (e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = $(this).data('remote');
+
+            Swal.fire({
+                title: 'Padam Aduan?',
+                text: "Data tidak boleh dikembalikan semula!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, padam aduan!',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    dataType: 'json',
+                    data: {method: '_DELETE', submit: true}
+                    }).always(function (data) {
+                        $('#senarai_luar').DataTable().draw(false);
                     });
                 }
             })

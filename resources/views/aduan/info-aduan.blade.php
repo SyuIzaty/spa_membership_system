@@ -104,7 +104,13 @@
                                                         <tr>
                                                             <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
                                                             <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->nama_pelapor)}}</td>
-                                                            <th width="20%" style="vertical-align: middle">@if($pengadu->category == 'STF') ID Staf : @endif @if($pengadu->category == 'STD') ID Pelajar : @endif</th>
+                                                            <th width="20%" style="vertical-align: middle">
+                                                                @if(isset($pengadu->category))
+                                                                    @if($pengadu->category == 'STF') ID Staf : @else ID Pelajar : @endif
+                                                                @else
+                                                                    No. Kad Pengenalan :
+                                                                @endif
+                                                            </th>
                                                             <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->id_pelapor)}}</td>
                                                         </tr>
                                                         <tr>
@@ -191,7 +197,7 @@
                                                 <table id="muatnaik" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
                                                         <tr>
-                                                            <th width="20%" style="vertical-align: middle"> Gambar : </th>
+                                                            <th width="20%" style="vertical-align: top"> Gambar : </th>
                                                             <td colspan="2" style="text-transform: uppercase">
                                                                 @if(isset($imej->first()->upload_image))
                                                                     @foreach($imej as $imejAduan)
@@ -202,7 +208,7 @@
                                                                 @endif
                                                             </td>
 
-                                                            <th width="20%" style="vertical-align: middle">Resit : </th>
+                                                            <th width="20%" style="vertical-align: top">Resit : </th>
                                                             <td colspan="2" style="text-transform: uppercase">
                                                                 @if(isset($resit->first()->nama_fail))
                                                                     @foreach ($resit as $failResit)
@@ -333,7 +339,7 @@
                                                         </tr>
 
                                                         <tr>
-                                                            <th width="20%" style="vertical-align: middle"> Gambar : </th>
+                                                            <th width="20%" style="vertical-align: top"> Gambar : </th>
                                                             <td colspan="4">
                                                                 @if(isset($gambar->first()->upload_image))
                                                                     @foreach($gambar as $imejPembaikan)

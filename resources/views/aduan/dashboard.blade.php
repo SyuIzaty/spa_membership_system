@@ -134,13 +134,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered" style="width: 100%" >
+                                                        <table class="table table-bordered" style="width: 100%; white-space: nowrap">
                                                             <thead>
                                                                 <tr class="text-center bg-primary-50">
                                                                     <th>STATUS</th>
                                                                     <th>JUMLAH TERKUMPUL</th>
                                                                     <th>STAF</th>
                                                                     <th>PELAJAR</th>
+                                                                    <th>PENGGUNA LUAR</th>
                                                                 </tr>
                                                                 @foreach(\App\StatusAduan::all() as $all)
                                                                 <?php
@@ -153,13 +154,18 @@
                                                                     $users = \App\User::where('category', 'STD')->pluck('id');
 
                                                                     $cnt_std = \App\Aduan::whereIn('id_pelapor',$users)->where('status_aduan', $all->kod_status)->where(DB::raw('YEAR(cms_aduan.tarikh_laporan)'), '=', $selectedYear)->with(['pelapor_pelajar'])->count();
+
+                                                                    $merge = \App\User::whereIn('category',['STF','STD'])->pluck('id')->toArray();
+
+                                                                    $cnt_otr = \App\Aduan::whereNotIn('id_pelapor',$merge)->where('status_aduan', $all->kod_status)->where(DB::raw('YEAR(cms_aduan.tarikh_laporan)'), '=', $selectedYear)->with(['pelapor_pelajar'])->count();
                                                                 ?>
 
                                                                     <tr @if($all->kod_status == 'BS' || $all->kod_status == 'DJ') style="background-color: red; color:white" @endif>
                                                                         <td>{{ $all->kod_status }} - {{ $all->nama_status}}</td>
-                                                                        <td class="text-center">{{$cnt}}</td>
-                                                                        <td class="text-center">{{$cnt_stf}}</td>
-                                                                        <td class="text-center">{{$cnt_std}}</td>
+                                                                        <td class="text-center">{{$cnt ?? '0'}}</td>
+                                                                        <td class="text-center">{{$cnt_stf ?? '0'}}</td>
+                                                                        <td class="text-center">{{$cnt_std ?? '0'}}</td>
+                                                                        <td class="text-center">{{$cnt_otr ?? '0'}}</td>
                                                                     </tr>
                                                                 @endforeach
                                                                 <tr>

@@ -621,7 +621,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/aduan" title="Senarai Aduan" data-filter-tags="senarai">
+                                        <a href="/aduan-individu" title="Senarai Aduan" data-filter-tags="senarai">
                                             <span class="nav-link-text" data-i18n="nav.senarai"> Senarai Aduan</span>
                                         </a>
                                     </li>
@@ -676,25 +676,25 @@
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="/senarai-aduan-juruteknik" title="Dalam Tindakan"
+                                            <a href="/senarai-teknikal" title="Dalam Tindakan"
                                                 data-filter-tags="dlm_tindakan">
                                                 <span class="nav-link-text" data-i18n="nav.dlm_tindakan"> Dalam
                                                     Tindakan</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/senarai-selesai-juruteknik" title="Aduan Selesai"
+                                            <a href="/senarai-teknikal-selesai" title="Aduan Selesai"
                                                 data-filter-tags="selesai">
                                                 <span class="nav-link-text" data-i18n="nav.selesai"> Selesai</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/senarai-kiv-juruteknik" title="Aduan KIV" data-filter-tags="kiv">
+                                            <a href="/senarai-teknikal-kiv" title="Aduan KIV" data-filter-tags="kiv">
                                                 <span class="nav-link-text" data-i18n="nav.kiv"> KIV </span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/senarai-bertindih-juruteknik" title="Aduan Bertindih"
+                                            <a href="/senarai-teknikal-bertindih" title="Aduan Bertindih"
                                                 data-filter-tags="bertindih">
                                                 <span class="nav-link-text" data-i18n="nav.bertindih"> Bertindih</span>
                                             </a>

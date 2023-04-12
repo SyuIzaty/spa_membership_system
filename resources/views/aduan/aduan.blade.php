@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-     
+
 @section('content')
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
@@ -46,7 +46,7 @@
                                         <td class="hasinput">
                                             <select id="status_aduan" name="status_aduan" class="form-control">
                                                 <option value="" selected> Semua</option>
-                                                @foreach ($status as $stat) 
+                                                @foreach ($status as $stat)
                                                     <option value="{{ $stat->kod_status }}">{{ $stat->nama_status }}</option>
                                                 @endforeach
                                             </select>
@@ -72,7 +72,7 @@
                             <div class="modal-body">
                                 {!! Form::open(['action' => 'Aduan\AduanController@batalAduan', 'method' => 'POST']) !!}
                                 <input type="hidden" name="aduan_id" id="aduan">
-                                 
+
                                     <div class="form-group">
                                         <td colspan="5">
                                             <textarea rows="5" id="sebab_pembatalan" name="sebab_pembatalan" class="form-control" placeholder="Sila isikan sebab pembatalan..." required>{{ old('maklumat_tambahan') }}</textarea>
@@ -131,10 +131,10 @@
         $('#status_aduan').select2();
 
         $('#crud-modal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var id = button.data('id') 
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
 
-            $('.modal-body #aduan').val(id); 
+            $('.modal-body #aduan').val(id);
         })
 
         $('#aduan thead tr .hasinput').each(function(i)
@@ -166,7 +166,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/data_aduan",
+                url: "/data-aduan-individu",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
@@ -185,7 +185,7 @@
                 "order": [[ 6, "desc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
     });
