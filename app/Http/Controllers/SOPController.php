@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\SopCrossDepartment;
+use App\Staff;
 use App\SopList;
+use App\SopDetail;
+use Carbon\Carbon;
 use App\SopDepartment;
+use App\SopCrossDepartment;
 use Illuminate\Http\Request;
+use App\Rules\CodeFormatRule;
 use Illuminate\Support\Facades\Auth;
 use Rap2hpoutre\FastExcel\FastExcel;
 
@@ -81,7 +85,6 @@ class SOPController extends Controller
     public function SOPTitle(Request $request)
     {
         $selectedDepartment = $request->department;
-
         $department         = SopDepartment::where('active', 'Y')->get();
 
         return view('sop.sop-title', compact('department', 'selectedDepartment'));
@@ -207,4 +210,41 @@ class SOPController extends Controller
         return redirect()->back()->with('message', 'Update Successfully');
     }
 
+    public function show($id)
+    {
+        $data       = SopList::where('id', $id)->first();
+        $dateNow    = date(' j F Y ', strtotime(Carbon::now()->toDateTimeString()));
+        $staff      = Staff::get();
+        $department = SopDepartment::get();
+
+        return view('sop.sop-details', compact('data', 'dateNow', 'staff', 'id','department'));
+    }
+
+    public function storeDetails(Request $request)
+    {
+        $validated = $request->validate([
+            'code' => [
+                'required',
+                new CodeFormatRule(),
+            ],
+        ]);
+
+        $data    = SopList::where('id', $request->id)->first();
+        SopDetail::create([
+            'sop_lists_id' => $request->id,
+            'sop_dept_id'  => $data->department_id,
+            'sop_code'     => $request->code,
+            'prepared_by'  => $request->prepared_by,
+            'reviewed_by'  => $request->reviewed_by,
+            'approved_by'  => $request->approved_by,
+            'purpose'      => $request->purpose,
+            'scope'        => $request->scope,
+            'reference'    => $request->reference,
+            'definition'   => $request->definition,
+            'procedure'    => $request->procedure,
+            'created_by'   => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Save Successfully!');
+    }
 }
