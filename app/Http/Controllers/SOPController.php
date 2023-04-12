@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use File;
+use Response;
 use App\Staff;
 use App\SopList;
 use App\SopDetail;
@@ -217,7 +219,7 @@ class SOPController extends Controller
         $staff      = Staff::get();
         $department = SopDepartment::get();
 
-        return view('sop.sop-details', compact('data', 'dateNow', 'staff', 'id','department'));
+        return view('sop.sop-details', compact('data', 'dateNow', 'staff', 'id', 'department'));
     }
 
     public function storeDetails(Request $request)
@@ -227,6 +229,12 @@ class SOPController extends Controller
                 'required',
                 new CodeFormatRule(),
             ],
+            'prepared_by' => 'required',
+            'reviewed_by' => 'required',
+            'approved_by' => 'required',
+            'purpose'     => 'required',
+            'scope'       => 'required',
+            'procedure'   => 'required',
         ]);
 
         $data    = SopList::where('id', $request->id)->first();
@@ -246,5 +254,20 @@ class SOPController extends Controller
         ]);
 
         return redirect()->back()->with('message', 'Save Successfully!');
+    }
+
+    public function getSOPReference()
+    {
+        $file = "INTEC SOP QM - Application for PA (Sample) 2022.pdf";
+
+        $path = storage_path().'/sop/'.$file;
+
+        $form = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($form, 200);
+        $response->header("Content-Type", $filetype);
+
+        return $response;
     }
 }

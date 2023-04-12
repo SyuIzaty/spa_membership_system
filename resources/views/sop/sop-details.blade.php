@@ -111,7 +111,7 @@
                                                                             <th style="background-color:#95BFBC; vertical-align: middle;"
                                                                                 rowspan="9">Reminder</th>
                                                                             <td class="text-left"
-                                                                                style="background-color:#ffffff; line-height: 2;">
+                                                                                style="background-color:#ffffff;">
                                                                                 Each of SOPs must have the following details
                                                                                 on:
                                                                             </td>
@@ -158,6 +158,27 @@
                                                                                 (to list/ draw flow-chart of the
                                                                                 process involved).</td>
                                                                         </tr>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                                <table class="table table-bordered">
+                                                                    <tbody>
+                                                                        <tr class="card-header text-center">
+                                                                            <th style="background-color:#95BFBC; vertical-align: middle;"
+                                                                                rowspan="9">Reference</th>
+                                                                            <td class="text-left"
+                                                                                style="background-color:#ffffff;">
+                                                                                <a href="/sop-reference" title="Reference"
+                                                                                    data-filter-tags="Reference"
+                                                                                    target="_blank"
+                                                                                    style="text-decoration: none!important">
+                                                                                    <i class="fal fa-info-circle"></i>
+                                                                                    <span class="nav-link-text"
+                                                                                        data-i18n="nav.SOP-Reference">SOP
+                                                                                        Sample</span>
+                                                                                </a>
+                                                                            </td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -268,7 +289,7 @@
                                                                         style="background-color:#f3f3f37a;">Purpose
                                                                     </span>
                                                                 </div>
-                                                                <textarea class="form-control" id="example-textarea" rows="2" name="purpose"
+                                                                <textarea class="form-control" id="example-textarea" rows="8" name="purpose"
                                                                     placeholder="Please key-in the purpose" required>{{ old('purpose') }}</textarea>
                                                             </div>
                                                             <div class="form-group col-md-6">
@@ -277,7 +298,7 @@
                                                                         style="background-color:#f3f3f37a;">Scope
                                                                     </span>
                                                                 </div>
-                                                                <textarea class="form-control" id="example-textarea" rows="2" name="scope"
+                                                                <textarea class="form-control" id="example-textarea" rows="8" name="scope"
                                                                     placeholder="Please key-in the scope" required>{{ old('scope') }}</textarea>
                                                             </div>
                                                         </div>
@@ -444,16 +465,34 @@
 
             $('.summernoteRef').summernote({
                 spellCheck: true,
-                placeholder: 'Please key-in the reference (if any)'
+                placeholder: 'Please key-in the reference (if any)',
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['para', ['ul', 'paragraph']],
+                    ['fullscreen']
+                ]
             });
             $('.summernoteDef').summernote({
                 spellCheck: true,
-                placeholder: 'Please key-in the definition (if any)'
+                placeholder: 'Please key-in the definition (if any)',
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['para', ['paragraph']],
+                    ['fullscreen']
+                ]
             });
             $('.summernotePro').summernote({
                 height: 500,
                 spellCheck: true,
-                placeholder: 'Please key-in the procedure'
+                placeholder: 'Please key-in the procedure',
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['fullscreen']
+                ]
             });
 
             $('#review').click(function() {
