@@ -213,11 +213,11 @@ class AduanUmumController extends Controller
 
         $datas = [
             'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $aduan->nama_pelapor,
-            'penerangan' => 'Anda telah membuat aduan pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Tiket aduan anda ialah : #'.$aduan->id.'. Tiket boleh digunakan untuk menyemak maklum balas atau tahap aduan anda diproses
-                             di dalam sistem IDS. Sila log masuk sistem IDS untuk menyemak aduan anda',
+            'penerangan' => 'Anda telah membuat aduan pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Tiket aduan anda ialah : #'.$aduan->id.'.
+                             Tiket boleh digunakan untuk menyemak status dan maklumbalas aduan anda.',
         ];
 
-        Mail::send('aduan.emel-aduan', $datas, function ($message) use ($aduan) {
+        Mail::send('aduan-umum.emel-umum', $datas, function ($message) use ($aduan) {
             $message->subject('EADUAN: ADUAN BAHARU UMUM');
             $message->to($aduan->emel_pelapor);
         });
