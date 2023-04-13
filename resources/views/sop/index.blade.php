@@ -47,12 +47,14 @@
                                             <th class="text-center">No</th>
                                             <th class="text-center">SOP Title</th>
                                             <th class="text-center">Department</th>
+                                            <th class="text-center">Cross Department</th>
                                             <th class="text-center">Action</th>
                                             <th class="text-center">Activity Log</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -103,6 +105,11 @@
                         className: 'text-left',
                         data: 'department',
                         name: 'department'
+                    },
+                    {
+                        className: 'text-left',
+                        data: 'cross_department',
+                        name: 'cross_department'
                     },
                     {
                         className: 'text-center',
@@ -156,6 +163,11 @@
                             className: 'text-left',
                             data: 'department',
                             name: 'department'
+                        },
+                        {
+                            className: 'text-left',
+                            data: 'cross_department',
+                            name: 'cross_department'
                         },
                         {
                             className: 'text-center',

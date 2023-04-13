@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use File;
 use Response;
 use App\Staff;
+use App\SopForm;
 use App\SopList;
 use App\SopDetail;
 use Carbon\Carbon;
 use App\SopDepartment;
-use App\SopCrossDepartment;
+use App\SopReviewRecord;
 use Illuminate\Http\Request;
 use App\Rules\CodeFormatRule;
+use App\SopFlowChart;
 use Illuminate\Support\Facades\Auth;
 use Rap2hpoutre\FastExcel\FastExcel;
+use Illuminate\Support\Facades\Storage;
 
 class SOPController extends Controller
 {
@@ -39,6 +42,14 @@ class SOPController extends Controller
                 return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
             })
 
+            ->addColumn('cross_department', function ($data) {
+                $all = '';
+                foreach ($data->getCD as $c) {
+                    $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                }
+                return $all;
+            })
+
             ->addColumn('action', function ($data) {
                 return '<a href="/sop/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
             })
@@ -48,7 +59,7 @@ class SOPController extends Controller
             })
 
             ->addIndexColumn()
-            ->rawColumns(['action','log'])
+            ->rawColumns(['action','log','cross_department'])
             ->make(true);
     }
 
@@ -71,6 +82,14 @@ class SOPController extends Controller
             return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
         })
 
+        ->addColumn('cross_department', function ($data) {
+            $all = '';
+            foreach ($data->getCD as $c) {
+                $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+            }
+            return $all;
+        })
+
         ->addColumn('action', function ($data) {
             return '<a href="/sop/'.$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
         })
@@ -80,7 +99,7 @@ class SOPController extends Controller
         })
 
         ->addIndexColumn()
-        ->rawColumns(['action','log'])
+        ->rawColumns(['action','log','cross_department'])
         ->make(true);
     }
 
@@ -106,7 +125,6 @@ class SOPController extends Controller
             })
 
             ->addColumn('cross_department', function ($data) {
-
                 $all = '';
                 foreach ($data->getCD as $c) {
                     $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
@@ -154,7 +172,6 @@ class SOPController extends Controller
         })
 
         ->addColumn('cross_department', function ($data) {
-
             $all = '';
             foreach ($data->getCD as $c) {
                 $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
@@ -205,7 +222,7 @@ class SOPController extends Controller
             'created_by'    => Auth::user()->id
         ]);
 
-        return redirect()->back()->with('message', 'Add Successfully');
+        return redirect()->back()->with('message', 'Successfully Added!');
     }
 
     public function editSOPTitle(Request $request)
@@ -218,7 +235,7 @@ class SOPController extends Controller
             'updated_by'    => Auth::user()->id
         ]);
 
-        return redirect()->back()->with('message', 'Update Successfully');
+        return redirect()->back()->with('message', 'Successfully Updated!');
     }
 
     public function show($id)
@@ -262,7 +279,7 @@ class SOPController extends Controller
             'created_by'   => Auth::user()->id
         ]);
 
-        return redirect()->back()->with('message', 'Save Successfully!');
+        return redirect()->back()->with('message', 'Successfully Saved!');
     }
 
     public function getSOPReference()
@@ -278,5 +295,57 @@ class SOPController extends Controller
         $response->header("Content-Type", $filetype);
 
         return $response;
+    }
+
+    public function storeReviewRecord(Request $request)
+    {
+        $request->validate([
+            'details' => 'required',
+        ]);
+
+        foreach ($request->details as $key => $value) {
+            SopReviewRecord::create([
+                'sop_details_id' => $request->id,
+                'review_record'  => $value,
+                'created_by'     => Auth::user()->id
+            ]);
+        }
+        return redirect()->back()->with('message', 'Successfully Saved!');
+    }
+
+    public function storeFormRecord(Request $request)
+    {
+        $request->validate([
+            'formCode' => 'required',
+            'formDetail' => 'required',
+        ]);
+
+        foreach ($request->formCode as $key => $value) {
+            SopForm::create([
+                'sop_details_id' => $request->id,
+                'sop_code'       => $value,
+                'details'        => $request->formDetail[$key],
+                'created_by'     => Auth::user()->id
+            ]);
+        }
+        return redirect()->back()->with('message', 'Successfully Saved!');
+    }
+
+    public function storeWorkFlow(Request $request)
+    {
+        $file = $request->file('file');
+        if (isset($file)) {
+            $fileName = time().$file->getClientOriginalName();
+
+            Storage::put("/sop/".$fileName, file_get_contents($file));
+
+            SopFlowChart::create([
+                'sop_details_id' => $request->id,
+                'upload'        => $fileName,
+                'web_path'      => "sop/".$fileName,
+                'created_by'    => Auth::user()->id
+        ]);
+        }
+        return response()->json(['success'=>$originalName]);
     }
 }
