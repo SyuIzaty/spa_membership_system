@@ -118,17 +118,22 @@
                                     <ul>
                                         @canany(['Rent Form'])
                                             <li>
-                                                <a href="/test2" title="Rental Form" data-filter-tags="Rental Form">
-                                                    <i class="fal fa-file-alt"></i>
+                                                <a href="/test2" title="Rental Form" data-filter-tags="Rental Form"> 
                                                     <span class="nav-link-text" data-i18n="nav.rental_form">Rental Form</span>
                                                 </a>
                                             </li>
                                         @endcanany
                                         @canany(['Manage Rent Form'])
                                             <li>
-                                                <a href="/show" title="View Record" data-filter-tags="View Record">
-                                                    <i class="ni ni-users"></i>
+                                                <a href="/show" title="View Record" data-filter-tags="View Record"> 
                                                     <span class="nav-link-text" data-i18n="nav.view_record">View Record</span>
+                                                </a>
+                                            </li>
+                                        @endcanany
+                                        @canany(['Report Rent Form'])
+                                            <li>
+                                                <a href="/report" title="View Report" data-filter-tags="View Report">
+                                                    <span class="nav-link-text" data-i18n="nav.report">Report</span>
                                                 </a>
                                             </li>
                                         @endcanany

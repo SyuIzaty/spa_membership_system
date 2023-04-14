@@ -27,6 +27,19 @@ Route::delete('declareDelete/{id}', 'TestController@declareDelete');
 Route::get('/edit_record/{id}', 'TestController@edit')->name('test.edit_record');
 Route::post('/update_record', 'TestController@updateApplication');
 Route::post('/data_rental', 'TestController@data_rental');
+Route::get('/report', 'TestController@report');
+Route::post('test.edit_record', 'TestController@operationRejectApplication')->name('test.edit_record');
+Route::post('/update_status', 'TestController@operationVerifyApplication');
+Route::post('/update_reject', 'TestController@operationRejectApplication');
+Route::get('/ICTRental-Reports', 'TestController@ICTRentalReport');
+Route::post('/year-report-ICTRent', 'TestController@reportbyYear');
+Route::get('/getYear/{year}', 'TestController@getYear');
+Route::get('/ICTRental-Report-Year/{year}', 'TestController@ICTRentReportYear');
+Route::post('/allReport', 'TestController@allReport');
+Route::post('/year-report-ICTRental', 'TestController@reportYear'); 
+Route::post('/month-year-report-ICTRental', 'TestController@reportMonthYear');
+Route::get('/ICTRental-Report-Year-Month/{year}/{month}', 'TestController@ICTRentReportYearMonth');
+Route::get('/ICTRental-report', 'TestController@report');
 
 //ROLE
 Route::resource('/role', 'RoleController');

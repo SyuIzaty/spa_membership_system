@@ -11,9 +11,16 @@ class EquipmentStaff extends Model
     protected $table = 'equipment_staffs';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'staff_id','hp_no','rent_date','return_date','purpose','room_no'
+        'staff_id', 'hp_no', 'rent_date', 'return_date', 'purpose', 'room_no', 'name', 'status',
     ];
-    public function staff(){
-        return $this->hasOne('App\Staff','staff_id','staff_id');
+    public function staff()
+    {
+        return $this->hasOne('App\Staff', 'staff_id', 'staff_id');
     }
+
+    public function equipmentRent()
+    {
+        return $this->hasMany('App\EquipmentRent', 'users_id', 'id');
+    }
+
 }
