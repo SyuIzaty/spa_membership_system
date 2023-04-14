@@ -167,13 +167,25 @@ class TestController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                // $deleteBtn = '';
+                $deleteBtn = '';
                 if(isset($data->equipmentStaff->id)){
-                    if ($data->equipmentStaff->status !== 'Approved') {
+                    if ($data->equipmentStaff->status == 'Approved') {
                         return '<div class="btn-group"><a href="/edit_record/' . $data->equipmentStaff->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i>Delete</a></div>';
                     }
 
+                    else{
+                        return '<div class="btn-group"><a href="/edit_record/' . $data->equipmentStaff->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i> </a>
+                        <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="declareDelete/' . $data->equipmentStaff->id . '"><i class="fal fa-trash"></i> </button></div>
+                        </div>';
+                    }
                 }
+
+                // $deleteBtn = '';
+                // if ($data->equipmentStaff->status !== 'Approved') {
+                //     $deleteBtn = '<button class="btn btn-sm btn-danger btn-delete" data-remote="declareDelete/' . $data->equipmentStaff->id . '"><i class="fal fa-trash"></i> </button>';
+                // }
+
+                // return '<div class="btn-group"><a href="/edit_record/' . $data->equipmentStaff->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i> </a>' . $deleteBtn . '</div>';
             })
 
             ->rawColumns(['action'])
