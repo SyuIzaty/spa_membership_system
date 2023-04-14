@@ -58,7 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-sop-title', 'SOPController@addSOPTitle');
     Route::post('/edit-sop-title', 'SOPController@editSOPTitle');
     Route::post('/add', 'SOPController@add');
-    Route::post('/store-details', 'SOPController@storeDetails');
+    Route::post('/store-details', 'SOPController@storeDetails')->name('sop.storeDetails');
+    Route::put('/update/{id}', 'SOPController@updateDetails')->name('sop.updateDetails');
     Route::post('/store-review', 'SOPController@storeReviewRecord');
     Route::post('/store-form', 'SOPController@storeFormRecord');
     Route::get('/sop-reference', 'SOPController@getSOPReference');

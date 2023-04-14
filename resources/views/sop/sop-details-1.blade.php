@@ -1,4 +1,9 @@
-{!! Form::open(['action' => ['SOPController@storeDetails'], 'method' => 'POST']) !!}
+@if (isset($sop))
+    {!! Form::model($sop, ['route' => ['sop.updateDetails', $sop->id], 'method' => 'put']) !!}
+@else
+    {!! Form::open(['route' => 'sop.storeDetails']) !!}
+@endif
+
 <input type="hidden" value="{{ $id }}" name="id">
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
@@ -123,7 +128,6 @@
                 <div class="row">
                 </div>
 
-                <input type="hidden" name="id" value="{{ $data->id }}">
                 <div class="row mt-2">
                     <div class="form-group col-md-12">
                         <div>
@@ -148,8 +152,9 @@
                             <span class="input-group-text">SOP Code
                             </span>
                         </div>
-                        <input type="text" id="code" name="code" value="{{ old('code') }}"
-                            class="form-control" placeholder="Please key-in SOP Code" required>
+                        <input type="text" id="code" name="code"
+                            value="{{ isset($sop) ? $sop->sop_code : old('code') }}" class="form-control"
+                            placeholder="Please key-in SOP Code" required>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -162,8 +167,15 @@
                             <option disabled selected>Choose Staff</option>
                             @foreach ($staff as $s)
                                 <option value="{{ $s->staff_id }}"
-                                    {{ old('prepared_by') == $s->staff_id ? 'selected' : '' }}>
-                                    {{ $s->staff_name }}</option>
+                                    {{ isset($sop)
+                                        ? ($sop->prepared_by == $s->staff_id
+                                            ? 'selected'
+                                            : '')
+                                        : (old('prepared_by') == $s->staff_id
+                                            ? 'selected'
+                                            : '') }}>
+                                    {{ $s->staff_name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -176,7 +188,13 @@
                             <option disabled selected>Choose Staff</option>
                             @foreach ($staff as $s)
                                 <option value="{{ $s->staff_id }}"
-                                    {{ old('reviewed_by') == $s->staff_id ? 'selected' : '' }}>
+                                    {{ isset($sop)
+                                        ? ($sop->reviewed_by == $s->staff_id
+                                            ? 'selected'
+                                            : '')
+                                        : (old('reviewed_by') == $s->staff_id
+                                            ? 'selected'
+                                            : '') }}>
                                     {{ $s->staff_name }}</option>
                             @endforeach
                         </select>
@@ -190,7 +208,13 @@
                             <option disabled selected>Choose Staff</option>
                             @foreach ($staff as $s)
                                 <option value="{{ $s->staff_id }}"
-                                    {{ old('approved_by') == $s->staff_id ? 'selected' : '' }}>
+                                    {{ isset($sop)
+                                        ? ($sop->approved_by == $s->staff_id
+                                            ? 'selected'
+                                            : '')
+                                        : (old('approved_by') == $s->staff_id
+                                            ? 'selected'
+                                            : '') }}>
                                     {{ $s->staff_name }}</option>
                             @endforeach
                         </select>
@@ -214,7 +238,7 @@
                             </span>
                         </div>
                         <textarea class="form-control" id="example-textarea" rows="8" name="purpose"
-                            placeholder="Please key-in the purpose" required>{{ old('purpose') }}</textarea>
+                            placeholder="Please key-in the purpose" required>{{ isset($sop) ? $sop->purpose : old('purpose') }}</textarea>
                     </div>
                     <div class="form-group col-md-6">
                         <div>
@@ -222,7 +246,7 @@
                             </span>
                         </div>
                         <textarea class="form-control" id="example-textarea" rows="8" name="scope"
-                            placeholder="Please key-in the scope" required>{{ old('scope') }}</textarea>
+                            placeholder="Please key-in the scope" required>{{ isset($sop) ? $sop->scope : old('scope') }}</textarea>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -231,7 +255,7 @@
                             <span class="input-group-text" style="background-color:#f3f3f37a;">Reference
                             </span>
                         </div>
-                        <textarea value="" class="form-control summernoteRef" id="reference" name="reference">{{ old('reference') }}</textarea>
+                        <textarea value="" class="form-control summernoteRef" id="reference" name="reference">{{ isset($sop) ? $sop->reference : old('reference') }}</textarea>
 
                     </div>
                     <div class="form-group col-md-6">
@@ -239,7 +263,7 @@
                             <span class="input-group-text" style="background-color:#f3f3f37a;">Definitions
                             </span>
                         </div>
-                        <textarea value="" class="form-control summernoteDef" id="definition" name="definition">{{ old('definition') }}</textarea>
+                        <textarea value="" class="form-control summernoteDef" id="definition" name="definition">{{ isset($sop) ? $sop->definition : old('definition') }}</textarea>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -248,16 +272,16 @@
                             <span class="input-group-text" style="background-color:#f3f3f37a;">Procedures
                             </span>
                         </div>
-                        <textarea value="" class="form-control summernotePro" id="procedure" name="procedure" required>{{ old('procedure') }}</textarea>
-
+                        <textarea value="" class="form-control summernotePro" id="procedure" name="procedure" required>{{ isset($sop) ? $sop->procedure : old('procedure') }}</textarea>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<button type="submit" class="btn btn-primary ml-auto float-right" style="margin-top:10px;"><i
-        class="fal fa-save"></i>
-    Save</button>
-
+{!! Form::button(isset($sop) ? 'Update' : 'Save', [
+    'type' => 'submit',
+    'class' => 'btn btn-primary ml-auto float-right',
+    'style' => 'margin-top:10px',
+]) !!}
 {!! Form::close() !!}

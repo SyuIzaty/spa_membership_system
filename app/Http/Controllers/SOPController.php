@@ -244,8 +244,9 @@ class SOPController extends Controller
         $dateNow    = date(' j F Y ', strtotime(Carbon::now()->toDateTimeString()));
         $staff      = Staff::get();
         $department = SopDepartment::get();
+        $sop       = SopDetail::where('sop_lists_id', $id)->first();
 
-        return view('sop.sop-details', compact('data', 'dateNow', 'staff', 'id', 'department'));
+        return view('sop.sop-details', compact('data', 'dateNow', 'staff', 'id', 'department', 'sop'));
     }
 
     public function storeDetails(Request $request)
@@ -280,6 +281,25 @@ class SOPController extends Controller
         ]);
 
         return redirect()->back()->with('message', 'Successfully Saved!');
+    }
+
+    public function updateDetails(Request $request)
+    {
+        $update = SopDetail::where('sop_lists_id', $request->id)->first();
+        $update->update([
+            'sop_code'     => $request->code,
+            'prepared_by'  => $request->prepared_by,
+            'reviewed_by'  => $request->reviewed_by,
+            'approved_by'  => $request->approved_by,
+            'purpose'      => $request->purpose,
+            'scope'        => $request->scope,
+            'reference'    => $request->reference,
+            'definition'   => $request->definition,
+            'procedure'    => $request->procedure,
+            'updated_by'    => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Successfully Updated!');
     }
 
     public function getSOPReference()
