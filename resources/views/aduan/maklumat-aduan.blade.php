@@ -337,7 +337,7 @@
                                     </table>
                                 </div>
                                 <a data-page="/pdfAduan/{{$aduan->id}}" class="btn btn-danger text-white float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-print"></i> Cetak Borang</a>
-                                <a href="/aduan" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Kembali</a><br>
+                                <a href="/aduan-individu" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Kembali</a><br>
                             </div>
                         </div>
                     </div>
