@@ -170,7 +170,7 @@ class TestController extends Controller
                 $deleteBtn = '';
                 if(isset($data->equipmentStaff->id)){
                     if ($data->equipmentStaff->status == 'Approved') {
-                        return '<div class="btn-group"><a href="/edit_record/' . $data->equipmentStaff->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i>Delete</a></div>';
+                        return '<div class="btn-group"><a href="/edit_record/' . $data->equipmentStaff->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i> </a></div>';
                     }
 
                     else{
