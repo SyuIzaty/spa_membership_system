@@ -68,11 +68,7 @@
                                                 <div class="card">
                                                     <div class="card-header">Review Record</div>
                                                     <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="form-group col-md-12">
-                                                                @include('sop.sop-review')
-                                                            </div>
-                                                        </div>
+                                                        @include('sop.sop-review')
                                                     </div>
                                                 </div>
                                             </div>
@@ -126,11 +122,7 @@
                                                 <div class="card">
                                                     <div class="card-header">Work Flow (Flow Chart)</div>
                                                     <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="form-group col-md-12">
-                                                                @include('sop.sop-work-flow')
-                                                            </div>
-                                                        </div>
+                                                        @include('sop.sop-work-flow')
                                                     </div>
                                                 </div>
                                             </div>
@@ -154,11 +146,40 @@
 
             $("#dropzone").dropzone({
                 addRemoveLinks: true,
-                maxFiles: 10, //change limit as per your requirements
+                maxFiles: 1, //change limit as per your requirements
                 dictMaxFilesExceeded: "Maximum upload limit reached",
+                acceptedFiles: "image/jpeg,image/png,image/jpg",
                 init: function() {
                     this.on("queuecomplete", function(file) {
                         location.reload();
+                    });
+
+                    // Add event listener to display alert message for invalid file types
+                    this.on("addedfile", function(file) {
+                        if (!file.type.match(/image\/(jpeg|png|jpg)/)) {
+                            this.removeFile(file); // Remove the file from the queue
+                            alert("You can only upload JPG, JPEG, or PNG images.");
+                        }
+                    });
+                },
+            });
+
+            $("#dropzone2").dropzone({
+                addRemoveLinks: true,
+                maxFiles: 1, //change limit as per your requirements
+                dictMaxFilesExceeded: "Maximum upload limit reached",
+                acceptedFiles: "image/jpeg,image/png,image/jpg",
+                init: function() {
+                    this.on("queuecomplete", function(file) {
+                        location.reload();
+                    });
+
+                    // Add event listener to display alert message for invalid file types
+                    this.on("addedfile", function(file) {
+                        if (!file.type.match(/image\/(jpeg|png|jpg)/)) {
+                            this.removeFile(file); // Remove the file from the queue
+                            alert("You can only upload JPG, JPEG, or PNG images.");
+                        }
                     });
                 },
             });

@@ -244,9 +244,11 @@ class SOPController extends Controller
         $dateNow    = date(' j F Y ', strtotime(Carbon::now()->toDateTimeString()));
         $staff      = Staff::get();
         $department = SopDepartment::get();
-        $sop       = SopDetail::where('sop_lists_id', $id)->first();
-
-        return view('sop.sop-details', compact('data', 'dateNow', 'staff', 'id', 'department', 'sop'));
+        $sop        = SopDetail::where('sop_lists_id', $id)->first();
+        $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
+        $sopForm    = SopForm::where('sop_lists_id', $id)->get();
+        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->first();
+        return view('sop.sop-details', compact('data', 'dateNow', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
     }
 
     public function storeDetails(Request $request)
@@ -325,7 +327,7 @@ class SOPController extends Controller
 
         foreach ($request->details as $key => $value) {
             SopReviewRecord::create([
-                'sop_details_id' => $request->id,
+                'sop_lists_id'   => $request->id,
                 'review_record'  => $value,
                 'created_by'     => Auth::user()->id
             ]);
@@ -342,7 +344,7 @@ class SOPController extends Controller
 
         foreach ($request->formCode as $key => $value) {
             SopForm::create([
-                'sop_details_id' => $request->id,
+                'sop_lists_id'   => $request->id,
                 'sop_code'       => $value,
                 'details'        => $request->formDetail[$key],
                 'created_by'     => Auth::user()->id
@@ -360,12 +362,41 @@ class SOPController extends Controller
             Storage::put("/sop/".$fileName, file_get_contents($file));
 
             SopFlowChart::create([
-                'sop_details_id' => $request->id,
+                'sop_lists_id'  => $request->id,
                 'upload'        => $fileName,
                 'web_path'      => "sop/".$fileName,
                 'created_by'    => Auth::user()->id
         ]);
         }
-        return response()->json(['success'=>$originalName]);
+        return response()->json(['success'=>$fileName]);
+    }
+
+    public function workFlowFile($id)
+    {
+        $file = SopFlowChart::where('id', $id)->first();
+        $filename = $file->upload;
+        return Storage::response('sop/'.$filename);
+    }
+
+    public function storeNewWorkFlow(Request $request)
+    {
+        $exist = SopFlowChart::where('sop_lists_id', $request->id)->whereNull('deleted_at')->first();
+        // dd($exist->id);
+        $exist->delete();
+
+        $file = $request->file('file');
+        if (isset($file)) {
+            $fileName = time().$file->getClientOriginalName();
+
+            Storage::put("/sop/".$fileName, file_get_contents($file));
+
+            SopFlowChart::create([
+                'sop_lists_id'  => $request->id,
+                'upload'        => $fileName,
+                'web_path'      => "sop/".$fileName,
+                'created_by'    => Auth::user()->id
+        ]);
+        }
+        return response()->json(['success'=>$fileName]);
     }
 }

@@ -36,7 +36,7 @@ Route::post('/year-report-ICTRent', 'TestController@reportbyYear');
 Route::get('/getYear/{year}', 'TestController@getYear');
 Route::get('/ICTRental-Report-Year/{year}', 'TestController@ICTRentReportYear');
 Route::post('/allReport', 'TestController@allReport');
-Route::post('/year-report-ICTRental', 'TestController@reportYear'); 
+Route::post('/year-report-ICTRental', 'TestController@reportYear');
 Route::post('/month-year-report-ICTRental', 'TestController@reportMonthYear');
 Route::get('/ICTRental-Report-Year-Month/{year}/{month}', 'TestController@ICTRentReportYearMonth');
 Route::get('/ICTRental-report', 'TestController@report');
@@ -77,6 +77,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-form', 'SOPController@storeFormRecord');
     Route::get('/sop-reference', 'SOPController@getSOPReference');
     Route::post('/store-work-flow', 'SOPController@storeWorkFlow');
+    Route::get('/get-work-flow/{id}', 'SOPController@workFlowFile');
+    Route::post('/store-new-work-flow', 'SOPController@storeNewWorkFlow');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');
