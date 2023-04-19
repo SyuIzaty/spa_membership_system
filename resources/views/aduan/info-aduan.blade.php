@@ -27,7 +27,7 @@
                     <div class="panel-content">
                         <div class="row">
                             @if(Auth::user()->hasRole('Technical Admin'))
-                                @if($aduan->status_aduan == 'BS' || $aduan->status_aduan == 'TD')
+                                @if($aduan->status_aduan == 'BS' || $aduan->status_aduan == 'DJ' || $aduan->status_aduan == 'TD')
                                     <div class="col-md-7">
                                 @else
                                     <div class="col-md-12">
@@ -432,7 +432,7 @@
                             </div>
                             <div class="col-md-5 col-sm-12">
                                 @can('view technical admin')
-                                    @if($aduan->status_aduan == 'BS')
+                                    @if($aduan->status_aduan == 'BS' || $aduan->status_aduan == 'DJ')
                                         <div class="card card-primary card-outline">
                                             <div class="card-header">
                                                 <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>PENYERAHAN ADUAN</h5>
@@ -506,16 +506,17 @@
                                                                                                 <select class="form-control jenis_juruteknik" name="jenis_juruteknik[]" required>
                                                                                                     <option value="" disabled selected>Sila Pilih</option>
                                                                                                     <option value="K">Ketua</option>
-                                                                                                    {{-- <option value="P">Pembantu</option> --}}
+                                                                                                    <option value="P">Pembantu</option>
                                                                                                 </select>
                                                                                             </td>
                                                                                             <td class="text-center"><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
                                                                                         </tr>
                                                                                     </table>
-                                                                                </div>
-                                                                                @if(session()->has('messageJr'))
-                                                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
-                                                                                        {{ session()->get('messageJr') }}
+                                                                                    <button type="submit" class="btn btn-danger float-right" name="submit" id="submithead"><i class="fal fa-save"></i> Simpan Penyerahan</button>
+                                                                                </div><br>
+                                                                                @if(session()->has('kemaskiniTahap'))
+                                                                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
+                                                                                        {{ session()->get('kemaskiniTahap') }}
                                                                                     </div>
                                                                                 @endif
                                                                                 <table class="table table-bordered">
@@ -556,7 +557,6 @@
                                                             </thead>
                                                         </table>
                                                     </div>
-                                                    <button type="submit" class="btn btn-danger float-right" name="submit" id="submithead"><i class="fal fa-save"></i> Simpan Penyerahan</button>
                                                 {!! Form::close() !!}
                                             </div>
                                         </div>

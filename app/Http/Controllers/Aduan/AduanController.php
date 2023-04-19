@@ -1018,7 +1018,7 @@ class AduanController extends Controller
         $alat = JuruteknikBertugas::find($id);
         $alat->delete($aduan);
 
-        return redirect()->back()->with('messageJr', 'Juruteknik Berjaya Dipadam');
+        return redirect()->back()->with('kemaskiniTahap', 'Juruteknik Berjaya Dipadam');
     }
 
     public function getGambar($file)
