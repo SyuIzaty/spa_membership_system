@@ -74,7 +74,7 @@
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Nama Penuh : </th>
                                                 <td colspan="2" style="vertical-align: middle">
-                                                    <input class="form-control" id="nama_pelapor" name="nama_pelapor"  value="{{ $exist->nama_pelapor ?? old('nama_pelapor') }}" required>
+                                                    <input class="form-control" id="nama_pelapor" maxlength="100" name="nama_pelapor"  value="{{ $exist->nama_pelapor ?? old('nama_pelapor') }}" required>
                                                     @error('nama_pelapor')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -118,12 +118,12 @@
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Pejabat/Bahagian/ Fakulti/Kolej : </th>
-                                                <td colspan="2"><input class="form-control" id="lokasi_aduan" name="lokasi_aduan"  value="{{ old('lokasi_aduan') }}" required placeholder="Pejabat/Bahagian/Fakulti/Kolej">
+                                                <td colspan="2"><input class="form-control" id="lokasi_aduan" maxlength="50" name="lokasi_aduan"  value="{{ old('lokasi_aduan') }}" required placeholder="Pejabat/Bahagian/Fakulti/Kolej">
                                                     @error('lokasi_aduan')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror</td>
                                                 <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Blok : </th>
-                                                <td colspan="2"><input class="form-control" id="blok_aduan" name="blok_aduan"  value="{{ old('blok_aduan') }}" required placeholder="Blok">
+                                                <td colspan="2"><input class="form-control" id="blok_aduan" maxlength="50" name="blok_aduan"  value="{{ old('blok_aduan') }}" required placeholder="Blok">
                                                     @error('blok_aduan')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -131,13 +131,13 @@
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Tingkat/Aras : </th>
-                                                <td colspan="2"><input class="form-control" id="aras_aduan" name="aras_aduan"  value="{{ old('aras_aduan') }}" required placeholder="Tingkat/Aras">
+                                                <td colspan="2"><input class="form-control" id="aras_aduan" maxlength="50" name="aras_aduan"  value="{{ old('aras_aduan') }}" required placeholder="Tingkat/Aras">
                                                     @error('aras_aduan')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
                                                 </td>
                                                 <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Nama Bilik/No. Bilik : </th>
-                                                <td colspan="2"><input class="form-control" id="nama_bilik" name="nama_bilik"  value="{{ old('nama_bilik') }}" required placeholder="Nama Bilik/No. Bilik">
+                                                <td colspan="2"><input class="form-control" id="nama_bilik" maxlength="50" name="nama_bilik"  value="{{ old('nama_bilik') }}" required placeholder="Nama Bilik/No. Bilik">
                                                     @error('nama_bilik')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -183,7 +183,8 @@
                                             </tr>
                                             <tr class="jk_penerangan">
                                                 <th width="20%" style="vertical-align: top">Penerangan Jenis Kerosakan : </th>
-                                                <td colspan="4"><textarea rows="5" id="jk_penerangan" name="jk_penerangan" class="form-control">{{ old('jk_penerangan') }}</textarea>
+                                                <td colspan="4"><textarea rows="3" maxlength="100" id="jk_penerangan" name="jk_penerangan" class="form-control">{{ old('jk_penerangan') }}</textarea>
+                                                    <p align="right" class="mt-2">Tidak melebihi 100 patah perkataan</p>
                                                     @error('jk_penerangan')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -192,7 +193,8 @@
                                             <tr class="sk_penerangan">
                                                 <th width="20%" style="vertical-align: top">Penerangan Sebab Kerosakan : </th>
                                                 <td colspan="4">
-                                                    <textarea rows="5" id="sk_penerangan" name="sk_penerangan" class="form-control">{{ old('sk_penerangan') }}</textarea>
+                                                    <textarea rows="3" id="sk_penerangan" maxlength="100" name="sk_penerangan" class="form-control">{{ old('sk_penerangan') }}</textarea>
+                                                    <p align="right" class="mt-2">Tidak melebihi 100 patah perkataan</p>
                                                     @error('sk_penerangan')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -200,7 +202,8 @@
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: top">Maklumat Tambahan : </th>
-                                                <td colspan="4"><textarea rows="3" id="maklumat_tambahan" name="maklumat_tambahan" class="form-control" placeholder="Sila isikan maklumat tambahan sekiranya ada">{{ old('maklumat_tambahan') }}</textarea>
+                                                <td colspan="4"><textarea rows="3" maxlength="100" id="maklumat_tambahan" name="maklumat_tambahan" class="form-control" placeholder="Sila isikan maklumat tambahan sekiranya ada">{{ old('maklumat_tambahan') }}</textarea>
+                                                    <p align="right" class="mt-2">Tidak melebihi 100 patah perkataan</p>
                                                     @error('maklumat_tambahan')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror

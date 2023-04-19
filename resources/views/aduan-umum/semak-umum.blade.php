@@ -71,7 +71,8 @@
 
                                     <div class="form-group">
                                         <td colspan="5">
-                                            <textarea rows="5" id="sebab_pembatalan" name="sebab_pembatalan" class="form-control" placeholder="Sila isikan sebab pembatalan..." required>{{ old('maklumat_tambahan') }}</textarea>
+                                            <textarea rows="5" id="sebab_pembatalan" maxlength="200" name="sebab_pembatalan" class="form-control" placeholder="Sila isikan sebab pembatalan..." required>{{ old('maklumat_tambahan') }}</textarea>
+                                            <p align="right" class="mt-2">Tidak melebihi 200 patah perkataan</p>
                                             @error('sebab_pembatalan')
                                                 <p style="color: red">{{ $message }}</p>
                                             @enderror
