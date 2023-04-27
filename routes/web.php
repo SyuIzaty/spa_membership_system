@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-work-flow', 'SOPController@storeWorkFlow');
     Route::get('/get-work-flow/{id}', 'SOPController@workFlowFile');
     Route::post('/store-new-work-flow', 'SOPController@storeNewWorkFlow');
+    Route::get('/sop/review-record/{id}', 'SOPController@getReviewRecord');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

@@ -1,35 +1,42 @@
-@if (isset($sopReview))
-    <div class="row">
-        <div class="form-group col-md-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr class="card-header text-center" style="background-color:#dad8d8;">
-                        <th colspan="3">REVIEW</th>
+{{-- @if (isset($sopReview)) --}}
+<div class="row">
+    <div class="form-group col-md-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="card-header text-center" style="background-color:#dad8d8;">
+                    <th colspan="5">REVIEW</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="card-header text-center">
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>Updated By</th>
+                    <th>Section</th>
+                    <th>View</th>
+                </tr>
+                @php $i = 1 @endphp
+                @foreach ($sopReview as $sr)
+                    <tr>
+                        <td class="text-center">{{ $i }}</td>
+                        <td class="text-center">
+                            {{ isset($sr->created_at) ? date(' j F Y h:i:s A', strtotime($sr->created_at)) : '' }}</td>
+                        <td>{{ isset($sr->staff->staff_name) ? $sr->staff->staff_name : '' }}</td>
+                        <td class="text-center">{{ isset($sr->section) ? $sr->section : '' }}</td>
+                        <td class="text-center"><a href="/sop/review-record/{{ $sr->id }}"
+                                class="btn btn-sm btn-primary">
+                                <i class="fal fa-eye"></i></a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr class="card-header text-center">
-                        <th>No</th>
-                        <th>Date</th>
-                        <th>Details</th>
-                    </tr>
-                    @php $i = 1 @endphp
-                    @foreach ($sopReview as $sr)
-                        <tr>
-                            <td class="text-center">{{ $i }}</td>
-                            <td class="text-center">
-                                {{ isset($sr->created_at) ? date(' j F Y ', strtotime($sr->created_at)) : '' }}</td>
-                            <td>{{ isset($sr->review_record) ? $sr->review_record : '' }}</td>
-                        </tr>
-                        @php $i++ @endphp
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    @php $i++ @endphp
+                @endforeach
+            </tbody>
+        </table>
     </div>
-@endif
-<hr style="height:2px;border-width:0;color:gray;background-color:gray">
-<div class="row mt-4">
+</div>
+{{-- @endif --}}
+{{-- <hr style="height:2px;border-width:0;color:gray;background-color:gray"> --}}
+{{-- <div class="row mt-4">
     <div class="form-group col-md-12">
         {!! Form::open([
             'action' => 'SOPController@storeReviewRecord',
@@ -64,4 +71,4 @@
         </button>
         {!! Form::close() !!}
     </div>
-</div>
+</div> --}}

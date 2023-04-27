@@ -3,8 +3,18 @@
         <table class="table table-bordered">
             <thead>
                 <tr class="card-header" style="background-color:#EBCEDE;">
-                    <th colspan="3">Drag and drop one file here.
-                        Drag a new file to replace the uploaded file.
+                    <td>REMINDER</td>
+                </tr>
+                <tr>
+                    <th>
+                        <ol>
+                            <li>Design the work flow in Visio.</li>
+                            <li>Please make sure the orientation is <b>potrait</b> and the size is <b>A4 (8.27" x
+                                    11.69").</b></li>
+                            <li>Save the file as <b>.jpeg, .jpg or .png</b> only.</li>
+                            <li>Drag and drop only one file in the dropzone.</li>
+                            <li>Drag a new file to replace the uploaded file.</li>
+                        </ol>
                     </th>
                 </tr>
             </thead>

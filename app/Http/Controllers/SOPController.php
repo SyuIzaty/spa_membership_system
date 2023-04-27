@@ -46,6 +46,7 @@ class SOPController extends Controller
                 $all = '';
                 foreach ($data->getCD as $c) {
                     $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                    // $all .= isset($c->crossDepartment->department_name) && $c->crossDepartment->department_name !== '' ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
                 }
                 return $all;
             })
@@ -288,6 +289,13 @@ class SOPController extends Controller
     public function updateDetails(Request $request)
     {
         $update = SopDetail::where('sop_lists_id', $request->id)->first();
+
+        $originalPurpose    = $update->purpose;
+        $originalProcedure  = $update->procedure;
+        $originalScope      = $update->scope;
+        $originalReference  = $update->reference;
+        $originalDefinition = $update->definition;
+
         $update->update([
             'sop_code'     => $request->code,
             'prepared_by'  => $request->prepared_by,
@@ -298,8 +306,66 @@ class SOPController extends Controller
             'reference'    => $request->reference,
             'definition'   => $request->definition,
             'procedure'    => $request->procedure,
-            'updated_by'    => Auth::user()->id
+            'updated_by'   => Auth::user()->id
         ]);
+
+        // Purpose, Scope, Reference, Definition
+
+        if ($update->wasChanged('purpose')) {
+            $reviewRecord = 'Purpose updated from "' . $originalPurpose . '" to "' . $request->purpose . '"';
+
+            SopReviewRecord::create([
+                'sop_lists_id'  => $request->id,
+                'review_record' => $reviewRecord,
+                'section'       => 'Purpose',
+                'created_by'    => Auth::user()->id
+            ]);
+        }
+
+        if ($update->wasChanged('scope')) {
+            $reviewRecord = 'Scope updated from "' . $originalScope . '" to "' . $request->scope . '"';
+
+            SopReviewRecord::create([
+                'sop_lists_id'  => $request->id,
+                'review_record' => $reviewRecord,
+                'section'       => 'Scope',
+                'created_by'    => Auth::user()->id
+            ]);
+        }
+
+        if ($update->wasChanged('reference')) {
+            $reviewRecord = 'Reference updated from "' . $originalReference . '" to "' . $request->reference . '"';
+
+            SopReviewRecord::create([
+                'sop_lists_id'  => $request->id,
+                'review_record' => $reviewRecord,
+                'section'       => 'Reference',
+                'created_by'    => Auth::user()->id
+            ]);
+        }
+
+        if ($update->wasChanged('definition')) {
+            $reviewRecord = 'Definition updated from "' . $originalDefinition . '" to "' . $request->definition . '"';
+
+            SopReviewRecord::create([
+                'sop_lists_id'  => $request->id,
+                'review_record' => $reviewRecord,
+                'section'       => 'Definition',
+                'created_by'    => Auth::user()->id
+            ]);
+        }
+
+        if ($update->wasChanged('procedure')) {
+            $reviewRecord = 'Procedure updated from "' . $originalProcedure . '" to "' . $request->procedure . '"';
+
+            SopReviewRecord::create([
+                'sop_lists_id'  => $request->id,
+                'review_record' => $reviewRecord,
+                'section'       => 'Procedure',
+                'created_by'    => Auth::user()->id
+            ]);
+        }
+
 
         return redirect()->back()->with('message', 'Successfully Updated!');
     }
@@ -319,21 +385,27 @@ class SOPController extends Controller
         return $response;
     }
 
-    public function storeReviewRecord(Request $request)
+    public function getReviewRecord($id)
     {
-        $request->validate([
-            'details' => 'required',
-        ]);
-
-        foreach ($request->details as $key => $value) {
-            SopReviewRecord::create([
-                'sop_lists_id'   => $request->id,
-                'review_record'  => $value,
-                'created_by'     => Auth::user()->id
-            ]);
-        }
-        return redirect()->back()->with('message', 'Successfully Saved!');
+        $sopReview  = SopReviewRecord::where('id', $id)->first();
+        return view('sop.sop-review-record', compact('sopReview'));
     }
+
+    // public function storeReviewRecord(Request $request)
+    // {
+    //     $request->validate([
+    //         'details' => 'required',
+    //     ]);
+
+    //     foreach ($request->details as $key => $value) {
+    //         SopReviewRecord::create([
+    //             'sop_lists_id'   => $request->id,
+    //             'review_record'  => $value,
+    //             'created_by'     => Auth::user()->id
+    //         ]);
+    //     }
+    //     return redirect()->back()->with('message', 'Successfully Saved!');
+    // }
 
     public function storeFormRecord(Request $request)
     {
