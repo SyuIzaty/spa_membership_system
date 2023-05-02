@@ -284,7 +284,9 @@ class AduanController extends Controller
                 foreach($data as $test){
                     $staff = Staff::where('staff_id', $test->juruteknik_bertugas)->first();
 
-                    $all .= isset($test->juruteknik->name) ? '<div word-break: break-all>'.$test->juruteknik->name.'<br>[ '.$staff->staff_phone.' ]</div>' : '--';
+                    $phone = $staff->staff_phone ?? 'Tiada Maklumat';
+
+                    $all .= isset($test->juruteknik->name) ? '<div word-break: break-all>'.$test->juruteknik->name.'<br>[ '.$phone.' ]</div>' : '--';
                 }
                 return $all;
 
