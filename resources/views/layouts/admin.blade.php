@@ -137,6 +137,14 @@
                                                 </a>
                                             </li>
                                         @endcanany
+                                        @canany(['Report Rent Form'])
+                                        <li>
+                                            <a href="/showApplication" title="Application" data-filter-tags="Application">
+                                                <span class="nav-link-text" data-i18n="nav.showApplication">Application</span>
+                                            </a>
+                                        </li>
+                                    @endcanany
+
                                     </ul>
                                 </li>
                             @endcanany

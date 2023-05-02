@@ -28,7 +28,6 @@ Route::get('/edit_record/{id}', 'TestController@edit')->name('test.edit_record')
 Route::post('/update_record', 'TestController@updateApplication');
 Route::post('/data_rental', 'TestController@data_rental');
 Route::get('/report', 'TestController@report');
-Route::post('test.edit_record', 'TestController@operationRejectApplication')->name('test.edit_record');
 Route::post('/update_status', 'TestController@operationVerifyApplication');
 Route::post('/update_reject', 'TestController@operationRejectApplication');
 Route::get('/ICTRental-Reports', 'TestController@ICTRentalReport');
@@ -40,6 +39,10 @@ Route::post('/year-report-ICTRental', 'TestController@reportYear');
 Route::post('/month-year-report-ICTRental', 'TestController@reportMonthYear');
 Route::get('/ICTRental-Report-Year-Month/{year}/{month}', 'TestController@ICTRentReportYearMonth');
 Route::get('/ICTRental-report', 'TestController@report');
+// Route::post('/store','TestController@store');
+Route::get('/showApplication', 'TestController@showApplication');
+Route::post('/own_data', 'TestController@own_data'); //need to double check
+Route::get('/downloadPDF/{id}', 'TestController@downloadPDF')->name('test.download');
 
 //ROLE
 Route::resource('/role', 'RoleController');
