@@ -199,8 +199,8 @@
                                     <div class="form-group int">
                                         <td width="15%"><label class="form-label" for="sebab_tukar_status"><span class="text-danger">*</span> Sebab :</label></td>
                                         <td colspan="7">
-                                            <textarea rows="5" cols="30" class="form-control" maxlength="200" name="sebab_tukar_status" id="sebab_tukar_status" required></textarea>
-                                            <p align="right" class="mt-2">Tidak melebihi 200 patah perkataan</p>
+                                            <textarea rows="5" cols="30" class="form-control" maxlength="300" name="sebab_tukar_status" id="sebab_tukar_status" required></textarea>
+                                            <p align="right" class="mt-2">Tidak melebihi 300 huruf</p>
                                             @error('sebab_tukar_status')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
