@@ -13,8 +13,8 @@ use App\User;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class TestController extends Controller
 {
@@ -31,21 +31,33 @@ class TestController extends Controller
         $validated = $request->validate([
             'hpno' => 'required|numeric|digits_between:10,11',
             'room_no' => 'required|numeric',
+            'rentdate' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'retdate' => 'required|date|after_or_equal:rentdate', // Set the validation rule to be greater than or equal to 'rentdate'
+            'purpose' => 'required',
+
         ], [
             'hpno.numeric' => 'phone number should be numeric.',
             'hpno.required' => 'phone number required.',
             'hpno.digits_between' => 'phone number should be between 10 until 11.',
+            'room_no.required' => 'The room number is required.',
+            'room_no.numeric' => 'The room number must be in numeric',
+            'rentdate.required' => 'The rental date is required',
+            'retdate.required' => 'The return date is required',
+            'rentdate.required' => 'The return date is required',
+            'retdate.after_or_equal' => 'The return date must a same day or after a rental date',
+            'purpose.required' => 'purpose is required',
+
         ]);
 
         $data = EquipmentStaff::create([ //store in equipment staff and take it from user
             'staff_id' => Auth::user()->id,
             'hp_no' => $request->hpno,
-            'rent_date' => $request->rentdate, //store
+            'rent_date' => $request->rentdate,
             'return_date' => $request->retdate,
             'purpose' => $request->purpose,
             'room_no' => $request->room_no,
             'name' => auth()->user()->name,
-            'status' => $request->status,
+            'status' => 'Pending',
         ]);
         foreach ($request->sn as $test => $value) {
             if (isset($value)) {
@@ -59,14 +71,67 @@ class TestController extends Controller
             }
 
         }
+
+        $image = $request->upload_img;
+        $paths = storage_path()."/rent/";
+        
+        if (isset($image)) {
+            for($y = 0; $y < count($image); $y++)
+            {
+                $originalsName = $image[$y]->getClientOriginalName();
+                $fileSizes = $image[$y]->getSize();
+                $fileNames = $originalsName;
+                Storage::disk('minio')->put("/rent/".$fileNames,file_get_contents($image[$y]));
+                EquipmentStaff::create([
+                    'staff_id' => Auth::user()->id,
+                    'upload_img'  => date('dmyhi').' - '.$originalsName,
+                    'web_path'      =>"app/rent/".date('dmyhi').' - '.$fileNames,
+                ]);
+            }
+        }
+        
+        $file = $request->doc;
+        $path=storage_path()."/doc/";
+        
+        if (isset($file)) {
+        
+            for($x = 0; $x < count($file) ; $x ++)
+            {
+                $originalName = $file[$x]->getClientOriginalName();
+                $fileSize = $file[$x]->getSize();
+                $fileName = $originalName;
+                Storage::disk('minio')->put("/doc/".$fileName,file_get_contents($file[$x]));
+                EquipmentStaff::create([
+                    'staff_id' => Auth::user()->id,
+                    'nama_fail' => date('dmyhi').' - '.$originalName,
+                    'saiz_fail' => $fileSize,
+                    'web_path'  => "app/doc/".date('dmyhi').' - '.$fileName,
+                ]);
+            }
+        }
+        
+        // $imageString = implode(',', $image);
+        // $fileString = implode(',', $file);
+
+        // return response()->json(['success' => 'Your error message here']); // add this line
         return redirect()->back();
+    }
+    public function showApplication(Request $request)
+    {
+        // $equipment = Equipment::all();
+
+        // $selectedequipment = $request->equipment;
+
+        $data = EquipmentStaff::where('staff_id', Auth::user()->id)->get();
+
+        return view('test.detail', compact('data'));
     }
     public function show(Request $request)
     {
         $equipment = Equipment::all();
         $equipment_rent = EquipmentRent::all();
         $user = EquipmentStaff::all();
-        // dd($request->status);       
+        // dd($request->status);
 
         $selectedequipment = $request->equipment;
         $count = EquipmentStaff::
@@ -76,13 +141,13 @@ class TestController extends Controller
             ->get()
             ->count();
         $count2 = EquipmentStaff::
-            whereIn('status', ['Rejected', 'Pending'])
+            whereIn('status', ['Rejected', 'Approved'])
             ->whereNotNull('staff_id')
             ->whereYear('rent_date', Carbon::now()->year)
             ->get()
             ->count();
         $count3 = EquipmentStaff::
-            where('status', 'Approved')
+            where('status', 'Pending')
             ->whereNotNull('staff_id')
             ->whereYear('rent_date', Carbon::now()->year)
             ->get()
@@ -104,15 +169,6 @@ class TestController extends Controller
         return view('test.edit_record', compact('user', 'staff', 'equipments', 'rent', 'id'));
     }
 
-    public function updateApplication(Request $request)
-    {
-        $user = EquipmentStaff::where('id', $request->id)->first(); //search one user
-        $user->update([
-            'purpose' => $request->purpose,
-        ]);
-        // Redirect the user back to the index page
-        return redirect()->back();
-    }
     public function declareDelete($id)
     {
         $delRent = EquipmentRent::where('users_id', $id)->get(); //get the equipment data
@@ -126,6 +182,60 @@ class TestController extends Controller
         $data = EquipmentRent::find($users_id);
         $data->delete();
         return response()->json(['success' => 'Declaration Form Successfully Deleted']);
+    }
+    public function own_data(Request $request)
+    {
+        $data = EquipmentStaff::where('staff_id', Auth::user()->id)->get();
+
+        return datatables()::of($data)
+
+            ->editColumn('sid', function ($data) {
+                return isset($data->id) ? $data->id : "";
+            })
+            ->editColumn('staff', function ($data) {
+                return isset($data->staff_id) ? $data->staff_id : "";
+            })
+            ->editColumn('name', function ($data) {
+
+                return isset($data->name) ? $data->name : "";
+            })
+            ->editColumn('phone', function ($data) {
+                return isset($data->hp_no) ? $data->hp_no : "";
+            })
+            ->editColumn('renDate', function ($data) {
+                return isset($data->rent_date) ? $data->rent_date : "";
+            })
+
+            ->editColumn('retDate', function ($data) {
+                return isset($data->return_date) ? $data->return_date : "";
+            })
+            ->editColumn('sta', function ($data) {
+                return isset($data->status) ? $data->status : "";
+            })
+
+            ->addColumn('action', function ($data) {
+                return '<div class="btn-group">
+                    <a href="/downloadPDF/' . $data->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i> Download</a>
+                </div>';
+            })
+                                    
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+    }
+    public function downloadPDF(Request $request, $id)
+    {
+        $application = EquipmentStaff::with(['staff'])->where('id', $id)->first();
+        $equipments = Equipment::all();
+        $user = EquipmentStaff::where('id', $id)->first(); //search one user
+        $staff = Staff::where('staff_id', $user->staff_id)->first(); //query(eloquent)
+        $rent = EquipmentRent::where('users_id', $id)->get(); //retrive data in equipment rent (more than 1)
+        // $name = $staff->staff_name;
+
+        // Pass the equipment record to the edit_record view
+        return view('test.download', compact('application','user', 'staff', 'equipments', 'rent', 'id'));
+
+
     }
 
     public function data_rental(Request $request)
@@ -159,6 +269,7 @@ class TestController extends Controller
             ->editColumn('renDate', function ($data) {
                 return isset($data->equipmentStaff->rent_date) ? $data->equipmentStaff->rent_date : "";
             })
+
             ->editColumn('retDate', function ($data) {
                 return isset($data->equipmentStaff->return_date) ? $data->equipmentStaff->return_date : "";
             })
@@ -168,24 +279,11 @@ class TestController extends Controller
 
             ->addColumn('action', function ($data) {
                 $deleteBtn = '';
-                if(isset($data->equipmentStaff->id)){
-                    if ($data->equipmentStaff->status == 'Approved') {
-                        return '<div class="btn-group"><a href="/edit_record/' . $data->equipmentStaff->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i> </a></div>';
-                    }
-
-                    else{
-                        return '<div class="btn-group"><a href="/edit_record/' . $data->equipmentStaff->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i> </a>
-                        <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="declareDelete/' . $data->equipmentStaff->id . '"><i class="fal fa-trash"></i> </button></div>
-                        </div>';
-                    }
+                if ($data->equipmentStaff->status == 'Pending') {
+                    $deleteBtn = '<button class="btn btn-sm btn-danger btn-delete" data-remote="declareDelete/' . $data->equipmentStaff->id . '"><i class="fal fa-trash"></i> </button>';
                 }
 
-                // $deleteBtn = '';
-                // if ($data->equipmentStaff->status !== 'Approved') {
-                //     $deleteBtn = '<button class="btn btn-sm btn-danger btn-delete" data-remote="declareDelete/' . $data->equipmentStaff->id . '"><i class="fal fa-trash"></i> </button>';
-                // }
-
-                // return '<div class="btn-group"><a href="/edit_record/' . $data->equipmentStaff->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i> </a>' . $deleteBtn . '</div>';
+                return '<div class="btn-group"><a href="/edit_record/' . $data->equipmentStaff->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i> </a>' . $deleteBtn . '</div>';
             })
 
             ->rawColumns(['action'])
@@ -198,20 +296,26 @@ class TestController extends Controller
         $user->update([
             'status' => 'Approved',
         ]);
-        $user_email = $user->staff->staff_email;
-        $user_name = $user->staff->staff_name;
+        // $user_email = $user->staff->staff_email;
+        // $user_name = $user->staff->staff_name;
 
-        $data = [
-            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user_name,
-            'emel' => 'Your ICT Rrntal application has been approved on ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
-        ];
+        // $data = [
+        //     'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user_name,
+        //     'emel' => 'Your ICT Rrntal application has been approved on ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+        // ];
 
-        Mail::send('test.email', $data, function ($message) use ($user_email) {
-            $message->subject('ICT Rental Application: Approved');
-            $message->from('nabilahwahid894@gmail.com');
-            $message->to($user_email);
-        });
-        return redirect()->back()->with('message', 'Accepted!');
+        // Mail::send('test.email', $data, function ($message) use ($user_email) {
+        //     $message->subject('ICT Rental Application: Approved');
+        //     $message->from('nabilahwahid894@gmail.com');
+        //     $message->to($user_email);
+        // });
+        // if ($updateSuccessful) {
+        //     return response()->json(['message' => 'Application verified successfully.']);
+        // } else {
+        //     return response()->json(['message' => 'Failed to verify application.']);
+        // }
+           return redirect()->back()->with('message', 'Verified');
+        // return response()->json(['success' => 'Successful Assign!']);
     }
     public function operationRejectApplication(Request $request)
     {
@@ -219,7 +323,22 @@ class TestController extends Controller
         $user->update([
             'status' => 'Rejected',
         ]);
-        return redirect()->back()->with('message', 'Rejected!');
+        // $user_email = $user->staff->staff_email;
+        // $user_name = $user->staff->staff_name;
+
+        // $data = [
+        //     'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user_name,
+        //     'emel' => 'Your ICT Rrntal application has been Rejected on ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+        // ];
+
+        // Mail::send('test.email', $data, function ($message) use ($user_email) {
+        //     $message->subject('ICT Rental Application: Rejected');
+        //     $message->from('nabilahwahid894@gmail.com');
+        //     $message->to($user_email);
+        // });
+        return redirect()->back()->with('message', 'Verified');
+
+        // return response()->json(['success' => 'Successful Assign!']);
     }
 
     public function report(Request $request)

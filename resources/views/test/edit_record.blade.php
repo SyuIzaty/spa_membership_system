@@ -102,18 +102,10 @@
                                         <th>Purpose</th>
                                         <td>
                                             <input class="form-control" type="text" name="purpose" size="40"
-                                                placeholder="purpose" value="{{ $user->purpose }}">
+                                                placeholder="purpose" value="{{ $user->purpose }}" disabled>
                                         </td>
                                     </tr>
                                 </table>
-                                <div align="right">
-                                    <button type="submit" id="btnSubmit"
-                                        class="btn btn-primary ml-auto float-center waves-effect waves-themed"><i
-                                            class="fal fa-location-arrow"></i> Submit Form</button>
-                                    <button style="margin-right:5px" type="reset"
-                                        class="btn btn-danger ml-auto float-center waves-effect waves-themed"><i
-                                            class="fal fa-redo"></i> Reset</button>
-                                </div><br><br>
                                 <div class="subheader">
                                     <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
                                         <li>
@@ -144,31 +136,33 @@
                                 </table><br />
                                 {!! Form::close() !!}
 
-                                <div class="btn-group">
-                                    {!! Form::open([
-                                        'action' => 'TestController@operationVerifyApplication',
-                                        'method' => 'POST',
-                                        'enctype' => 'multipart/form-data',
-                                    ]) !!}
-                                    <input type="hidden" name="id" value="{{ $id }}">
-                                    <button style="margin-top: 5px;"
-                                        class="btn btn-warning ml-auto float-right mr-2 mt-2 mb-4 waves-effect waves-themed operationverify"
-                                        id="submit" name="submit"><i class="fal fa-check"></i> Verify
-                                        Application</button>&nbsp;
-                                    {!! Form::close() !!}
-
-                                    {!! Form::open([
-                                        'action' => 'TestController@operationRejectApplication',
-                                        'method' => 'POST',
-                                        'enctype' => 'multipart/form-data',
-                                    ]) !!}
-                                    <input type="hidden" name="id" value="{{ $id }}">
-                                    <button style="margin-top: 5px;"
-                                        class="btn btn-danger ml-auto float-right mt-2 mb-2 waves-effect waves-themed click"
-                                        id="submit" name="submit"><i class="fal fa-times-circle"></i> Reject</button>
-                                    {!! Form::close() !!}
+                                <div class="text-right">
+                                    <div class="btn-group">
+                                        {!! Form::open([
+                                            'action' => 'TestController@operationVerifyApplication',
+                                            'method' => 'POST',
+                                            'enctype' => 'multipart/form-data',
+                                        ]) !!}
+                                        <input type="hidden" name="id" value="{{ $id }}">
+                                        <button style="margin-top: 5px;"
+                                            class="btn btn-warning mr-2 mt-2 mb-4 waves-effect waves-themed operationverify"
+                                            id="submit" name="submit"><i class="fal fa-check"></i> Verify
+                                            Application</button>&nbsp;
+                                        {!! Form::close() !!}
+                                
+                                        {!! Form::open([
+                                            'action' => 'TestController@operationRejectApplication',
+                                            'method' => 'POST',
+                                            'enctype' => 'multipart/form-data',
+                                        ]) !!}
+                                        <input type="hidden" name="id" value="{{ $id }}">
+                                        <button style="margin-top: 5px;"
+                                            class="btn btn-danger mt-2 mb-2 waves-effect waves-themed click"
+                                            id="submit" name="submit"><i class="fal fa-times-circle"></i> Reject</button>
+                                        {!! Form::close() !!}
+                                    </div>
                                 </div>
-
+                                                                                                
                             </div>
                         </div>
                     </div>

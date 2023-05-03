@@ -47,7 +47,7 @@
                                         <div class="">
                                             <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                 {{ $count2 }}
-                                                <small class="m-0 l-h-n">PENDING/REJECTED RECORD <b
+                                                <small class="m-0 l-h-n">APPROVED/REJECTED RECORD <b
                                                         style="font-weight: 900">{{ $currentYear }}</b></small>
                                             </h3>
                                         </div>
@@ -61,7 +61,7 @@
                                         <div class="">
                                             <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                 {{ $count3 }}
-                                                <small class="m-0 l-h-n">APPROVED RECORD <b
+                                                <small class="m-0 l-h-n">PENDING RECORD <b
                                                         style="font-weight: 900">{{ $currentYear }}</b></small>
                                             </h3>
                                         </div>
@@ -131,17 +131,6 @@
 @endsection
 
 @section('script')
-    <style>
-        .buttons-csv,
-        .buttons-copy,
-        .buttons-excel,
-        .buttons-print {
-            color: white;
-            background-color: #606FAD;
-            float: right;
-            margin: 0px 8px;
-        }
-    </style>
     <script>
         $(document).ready(function() {
 
@@ -181,11 +170,6 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     },
-                    "dom": "Bltp",
-                    "lengthMenu": [
-                        [10, 25, 50, -1],
-                        [10, 25, 200, "All"]
-                    ],
                     iDisplayLength: 10,
                     columns: [{
                             className: 'text-center',
@@ -239,44 +223,6 @@
                         $('.total_record').text(this.fnSettings().fnRecordsTotal());
                     },
                     select: true,
-                    buttons: ['csv']
-                        [{
-                            text: 'Export Current Page',
-                            "createEmptyCells": true,
-                            // action : newexportaction,
-                            customizeData: function(data) {
-                                for (var i = 0; i < data.body.length; i++) {
-                                    for (var j = 0; j < data.body[i].length; j++) {
-                                        data.body[i][j] = '\u200C' + data.body[i][j];
-                                    }
-                                }
-                            },
-                            customize: function(doc) {
-                                var sSh = doc.xl['styles.xml'];
-                                var lastXfIndex = $('cellXfs xf', sSh).length - 1;
-                                var s1 =
-                                    '<xf numFmtId="0" fontId="0" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="0"/>';
-                                var s2 =
-                                    '<xf numFmtId="0" fontId="2" fillId="5" borderId="1" applyFont="2" applyFill="1" applyBorder="1" xfId="0" applyAlignment="1">' +
-                                    '<alignment horizontal="center"/></xf>';
-                                var s3 =
-                                    '<xf numFmtId="4" fontId="2" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1">' +
-                                    '<alignment horizontal="center"/></xf>';
-                                // var s3 = '<xf numFmtId="4" fontId="2" fillId="0" borderId="1" applyFont="1" applyFill="1" applyBorder="1" xfId="0" applyNumberFormat="1"/>';
-
-                                sSh.childNodes[0].childNodes[5].innerHTML += s1 + s2 + s3;
-                                var border = lastXfIndex + 1;
-                                var colorBoldCentered = lastXfIndex + 2;
-                                var boldBorder = lastXfIndex + 3;
-
-                                var sheet = doc.xl.worksheets['sheet1.xml'];
-                                // var x =  sheet.childNodes[0].childNodes[5].innerHTML;
-
-                                $('row c', sheet).attr('s', border);
-                                $('row:eq(0) c', sheet).attr('s', colorBoldCentered);
-                                $('row:eq(1) c', sheet).attr('s', boldBorder);
-                            }
-                        }]
                 });
             }
 
