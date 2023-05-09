@@ -62,6 +62,7 @@
                                     {!! Form::open([
                                         'action' => 'EKenderaanController@review',
                                         'method' => 'POST',
+                                        'id' => 'data',
                                         'enctype' => 'multipart/form-data',
                                     ]) !!}
                                     <div class="table-responsive">
@@ -535,6 +536,13 @@
             changeMonth: true,
             changeYear: true,
             maxDate: "+1y",
+        });
+
+        $(document).ready(function() {
+            $("#data").submit(function() {
+                $("#submit").attr("disabled", true);
+                return true;
+            });
         });
     </script>
 @endsection

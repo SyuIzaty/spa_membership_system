@@ -58,11 +58,14 @@
 
                             <div class="panel-container show">
                                 <div class="panel-content">
+
                                     {!! Form::open([
                                         'action' => 'EKenderaanController@store',
                                         'method' => 'POST',
+                                        'id' => 'data',
                                         'enctype' => 'multipart/form-data',
                                     ]) !!}
+
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-hover table-striped w-100">
                                             <thead>
@@ -728,6 +731,13 @@
                 }
 
             })
+        });
+
+        $(document).ready(function() {
+            $("#data").submit(function() {
+                $("#submit").attr("disabled", true);
+                return true;
+            });
         });
     </script>
 @endsection
