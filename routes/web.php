@@ -86,6 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');
+    Route::post('/review-application', 'EKenderaanController@review');
     Route::post('/eKenderaan-application', 'EKenderaanController@store');
     Route::get('/findStaffID', 'EKenderaanController@findStaffID');
     Route::get('/findStudendID', 'EKenderaanController@findStudID');
@@ -122,7 +123,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/log-eKenderaan-list/{id}', 'EKenderaanController@logList');
     Route::get('/student-list-excel-format', 'EKenderaanController@getFile');
     Route::get('/user-manual', 'EKenderaanController@getUserManual');
-    Route::post('/review-application', 'EKenderaanController@review');
     Route::get('/temp-file/{id}', 'EKenderaanController@getTempFile');
     Route::delete('/cancel-application/{id}', 'EKenderaanController@cancelApplication');
     Route::get('/eKenderaan-feedback-questions', 'EKenderaanController@question');
