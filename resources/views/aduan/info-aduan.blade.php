@@ -585,8 +585,9 @@
                                                                     <tr>
                                                                         <div class="form-group">
                                                                             <td colspan="2">
-                                                                                <textarea rows="5" class="form-control" id="laporan_pembaikan" maxlength="1000" name="laporan_pembaikan" required>{{ $aduan->laporan_pembaikan }}</textarea>
-                                                                                <p align="right" class="mt-2">Tidak melebihi 1000 patah perkataan</p>
+                                                                                <textarea rows="5" class="form-control" id="laporan_pembaikan" name="laporan_pembaikan" required>{{ $aduan->laporan_pembaikan }}</textarea>
+                                                                                {{-- <p align="right" class="mt-2">Tidak melebihi 1000 huruf</p>
+                                                                                maxlength="1000" --}}
                                                                                 @error('laporan_pembaikan')
                                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                 @enderror
@@ -789,8 +790,8 @@
                                                             <tr>
                                                                 <div class="form-group">
                                                                     <td colspan="2">
-                                                                        <textarea rows="3" class="form-control" maxlength="100" id="catatan_pembaikan" name="catatan_pembaikan">{{ old('catatan_pembaikan') }}</textarea>
-                                                                        <p align="right" class="mt-2">Tidak melebihi 100 patah perkataan</p>
+                                                                        <textarea rows="3" class="form-control" maxlength="150" id="catatan_pembaikan" name="catatan_pembaikan">{{ old('catatan_pembaikan') }}</textarea>
+                                                                        <p align="right" class="mt-2">Tidak melebihi 150 huruf</p>
                                                                         @error('catatan_pembaikan')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror

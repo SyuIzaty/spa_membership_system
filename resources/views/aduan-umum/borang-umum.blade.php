@@ -183,8 +183,8 @@
                                             </tr>
                                             <tr class="jk_penerangan">
                                                 <th width="20%" style="vertical-align: top">Penerangan Jenis Kerosakan : </th>
-                                                <td colspan="4"><textarea rows="3" maxlength="100" id="jk_penerangan" name="jk_penerangan" class="form-control">{{ old('jk_penerangan') }}</textarea>
-                                                    <p align="right" class="mt-2">Tidak melebihi 100 patah perkataan</p>
+                                                <td colspan="4"><textarea rows="3" maxlength="150" id="jk_penerangan" name="jk_penerangan" class="form-control">{{ old('jk_penerangan') }}</textarea>
+                                                    <p align="right" class="mt-2">Tidak melebihi 150 huruf</p>
                                                     @error('jk_penerangan')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -193,8 +193,8 @@
                                             <tr class="sk_penerangan">
                                                 <th width="20%" style="vertical-align: top">Penerangan Sebab Kerosakan : </th>
                                                 <td colspan="4">
-                                                    <textarea rows="3" id="sk_penerangan" maxlength="100" name="sk_penerangan" class="form-control">{{ old('sk_penerangan') }}</textarea>
-                                                    <p align="right" class="mt-2">Tidak melebihi 100 patah perkataan</p>
+                                                    <textarea rows="3" id="sk_penerangan" maxlength="150" name="sk_penerangan" class="form-control">{{ old('sk_penerangan') }}</textarea>
+                                                    <p align="right" class="mt-2">Tidak melebihi 150 huruf</p>
                                                     @error('sk_penerangan')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -202,8 +202,8 @@
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: top">Maklumat Tambahan : </th>
-                                                <td colspan="4"><textarea rows="3" maxlength="100" id="maklumat_tambahan" name="maklumat_tambahan" class="form-control" placeholder="Sila isikan maklumat tambahan sekiranya ada">{{ old('maklumat_tambahan') }}</textarea>
-                                                    <p align="right" class="mt-2">Tidak melebihi 100 patah perkataan</p>
+                                                <td colspan="4"><textarea rows="3" maxlength="150" id="maklumat_tambahan" name="maklumat_tambahan" class="form-control" placeholder="Sila isikan maklumat tambahan sekiranya ada">{{ old('maklumat_tambahan') }}</textarea>
+                                                    <p align="right" class="mt-2">Tidak melebihi 150 huruf</p>
                                                     @error('maklumat_tambahan')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror

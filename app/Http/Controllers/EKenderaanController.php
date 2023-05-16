@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use File;
 use App\User;
+use App\Rules\DateRule;
 use DateTime;
 use Response;
 use App\Staff;
@@ -24,6 +25,7 @@ use App\eKenderaanPassengers;
 use App\eKenderaanAttachments;
 use App\eKenderaanWaitingArea;
 use App\eKenderaanAssignDriver;
+use Illuminate\Validation\Rule;
 use App\eKenderaanAssignVehicle;
 use App\Exports\eKenderaanExport;
 use App\eKenderaanFeedbackService;
@@ -235,19 +237,20 @@ class EKenderaanController extends Controller
         $returndate = Carbon::createFromFormat('d/m/Y', $request->returndate)->format('Y-m-d');
         $returntime = Carbon::createFromFormat('h:i a', $request->returntime)->format('H:i:s');
 
-        $validated = $request->validate([
-            'hp_no'        => 'required|numeric|digits_between:10,11',
-            'departdate'   => 'required',
-            'departtime'   => 'required',
-            'returndate'   => 'required',
-            'returntime'   => 'required',
-            'destination'  => 'required',
-            'purpose'      => 'required',
-            'waitingarea'  => 'required_without:others',
-        ], [
-            'waitingarea.required_without'  => 'The Waiting Area field is required.',
-
-        ]);
+        // $validated = $request->validate([
+        //     'hp_no'        => 'required|numeric|digits_between:10,11',
+        //     'departtime'   => 'required',
+        //     'returndate'   => 'required',
+        //     'returntime'   => 'required',
+        //     'destination'  => 'required',
+        //     'purpose'      => 'required',
+        //     'waitingarea'  => 'required_without:others',
+        //     'departdate' => [
+        //         ['required', 'before_or_equal:today'],
+        //     ],
+        // ], [
+        //     'waitingarea.required_without'  => 'The Waiting Area field is required.',
+        // ]);
 
         $application               = new eKenderaan();
         $application->intec_id     = Auth::user()->id;
@@ -262,7 +265,6 @@ class EKenderaanController extends Controller
         $application->category     = Auth::user()->category;
         $application->updated_by   = Auth::user()->id;
         $application->save();
-
 
         // $application = eKenderaan::create([
         //     'intec_id'     => Auth::user()->id,
@@ -1104,20 +1106,46 @@ class EKenderaanController extends Controller
         $returndate = $request->returndate;
         $returntime = $request->returntime;
 
-        $validated = $request->validate([
-            'hp_no'   => 'required|numeric|digits_between:10,11',
-            'departdate'   => 'required',
-            'departtime'   => 'required',
-            'returndate'   => 'required',
-            'returntime'   => 'required',
-            'destination'  => 'required',
-            'waitingarea'  => 'required_without:others',
-            'purpose'      => 'required',
-        ], [
-            'waitingarea.required_without'  => 'The Waiting Area field is required.',
+        $users = User::find(Auth::user()->id);
+        if ($users->hasRole('eKenderaan Admin') || Auth::user()->id == '14020099') {
+            $request->validate([
+                'hp_no'   => 'required|numeric|digits_between:10,11',
+                'departdate'   => 'required',
+                'departtime'   => 'required',
+                'returndate' => [
+                    'required',
+                    'after_or_equal:departdate',
+                ],
+                'returntime'   => 'required',
+                'destination'  => 'required',
+                'waitingarea'  => 'required_without:others',
+                'purpose'      => 'required',
+            ], [
+                'waitingarea.required_without'  => 'The Waiting Area field is required.',
+                'returndate.after_or_equal' => 'The return date cannot be before the departure date',
+            ]);
+        } else {
+            $validated = $request->validate([
+                'hp_no'   => 'required|numeric|digits_between:10,11',
+                'departtime'   => 'required',
+                'returntime'   => 'required',
+                'destination'  => 'required',
+                'waitingarea'  => 'required_without:others',
+                'purpose'      => 'required',
+                'departdate' => [
+                    'required', new DateRule(),
+                ],
+                'returndate' => [
+                    'required',
+                    'after_or_equal:departdate',
+                ],
 
-        ]);
-
+            ], [
+                'waitingarea.required_without'  => 'The waiting area field is required.',
+                'departdate.date_rule' => 'The departure date must be at least three days after today.',
+                'returndate.after_or_equal' => 'The return date cannot be before the departure date.',
+            ]);
+        }
 
         $user = Auth::user();
 

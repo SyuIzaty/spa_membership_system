@@ -431,7 +431,7 @@ class SOPController extends Controller
         if (isset($file)) {
             $fileName = time().$file->getClientOriginalName();
 
-            Storage::put("/sop/".$fileName, file_get_contents($file));
+            Storage::disk('minio')->put("/sop/".$fileName, file_get_contents($file));
 
             SopFlowChart::create([
                 'sop_lists_id'  => $request->id,
@@ -447,7 +447,7 @@ class SOPController extends Controller
     {
         $file = SopFlowChart::where('id', $id)->first();
         $filename = $file->upload;
-        return Storage::response('sop/'.$filename);
+        return Storage::disk('minio')->response('sop/'.$filename);
     }
 
     public function storeNewWorkFlow(Request $request)
@@ -460,7 +460,7 @@ class SOPController extends Controller
         if (isset($file)) {
             $fileName = time().$file->getClientOriginalName();
 
-            Storage::put("/sop/".$fileName, file_get_contents($file));
+            Storage::disk('minio')->put("/sop/".$fileName, file_get_contents($file));
 
             SopFlowChart::create([
                 'sop_lists_id'  => $request->id,
