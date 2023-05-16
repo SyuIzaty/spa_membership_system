@@ -16,7 +16,7 @@ class ICTRentalExport implements FromView, WithEvents, WithStyles, WithColumnFor
 {
     public function view(): View
     {
-        $data = EquipmentStaff::whereIn('status', ['Approved', 'Rejected'])
+        $data = EquipmentStaff::whereIn('status', ['Approved', 'Rejected','Pending'])
             ->get();
 
         return view('test.rent_report_export', compact('data'));
