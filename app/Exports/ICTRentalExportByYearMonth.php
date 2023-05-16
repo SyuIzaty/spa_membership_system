@@ -26,7 +26,7 @@ class ICTRentalExportByYearMonth implements FromView, WithEvents, WithStyles, Wi
         $month = $this->month;
         $m = date('m', strtotime($month));
 
-        $data = EquipmentStaff::whereIn('status', ['Approved', 'Rejected'])->whereYear('rent_date', $year)
+        $data = EquipmentStaff::whereIn('status', ['Approved', 'Rejected','Pending'])->whereYear('rent_date', $year)
             ->whereMonth('rent_date', $m)->get();
 
         return view('test.rent_report_export', compact('data'));
@@ -84,12 +84,13 @@ class ICTRentalExportByYearMonth implements FromView, WithEvents, WithStyles, Wi
                 $total = EquipmentStaff::whereIn('status', ['Approved', 'Rejected','Pending'])->whereYear('rent_date', $this->year)
                     ->whereMonth('created_at', $m)->get()->count() + $staff + 2;
 
-                    $cellAllRange = 'A1:L' . $total . '';
-                    $event->sheet->getDelegate()->getStyle('A1:V1')->getFont()->setBold(true);
-                    $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setName('Arial');
-                    $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setSize('8');
-                    $event->sheet->getDelegate()->getDefaultRowDimension()->setRowHeight(25);
-                },
+                $cellAllRange = 'A1:V' . $total . ''; //range of cells from column A to V
+                $event->sheet->getDelegate()->getStyle('A1:V1')->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle('R2:V2')->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setName('Arial');
+                $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setSize('8');
+                $event->sheet->getDelegate()->getDefaultRowDimension()->setRowHeight(25);
+            },
         ];
     }
 

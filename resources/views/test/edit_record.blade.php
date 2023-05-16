@@ -28,6 +28,7 @@
                                 <b>ICT EQUIPMENT RENTAL FORM</b>
                             </h4>
                         </div>
+
                         <div class="panel-container show">
                             <div class="panel-content">
                                 <table class="table table-bordered table-hover table-striped w-100">
@@ -104,7 +105,7 @@
                                                 placeholder="purpose" value="{{ $user->purpose }}" disabled>
                                         </td>
                                     </tr>
-                                </table><br>
+                                </table>
                                 <div class="subheader">
                                     <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
                                         <li>
@@ -123,7 +124,7 @@
                                     </tr>
                                     {{-- take from database --}}
                                     {{-- equipment from controller-fx index --}}
-                                    {{-- get from compact --}}
+                                    {{-- //get from compact --}}
 
                                     @foreach ($rent as $rents)
                                         <tr>
@@ -132,264 +133,40 @@
                                             <td>{{ $rents->desc }}</td>
                                         </tr>
                                     @endforeach
-                                </table><br>
-                                <div class="subheader">
-                                    <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
-                                        <li>
-                                            <a href="#" disabled style="pointer-events: none">
-                                                <span class=""> Document</span>
-                                            </a>
-                                        </li>
-                                        <p>
-                                    </ol>
-                                </div>
-                                <table class="table table-bordered table-hover table-striped w-100">
-                                    <tr>
-                                        <th width="20%" style="vertical-align: middle">Image
-                                            : </th>
-                                        <td colspan="2">
-                                            @if ($img->isNotEmpty())
-                                                @if ($img->count() > 1)
-                                                    <ul>
-                                                        @foreach ($img as $i)
-                                                            <li><a target="_blank"
-                                                                    href="/get-img/{{ $i->id }}">{{ $i->upload_img }}</a>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                @else
-                                                    @foreach ($img as $i)
-                                                        <a target="_blank"
-                                                            href="/get-img/{{ $i->id }}">{{ $i->upload_img }}</a>
-                                                    @endforeach
-                                                @endif
-                                            @endif
-
-                                        </td>
-                                        <th width="20%" style="vertical-align: middle">File :
-                                        </th>
-                                        <td colspan="2">
-                                            @if ($file->isNotEmpty())
-                                                @if ($file->count() > 1)
-                                                    <ol>
-
-                                                        @foreach ($file as $f)
-                                                            <li><a target="_blank"
-                                                                    href="/get-fileRent/{{ $f->id }}">{{ $f->file }}</a>
-                                                            </li>
-                                                        @endforeach
-                                                    </ol>
-                                                @else
-                                                    @foreach ($file as $f)
-                                                        <a target="_blank"
-                                                            href="/get-fileRent/{{ $f->id }}">{{ $f->file }}</a>
-                                                    @endforeach
-                                                @endif
-                                            @endif
-                                        </td>
-                                    </tr>
-                                </table>
-                                <table>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                </table><br />
                                 {!! Form::close() !!}
+
                                 <div class="text-right">
                                     <div class="btn-group">
-
-                                        {{-- {!! Form::open([
-                                            'action' => 'TestController@operationVerifyApplication', 
+                                        {!! Form::open([
+                                            'action' => 'TestController@operationVerifyApplication',
                                             'method' => 'POST',
                                             'enctype' => 'multipart/form-data',
                                         ]) !!}
-                                        <input type="hidden" name="id" value="{{$id}}">
-                                        <button style="margin-top: 5px;" class="btn btn-warning ml-auto float-right mr-2 mt-2 mb-4 waves-effect waves-themed operationverify" id="submit" name="submit"><i class="fal fa-check"></i> Verify Application</button>&nbsp;
-                                        {!! Form::close() !!} --}}
-
-                                        <form id="form-id">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{ $id }}">
-                                            <button style="margin-top: 5px;"
-                                                class="btn btn-warning mr-2 mt-2 mb-4 waves-effect waves-themed operationverify"
-                                                id="submitVerify" name="submit"><i class="fal fa-check"></i> Verify
-                                                Application</button>&nbsp;
-                                        </form>
-                                        <form id="form-id">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{ $id }}">
-                                            <button style="margin-top: 5px;"
-                                                class="btn btn-danger mt-2 mb-2 waves-effect waves-themed click"
-                                                id="submitReject" name="submit"><i class="fal fa-times-circle"></i>
-                                                Reject</button>&nbsp;
-                                        </form>
-                                        @if ($user->return_date < now())
-                                            <form id="form-id">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $id }}">
-                                                <button style="margin-top: 5px;"
-                                                    class="btn btn-danger mt-2 mb-2 waves-effect waves-themed click"
-                                                    id="reminder" name="submit">
-                                                    <i class="fal fa-times-circle"></i> Reminder
-                                                </button>&nbsp;
-                                            </form>
-                                        @endif
+                                        <input type="hidden" name="id" value="{{ $id }}">
+                                        <button style="margin-top: 5px;"
+                                            class="btn btn-warning mr-2 mt-2 mb-4 waves-effect waves-themed operationverify"
+                                            id="submit" name="submit"><i class="fal fa-check"></i> Verify
+                                            Application</button>&nbsp;
+                                        {!! Form::close() !!}
+                                
+                                        {!! Form::open([
+                                            'action' => 'TestController@operationRejectApplication',
+                                            'method' => 'POST',
+                                            'enctype' => 'multipart/form-data',
+                                        ]) !!}
+                                        <input type="hidden" name="id" value="{{ $id }}">
+                                        <button style="margin-top: 5px;"
+                                            class="btn btn-danger mt-2 mb-2 waves-effect waves-themed click"
+                                            id="submit" name="submit"><i class="fal fa-times-circle"></i> Reject</button>
+                                        {!! Form::close() !!}
                                     </div>
                                 </div>
+                                                                                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
     </main>
-@endsection
-@section('script')
-    <script>
-        $("#submitVerify").on('click', function(e) {
-            e.preventDefault();
-
-            var datas = $('#form-id').serialize();
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            Swal.fire({
-                title: 'Verify?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.value) {
-
-                    Swal.fire({
-                        title: 'Loading..',
-                        text: 'Please wait..',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        allowEnterKey: false,
-                        onOpen: () => {
-                            Swal.showLoading()
-                        }
-                    })
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ url('update_status') }}",
-                        data: datas,
-                        dataType: "json",
-                        success: function(response) {
-                            console.log(response);
-                            if (response) {
-                                Swal.fire(response.success);
-                                location.reload();
-                            }
-                        }
-                    });
-                }
-            })
-        });
-
-        $("#submitReject").on('click', function(e) {
-            e.preventDefault();
-
-            var datas = $('#form-id').serialize();
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            Swal.fire({
-                title: 'Reject?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.value) {
-
-                    Swal.fire({
-                        title: 'Loading..',
-                        text: 'Please wait..',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        allowEnterKey: false,
-                        onOpen: () => {
-                            Swal.showLoading()
-                        }
-                    })
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ url('update_reject') }}",
-                        data: datas,
-                        dataType: "json",
-                        success: function(response) {
-                            console.log(response);
-                            if (response) {
-                                Swal.fire(response.success);
-                                location.reload();
-                            }
-                        }
-                    });
-                }
-            })
-        });
-
-        $("#reminder").on('click', function(e) {
-            e.preventDefault();
-
-            var datas = $('#form-id').serialize();
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            Swal.fire({
-                title: 'Are you sure want to send an email?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.value) {
-
-                    Swal.fire({
-                        title: 'Loading..',
-                        text: 'Please wait..',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        allowEnterKey: false,
-                        onOpen: () => {
-                            Swal.showLoading()
-                        }
-                    })
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ url('reminder') }}",
-                        data: datas,
-                        dataType: "json",
-                        success: function(response) {
-                            console.log(response);
-                            if (response) {
-                                Swal.fire(response.success);
-                                location.reload();
-                            }
-                        }
-                    });
-                }
-            })
-        });
-    </script>
 @endsection

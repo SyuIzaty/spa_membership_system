@@ -30,7 +30,6 @@ Route::post('/data_rental', 'TestController@data_rental');
 Route::get('/report', 'TestController@report');
 Route::post('/update_status', 'TestController@operationVerifyApplication');
 Route::post('/update_reject', 'TestController@operationRejectApplication');
-Route::post('/reminder', 'TestController@reminder');
 Route::get('/ICTRental-Reports', 'TestController@ICTRentalReport');
 Route::post('/year-report-ICTRent', 'TestController@reportbyYear');
 Route::get('/getYear/{year}', 'TestController@getYear');
@@ -44,9 +43,6 @@ Route::get('/ICTRental-report', 'TestController@report');
 Route::get('/showApplication', 'TestController@showApplication');
 Route::post('/own_data', 'TestController@own_data'); //need to double check
 Route::get('/downloadPDF/{id}', 'TestController@downloadPDF')->name('test.download');
-Route::get('/get-img/{id}', 'TestController@getImage');
-Route::get('/get-fileRent/{id}', 'TestController@getFile');
-
 
 //ROLE
 Route::resource('/role', 'RoleController');

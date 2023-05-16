@@ -69,7 +69,7 @@ class ICTRentalExportByYear implements FromView, WithEvents, WithStyles, WithCol
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $rent = EquipmentStaff::whereIn('status', ['Approved', 'Rejected'])
+                $rent = EquipmentStaff::whereIn('status', ['Approved', 'Rejected','Pending'])
                     ->whereYear('rent_date', $this->year)
                     ->pluck('id')->toArray();
 
@@ -80,12 +80,13 @@ class ICTRentalExportByYear implements FromView, WithEvents, WithStyles, WithCol
                     ->get()
                     ->count() + $staff + 2;
 
-                    $cellAllRange = 'A1:L' . $total . '';
-                    $event->sheet->getDelegate()->getStyle('A1:V1')->getFont()->setBold(true);
-                    $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setName('Arial');
-                    $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setSize('8');
-                    $event->sheet->getDelegate()->getDefaultRowDimension()->setRowHeight(25);
-                },
+                $cellAllRange = 'A1:V' . $total . '';
+                $event->sheet->getDelegate()->getStyle('A1:V1')->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle('R2:V2')->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setName('Arial');
+                $event->sheet->getDelegate()->getStyle($cellAllRange)->getFont()->setSize('8');
+                $event->sheet->getDelegate()->getDefaultRowDimension()->setRowHeight(25);
+            },
         ];
     }
 
