@@ -121,9 +121,15 @@
                                                     <td colspan="2">
                                                         <select class="form-control kategori" name="kategori_aduan" id="kategori_aduan" required>
                                                             <option value="" disabled selected> Sila Pilih</option>
-                                                            @foreach ($kategori as $kat)
-                                                                <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ==  $kat->kod_kategori  ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
-                                                            @endforeach
+                                                            @if(Auth::user()->hasRole('Staff'))
+                                                                @foreach ($kategori as $kat)
+                                                                    <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ==  $kat->kod_kategori  ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
+                                                                @endforeach
+                                                            @elseif(Auth::user()->hasRole('Student'))
+                                                                @foreach ($kategori->whereNotIn('kod_kategori', ['IITU-HDWR', 'IITU-NTWK', 'IITU-OPR_EMEL', 'IITU-NTWK WIRELESS']) as $kat)
+                                                                    <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ==  $kat->kod_kategori  ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
+                                                                @endforeach
+                                                            @endif
                                                         </select>
                                                         @error('kategori_aduan')
                                                             <p style="color: red">{{ $message }}</p>
