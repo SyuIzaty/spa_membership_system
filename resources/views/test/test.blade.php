@@ -202,7 +202,7 @@
                                         <tr>
                                             <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span>  Picture : </th>
                                             <td colspan="2">
-                                                <input type="file" class="form-control" id="upload_img" name="upload_img[]" accept="image/png,image/jpg,image/jpeg" multiple required>
+                                                <input type="file" class="form-control" id="upload_img" name="upload_img[]" accept="image/png,image/jpg,image/jpeg">
                                                 @error('upload_img')
                                                     <p style="color: red">{{ $message }}</p>
                                                 @enderror
@@ -220,10 +220,9 @@
                                 <div align="center">
                                     <div class="text-right">
                                         <div class="btn-group">
-
                                             <button style="margin-top: 5px;"
                                                 class="btn btn-warning mr-2 mt-2 mb-4 waves-effect waves-themed operationverify"
-                                                id="submit" name="submit"><i class="fal fa-location-arrow"></i> Submit</button>&nbsp;
+                                                id="submitForm" name="submit"><i class="fal fa-location-arrow"></i> Submit</button>&nbsp;
                                     
                                             <button style="margin-top: 5px;"
                                                 class="btn btn-warning mr-2 mt-2 mb-4 waves-effect waves-themed operationverify"
@@ -237,8 +236,11 @@
                                     <button style="margin-right:5px" type="reset"
                                         class="btn btn-danger ml-auto float-right waves-effect waves-themed"><i
                                             class="fal fa-redo"></i> Reset</button> --}}
-                                    {!! Form::close() !!}
+
                                     {{-- </form> --}}
+
+                                    {!! Form::close() !!}
+
                                 </div>
                             </div>
                         </div>
@@ -248,88 +250,6 @@
         </div>
     </main>
 @endsection
-{{-- @section('script')
-    <script>
-        $(document).ready(function() {
-            $('#btnSubmit').on('click', function(e) {
-                e.preventDefault();
-
-                // Get the form element and serialize the form data
-                var form = $('#rental-form');
-                var formData = form.serialize();
-
-                // Send an AJAX request to submit the form data
-                $.ajax({
-                    url: '/store',
-                    type: 'POST',
-                    data: formData,
-                    dataType: 'text',
-                    success: function(data) {
-                        // Display a success message
-                        Swal.fire({
-                            title: 'Success',
-                            text: 'Form submitted successfully!',
-                            icon: 'success'
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        if (xhr.status === 422) {
-                            // Display validation errors
-                            var errors = xhr.responseJSON.errors;
-                            var errorMessage = '';
-                            $.each(errors, function(field, message) {
-                                errorMessage += message[0] + '<br>';
-                            });
-                            Swal.fire({
-                                title: 'Error',
-                                html: errorMessage,
-                                icon: 'error'
-                            });
-                        } else {
-                            // Display a generic error message for other types of errors
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'There was an error submitting the form. Please try again.',
-                                icon: 'error'
-                            });
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-@endsection --}}
-{{-- @section('script')
-<script>
-    $("#submit").on('click', function(e) {
-        e.preventDefault();
-
-        var datas = $('#formId').serialize();
-
-        $.ajax({
-            type: "POST",
-            url: "{{ url('store') }}",
-            data: datas,
-            dataType: "json",
-            success: function(response) {
-                console.log(response);
-                if (response && response.success) {
-                    Swal.fire(response.success);
-                    location.reload();
-                } else if (response && response.error) { // add this block
-                    Swal.fire(response.error);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                console.log(status);
-                console.log(error);
-                Swal.fire("An error occurred. Please try again."); // add this line
-            }
-        });
-    });
-</script>
-@endsection --}}
 <script>
     function toggleFields(id) {
         var checkbox = document.getElementById('equipment' + id);

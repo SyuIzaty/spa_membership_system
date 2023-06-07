@@ -11,7 +11,7 @@ class EquipmentStaff extends Model
     protected $table = 'equipment_staffs';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'staff_id', 'hp_no', 'rent_date', 'return_date', 'purpose', 'room_no', 'name', 'status','upload_img','doc',
+        'staff_id', 'hp_no', 'rent_date', 'return_date', 'purpose', 'room_no', 'name', 'status','submission',
     ];
     public function staff()
     {

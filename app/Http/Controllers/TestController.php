@@ -8,13 +8,18 @@ use App\EquipmentStaff;
 use App\Exports\ICTRentalExport;
 use App\Exports\ICTRentalExportByYear;
 use App\Exports\ICTRentalExportByYearMonth;
+use App\RentFile;
+use App\RentImg;
 use App\Staff;
 use App\User;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\ICTRental;
+
 
 class TestController extends Controller
 {
@@ -58,6 +63,7 @@ class TestController extends Controller
             'room_no' => $request->room_no,
             'name' => auth()->user()->name,
             'status' => 'Pending',
+            'submission' => 'N',
         ]);
         foreach ($request->sn as $test => $value) {
             if (isset($value)) {
@@ -73,43 +79,40 @@ class TestController extends Controller
         }
 
         $image = $request->upload_img;
-        $paths = storage_path()."/rent/";
-        
+        $paths = storage_path() . "/rent/";
+
         if (isset($image)) {
-            for($y = 0; $y < count($image); $y++)
-            {
+            for ($y = 0; $y < count($image); $y++) {
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
-                $fileNames = $originalsName;
-                Storage::disk('minio')->put("/rent/".$fileNames,file_get_contents($image[$y]));
-                EquipmentStaff::create([
-                    'staff_id' => Auth::user()->id,
-                    'upload_img'  => date('dmyhi').' - '.$originalsName,
-                    'web_path'      =>"app/rent/".date('dmyhi').' - '.$fileNames,
+                $fileNames = date('dmyhi') . ' - ' . $originalsName;
+                Storage::put("/rent/" . $fileNames, file_get_contents($image[$y]));
+                RentImg::create([
+                    'users_id' => $data->id,
+                    'upload_img' => $fileNames,
+                    'web_path' => "rent/" . $fileNames,
                 ]);
             }
         }
-        
+
         $file = $request->doc;
-        $path=storage_path()."/doc/";
-        
+        $path = storage_path() . "/doc/";
+
         if (isset($file)) {
-        
-            for($x = 0; $x < count($file) ; $x ++)
-            {
+
+            for ($x = 0; $x < count($file); $x++) {
                 $originalName = $file[$x]->getClientOriginalName();
                 $fileSize = $file[$x]->getSize();
-                $fileName = $originalName;
-                Storage::disk('minio')->put("/doc/".$fileName,file_get_contents($file[$x]));
-                EquipmentStaff::create([
-                    'staff_id' => Auth::user()->id,
-                    'nama_fail' => date('dmyhi').' - '.$originalName,
-                    'saiz_fail' => $fileSize,
-                    'web_path'  => "app/doc/".date('dmyhi').' - '.$fileName,
+                $fileName = date('dmyhi') . ' - ' . $originalName;
+                Storage::put("/doc/" . $fileName, file_get_contents($file[$x]));
+                RentFile::create([
+                    'users_id' => $data->id,
+                    'file' => $fileName,
+                    'web_path' => "doc/" . $fileName,
                 ]);
             }
         }
-        
+
         // $imageString = implode(',', $image);
         // $fileString = implode(',', $file);
 
@@ -163,10 +166,13 @@ class TestController extends Controller
         $user = EquipmentStaff::where('id', $id)->first(); //search one user
         $staff = Staff::where('staff_id', $user->staff_id)->first(); //query(eloquent)
         $rent = EquipmentRent::where('users_id', $id)->get(); //retrive data in equipment rent (more than 1)
+        $img = RentImg::where('users_id', $id)->get(); //retrive data in equipment rent (more than 1)
+        $file = RentFile::where('users_id', $id)->get(); //retrive data in equipment rent (more than 1)
+
         // $name = $staff->staff_name;
 
         // Pass the equipment record to the edit_record view
-        return view('test.edit_record', compact('user', 'staff', 'equipments', 'rent', 'id'));
+        return view('test.edit_record', compact('user', 'staff', 'equipments', 'rent', 'id', 'img', 'file'));
     }
 
     public function declareDelete($id)
@@ -218,7 +224,7 @@ class TestController extends Controller
                     <a href="/downloadPDF/' . $data->id . '" class="btn btn-warning btn-sm mr-1"><i class="ni ni-note"></i> Download</a>
                 </div>';
             })
-                                    
+
             ->rawColumns(['action'])
             ->addIndexColumn()
             ->make(true);
@@ -233,8 +239,7 @@ class TestController extends Controller
         // $name = $staff->staff_name;
 
         // Pass the equipment record to the edit_record view
-        return view('test.download', compact('application','user', 'staff', 'equipments', 'rent', 'id'));
-
+        return view('test.download', compact('application', 'user', 'staff', 'equipments', 'rent', 'id'));
 
     }
 
@@ -292,66 +297,78 @@ class TestController extends Controller
     }
     public function operationVerifyApplication(Request $request)
     {
-        $user = EquipmentStaff::where('id', $request->id)->first(); //search one user
+        $user = EquipmentStaff::where('id', $request->id)->first(); // Search one user
         $user->update([
             'status' => 'Approved',
         ]);
-        // $user_email = $user->staff->staff_email;
-        // $user_name = $user->staff->staff_name;
+        $user_email = $user->staff->staff_email;
+        $user_name = $user->staff->staff_name;
 
-        // $data = [
-        //     'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user_name,
-        //     'emel' => 'Your ICT Rrntal application has been approved on ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
-        // ];
+        $data = [
+            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user_name,
+            'emel'     => 'Your ICT Rental application has been approved on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+        ];
 
-        // Mail::send('test.email', $data, function ($message) use ($user_email) {
-        //     $message->subject('ICT Rental Application: Approved');
-        //     $message->from('nabilahwahid894@gmail.com');
-        //     $message->to($user_email);
-        // });
-        // if ($updateSuccessful) {
-        //     return response()->json(['message' => 'Application verified successfully.']);
-        // } else {
-        //     return response()->json(['message' => 'Failed to verify application.']);
-        // }
-           return redirect()->back()->with('message', 'Verified');
-        // return response()->json(['success' => 'Successful Assign!']);
+        Mail::send('test.email', $data, function ($message) use ($user_email) {
+            $message->subject('ICT Rental Application: Approved');
+            $message->from('nabilahwahid894@gmail.com');
+            $message->to($user_email);
+        });
+
+        return response()->json(['success' => 'Successful Assign!']);
     }
-    public function operationRejectApplication(Request $request)
+        public function operationRejectApplication(Request $request)
     {
         $user = EquipmentStaff::where('id', $request->id)->first(); //search one user
         $user->update([
             'status' => 'Rejected',
         ]);
-        // $user_email = $user->staff->staff_email;
-        // $user_name = $user->staff->staff_name;
 
-        // $data = [
-        //     'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user_name,
-        //     'emel' => 'Your ICT Rrntal application has been Rejected on ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
-        // ];
+        $user_email = $user->staff->staff_email;
+        $user_name = $user->staff->staff_name;
 
-        // Mail::send('test.email', $data, function ($message) use ($user_email) {
-        //     $message->subject('ICT Rental Application: Rejected');
-        //     $message->from('nabilahwahid894@gmail.com');
-        //     $message->to($user_email);
-        // });
-        return redirect()->back()->with('message', 'Verified');
+        $data = [
+            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user_name,
+            'emel' => 'Your ICT Rental application has been Rejected on ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+        ];
 
-        // return response()->json(['success' => 'Successful Assign!']);
+        Mail::send('test.email', $data, function ($message) use ($user_email) {
+            $message->subject('ICT Rental Application: Rejected');
+            $message->from('nabilahwahid894@gmail.com');
+            $message->to($user_email);
+        });
+
+        return response()->json(['success' => 'Successful Assign!']);
     }
-
-    public function report(Request $request)
+    public function reminder(Request $request)
     {
-        $year = EquipmentStaff::with('staff')->select('equipment_staffs.*')
-            ->orderBy('created_at', 'ASC')
-            ->pluck('created_at')
-            ->map(function ($date) {
-                return Carbon::parse($date)->format('Y');
-            })
-            ->unique(); //year selection
+        $equipmentStaff = EquipmentStaff::where('id', $request->id)->first();
+        $user = User::find($equipmentStaff->staff_id);
 
-        return view('test.report', compact('year'));
+        // Update the status to 'Approved'
+        $equipmentStaff->update([
+            'status' => 'Approved',
+        ]);
+
+        $user_email = $user->staff->staff_email;
+        $user_name = $user->staff->staff_name;
+
+        $data = [
+            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user_name,
+            'emel' => 'Your ICT Equipment is overdue. Please return the equipment to the IT Department immediately. Thank you.'
+        ];
+
+        Mail::send('test.email', $data, function ($message) use ($user_email) {
+            $message->subject('ICT Rental Application: Reminder');
+            $message->from('nabilahwahid894@gmail.com');
+            $message->to($user_email);
+        });
+
+        // $email = new ICTRental($user);
+
+        // Mail::to(isset($user->staff->staff_email) ? $user->staff->staff_email : 'itadmin@intec.edu.my')->send($email);
+
+        return response()->json(['success' => 'Email sent successfully!']);
     }
     public function getYear($year)
     {
@@ -366,6 +383,18 @@ class TestController extends Controller
             ->unique(); //month selection
 
         return response()->json($month);
+    }
+    public function report(Request $request)
+    {
+        $year = EquipmentStaff::with('staff')->select('equipment_staffs.*')
+            ->orderBy('created_at', 'ASC')
+            ->pluck('created_at')
+            ->map(function ($date) {
+                return Carbon::parse($date)->format('Y');
+            })
+            ->unique(); //year selection
+
+        return view('test.report', compact('year'));
     }
     public function reportbyYear(Request $request)
     {
@@ -515,5 +544,28 @@ class TestController extends Controller
             })
             ->make(true);
     }
-
+    public function getImage($id)
+    {
+        $img = RentImg::where('id', $id)->first(); //query(eloquent)
+        $imgName = $img->upload_img;
+        return Storage::response('rent/' . $imgName);
+    }
+    public function getFile($id)
+    {
+        $file = RentFile::where('id', $id)->first(); //query(eloquent)
+        $fileName = $file->file;
+        return Storage::response('doc/' . $fileName);
+    }
+    public function updateApplication(Request $request)
+    {
+        $user = EquipmentStaff::find($request->id);
+    
+        $user->update([
+            'submission' => $request->q1,
+            'other_field' => $request->q2, // Replace 'other_field' with the actual field name you want to update
+        ]);
+    
+        return redirect()->back();
+    }
+    
 }
