@@ -132,6 +132,7 @@
 
 @section('script')
     <script>
+        
         $(document).ready(function() {
 
             $('#rental thead tr .hasinput').each(function(i) {
@@ -153,6 +154,68 @@
                     }
                 });
             });
+            $(document).ready(function() {
+            var table = $('#rental').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "/data_rental",
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                },
+                columns: [{
+                    className: 'text-center',
+                            data: 'sid',
+                            name: 'id'
+                        },
+                        {
+                            className: 'text-center',
+                            data: 'staff',
+                            name: 'staff_id'
+                        },
+                        {
+                            className: 'text-center',
+                            data: 'name',
+                            name: 'name'
+                        }, 
+                        {
+                            className: 'text-center',
+                            data: 'phone',
+                            name: 'hp_no'
+                        },
+                        {
+                            className: 'text-center',
+                            data: 'renDate',
+                            name: 'rent_date'
+                        },
+                        {
+                            className: 'text-center',
+                            data: 'retDate',
+                            name: 'return_date'
+                        },
+                        {
+                            className: 'text-center',
+                            data: 'sta',
+                            name: 'status'
+                        },
+                        {
+                            className: 'text-center',
+                            data: 'action',
+                            name: 'action',
+                            orderable: false,
+                            searchable: false
+                        }
+                ],
+                orderCellsTop: true,
+                "order": [
+                    [4, "asc"]
+                ],
+                "initComplete": function(settings, json) {}
+            });
+        });
+
             function createDatatable(equipment = null) {
                 $('#rental').DataTable().destroy();
                 var table = $('#rental').DataTable({

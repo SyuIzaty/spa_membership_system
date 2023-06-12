@@ -39,6 +39,7 @@ class TestController extends Controller
             'rentdate' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
             'retdate' => 'required|date|after_or_equal:rentdate', // Set the validation rule to be greater than or equal to 'rentdate'
             'purpose' => 'required',
+            'equipment_id' => 'required|array',
 
         ], [
             'hpno.numeric' => 'phone number should be numeric.',
@@ -51,7 +52,7 @@ class TestController extends Controller
             'rentdate.required' => 'The return date is required',
             'retdate.after_or_equal' => 'The return date must a same day or after a rental date',
             'purpose.required' => 'purpose is required',
-
+            'equipment_id.required' => 'Please select at least one equipment.',
         ]);
 
         $data = EquipmentStaff::create([ //store in equipment staff and take it from user
@@ -116,9 +117,11 @@ class TestController extends Controller
         // $imageString = implode(',', $image);
         // $fileString = implode(',', $file);
 
-        // return response()->json(['success' => 'Your error message here']); // add this line
-        return redirect()->back();
-    }
+        if ($request->ajax()) {
+            return response()->json(['success' => 'Form submitted successfully!']);
+        } else {
+            return redirect()->back()->with('message', 'Form submitted successfully!');
+        }        }
     public function showApplication(Request $request)
     {
         // $equipment = Equipment::all();
@@ -177,19 +180,15 @@ class TestController extends Controller
 
     public function declareDelete($id)
     {
-        $delRent = EquipmentRent::where('users_id', $id)->get(); //get the equipment data
-
-        foreach ($delRent as $delRents) {
-            $delRents->delete();
-        }
-
-        $data = EquipmentStaff::find($id); //get the equipment staff data
+        $delRent = EquipmentRent::where('users_id', $id)->delete(); // Delete the equipment rent data
+        
+        $data = EquipmentStaff::find($id); // Get the equipment staff data
         $data->delete();
-        $data = EquipmentRent::find($users_id);
-        $data->delete();
+        
         return response()->json(['success' => 'Declaration Form Successfully Deleted']);
     }
-    public function own_data(Request $request)
+    
+        public function own_data(Request $request)
     {
         $data = EquipmentStaff::where('staff_id', Auth::user()->id)->get();
 
@@ -311,7 +310,7 @@ class TestController extends Controller
 
         Mail::send('test.email', $data, function ($message) use ($user_email) {
             $message->subject('ICT Rental Application: Approved');
-            $message->from('nabilahwahid894@gmail.com');
+            $message->from('itadmin@intec.edu.my');
             $message->to($user_email);
         });
 
@@ -334,7 +333,7 @@ class TestController extends Controller
 
         Mail::send('test.email', $data, function ($message) use ($user_email) {
             $message->subject('ICT Rental Application: Rejected');
-            $message->from('nabilahwahid894@gmail.com');
+            $message->from('itadmin@intec.edu.my');
             $message->to($user_email);
         });
 
@@ -360,7 +359,7 @@ class TestController extends Controller
 
         Mail::send('test.email', $data, function ($message) use ($user_email) {
             $message->subject('ICT Rental Application: Reminder');
-            $message->from('nabilahwahid894@gmail.com');
+            $message->from('itadmin@intec.edu.my');
             $message->to($user_email);
         });
 

@@ -336,12 +336,6 @@
                                         Swal.fire(response.success);
                                         location.reload();
                                     }
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error(xhr.responseText);
-                                    Swal.fire(
-                                        'Error occurred. Please try again later.'
-                                    );
                                 }
                             });
                         }

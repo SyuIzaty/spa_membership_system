@@ -163,30 +163,38 @@
                                         <th style="width:400px">Serial Number</th>
                                         <th style="width:400px">Description</th>
                                     </tr>
-                                    {{-- take from database --}}
-                                    {{-- equipment from controller-fx index --}}
-
-                                    @foreach ($equipment as $equipment)
-                                        <tr>
-                                            <td>
-                                                <input name="equipment_id[]" id="equipment{{ $equipment->id }}"
-                                                    type="checkbox" value="{{ $equipment->id }}"
-                                                    onclick="toggleFields({{ $equipment->id }})">
-                                            </td>
-                                            <td>{{ $equipment->equipment_name }}</td>
-                                            <td>
-                                                <input class="form-control" type="text"
-                                                    name="sn[{{ $equipment->id }}]" id="sn{{ $equipment->id }}"
-                                                    width="300" disabled>
-                                            </td>
-                                            <td>
-                                                <input class="form-control" type="text"
-                                                    name="des[{{ $equipment->id }}]" id="des{{ $equipment->id }}"
-                                                    size="30" disabled>
-                                            </td>
-                                        </tr>
-                                    @endforeach                               
-                                </table><br/>
+                                    @if($errors->has('equipment_id'))
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach($errors->get('equipment_id') as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                
+                                
+                                @foreach ($equipment as $equipment)
+                                    <tr>
+                                        <td>
+                                            <input name="equipment_id[]" id="equipment{{ $equipment->id }}"
+                                                type="checkbox" value="{{ $equipment->id }}"
+                                                onclick="toggleFields({{ $equipment->id }})">
+                                        </td>
+                                        <td>{{ $equipment->equipment_name }}</td>
+                                        <td>
+                                            <input class="form-control" type="text"
+                                                name="sn[{{ $equipment->id }}]" id="sn{{ $equipment->id }}"
+                                                width="300" disabled>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text"
+                                                name="des[{{ $equipment->id }}]" id="des{{ $equipment->id }}"
+                                                size="30" disabled>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                                                </table><br/>
                                 <div class="subheader">
                                     <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
                                         <li>
@@ -200,19 +208,13 @@
                                 <table id="" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
-                                            <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span>  Picture : </th>
+                                            <th width="20%" style="vertical-align: middle"><span class="text-danger"></span>  Picture : </th>
                                             <td colspan="2">
                                                 <input type="file" class="form-control" id="upload_img" name="upload_img[]" accept="image/png,image/jpg,image/jpeg">
-                                                @error('upload_img')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
                                             </td>
                                             <th width="20%" style="vertical-align: middle"> Document : </th>
                                             <td colspan="2">
                                                 <input type="file" class="form-control" id="doc" name="doc[]" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple>
-                                                @error('doc')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
                                             </td>
                                         </tr>
                                     </thead>
@@ -263,4 +265,23 @@
             desField.disabled = true;
         }
     }
+
+    //checkbox
+    // document.getElementById('myForm').addEventListener('submit', function(event) {
+    //     var checkboxes = document.querySelectorAll('input[name="equipment_id[]"]');
+    //     var isChecked = false;
+
+    //     for (var i = 0; i < checkboxes.length; i++) {
+    //         if (checkboxes[i].checked) {
+    //             isChecked = true;
+    //             break;
+    //         }
+    //     }
+
+    //     if (!isChecked) {
+    //         event.preventDefault(); // Prevent form submission
+    //         alert('Please select at least one checkbox.');
+    //     }
+    // });
+
 </script>
