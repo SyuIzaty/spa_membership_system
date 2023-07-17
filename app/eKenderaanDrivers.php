@@ -10,7 +10,7 @@ class eKenderaanDrivers extends Model
     use SoftDeletes;
     protected $table = 'ekn_drivers';
     protected $fillable = [
-        'name', 'staff_id', 'status', 'created_by', 'updated_by', 'deleted_by'
+        'name', 'staff_id', 'tel_no', 'status', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function driverDetails()

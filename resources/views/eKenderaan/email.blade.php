@@ -70,13 +70,15 @@
                                         @if ($driver->count() > 1)
                                             <ol>
                                                 @foreach ($driver as $d)
-                                                    <li>{{ isset($d->driverDetails->staff_name) ? $d->driverDetails->staff_name : N / A }}
+                                                    <li>{{ isset($d->name) ? $d->name : 'N/A' }} -
+                                                        {{ isset($d->tel_no) ? $d->tel_no : 'N/A' }}
                                                     </li>
                                                 @endforeach
                                             </ol>
                                         @else
                                             @foreach ($driver as $d)
-                                                {{ isset($d->driverDetails->staff_name) ? $d->driverDetails->staff_name : N / A }}
+                                                {{ isset($d->name) ? $d->name : 'N/A' }} -
+                                                {{ isset($d->tel_no) ? $d->tel_no : 'N/A' }}
                                             @endforeach
                                         @endif
                                     @else

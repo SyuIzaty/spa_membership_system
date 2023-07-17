@@ -787,29 +787,46 @@ class EKenderaanController extends Controller
                 }
             })
 
-            ->addColumn('edit', function ($driver) {
-                $id = $driver->id;
-                $drivers = eKenderaanAssignDriver::whereHas('driverList', function ($query) use ($id) {
-                    $query->where('driver_id', $id);
-                })->first();
-
-                if ($drivers != null) {
-                    return '';
+            ->editColumn('tel_no', function ($driver) {
+                if ($driver->tel_no != '') {
+                    return $driver->tel_no;
                 } else {
-                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$driver->id.'" data-name="'.$driver->name.'" data-staff_id="'.$driver->staff_id.'" data-status="'.$driver->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                    return '<div style="color: red;"><b>Not Available</b></div>';
                 }
             })
 
-            ->rawColumns(['status','edit'])
+            ->addColumn('edit', function ($driver) {
+                // $id = $driver->id;
+                // $drivers = eKenderaanAssignDriver::whereHas('driverList', function ($query) use ($id) {
+                //     $query->where('driver_id', $id);
+                // })->first();
+
+                // if ($drivers != null) {
+                //     return '<div style="color: red;"><b>Has been assigned in the application.<br> Please contact IITU for any details update.</b></div>';
+                // } else {
+                //     return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$driver->id.'" data-name="'.$driver->name.'" data-staff_id="'.$driver->staff_id.'" data-status="'.$driver->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                // }
+
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$driver->id.'" data-name="'.$driver->name.'" data-staff_id="'.$driver->staff_id.'" data-phone="'.$driver->tel_no.'" data-status="'.$driver->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->rawColumns(['status','tel_no','edit'])
             ->addIndexColumn()
             ->make(true);
     }
 
     public function addDriver(Request $request)
     {
+        $validated = $request->validate([
+            'name'      => 'required',
+            'staff_id'  => 'required',
+            'tel_no'    => 'required',
+        ]);
+
         eKenderaanDrivers::create([
             'name'      => $request->name,
             'staff_id'  => $request->staff_id,
+            'tel_no'    => $request->phone,
             'status'    => $request->status,
             'created_by'=> Auth::user()->id
         ]);
@@ -821,8 +838,9 @@ class EKenderaanController extends Controller
     {
         $update = eKenderaanDrivers::where('id', $request->id)->first();
         $update->update([
-            'name'      => $request->name,
-            'staff_id'  => $request->staff_id,
+            // 'name'      => $request->name,
+            // 'staff_id'  => $request->staff_id,
+            'tel_no'    => $request->phone,
             'status'    => $request->status,
             'updated_by'=> Auth::user()->id
         ]);

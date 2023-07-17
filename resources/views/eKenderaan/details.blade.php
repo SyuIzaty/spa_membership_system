@@ -323,12 +323,14 @@
                                                                 @if ($assignDriver->count() > 1)
                                                                     <ul>
                                                                         @foreach ($assignDriver as $d)
-                                                                            <li>{{ $d->driverList->name }}</li>
+                                                                            <li>{{ $d->driverList->name }} -
+                                                                                {{ $d->driverList->tel_no }}</li>
                                                                         @endforeach
                                                                     </ul>
                                                                 @else
                                                                     @foreach ($assignDriver as $d)
-                                                                        {{ $d->driverList->name }}
+                                                                        {{ $d->driverList->name }} -
+                                                                        {{ $d->driverList->tel_no }}
                                                                     @endforeach
                                                                 @endif
                                                             </td>

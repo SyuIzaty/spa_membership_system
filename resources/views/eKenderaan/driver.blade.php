@@ -35,12 +35,14 @@
                                             <th class="text-center">No</th>
                                             <th class="text-center">Name</th>
                                             <th class="text-center">Staff ID</th>
+                                            <th class="text-center">Phone Number</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Edit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -90,6 +92,15 @@
                         </div>
 
                         <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Phone No.</span>
+                                </div>
+                                <input type="text" name="phone" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="form-label">Status</label>
                             <select class="custom-select form-control" name="status" id="status" required>
                                 <option value="Y">Active</option>
@@ -126,7 +137,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Name</span>
                                 </div>
-                                <input type="text" id="name" name="name" class="form-control" required>
+                                <input type="text" id="name" name="name" class="form-control" disabled
+                                    required>
                             </div>
                         </div>
 
@@ -135,7 +147,17 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Staff ID</span>
                                 </div>
-                                <input type="text" id="staff_id" name="staff_id" class="form-control" required>
+                                <input type="text" id="staff_id" name="staff_id" class="form-control" disabled
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Phone No.</span>
+                                </div>
+                                <input type="text" id="phone" name="phone" class="form-control">
                             </div>
                         </div>
 
@@ -173,11 +195,13 @@
                 var id = button.data('id') // data-id
                 var name = button.data('name') // data-name
                 var staff_id = button.data('staff_id') // data-staff_id
+                var phone = button.data('phone') // data-phone
                 var status = button.data('status') // data-status
 
                 $('.modal-body #id').val(id);
                 $('.modal-body #name').val(name);
                 $('.modal-body #staff_id').val(staff_id);
+                $('.modal-body #phone').val(phone);
                 $('.modal-body #status').val(status);
 
             });
@@ -211,6 +235,11 @@
                     },
                     {
                         className: 'text-center',
+                        data: 'tel_no',
+                        name: 'tel_no'
+                    },
+                    {
+                        className: 'text-center',
                         data: 'status',
                         name: 'status'
                     },
@@ -224,7 +253,7 @@
                 ],
                 orderCellsTop: true,
                 "order": [
-                    [0, "asc"]
+                    [4, "asc"]
                 ],
                 "initComplete": function(settings, json) {
 
