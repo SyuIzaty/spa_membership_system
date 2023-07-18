@@ -109,38 +109,38 @@
                         @endcanany
 
                         {{-- @role('Super Admin') --}}
-                            @canany(['Rent Form'])
-                                <li>
-                                    <a href="#" title="Rent Form" data-filter-tags="Rent Form">
-                                        <i class="fal fa-clipboard-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.rent_form">ICT Equipment Rental</span>
-                                    </a>
-                                    <ul>
-                                            <li>
-                                                <a href="/test2" title="Rental Form" data-filter-tags="Rental Form"> 
-                                                    <span class="nav-link-text" data-i18n="nav.rental_form">Rental Form</span>
-                                                </a>
-                                            </li>
-                                        @canany(['Manage Rent Form'])
-                                            <li>
-                                                <a href="/show" title="View Record" data-filter-tags="View Record"> 
-                                                    <span class="nav-link-text" data-i18n="nav.view_record">View Record</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/report" title="View Report" data-filter-tags="View Report">
-                                                    <span class="nav-link-text" data-i18n="nav.report">Report</span>
-                                                </a>
-                                            </li>
-                                        @endcanany
+                        {{-- @canany(['Rent Form'])
+                            <li>
+                                <a href="#" title="Rent Form" data-filter-tags="Rent Form">
+                                    <i class="fal fa-clipboard-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.rent_form">ICT Equipment Rental</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/test2" title="Rental Form" data-filter-tags="Rental Form">
+                                            <span class="nav-link-text" data-i18n="nav.rental_form">Rental Form</span>
+                                        </a>
+                                    </li>
+                                    @canany(['Manage Rent Form'])
                                         <li>
-                                            <a href="/showApplication" title="Application" data-filter-tags="Application">
-                                                <span class="nav-link-text" data-i18n="nav.showApplication">Application</span>
+                                            <a href="/show" title="View Record" data-filter-tags="View Record">
+                                                <span class="nav-link-text" data-i18n="nav.view_record">View Record</span>
                                             </a>
                                         </li>
-                                    </ul>
-                                </li>
-                            @endcanany
+                                        <li>
+                                            <a href="/report" title="View Report" data-filter-tags="View Report">
+                                                <span class="nav-link-text" data-i18n="nav.report">Report</span>
+                                            </a>
+                                        </li>
+                                    @endcanany
+                                    <li>
+                                        <a href="/showApplication" title="Application" data-filter-tags="Application">
+                                            <span class="nav-link-text" data-i18n="nav.showApplication">Application</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endcanany --}}
                         {{-- @endrole --}}
                         {{-- Start Aduan --}}
                         @php
@@ -469,7 +469,7 @@
 
                         <!-- Start Engagement Management System -->
 
-                        @role('Engagement (Admin)|Engagement (Team Member)')
+                        {{-- @role('Engagement (Admin)|Engagement (Team Member)')
                             <li class="nav-title">Engagement Management</li>
                             <li>
                                 <a href="/list/active" title="Active Engagement" data-filter-tags="engagement">
@@ -497,12 +497,12 @@
                                     </li>
                                 </ul>
                             </li>
-                        @endrole
+                        @endrole --}}
                         <!-- End Engagement Management System -->
 
                         <!-- Start ShortCourse Management System -->
                         {{-- @role('Super Admin') --}}
-                        @can('Short Course Management - View All')
+                        {{-- @can('Short Course Management - View All')
                             <li class="nav-title">Short Course Management</li>
                             <li>
                                 <a href="#" title="Catalogues" data-filter-tags="catalogues">
@@ -548,17 +548,14 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li>
+                            </li> --}}
+                        {{-- <li>
                                 <a href="/events" title="Event Management" data-filter-tags="event-management">
                                     <i class="ni ni-calendar-fine"></i>
                                     <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
                                 </a>
-                            </li>
-
-
-
-                            <li>
+                            </li> --}}
+                        {{-- <li>
                                 <a href="#" title="People" data-filter-tags="people">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.people">People</span>
@@ -571,8 +568,8 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
-                            {{-- <li>
+                            </li> --}}
+                        {{-- <li>
                                 <a href="#" title="Application" data-filter-tags="application">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.application">Application</span>
@@ -587,20 +584,20 @@
                                 </ul>
                             </li> --}}
 
-                            <li>
+                        {{-- <li>
                                 <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">
                                     <i class="fal fa-users"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Public View</span>
                                 </a>
                             </li>
-
-                            {{-- <li>
+ --}}
+                        {{-- <li>
                                 <a href="/feedback/form" title="Feedback" data-filter-tags="feedback">
                                     <i class="ni ni-note"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Feedback</span>
                                 </a>
                             </li> --}}
-                        @endcan
+                        {{-- @endcan --}}
                         {{-- @endrole --}}
                         <!-- End ShortCourse Management System -->
 
