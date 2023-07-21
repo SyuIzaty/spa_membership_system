@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Staff','staff_id');
     }
 
+    public function student()
+    {
+        return $this->hasOne('App\Student','students_id');
+    }
+
     public function trainer()
     {
         return $this->setConnection('mysql')->HasOne('App\Models\ShortCourseManagement\Trainer','user_id','id');

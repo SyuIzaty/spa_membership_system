@@ -7,7 +7,7 @@ use App\SpaceBookingMain;
 use App\SpaceBookingVenue;
 use Carbon\Carbon;
 
-class SpaceBookingRule implements Rule
+class UpdateSpaceBookingRule implements Rule
 {
     /**
      * Create a new rule instance.
@@ -30,9 +30,8 @@ class SpaceBookingRule implements Rule
     public function passes($attribute, $value)
     {
         $input = $this->data;
-        $venue = array_keys($input['venue'], "on");
-        $check = SpaceBookingVenue::whereIn('venue_id', $venue)
-        ->where('application_status', 3)
+        $check = SpaceBookingVenue::where('venue_id', $input['venue'])
+        ->where('application_status', 3)->where('id','!=',$input['id'])
         ->whereHas('spaceBookingMain', function ($query) use ($input) {
             $query->where(function ($query) use ($input) {
                 $query->where('start_date', '<=', $input['end_date'])

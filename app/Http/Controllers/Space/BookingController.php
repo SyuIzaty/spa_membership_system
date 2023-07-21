@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreBookingRequest;
 use App\Rules\SpaceBookingRule;
+use App\Rules\UpdateSpaceBookingRule;
 use App\SpaceBookingVenue;
 use App\SpaceBookingMain;
 use App\SpaceBookingItem;
 use App\SpaceVenue;
 use App\SpaceItem;
-use App\Staff;
+use App\User;
 use DataTables;
 use Validator;
 use Auth;
@@ -28,7 +29,7 @@ class BookingController extends Controller
         $venue = SpaceBookingVenue::wherehas('spaceBookingMain',function($query){
             $query->where('staff_id',Auth::user()->id);
         })
-        ->with('spaceBookingMain.staff','spaceBookingMain','spaceVenue','spaceStatus')
+        ->with('spaceBookingMain','spaceVenue','spaceStatus')
         ->select('space_booking_venues.*');
         
         if($request->ajax()) {
@@ -83,10 +84,10 @@ class BookingController extends Controller
      */
     public function create()
     {
-        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+        $user = User::find(Auth::user()->id);
         $venue = SpaceVenue::Active()->get();
         $item = SpaceItem::Active()->get();
-        return view('space.booking.create',compact('staff','venue','item'));
+        return view('space.booking.create',compact('user','venue','item'));
     }
 
     /**
@@ -97,15 +98,15 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
-        // $rules = [
-        //     'purpose' => ['required',new SpaceBookingRule($request->all())]
-        // ];
-        // $message = [];
-        // $validator = Validator::make($request->all(),$rules,$message);
+        $rules = [
+            'purpose' => ['required',new SpaceBookingRule($request->all())]
+        ];
+        $message = [];
+        $validator = Validator::make($request->all(),$rules,$message);
 
-        // if($validator->fails()){
-        //     return back()->withInput()->withErrors($validator->errors());
-        // }
+        if($validator->fails()){
+            return back()->withInput()->withErrors($validator->errors());
+        }
 
         if(!isset($request->venue)){
             $message = 'Select at least one venue';
@@ -113,6 +114,8 @@ class BookingController extends Controller
         }else{
             $booking = SpaceBookingMain::insertGetId([
                 'staff_id' => Auth::user()->id,
+                'user_phone' => $request->phone_number,
+                'user_office' => $request->office_no,
                 'purpose' => $request->purpose,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
@@ -171,8 +174,10 @@ class BookingController extends Controller
         $main = SpaceBookingVenue::find($id);
         $venue = SpaceVenue::Active()->get();
         $item = SpaceItem::Active()->get();
+        $user = User::find(isset($main->spaceBookingMain->staff_id) ? $main->spaceBookingMain->staff_id : Auth::user()->id);
         $booking_item = SpaceBookingItem::MainId($main->space_main_id)->pluck('item_id')->toArray();
-        return view('space.booking.edit',compact('main','venue','item','booking_item'));
+
+        return view('space.booking.edit',compact('main','venue','item','booking_item','user'));
     }
 
     /**
@@ -184,6 +189,17 @@ class BookingController extends Controller
      */
     public function update(StoreBookingRequest $request, $id)
     {
+        $request->merge(['id' => $id]);
+        $rules = [
+            'purpose' => ['required',new UpdateSpaceBookingRule($request->all())]
+        ];
+        $message = [];
+        $validator = Validator::make($request->all(),$rules,$message);
+
+        if($validator->fails()){
+            return back()->withInput()->withErrors($validator->errors());
+        }
+
         $venue = SpaceBookingVenue::find($id);
         if(!isset($request->venue)){
             $message = 'Select at least one venue';
@@ -191,6 +207,8 @@ class BookingController extends Controller
         }else{
             SpaceBookingMain::where('id',$venue->space_main_id)->update([
                 'staff_id' => Auth::user()->id,
+                'user_phone' => $request->phone_number,
+                'user_office' => $request->office_no,
                 'purpose' => $request->purpose,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,

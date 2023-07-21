@@ -9,7 +9,7 @@ class SpaceBookingMain extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['staff_id','purpose','start_date','end_date','start_time','end_time'];
+    protected $fillable = ['staff_id','user_phone','user_office','purpose','start_date','end_date','start_time','end_time'];
 
     public function spaceBookingVenues()
     {
@@ -21,9 +21,9 @@ class SpaceBookingMain extends Model
         return $this->hasMany('App\SpaceBookingItem','space_main_id','id');
     }
 
-    public function staff()
+    public function user()
     {
-        return $this->hasOne('App\Staff','staff_id','staff_id');
+        return $this->hasOne('App\User','id','staff_id');
     }
 
     public function verify()

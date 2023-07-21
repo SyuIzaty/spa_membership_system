@@ -52,23 +52,36 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"> Full Name :</label></td>
                                                         <td colspan="3">
-                                                            {{ $main->spaceBookingMain->staff->staff_name ?? '--'}}
+                                                            {{ $user->name ?? '--'}}
                                                         </td>
-                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"> Staff ID :</label></td>
+                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"> Staff / Student ID :</label></td>
                                                         <td colspan="3">
-                                                            {{ $main->spaceBookingMain->staff_id ?? '--'}}
+                                                            {{ $user->id ?? '--'}}
                                                         </td>
                                                     </div>
                                                 </tr>
                                                 <tr>
                                                     <div class="form-group">
-                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"> Position :</label></td>
-                                                        <td colspan="3">
-                                                            {{ $main->spaceBookingMain->staff->staff_position ?? '--'}}
-                                                        </td>
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"> Department :</label></td>
+                                                        <td colspan="5">
+                                                            @if($user->category == 'STF')
+                                                              {{ isset($user->staff->staff_dept) ? $user->staff->staff_dept : '--' }}
+                                                            @endif
+                                                            @if($user->category == 'STD')
+                                                              {{ isset($user->student->students_programme) ? $user->student->students_programme : '--' }}
+                                                            @endif
+                                                        </td>
+                                                    </div>
+                                                </tr>
+                                                <tr>
+                                                    <div class="form-group">
+                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"> Office No :</label></td>
                                                         <td colspan="3">
-                                                            {{ $main->spaceBookingMain->staff->staff_dept ?? '--'}}
+                                                            <input type="text" class="form-control" name="office_no" value="{{ isset($main->spaceBookingMain->user_office) ? $main->spaceBookingMain->user_office : '' }}">
+                                                        </td>
+                                                        <td width="20%" style="vertical-align: middle"><span class="text-danger">*</span> <label class="form-label"> H/P :</label></td>
+                                                        <td colspan="3">
+                                                            <input type="text" class="form-control" name="phone_number" value="{{ isset($main->spaceBookingMain->user_phone) ? $main->spaceBookingMain->user_phone : '' }}">
                                                         </td>
                                                     </div>
                                                 </tr>

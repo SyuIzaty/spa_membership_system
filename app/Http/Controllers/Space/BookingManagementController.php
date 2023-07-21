@@ -10,6 +10,7 @@ use App\SpaceBookingVenue;
 use App\SpaceStatus;
 use App\SpaceVenue;
 use App\SpaceItem;
+use App\User;
 use DataTables;
 use Auth;
 
@@ -24,16 +25,16 @@ class BookingManagementController extends Controller
     {
         $booking = SpaceBookingVenue::with('spaceBookingMain')->get();
         $status = SpaceStatus::where('category','Application')->get();
-        $venue = SpaceBookingVenue::with('spaceBookingMain.staff','spaceBookingMain','spaceVenue')
+        $venue = SpaceBookingVenue::with('spaceBookingMain.user','spaceBookingMain','spaceVenue')
         ->select('space_booking_venues.*');
         
         if($request->ajax()) {
             return DataTables::of($venue)
-                ->addColumn('staff_ids', function($venue){
-                    return isset($venue->spaceBookingMain->staff_id) ? $venue->spaceBookingMain->staff_id : '';
+                ->addColumn('user_ids', function($venue){
+                    return isset($venue->spaceBookingMain->user->id) ? $venue->spaceBookingMain->user->id : '';
                 })
-                ->addColumn('staff_names', function($venue){
-                    return isset($venue->spaceBookingMain->staff->staff_name) ? $venue->spaceBookingMain->staff->staff_name : '';
+                ->addColumn('user_names', function($venue){
+                    return isset($venue->spaceBookingMain->user->name) ? $venue->spaceBookingMain->user->name : '';
                 })
                 ->addColumn('purposes', function($venue){
                     return isset($venue->spaceBookingMain->purpose) ? $venue->spaceBookingMain->purpose : '';
@@ -118,8 +119,9 @@ class BookingManagementController extends Controller
     public function edit($id)
     {
         $main = SpaceBookingVenue::find($id);
+        $user = User::find(isset($main->spaceBookingMain->staff_id) ? $main->spaceBookingMain->staff_id : '');
         $status = SpaceStatus::where('category','Application')->get();
-        return view('space.booking-management.edit',compact('main','status'));
+        return view('space.booking-management.edit',compact('main','status','user'));
     }
 
     /**

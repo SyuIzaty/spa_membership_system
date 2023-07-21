@@ -1000,33 +1000,33 @@
                                 </ul>
                             </li>
                         @endcan
-                        @canany(['Manage Booking', 'Apply Arkib'])
+                        @canany(['Manage Booking', 'Apply Booking'])
                         <li class="nav-title">BOOKING</li>
+                            @canany(['Manage Booking'])
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-book"></i>
                                     <span class="nav-link-text" data-i18n="nav.list">Booking Management</span>
                                 </a>
                                 <ul>
-                                    @canany(['Manage Booking'])
-                                        <li>
-                                            <a href="/space/venue-management" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Venue Management</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/space/item-management" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Item Management</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/space/booking-management" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Booking Management</span>
-                                            </a>
-                                        </li>
-                                    @endcanany
+                                    <li>
+                                        <a href="/space/venue-management" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Venue Management</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/space/item-management" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Item Management</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/space/booking-management" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Booking Management</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
+                            @endcanany
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-book"></i>

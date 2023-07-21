@@ -116,10 +116,6 @@
                                             <td colspan="3"><span id="user"></span></td>
                                         </tr>
                                         <tr>
-                                            <td>Department</td>
-                                            <td colspan="3"><span id="department"></span></td>
-                                        </tr>
-                                        <tr>
                                             <td>Start Date</td>
                                             <td><span id="start_date"></span></td>
                                             <td>End Date</td>
@@ -181,8 +177,8 @@
 
       columns: [
               { data: 'id', name: 'id'},
-              { data: 'staff_ids', name: 'spaceBookingMain.staff_id'},
-              { data: 'staff_names', name: 'spaceBookingMain.staff.staff_name'},
+              { data: 'user_ids', name: 'spaceBookingMain.staff_id'},
+              { data: 'user_names', name: 'spaceBookingMain.user.name'},
               { data: 'purposes', name: 'spaceBookingMain.purpose'},
               { data: 'start_dates', name: 'spaceBookingMain.start_date'},
               { data: 'end_dates', name: 'spaceBookingMain.end_date'},
@@ -220,8 +216,7 @@
                   check_out: '{{ $bookings->spaceBookingMain->end_date }}',
                   spacebookingId: '{{ $bookings->id }}',
                   bookingDetails: '{{ $bookings->spaceBookingMain->purpose }}',
-                  buyer: '{{ isset($bookings->spaceBookingMain->staff->staff_name) ? $bookings->spaceBookingMain->staff->staff_name : '' }}',
-                  department: '{{ isset($bookings->spaceBookingMain->staff->staff_dept) ? $bookings->spaceBookingMain->staff->staff_dept : '' }}',
+                  buyer: '{{ isset($bookings->spaceBookingMain->user->name) ? $bookings->spaceBookingMain->user->name : '' }}',
                   application_status: '{{ isset($bookings->application_status) ? $bookings->application_status : '' }}',
                   room_venue: '{{ isset($bookings->spaceVenue->name) ? $bookings->spaceVenue->name : '' }}',
                   requirement: '<ul>@foreach($bookings->spaceBookingItems as $item)<li>{{ $item->spaceItem->name }} <span class="text-danger">({{ $item->unit }} UNITS)</span></li>@endforeach</ul>',
@@ -236,7 +231,6 @@
           $('#start_time').text(moment(calEvent.start_time, 'HH:mm:ss').format('HH:mm:ss'));
           $('#end_time').text(moment(calEvent.end_time, 'HH:mm:ss').format('HH:mm:ss'));
           $('#user').text(calEvent.buyer);
-          $('#department').text(calEvent.department);
           $('#application_status').val(calEvent.application_status);
           $('#room_venue').text(calEvent.room_venue);
           $('#requirement').html(calEvent.requirement);
