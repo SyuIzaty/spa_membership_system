@@ -853,6 +853,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/data_exportarkib', 'Library\Arkib\ArkibMainController@data_exportarkib');
 
     Route::get('/library/dashboard', 'Library\Arkib\ArkibDashboardController@index');
+
+    Route::resource('/space/venue-management', 'Space\VenueDetailController');
+    Route::post('/get-venue-detail', 'Space\VenueDetailController@getVenueDetail');
+    Route::resource('/space/item-management', 'Space\ItemDetailController');
+    Route::post('/get-item-detail', 'Space\ItemDetailController@getItemDetail');
+    Route::resource('/space/booking-management', 'Space\BookingManagementController');
+    Route::resource('/space/booking', 'Space\BookingController');
 });
 
 //SCM - Public View
