@@ -435,36 +435,36 @@
                         <!-- End eDocument Management System -->
 
                         <!-- Start eVoting Management System -->
-                        @role('Super Admin')
-                            <li class="nav-title">eVoting</li>
+                        {{-- @role('Super Admin') --}}
+                        <li class="nav-title">eVoting</li>
 
-                            @can('eVoting - Management System')
-                                <li>
-                                    <a href="/vote-management" title="e-Voting Management"
-                                        data-filter-tags="vote-management">
-                                        <!-- <i class="fal fa-file"></i> -->
-                                        <i class="ni ni-briefcase"></i>
-                                        <span class="nav-link-text" data-i18n="nav.vote-management">e-Voting Management</span>
-                                    </a>
-                                </li>
-                            @endcan
+                        @can('eVoting - Management System')
                             <li>
-                                <a href="/vote-platform" title="e-Voting Platform" data-filter-tags="vote-platform">
+                                <a href="/vote-management" title="e-Voting Management"
+                                    data-filter-tags="vote-management">
                                     <!-- <i class="fal fa-file"></i> -->
-                                    <i class="ni ni-envelope-letter"></i>
-                                    <span class="nav-link-text" data-i18n="nav.vote-platform">e-Voting Platform</span>
+                                    <i class="ni ni-briefcase"></i>
+                                    <span class="nav-link-text" data-i18n="nav.vote-management">e-Voting Management</span>
                                 </a>
                             </li>
-                            @can('eVoting - View Report')
-                                <li>
-                                    <a href="/vote-report" title="e-Voting Report" data-filter-tags="vote-report">
-                                        <!-- <i class="fal fa-file"></i> -->
-                                        <i class="ni ni-doc"></i>
-                                        <span class="nav-link-text" data-i18n="nav.vote-report">e-Voting Report</span>
-                                    </a>
-                                </li>
-                            @endcan
-                        @endrole
+                        @endcan
+                        <li>
+                            <a href="/vote-platform" title="e-Voting Platform" data-filter-tags="vote-platform">
+                                <!-- <i class="fal fa-file"></i> -->
+                                <i class="ni ni-envelope-letter"></i>
+                                <span class="nav-link-text" data-i18n="nav.vote-platform">e-Voting Platform</span>
+                            </a>
+                        </li>
+                        @can('eVoting - View Report')
+                            <li>
+                                <a href="/vote-report" title="e-Voting Report" data-filter-tags="vote-report">
+                                    <!-- <i class="fal fa-file"></i> -->
+                                    <i class="ni ni-doc"></i>
+                                    <span class="nav-link-text" data-i18n="nav.vote-report">e-Voting Report</span>
+                                </a>
+                            </li>
+                        @endcan
+                        {{-- @endrole --}}
                         <!-- End eVoting Management System -->
 
                         <!-- Start Engagement Management System -->
@@ -1001,31 +1001,31 @@
                             </li>
                         @endcan
                         @canany(['Manage Booking', 'Apply Booking'])
-                        <li class="nav-title">BOOKING</li>
+                            <li class="nav-title">BOOKING</li>
                             @canany(['Manage Booking'])
-                            <li class="open">
-                                <a href="#" title="List" data-filter-tags="list">
-                                    <i class="fal fa-book"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">Booking Management</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/space/venue-management" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Venue Management</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/space/item-management" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Item Management</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/space/booking-management" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Booking Management</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <li class="open">
+                                    <a href="#" title="List" data-filter-tags="list">
+                                        <i class="fal fa-book"></i>
+                                        <span class="nav-link-text" data-i18n="nav.list">Booking Management</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/space/venue-management" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Venue Management</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/space/item-management" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Item Management</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/space/booking-management" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Booking Management</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             @endcanany
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
@@ -1047,7 +1047,7 @@
                                     @endcanany
                                 </ul>
                             </li>
-                        </li>
+                            </li>
                         @endcanany
                         @canany(['Manage Arkib', 'View Arkib'])
                             <li class="nav-title">LIBRARY</li>
