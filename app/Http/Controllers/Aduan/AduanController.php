@@ -178,37 +178,37 @@ class AduanController extends Controller
 
         if($aduan->kategori_aduan == 'AWM' || $aduan->kategori_aduan == 'ELK' || $aduan->kategori_aduan == 'MKL' || $aduan->kategori_aduan == 'PKH' || $aduan->kategori_aduan == 'TKM'){
 
-            // $admin_staff = Staff::whereIn('staff_id', $admin)->whereIn('staff_code', ['OFM','AA'])->get();
+            $admin_staff = Staff::whereIn('staff_id', $admin)->where('staff_code', 'OFM')->get();
 
-            $admin_email = 'intecfacilityuser@intec.edu.my';
+            foreach($admin_staff as $value)
+            {
+                $admin_email = $value->staff_email;
 
-            $data = [
-                'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik',
-                'penerangan' => 'Anda telah menerima aduan baru daripada '.$aduan->nama_pelapor.' pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
-            ];
+                $data = [
+                    'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $value->staff_name,
+                    'penerangan' => 'Anda telah menerima aduan baru daripada '.$aduan->nama_pelapor.' pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
+                ];
 
-            Mail::send('aduan.emel-aduan', $data, function ($message) use ($user, $admin_email) {
-                $message->subject('EADUAN: ADUAN BAHARU');
-                $message->from($user->email);
-                $message->to($admin_email);
-            });
+                Mail::send('aduan.emel-aduan', $data, function ($message) use ($user, $admin_email) {
+                    $message->subject('EADUAN: ADUAN BAHARU');
+                    $message->from($user->email);
+                    $message->to($admin_email);
+                });
+            }
+
+            // $admin_email = 'intecfacilityuser@intec.edu.my';
+
+            // $data = [
+            //     'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik',
+            //     'penerangan' => 'Anda telah menerima aduan baru daripada '.$aduan->nama_pelapor.' pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
+            // ];
+
+            // Mail::send('aduan.emel-aduan', $data, function ($message) use ($user, $admin_email) {
+            //     $message->subject('EADUAN: ADUAN BAHARU');
+            //     $message->from($user->email);
+            //     $message->to($admin_email);
+            // });
         }
-
-        // foreach($admin_staff as $value)
-        // {
-        //     $admin_email = $value->staff_email;
-
-        //     $data = [
-        //         'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $value->staff_name,
-        //         'penerangan' => 'Anda telah menerima aduan baru daripada '.$aduan->nama_pelapor.' pada '.date(' d/m/Y ', strtotime(Carbon::now()->toDateTimeString())).'. Sila log masuk sistem IDS untuk tindakan selanjutnya',
-        //     ];
-
-        //     Mail::send('aduan.emel-aduan', $data, function ($message) use ($user, $admin_email) {
-        //         $message->subject('EADUAN: ADUAN BAHARU');
-        //         $message->from($user->email);
-        //         $message->to($admin_email);
-        //     });
-        // }
 
         $datas = [
             'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . $aduan->nama_pelapor,
