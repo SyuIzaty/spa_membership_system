@@ -85,12 +85,10 @@
                                         <tr>
                                           <td>Status <span class="text-danger">*</span></td>
                                           <td>
-                                            <select class="form-control" name="status">
-                                              <option disabled selected>Please Select</option>
-                                              @foreach($status as $statuses)
-                                              <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
-                                              @endforeach
-                                            </select>
+                                            <div class="custom-control custom-switch">
+                                              <input type="checkbox" class="custom-control-input" name="status" id="store_status">
+                                              <label class="custom-control-label" for="store_status"></label>
+                                            </div>
                                           </td>
                                         </tr>
                                       </table>
@@ -125,12 +123,10 @@
                                         <tr>
                                           <td>Status <span class="text-danger">*</span></td>
                                           <td>
-                                            <select class="form-control" name="status" id="status">
-                                              <option disabled selected>Please Select</option>
-                                              @foreach($status as $statuses)
-                                              <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
-                                              @endforeach
-                                            </select>
+                                            <div class="custom-control custom-switch">
+                                              <input type="checkbox" class="custom-control-input" name="status" id="status">
+                                              <label class="custom-control-label" for="status"></label>
+                                            </div>
                                           </td>
                                         </tr>
                                       </table>
@@ -210,7 +206,11 @@
                 $('#name').val(data.name);
                 $('#description').val(data.description);
                 $('#quantity').val(data.quantity);
-                $('#status').val(data.status);
+                if(data.status == 1){
+                  $('#status').prop('checked', true);
+                } if(data.status != 1) {
+                  $('#status').prop('checked', false);
+                }
                 $('.editModal').modal('show');
             }
         });

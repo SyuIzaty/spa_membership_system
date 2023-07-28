@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Space;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreVenueRequest;
+use App\SpaceBookingVenue;
 use App\SpaceStatus;
 use App\SpaceVenue;
 use DataTables;
@@ -30,11 +31,18 @@ class VenueDetailController extends Controller
                 return isset($venue->openStudent->name) ? $venue->openStudent->name : '';
             })
             ->addColumn('action', function($venue){
-                return
-                '
-                <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$venue->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
-                <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/venue-management/' . $venue->id . '"> <i class="fal fa-trash"></i></button>
-                ';
+                if($venue->spaceBookingVenues->count() >= 1){
+                    return
+                    '
+                    <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$venue->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                    ';
+                }else{
+                    return
+                    '
+                    <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$venue->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                    <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/venue-management/' . $venue->id . '"> <i class="fal fa-trash"></i></button>
+                    ';
+                }
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -110,14 +118,10 @@ class VenueDetailController extends Controller
      */
     public function update(StoreVenueRequest $request, $id)
     {
-        // dd($request->all());
-        // if($request->open_student == 'on'){
-        //     dd('yes');
-        // }else{
-        //     dd('no');
-        // }
+        $check = SpaceBookingVenue::where('venue_id',$request->venue_id)->count();
+        $venue = SpaceVenue::find($request->venue_id);
         SpaceVenue::where('id',$request->venue_id)->update([
-            'name' => $request->name,
+            'name' =>($check >= 1) ? $venue->name : $request->name,
             'description' => $request->description,
             'maximum' => $request->maximum,
             'open_student' => ($request->open_student == 'on') ? 7 : 8,

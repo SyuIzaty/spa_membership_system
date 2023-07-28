@@ -16,6 +16,11 @@ class SpaceItem extends Model
         return $this->hasOne('App\SpaceStatus','id','status');
     }
 
+    public function spaceBookingItems()
+    {
+        return $this->hasMany('App\SpaceBookingItem','item_id','id');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status','1');

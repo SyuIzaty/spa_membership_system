@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Space;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreItemRequest;
+use App\SpaceBookingItem;
 use App\SpaceStatus;
 use App\SpaceItem;
 use DataTables;
@@ -26,11 +27,18 @@ class ItemDetailController extends Controller
                 return isset($item->spaceStatus->name) ? $item->spaceStatus->name : '';
             })
             ->addColumn('action', function($item){
-                return
-                '
-                <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$item->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
-                <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/item-management/' . $item->id . '"> <i class="fal fa-trash"></i></button>
-                ';
+                if($item->spaceBookingItems->count() >= 1){
+                    return
+                    '
+                    <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$item->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                    ';
+                }else{
+                    return
+                    '
+                    <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$item->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                    <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/item-management/' . $item->id . '"> <i class="fal fa-trash"></i></button>
+                    ';
+                }
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -67,7 +75,7 @@ class ItemDetailController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'quantity' => $request->quantity,
-            'status' => $request->status,
+            'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 
         return redirect()->back()->with('message','Created');
@@ -104,14 +112,16 @@ class ItemDetailController extends Controller
      */
     public function update(StoreItemRequest $request, $id)
     {
+        $check = SpaceBookingItem::where('item_id',$request->item_id)->count();
+        $item = SpaceItem::find($request->item_id);
         SpaceItem::where('id',$request->item_id)->update([
-            'name' => $request->name,
+            'name' => ($check >= 1) ? $item->name : $request->name,
             'description' => $request->description,
             'quantity' => $request->quantity,
-            'status' => $request->status,
+            'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 
-        return redirect()->back()->with('message','Created');
+        return redirect()->back()->with('message','Updated');
     }
 
     /**
