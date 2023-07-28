@@ -29,12 +29,12 @@ class BookingReportController extends Controller
 
         if($request->from && $request->from != "All")
         {
-            $cond_main .= " AND (start_date = '".$request->from."')";
+            $cond_main .= " AND (start_date >= '".$request->from."')";
         }
 
         if($request->to && $request->to != "All")
         {
-            $cond_main .= " AND (end_date = '".$request->to."')";
+            $cond_main .= " AND (end_date <= '".$request->to."')";
         }
         
         if($request->venue && $request->venue != "All")

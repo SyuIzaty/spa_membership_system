@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Space;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreBookingRequest;
+use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Rules\SpaceBookingRule;
 use App\Rules\UpdateSpaceBookingRule;
@@ -151,6 +152,17 @@ class BookingController extends Controller
                     }
                 }
             }
+
+            $data = [
+                'receivers'   => 'INTEC Library User',
+                'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
+            ];
+
+            Mail::send('space.booking.application-email', $data, function ($message) {
+                $message->subject('LIBRARY: PERMOHONAN TEMPAHAN RUANG');
+                $message->from(Auth::user()->email);
+                $message->to('inteclibraryuser@intec.edu.my');
+            });
 
             $message = 'Application Sent';
             $stat = 'success';

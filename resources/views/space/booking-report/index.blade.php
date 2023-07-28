@@ -21,11 +21,11 @@
                         <div class="panel-content">
                           <div class="row">
                             <div class="col-md-3">
-                              <label>Start Date</label>
+                              <label>From</label>
                               <input type="date" class="selectfilter form-control" name="from" id="from">
                             </div>
                             <div class="col-md-3">
-                                <label>End Date</label>
+                                <label>To</label>
                                 <input type="date" class="selectfilter form-control" name="to" id="to">
                             </div>
                             <div class="col-md-3">
