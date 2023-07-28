@@ -15,4 +15,14 @@ class SpaceStatus extends Model
     {
         return $query->where('category','Main');
     }
+
+    public function scopeStudent($query)
+    {
+        return $query->where('category','Student');
+    }
+
+    public function scopeApplication($query)
+    {
+        return $query->where('category','Application');
+    }
 }

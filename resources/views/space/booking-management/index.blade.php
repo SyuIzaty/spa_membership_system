@@ -95,6 +95,7 @@
                                 </tbody>
                               </table>
                             </div>
+                            <a href="/space/booking-management/create" class="btn btn-success float-right mb-3">New Application</a>
                         </div>
 
                         <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
@@ -104,12 +105,12 @@
                                       <h5 class="modal-title" id="bookingModalLabel">Booking Details</h5>
                                   </div>
                                   <div class="modal-body">
-                                    {!! Form::open(['action' => 'Space\BookingManagementController@store', 'method' => 'POST']) !!}
+                                    {!! Form::open(['action' => ['Space\BookingManagementController@update',1], 'method' => 'PATCH']) !!}
                                     <input type="hidden" name="booking_id" id="booking_id">
                                     <table class="table table-bordered">
                                         <tr>
                                             <td>Purpose</td>
-                                            <td colspan="3"><span id="title"></span></td>
+                                            <td colspan="3"><span id="purpose"></span></td>
                                         </tr>
                                         <tr>
                                             <td>Request by</td>
@@ -134,6 +135,10 @@
                                         <tr>
                                           <td>Requirement</td>
                                           <td colspan="3"><span id="requirement"></span></td>
+                                        </tr>
+                                        <tr>
+                                          <td>Remark</td>
+                                          <td colspan="3"><span id="remark"></span></td>
                                         </tr>
                                         <tr>
                                             <td>Application Status</td>
@@ -207,9 +212,10 @@
       events: [
           @foreach($booking as $bookings)
               {
-                  title: '{{ $bookings->spaceBookingMain->purpose }}',
+                  title: '{{ $bookings->spaceVenue->name }}',
                   start: '{{ $bookings->spaceBookingMain->start_date }}',
                   end: moment('{{ $bookings->spaceBookingMain->end_date }}').add(1, 'day').format('YYYY-MM-DD'),
+                  purpose: '{{ $bookings->spaceBookingMain->purpose }}',
                   start_time: '{{ $bookings->spaceBookingMain->start_time }}',
                   end_time: '{{ $bookings->spaceBookingMain->end_time }}',
                   color: '{{ isset($bookings->spaceStatus->color) ? $bookings->spaceStatus->color : '' }}',
@@ -219,13 +225,14 @@
                   buyer: '{{ isset($bookings->spaceBookingMain->user->name) ? $bookings->spaceBookingMain->user->name : '' }}',
                   application_status: '{{ isset($bookings->application_status) ? $bookings->application_status : '' }}',
                   room_venue: '{{ isset($bookings->spaceVenue->name) ? $bookings->spaceVenue->name : '' }}',
+                  remark: '{{ isset($bookings->spaceBookingMain->remark) ? $bookings->spaceBookingMain->remark : '' }}',
                   requirement: '<ul>@foreach($bookings->spaceBookingItems as $item)<li>{{ $item->spaceItem->name }} <span class="text-danger">({{ $item->unit }} UNITS)</span></li>@endforeach</ul>',
               },
           @endforeach
       ],
       eventClick: function(calEvent, jsEvent, view) {
           $('#booking_id').val(calEvent.spacebookingId);
-          $('#title').text(calEvent.title);
+          $('#purpose').text(calEvent.purpose);
           $('#end_date').text(moment(calEvent.check_out).format('YYYY-MM-DD'));
           $('#start_date').text(calEvent.start.format('YYYY-MM-DD'));
           $('#start_time').text(moment(calEvent.start_time, 'HH:mm:ss').format('HH:mm:ss'));
@@ -233,6 +240,7 @@
           $('#user').text(calEvent.buyer);
           $('#application_status').val(calEvent.application_status);
           $('#room_venue').text(calEvent.room_venue);
+          $('#remark').text(calEvent.remark);
           $('#requirement').html(calEvent.requirement);
 
           $('#bookingModal').modal('show');
@@ -240,6 +248,37 @@
       }
     });
       
+  });
+
+  $('#year_table').on('click', '.btn-delete[data-remote]', function (e) {
+    e.preventDefault();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var url = $(this).data('remote');
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+            url: url,
+            type: 'DELETE',
+            dataType: 'json',
+            data: {method: '_DELETE', submit: true}
+            }).always(function (data) {
+                $('#year_table').DataTable().draw(false);
+            });
+        }
+    })
   });
 </script>
 @endsection

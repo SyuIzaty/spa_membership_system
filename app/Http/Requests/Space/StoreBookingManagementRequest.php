@@ -4,7 +4,7 @@ namespace App\Http\Requests\Space;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreVenueRequest extends FormRequest
+class StoreBookingManagementRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,9 +29,12 @@ class StoreVenueRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:200',
-            'description' => 'required|max:255',
-            'maximum' => 'required',
+            'purpose' => 'required|max:200',
+            'start_date' => 'required',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_time' => 'required|before_or_equal:end_time',
+            'phone_number' => 'required|numeric',
+            'office_no' => 'nullable|numeric',
         ];
     }
 }

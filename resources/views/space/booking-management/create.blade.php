@@ -46,24 +46,8 @@
                                 <div class="alert alert-success">
                                     {{ session()->get('success') }}
                                 </div>
-                              @endif                              
-
-                              <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item">
-                                  <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true" style="display: none;">Tab 1</a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false" style="display: none;">Tab 2</a>
-                                </li>
-                              </ul>
-                              
-                              <div class="progress mb-3">
-                                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                              </div>
-                              
-                              {!! Form::open(['action' => 'Space\BookingController@store', 'method' => 'POST']) !!}
-                              <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                              @endif
+                              {!! Form::open(['action' => 'Space\BookingManagementController@store', 'method' => 'POST']) !!}
                                   <div>
                                       <div class="table-responsive">
                                         <p style="font-style: italic"><span class="text-danger">*</span> Required Fields</p>
@@ -71,26 +55,14 @@
                                             <thead>
                                                 <tr>
                                                     <div class="form-group">
-                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"> Applicant Name :</label></td>
-                                                        <td colspan="3">
-                                                            {{ $user->name ?? '--'}}
-                                                        </td>
-                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"> Staff / Student ID :</label></td>
-                                                        <td colspan="3">
-                                                            {{ $user->id ?? '--'}}
-                                                        </td>
-                                                    </div>
-                                                </tr>
-                                                <tr>
-                                                    <div class="form-group">
-                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"> Department / Programme :</label></td>
-                                                        <td colspan="5">
-                                                            @if($user->category == 'STF')
-                                                              {{ isset($user->staff->staff_dept) ? $user->staff->staff_dept : '--' }}
-                                                            @endif
-                                                            @if($user->category == 'STD')
-                                                              {{ isset($user->student->students_programme) ? $user->student->students_programme : '--' }}
-                                                            @endif
+                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"> Staff / Student :</label></td>
+                                                        <td colspan="6">
+                                                          <select class="form-control" name="user_id" id="user_id">
+                                                            <option disabled selected>Please Select</option>
+                                                            @foreach($user as $users)
+                                                            <option value="{{ $users->id }}">[{{ $users->id }}] {{ $users->name }}</option>
+                                                            @endforeach
+                                                          </select>
                                                         </td>
                                                     </div>
                                                 </tr>
@@ -102,12 +74,7 @@
                                                       </td>
                                                       <td width="20%" style="vertical-align: middle"><span class="text-danger">*</span> <label class="form-label"> H/P :</label></td>
                                                       <td colspan="3">
-                                                        @if($user->category == 'STF')
-                                                          <input type="text" class="form-control" name="phone_number" value="{{ isset($user->staff->staff_phone) ? $user->staff->staff_phone : '--' }}">
-                                                        @endif
-                                                        @if($user->category == 'STD')
-                                                          <input type="text" class="form-control" name="phone_number" value="{{ isset($user->student->students_phone) ? $user->student->students_phone : '--' }}">
-                                                        @endif
+                                                        <input type="text" class="form-control" name="phone_number">
                                                       </td>
                                                   </div>
                                                 </tr>
@@ -226,70 +193,10 @@
                                         </table>                          
                                       </div>
                                   </div>
-                                  <a href="#" type="button" class="btn btn-primary float-right mb-3" id="nextBtn">Next</a>
-                                </div>
-
-                                <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                                  <h5 style="text-align: center" class="mt-3">
-                                    <b>PERATURAN PENGGUNAAN RUANG PERPUSTAKAAN</b>
-                                  </h5>
-                                  <ol>
-                                    <li style="margin-bottom:10pt">
-                                      Tempahan ruang perpustakaan hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
-                                      (Sebarang tembahan tanpa borang tidak akan dilayan)
-                                    </li>
-                                    <li style="margin-bottom:10pt">
-                                      Pemohon hendaklah menghubungi pegawai yang bertugas di kaunter IT dan kaunter Perkhidmatan Pelanggan untuk
-                                      memastikan kekosongan ruang sebelum mengisi borang tempahan.
-                                    </li>
-                                    <li style="margin-bottom:10pt">
-                                      Sebarang tempahan Makmal IT hendaklah berurusan dengan pegawai di kaunter Makmal IT (ext: 7097) sahaja.
-                                    </li>
-                                    <li style="margin-bottom:10pt">
-                                      Sebarang tempahan ruang lain di perpustakaan selain Makmal IT hendaklah berurusan dengan pegawai 
-                                      Kaunter Perkhidmatan Pelanggan (ext: 7219) sahaja.
-                                    </li>
-                                    <li style="margin-bottom:10pt">
-                                      Pihak perpustakaan tidak menyediakan sebarang perkhidmatan mengubah susun atur bilik / ruang perpustakaan.
-                                    </li>
-                                    <li style="margin-bottom:10pt">
-                                      Sekiranya memerlukan tambahan peralatan atau mengubah susun atur ruang, boleh terus berurusan dengan pihak unit majlis
-                                      INTEC sehingga program selesai. (urusan ini di antara pegawai yang menempah ruang perpustakaan dengan unit majlis sahaja)
-                                    </li>
-                                    <li style="margin-bottom:10pt">
-                                      Sebanarang pembatalan tempahan ruang, mohon untuk memaklumkan kepada pegawai yang bertugas sekurang - kurangnya
-                                      sehari sebelum tarikh penggunaan.
-                                    </li>
-                                    <li style="margin-bottom:10pt">
-                                      Sila pastikan keadaakn bilik / ruang perpustakaan yang telah digunakan berkeadaan baik seperti sediakala selepas
-                                      penggunaan untuk memberi keselesaan kepada pengguna seterusnya.
-                                    </li>
-                                  </ol>
-
-                                  <h5 style="text-align: center" class="mt-5">
-                                    <b>AKUAN PEMOHON</b><br>
-                                    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG PERPUSTAKAAN INTEC</b>
-                                  </h5>
-                                  Saya yang bernama <b>{{Auth::user()->name}}</b> Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dn Ruang Perpustakaan INTEC dan saya telah membaca
-                                  serta memahami peraturan dan prosedur dibawah ini:
-                                  <ol >
-                                    <li style="margin-bottom:10pt">Saya mengaku bahawa butiran diri yang saya berikan adalah sah dan benar.</li>
-                                    <li style="margin-bottom:10pt">Saya bertanggungjawab sepenuhnya ke atas peralatan yang dipinjamkan dan digunakan.</li>
-                                    <li style="margin-bottom:10pt">
-                                      Saya bersedia menanggung segala kos pembayaran jika peralatan yang dipinjam dan digunakan hilang,
-                                      rosak atau gagal dipulangkan. Kadar gantirugi adalah sama dengan harga asal peralatan.
-                                    </li>
-                                    <li style="margin-bottom:10pt">
-                                      Saya mengaku bahawa saya akan membayar segala denda yang dikenakan ke atas saya akibat kecuaian 
-                                      saya sendiri.
-                                    </li>
-                                  </ol>
-                                  <button class="btn btn-success float-right mb-3 mt-3">Submit</button>
-                                  <a href="#" type="button" class="btn btn-primary float-right mb-3 mr-2 mt-3" id="prevBtn" disabled>Previous</a>
-                                </div>
-                              </div>
+                                  <div class="footer">
+                                      <button type="submit" id="btnSubmit" class="btn btn-success ml-auto float-right mb-3"><i class="fal fa-location-arrow"></i> Submit</button>
+                                  </div>
                               {!! Form::close() !!}
-
                             </div>
                         </div>
                     
@@ -306,54 +213,7 @@
 
 @section('script')
 <script>
-  $(document).ready(function() {
-    var progressBar = $(".progress-bar");
-    var tabs = $(".nav-link");
-    var currentIndex = 0;
-  
-    function updateProgress() {
-      var tabCount = tabs.length;
-      var progressPercentage = (currentIndex / (tabCount - 1)) * 100;
-      progressBar.css("width", progressPercentage + "%");
-      progressBar.attr("aria-valuenow", progressPercentage);
-    }
-  
-    $("#nextBtn").click(function() {
-      currentIndex++;
-      updateProgress();
-  
-      if (currentIndex >= tabs.length - 1) {
-        $("#nextBtn").prop("disabled", true);
-        currentIndex = tabs.length - 1;
-      }
-  
-      // Show the next tab
-      tabs.eq(currentIndex).tab("show");
-  
-      $("#prevBtn").prop("disabled", false);
-    });
-  
-    $("#prevBtn").click(function() {
-      currentIndex--;
-      updateProgress();
-  
-      if (currentIndex <= 0) {
-        currentIndex = 0;
-      }
-  
-      // Show the previous tab
-      tabs.eq(currentIndex).tab("show");
-  
-      $("#nextBtn").prop("disabled", false);
-    });
-  
-    // Disable clicking the tabs directly
-    tabs.click(function(e) {
-      e.preventDefault();
-    });
-  
-    $("#prevBtn").prop("disabled", false);
-  });
+  $('#user_id').select2();
 </script>
 @endsection
 

@@ -19,11 +19,15 @@ class VenueDetailController extends Controller
     public function index(Request $request)
     {
         $status = SpaceStatus::Main()->get();
+        $student = SpaceStatus::Student()->get();
         $venue = SpaceVenue::with('spaceStatus')->select('space_venues.*');
         if($request->ajax()) {
         return DataTables::of($venue)
             ->addColumn('venue_status', function($venue){
                 return isset($venue->spaceStatus->name) ? $venue->spaceStatus->name : '';
+            })
+            ->addColumn('open_to_student', function($venue){
+                return isset($venue->openStudent->name) ? $venue->openStudent->name : '';
             })
             ->addColumn('action', function($venue){
                 return
@@ -36,7 +40,7 @@ class VenueDetailController extends Controller
             ->make(true);
         }
 
-        return view('space.venue.index',compact('venue','status'));
+        return view('space.venue.index',compact('venue','status','student'));
     }
 
     public function getVenueDetail(Request $request)
@@ -68,7 +72,8 @@ class VenueDetailController extends Controller
             'description' => $request->description,
             'minimum' => $request->minimum,
             'maximum' => $request->maximum,
-            'status' => $request->status,
+            'open_student' => ($request->open_student == 'on') ? 7 : 8,
+            'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 
         return redirect()->back()->with('message','Created');
@@ -105,11 +110,18 @@ class VenueDetailController extends Controller
      */
     public function update(StoreVenueRequest $request, $id)
     {
+        // dd($request->all());
+        // if($request->open_student == 'on'){
+        //     dd('yes');
+        // }else{
+        //     dd('no');
+        // }
         SpaceVenue::where('id',$request->venue_id)->update([
             'name' => $request->name,
             'description' => $request->description,
             'maximum' => $request->maximum,
-            'status' => $request->status,
+            'open_student' => ($request->open_student == 'on') ? 7 : 8,
+            'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 
         return redirect()->back()->with('message','Update');

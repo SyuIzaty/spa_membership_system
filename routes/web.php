@@ -860,6 +860,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-item-detail', 'Space\ItemDetailController@getItemDetail');
     Route::resource('/space/booking-management', 'Space\BookingManagementController');
     Route::resource('/space/booking', 'Space\BookingController');
+    Route::resource('/space/booking-report', 'Space\BookingReportController');
+    Route::post('/data_exportbooking', 'Space\BookingReportController@data_exportbooking');
 });
 
 //SCM - Public View

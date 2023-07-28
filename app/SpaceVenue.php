@@ -9,11 +9,16 @@ class SpaceVenue extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['name','description','maximum','color','status'];
+    protected $fillable = ['name','description','maximum','open_student','status'];
 
     public function spaceStatus()
     {
         return $this->hasOne('App\SpaceStatus','id','status');
+    }
+
+    public function openStudent()
+    {
+        return $this->hasOne('App\SpaceStatus','id','open_student');
     }
 
     public function spaceBookingVenues()
@@ -26,8 +31,8 @@ class SpaceVenue extends Model
         return $query->where('status','1');
     }
 
-    public function scopeMain($query)
+    public function scopeStudent($query)
     {
-        return $query->where('category','Main');
+        return $query->where('open_student','7');
     }
 }

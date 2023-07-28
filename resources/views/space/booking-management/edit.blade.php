@@ -43,6 +43,7 @@
                                   </div>
                               @endif
                               {!! Form::open(['action' => ['Space\BookingManagementController@update',$main->id], 'method' => 'PATCH']) !!}
+                              <input type="hidden" name="booking_id" id="booking_id" value="{{ $main->id }}">
                                   <div>
                                       <div class="table-responsive">
                                         <p style="font-style: italic"><span class="text-danger">*</span> Required Fields</p>

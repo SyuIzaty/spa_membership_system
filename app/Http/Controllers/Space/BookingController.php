@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Space;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreBookingRequest;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Rules\SpaceBookingRule;
 use App\Rules\UpdateSpaceBookingRule;
 use App\SpaceBookingVenue;
@@ -60,13 +61,14 @@ class BookingController extends Controller
                         return
                         '
                         <a href="/space/booking/'.$venue->id.'/edit" class="btn btn-primary btn-sm edit_data"><i class="fal fa-pencil"></i></a>
+                        <a href="/space/booking/'.$venue->id.'" class="btn btn-success btn-sm edit_data" target="_blank"><i class="fal fa-file-pdf"></i></a>
                         <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/booking/' . $venue->id . '"> <i class="fal fa-trash"></i></button>
                         ';
                     }
                     if($venue->application_status != 5){
                         return
                         '
-                        <a href="/space/booking/'.$venue->id.'/edit" class="btn btn-primary btn-sm edit_data"><i class="fal fa-pencil"></i></a>
+                        <a href="/space/booking/'.$venue->id.'" class="btn btn-success btn-sm edit_data" target="_blank"><i class="fal fa-file-pdf"></i></a>
                         ';
                     }
                 })
@@ -85,7 +87,11 @@ class BookingController extends Controller
     public function create()
     {
         $user = User::find(Auth::user()->id);
-        $venue = SpaceVenue::Active()->get();
+        if($user->category == 'STD'){
+            $venue = SpaceVenue::Active()->Student()->get();
+        }else{
+            $venue = SpaceVenue::Active()->get();
+        }
         $item = SpaceItem::Active()->get();
         return view('space.booking.create',compact('user','venue','item'));
     }
@@ -121,6 +127,7 @@ class BookingController extends Controller
                 'end_date' => $request->end_date,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
+                'remark' => $request->remark,
             ]);
     
             if(isset($request->venue)){
@@ -160,7 +167,13 @@ class BookingController extends Controller
      */
     public function show($id)
     {
-        //
+        $booking = SpaceBookingVenue::find($id);
+        $booking_item = SpaceBookingItem::MainId($booking->space_main_id)->get();
+        $venue = SpaceVenue::Active()->get();
+        $item = SpaceItem::Active()->get();
+        $user = User::find(isset($booking->spaceBookingMain->staff_id) ? $booking->spaceBookingMain->staff_id : Auth::user()->id);
+        $pdf = PDF::loadView('space.booking.show', compact('booking','user','venue','item','booking_item'));
+        return $pdf->stream('Booking.pdf');
     }
 
     /**
@@ -214,6 +227,7 @@ class BookingController extends Controller
                 'end_date' => $request->end_date,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
+                'remark' => $request->remark,
             ]);
 
             SpaceBookingVenue::where('id',$id)->update([

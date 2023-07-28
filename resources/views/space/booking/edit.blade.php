@@ -131,6 +131,15 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Venue :</label></td>
                                                         <td colspan="5">
+                                                          <div class="alert alert-info" role="alert">
+                                                            <strong>Note:</strong>
+                                                            <ul>
+                                                                <li><strong>Lab B: </strong> PA System, LCD, Microphone (2)</li>
+                                                                <li><strong>Lab C: </strong> LCD, Microphone Portable</li>
+                                                                <li><strong>Dewan Seminar: </strong> PA System, Microphone (2), LCD</li>
+                                                                <li><strong>Discussion Room: </strong> TV</li>
+                                                            </ul>
+                                                          </div>
                                                           <div class="frame-wrap">
                                                             @php
                                                               $input_per_line = 3;
@@ -186,6 +195,14 @@
                                                             @endfor
                                                           </div>
                                                           
+                                                        </td>
+                                                    </div>
+                                                </tr>
+                                                <tr>
+                                                    <div class="form-group">
+                                                        <td width="20%" style="vertical-align: middle"><label class="form-label">Remark :</label></td>
+                                                        <td colspan="5">
+                                                          <input type="text" class="form-control" id="remark" name="remark" value="{{ isset($main->spaceBookingMain->remark) ? $main->spaceBookingMain->remark : '' }}">
                                                         </td>
                                                     </div>
                                                 </tr>

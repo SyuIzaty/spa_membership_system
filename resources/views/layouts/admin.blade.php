@@ -1024,6 +1024,11 @@
                                                 <span class="nav-link-text" data-i18n="nav.arkib">Booking Management</span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="/space/booking-report" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                             @endcanany

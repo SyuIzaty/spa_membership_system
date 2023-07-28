@@ -42,10 +42,12 @@
                                       <th>VENUE</th>
                                       <th>DESCRIPTION</th>
                                       <th>MAXIMUM</th>
+                                      <th>OPEN TO STUDENT</th>
                                       <th>STATUS</th>
                                       <th>ACTION</th>
                                   </tr>
                                   <tr id="filterRow">
+                                    <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
@@ -83,14 +85,21 @@
                                           <td><input type="number" class="form-control" name="maximum"></td>
                                         </tr>
                                         <tr>
+                                          <td>Open to Student <span class="text-danger">*</span></td>
+                                          <td>
+                                            <div class="custom-control custom-switch">
+                                              <input type="checkbox" class="custom-control-input" name="open_student" id="store_open">
+                                              <label class="custom-control-label" for="store_open"></label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
                                           <td>Status <span class="text-danger">*</span></td>
                                           <td>
-                                            <select class="form-control" name="status">
-                                              <option disabled selected>Please Select</option>
-                                              @foreach($status as $statuses)
-                                              <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
-                                              @endforeach
-                                            </select>
+                                            <div class="custom-control custom-switch">
+                                              <input type="checkbox" class="custom-control-input" name="status" id="store_status">
+                                              <label class="custom-control-label" for="store_status"></label>
+                                            </div>
                                           </td>
                                         </tr>
                                       </table>
@@ -123,14 +132,21 @@
                                           <td><input type="number" class="form-control" name="maximum" id="maximum"></td>
                                         </tr>
                                         <tr>
+                                          <td>Open to Student <span class="text-danger">*</span></td>
+                                          <td>
+                                            <div class="custom-control custom-switch">
+                                              <input type="checkbox" class="custom-control-input" name="open_student" id="open_student">
+                                              <label class="custom-control-label" for="open_student"></label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
                                           <td>Status <span class="text-danger">*</span></td>
                                           <td>
-                                            <select class="form-control" name="status" id="status">
-                                              <option disabled selected>Please Select</option>
-                                              @foreach($status as $statuses)
-                                              <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
-                                              @endforeach
-                                            </select>
+                                            <div class="custom-control custom-switch">
+                                              <input type="checkbox" class="custom-control-input" name="status" id="status">
+                                              <label class="custom-control-label" for="status"></label>
+                                            </div>
                                           </td>
                                         </tr>
                                       </table>
@@ -165,12 +181,14 @@
         ajax: {
             url: window.location.href,
         },
-
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 200, "All"]],
+        iDisplayLength: 10,
         columns: [
                 { data: 'id', name: 'id'},
                 { data: 'name', name: 'name'},
                 { data: 'description', name: 'description'},
                 { data: 'maximum', name: 'maximum'},
+                { data: 'open_to_student', name: 'openStudent.name'},
                 { data: 'venue_status', name: 'spaceStatus.name'},
                 { data: 'action'},
             ],
@@ -210,7 +228,18 @@
                 $('#name').val(data.name);
                 $('#description').val(data.description);
                 $('#maximum').val(data.maximum);
-                $('#status').val(data.status);
+
+                if(data.status == 1){
+                  $('#status').prop('checked', true);
+                } if(data.status != 1) {
+                  $('#status').prop('checked', false);
+                }
+
+                if(data.open_student == 7){
+                  $('#open_student').prop('checked', true);
+                }if(data.open_student != 7) {
+                  $('#open_student').prop('checked', false);
+                }
                 $('.editModal').modal('show');
             }
         });
