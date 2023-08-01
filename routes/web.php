@@ -170,11 +170,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('kemaskiniPenambahbaikan', 'Aduan\AduanController@kemaskiniPenambahbaikan');
     Route::post('simpanStatus', 'Aduan\AduanController@simpanStatus');
     Route::get('/pdfAduan/{id}', 'Aduan\AduanController@pdfAduan')->name('pdfAduan');
-    Route::get('/export_aduan', 'Aduan\AduanController@aduan_all')->name('exportAduan');
     Route::get('/export_aduan_staf', 'Aduan\AduanController@aduan_all_staff')->name('exportAduanStaf');
-    Route::get('/aduanExport/{kategori?}/{status?}/{tahap?}/{bulan?}', 'Aduan\AduanController@aduans');
-    Route::post('/aduanExport/{kategori?}/{status?}/{tahap?}/{bulan?}', 'Aduan\AduanController@aduans');
-    Route::get('exportaduan/{kategori?}/{status?}/{tahap?}/{bulan?}', 'Aduan\AduanController@aduans');
+    Route::get('/export_aduan', 'Aduan\AduanController@aduan_all')->name('exportAduan');
+    Route::post('/data_aduanexport', 'Aduan\AduanController@data_aduanexport');
+    Route::get('/aduanExport', 'Aduan\AduanController@aduans');
+    Route::post('/aduanExport', 'Aduan\AduanController@aduans');
+    Route::get('exportaduan/{kategori?}/{status?}/{tahap?}/{bulan?}/{tahun?}/{pelapor?}', 'Aduan\AduanController@aduans');
     Route::get('/juruExport/{juruteknik?}/{stat?}/{kate?}/{bul?}', 'Aduan\AduanController@jurutekniks');
     Route::post('/juruExport/{juruteknik?}/{stat?}/{kate?}/{bul?}', 'Aduan\AduanController@jurutekniks');
     Route::get('juruaduan/{juruteknik?}/{stat?}/{kate?}/{bul?}', 'Aduan\AduanController@jurutekniks');

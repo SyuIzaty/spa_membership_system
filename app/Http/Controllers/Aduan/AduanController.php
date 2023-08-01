@@ -2831,66 +2831,6 @@ class AduanController extends Controller
         return view('aduan.aduan-pdf', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik','alatan_ganti','pengadu'));
     }
 
-    public function aduan_all(Request $request)
-    {
-        $staff = Staff::where('staff_id', Auth::user()->id)->first();
-
-        if($staff->staff_code == 'IITU') {
-
-            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
-        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
-
-            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
-        } else {
-
-            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
-        }
-
-        $status = StatusAduan::select('kod_status', 'nama_status')->get();
-
-        $tahap = TahapKategori::select('kod_tahap', 'jenis_tahap')->get();
-
-        $bulan = Aduan::select('bulan_laporan')->groupBy('bulan_laporan')->orderBy('bulan_laporan', 'ASC')->get();
-
-        $req_kategori = $request->kategori;
-        $req_status = $request->status;
-        $req_tahap = $request->tahap;
-        $req_bulan = $request->bulan;
-
-        $data = $datas = $datass =  '';
-
-        if($request->kategori || $request->status || $request->tahap || $request->bulan)
-        {
-            $result = new Aduan();
-
-            if($request->tahap != "")
-            {
-                $result = $result->where('tahap_kategori', $request->tahap);
-            }
-
-            if($request->status != "")
-            {
-                $result = $result->where('status_aduan', $request->status);
-            }
-
-            if($request->kategori != "")
-            {
-                $result = $result->where('kategori_aduan', $request->kategori);
-            }
-
-            if($request->bulan != "")
-            {
-                $result = $result->where('bulan_laporan', $request->bulan);
-            }
-
-            $data = $result->get();
-        }
-
-        $this->aduans($request->kategori,$request->status,$request->tahap,$request->bulan);
-
-        return view('aduan.laporan-excel', compact( 'tahap', 'kategori', 'status', 'bulan', 'data', 'req_kategori', 'req_status', 'req_tahap', 'req_bulan'));
-    }
-
     public function aduan_all_staff(Request $request)
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
@@ -3011,9 +2951,221 @@ class AduanController extends Controller
         'status', 'bulan', 'request', 'req_stat', 'req_kate', 'req_bul','dat'));
     }
 
-    public function aduans($kategori = null, $status = null, $tahap = null, $bulan = null)
+    public function aduan_all(Request $request)
     {
-        return Excel::download(new AduanExport($kategori,$status,$tahap,$bulan),'Laporan Aduan.xlsx');
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        } else {
+
+            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
+        }
+
+        $status = StatusAduan::select('kod_status', 'nama_status')->get();
+
+        $tahap = TahapKategori::select('kod_tahap', 'jenis_tahap')->get();
+
+        $pelapor = Aduan::select('id_pelapor')
+                ->groupBy('id_pelapor')
+                ->orderBy('id_pelapor', 'ASC')
+                ->get();
+
+        $bulan = Aduan::select(DB::raw('MONTH(tarikh_laporan) as month'))
+                ->groupBy(DB::raw('MONTH(tarikh_laporan)'))
+                ->orderBy(DB::raw('MONTH(tarikh_laporan)'), 'ASC')
+                ->get();
+
+        $tahun = Aduan::select(DB::raw('YEAR(tarikh_laporan) as year'))
+                ->groupBy(DB::raw('YEAR(tarikh_laporan)'))
+                ->orderBy(DB::raw('YEAR(tarikh_laporan)'), 'ASC')
+                ->get();
+
+        $cond = "1"; // 1 = selected
+
+        $selectedkategori = $request->kategori;
+        $selectedstatus = $request->status;
+        $selectedtahap = $request->tahap;
+        $selectedpelapor = $request->pelapor;
+        $selectedbulan = $request->bulan;
+        $selectedtahun = $request->tahun;
+
+        $list = [];
+
+        return view('aduan.laporan-excel', compact('request', 'tahap', 'kategori', 'status', 'bulan', 'tahun', 'pelapor',
+        'selectedkategori', 'selectedstatus', 'selectedtahap', 'selectedpelapor', 'selectedbulan', 'selectedtahun', 'list'));
+    }
+
+    public function aduans($kategori = null, $status = null, $tahap = null, $bulan = null, $tahun = null, $pelapor = null)
+    {
+        return Excel::download(new AduanExport($kategori, $status, $tahap, $bulan, $tahun, $pelapor), 'Laporan Aduan.xlsx');
+    }
+
+    public function data_aduanexport(Request $request)
+    {
+        $cond = "1";
+
+        if( $request->kategori != "" && $request->kategori != "All")
+        {
+            $cond .= " AND kategori_aduan = '".$request->kategori."' ";
+        }
+
+        if( $request->status != "" && $request->status != "All")
+        {
+            $cond .= " AND status_aduan = '".$request->status."' ";
+        }
+
+        if( $request->tahap != "" && $request->tahap != "All")
+        {
+            $cond .= " AND tahap_kategori = '".$request->tahap."' ";
+        }
+
+        if ($request->bulan != "" && $request->bulan != "All")
+        {
+            $cond .= " AND MONTH(tarikh_laporan) = '".$request->bulan."' ";
+        }
+
+        if ($request->tahun != "" && $request->tahun != "All")
+        {
+            $cond .= " AND YEAR(tarikh_laporan) = '".$request->tahun."' ";
+        }
+
+        if( $request->pelapor != "" && $request->pelapor != "All")
+        {
+            $cond .= " AND id_pelapor = '".$request->pelapor."' ";
+        }
+
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if($staff->staff_code == 'IITU') {
+
+            $data = Aduan::whereRaw($cond)->whereIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+
+        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $data = Aduan::whereRaw($cond)->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->get();
+
+        } else {
+
+            $data = Aduan::whereRaw($cond)->get();
+        }
+
+        return datatables()::of($data)
+
+        ->editColumn('juruteknik', function ($data) {
+            $allJuruteknik = '';
+
+            foreach ($data->juruteknik as $juruteknik) {
+                $allJuruteknik .= $juruteknik->juruteknik->name . ', ';
+            }
+
+            $allJuruteknik = rtrim($allJuruteknik, ', ');
+
+            return $allJuruteknik ?: '<div style="color:red;">--</div>';
+        })
+
+        ->editColumn('nama_pelapor', function ($data) {
+
+            return isset($data->nama_pelapor) ? strtoupper($data->nama_pelapor) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('tarikh_laporan', function ($data) {
+
+            return isset($data->tarikh_laporan) ? date(' d-m-Y ', strtotime($data->tarikh_laporan)) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('nama_bilik', function ($data) {
+
+            return isset($data->nama_bilik) ? strtoupper($data->nama_bilik) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('aras_aduan', function ($data) {
+
+            return isset($data->aras_aduan) ? strtoupper($data->aras_aduan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('blok_aduan', function ($data) {
+
+            return isset($data->blok_aduan) ? strtoupper($data->blok_aduan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('lokasi_aduan', function ($data) {
+
+            return isset($data->lokasi_aduan) ? strtoupper($data->lokasi_aduan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('kategori_aduan', function ($data) {
+
+            return isset($data->kategori_aduan) ? strtoupper($data->kategori->nama_kategori) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('jenis_kerosakan', function ($data) {
+
+            return isset($data->jenis_kerosakan) ?  strtoupper($data->jenis->jenis_kerosakan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('sebab_kerosakan', function ($data) {
+
+            return isset($data->sebab_kerosakan) ?  strtoupper($data->sebab->sebab_kerosakan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('kuantiti_unit', function ($data) {
+
+            return $data->kuantiti_unit ?? '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('caj_kerosakan', function ($data) {
+
+            return $data->caj_kerosakan ?? '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('maklumat_tambahan', function ($data) {
+
+            return isset($data->maklumat_tambahan) ? strtoupper($data->maklumat_tambahan ) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('tahap_kategori', function ($data) {
+
+            return isset($data->tahap_kategori) ? strtoupper($data->tahap->jenis_tahap ) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('tarikh_serahan_aduan', function ($data) {
+
+            return isset($data->tarikh_serahan_aduan) ? date(' d-m-Y ', strtotime($data->tarikh_serahan_aduan)) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('laporan_pembaikan', function ($data) {
+
+            return isset($data->laporan_pembaikan) ? strtoupper($data->laporan_pembaikan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('jumlah_kos', function ($data) {
+
+            return isset($data->jumlah_kos) ? 'RM'.$data->jumlah_kos : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('tarikh_selesai_aduan', function ($data) {
+
+            return isset($data->tarikh_selesai_aduan) ? date(' d-m-Y ', strtotime($data->tarikh_selesai_aduan)) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('pengesahan_pembaikan', function ($data) {
+
+            return isset($data->pengesahan_pembaikan) ? strtoupper($data->pengesahan_pembaikan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('status_aduan', function ($data) {
+
+            return isset($data->status_aduan) ? strtoupper($data->status->nama_status) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->rawColumns(['juruteknik', 'nama_pelapor', 'tarikh_laporan', 'nama_bilik', 'aras_aduan', 'blok_aduan', 'lokasi_aduan', 'kategori_aduan', 'jenis_kerosakan', 'sebab_kerosakan',
+            'kuantiti_unit', 'caj_kerosakan', 'maklumat_tambahan', 'tahap_kategori', 'tarikh_serahan_aduan', 'laporan_pembaikan', 'jumlah_kos', 'tarikh_selesai_aduan', 'pengesahan_pembaikan', 'status_aduan'])
+        ->make(true);
     }
 
     public function jurutekniks($juruteknik = null, $stat = null, $kate = null, $bul = null)
