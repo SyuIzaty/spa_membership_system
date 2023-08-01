@@ -2831,126 +2831,6 @@ class AduanController extends Controller
         return view('aduan.aduan-pdf', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik','alatan_ganti','pengadu'));
     }
 
-    public function aduan_all_staff(Request $request)
-    {
-        $staff = Staff::where('staff_id', Auth::user()->id)->first();
-
-        if($staff->staff_code == 'IITU') {
-
-            $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
-
-            $exist = Staff::select('staff_id')->where('staff_code', 'IITU')->pluck('staff_id')->toArray();
-
-            $juruteknik = User::select('id', 'name')->whereIn('id', $exist)->whereHas('roles', function($query){
-                $query->where('id', 'CMS002');
-            })->get();
-
-        } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
-
-            $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
-
-            $exist = Staff::select('staff_id')->whereIn('staff_code', ['OFM','AA'])->pluck('staff_id')->toArray();
-
-            $juruteknik = User::select('id', 'name')->whereIn('id', $exist)->whereHas('roles', function($query){
-                $query->where('id', 'CMS002');
-            })->get();
-
-        } else {
-
-            $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
-
-            $juruteknik = User::select('id', 'name')->whereHas('roles', function($query){
-                $query->where('id', 'CMS002');
-            })->get();
-        }
-
-        $status = StatusAduan::select('kod_status', 'nama_status')->get();
-
-        $tahap = TahapKategori::select('kod_tahap', 'jenis_tahap')->get();
-
-        $bulan = Aduan::select('bulan_laporan')->groupBy('bulan_laporan')->orderBy('bulan_laporan', 'ASC')->get();
-
-        $req_juruteknik = $request->juruteknik;
-        $req_status = $request->stat;
-        $req_kategori = $request->kate;
-        $req_bulan = $request->bul;
-
-        $data = $datas = $datass =  '';
-
-        if($request->juruteknik || $request->stat || $request->kate || $request->bul)
-        {
-            $result = new JuruteknikBertugas();
-
-            if($request->juruteknik != "")
-            {
-                $result = $result->where('juruteknik_bertugas', $request->juruteknik);
-            }
-
-            if($request->stat != "")
-            {
-                $result = $result->whereHas('aduan', function($query) use($request){
-                    $query->where('status_aduan', $request->stat);
-                });
-            }
-
-            if($request->kate != "")
-            {
-                $result = $result->whereHas('aduan', function($query) use($request){
-                    $query->where('kategori_aduan', $request->kate);
-                });
-            }
-
-            if($request->bul != "")
-            {
-                $result = $result->whereHas('aduan', function($query) use($request){
-                    $query->where('bulan_laporan', $request->bul);
-                });
-            }
-
-            $data = $result->get();
-        }
-
-        $req_stat = $request->sel_stat;
-        $req_kate = $request->sel_kate;
-        $req_bul = $request->sel_bul;
-
-        $dat = $dats = $datss =  '';
-
-        if($request->sel_stat || $request->sel_kate || $request->sel_bul)
-        {
-            $res = new JuruteknikBertugas();
-
-            if($request->sel_stat != "")
-            {
-                $res = $res->whereHas('aduan', function($query) use($request){
-                    $query->where('status_aduan', $request->sel_stat);
-                });
-            }
-
-            if($request->sel_kate != "")
-            {
-                $res = $res->whereHas('aduan', function($query) use($request){
-                    $query->where('kategori_aduan', $request->sel_kate);
-                });
-            }
-
-            if($request->sel_bul != "")
-            {
-                $res = $res->whereHas('aduan', function($query) use($request){
-                    $query->where('bulan_laporan', $request->sel_bul);
-                });
-            }
-
-            $dat = $res->where('juruteknik_bertugas', Auth::user()->id)->get();
-        }
-
-        $this->jurutekniks($request->juruteknik,$request->stat,$request->kate,$request->bul);
-        $this->individu($request->sel_stat,$request->sel_kate,$request->sel_bul);
-
-        return view('aduan.laporan-excel-staf', compact('juruteknik', 'req_juruteknik', 'req_bulan', 'req_kategori', 'req_status', 'data', 'tahap', 'kategori',
-        'status', 'bulan', 'request', 'req_stat', 'req_kate', 'req_bul','dat'));
-    }
-
     public function aduan_all(Request $request)
     {
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
@@ -2998,11 +2878,6 @@ class AduanController extends Controller
 
         return view('aduan.laporan-excel', compact('request', 'tahap', 'kategori', 'status', 'bulan', 'tahun', 'pelapor',
         'selectedkategori', 'selectedstatus', 'selectedtahap', 'selectedpelapor', 'selectedbulan', 'selectedtahun', 'list'));
-    }
-
-    public function aduans($kategori = null, $status = null, $tahap = null, $bulan = null, $tahun = null, $pelapor = null)
-    {
-        return Excel::download(new AduanExport($kategori, $status, $tahap, $bulan, $tahun, $pelapor), 'Laporan Aduan.xlsx');
     }
 
     public function data_aduanexport(Request $request)
@@ -3168,14 +3043,230 @@ class AduanController extends Controller
         ->make(true);
     }
 
-    public function jurutekniks($juruteknik = null, $stat = null, $kate = null, $bul = null)
+    public function aduan_all_staff(Request $request)
     {
-        return Excel::download(new JuruteknikExport($juruteknik,$stat,$kate,$bul),'Laporan Aduan Juruteknik.xlsx');
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        $kategoriQuery = KategoriAduan::query();
+
+        $juruteknikQuery = User::select('id', 'name')->whereHas('roles', function($query){
+            $query->where('id', 'CMS002');
+        });
+
+        if ($staff->staff_code == 'IITU') {
+
+            $kategoriQuery->whereIn('kod_kategori', ['IITU-HDWR', 'IITU-NTWK', 'IITU-OPR_EMEL', 'IITU-NTWK WIRELESS']);
+
+            $exist = Staff::select('staff_id')->where('staff_code', 'IITU')->pluck('staff_id')->toArray();
+
+            $juruteknikQuery->whereIn('id', $exist);
+
+        } elseif ($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+
+            $kategoriQuery->whereIn('kod_kategori', ['AWM', 'ELK', 'MKL', 'PKH', 'TKM']);
+
+            $exist = Staff::select('staff_id')->whereIn('staff_code', ['OFM', 'AA'])->pluck('staff_id')->toArray();
+
+            $juruteknikQuery->whereIn('id', $exist);
+
+        } else {
+
+            $kategoriQuery->select('kod_kategori', 'nama_kategori');
+        }
+
+        $kategori = $kategoriQuery->get();
+
+        $juruteknik = $juruteknikQuery->get();
+
+        $status = StatusAduan::select('kod_status', 'nama_status')->get();
+
+        $tahap = TahapKategori::select('kod_tahap', 'jenis_tahap')->get();
+
+        $bulan = Aduan::select(DB::raw('MONTH(tarikh_laporan) as month'))
+                ->groupBy(DB::raw('MONTH(tarikh_laporan)'))
+                ->orderBy(DB::raw('MONTH(tarikh_laporan)'), 'ASC')
+                ->get();
+
+        $tahun = Aduan::select(DB::raw('YEAR(tarikh_laporan) as year'))
+                ->groupBy(DB::raw('YEAR(tarikh_laporan)'))
+                ->orderBy(DB::raw('YEAR(tarikh_laporan)'), 'ASC')
+                ->get();
+
+        $cond = "1"; // 1 = selected
+
+        $selectedkategori = $request->kategori;
+        $selectedstatus = $request->status;
+        $selectedtahap = $request->tahap;
+        $selectedjuruteknik = $request->juruteknik;
+        $selectedbulan = $request->bulan;
+        $selectedtahun = $request->tahun;
+
+        $list = [];
+
+        return view('aduan.laporan-excel-staf', compact('request', 'tahap', 'kategori', 'status', 'bulan', 'tahun', 'juruteknik',
+        'selectedkategori', 'selectedstatus', 'selectedtahap', 'selectedjuruteknik', 'selectedbulan', 'selectedtahun', 'list'));
     }
 
-    public function individu($stats = null, $kates = null, $buls = null)
+    public function data_juruteknikexport(Request $request)
     {
-        return Excel::download(new IndividuExport($stats,$kates,$buls),'Laporan Aduan Individu.xlsx');
+        $cond = "1";
+
+        if ($request->kategori && $request->kategori !== "All") {
+            $cond .= " AND kategori_aduan = '".$request->kategori."'";
+        }
+
+        if ($request->status && $request->status !== "All") {
+            $cond .= " AND status_aduan = '".$request->status."'";
+        }
+
+        if ($request->tahap && $request->tahap !== "All") {
+            $cond .= " AND tahap_kategori = '".$request->tahap."'";
+        }
+
+        if ($request->bulan && $request->bulan !== "All") {
+            $cond .= " AND MONTH(tarikh_laporan) = '".$request->bulan."'";
+        }
+
+        if ($request->tahun && $request->tahun !== "All") {
+            $cond .= " AND YEAR(tarikh_laporan) = '".$request->tahun."'";
+        }
+
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        $dataQuery = Aduan::whereRaw($cond);
+
+        if ($staff->staff_code == 'IITU') {
+            $dataQuery->whereIn('kategori_aduan', ['IITU-HDWR', 'IITU-NTWK', 'IITU-OPR_EMEL', 'IITU-NTWK WIRELESS']);
+        } elseif ($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
+            $dataQuery->whereIn('kategori_aduan', ['AWM', 'ELK', 'MKL', 'PKH', 'TKM']);
+        }
+
+        if ($request->juruteknik && $request->juruteknik !== "All") {
+            $dataQuery->whereHas('juruteknik', function ($query) use ($request) {
+                $query->where('juruteknik_bertugas', $request->juruteknik);
+            });
+        }
+
+        if (Auth::user()->hasRole('Technical Admin')){
+            $data = $dataQuery->get();
+        } else {
+            $data = $dataQuery->whereHas('juruteknik', function ($query) {
+                $query->where('juruteknik_bertugas', Auth::user()->id);
+            })->get();
+        }
+
+        return datatables()::of($data)
+
+        ->editColumn('juruteknik', function ($data) {
+            $allJuruteknik = '';
+
+            foreach ($data->juruteknik as $juruteknik) {
+                $allJuruteknik .= $juruteknik->juruteknik->name . ', ';
+            }
+
+            $allJuruteknik = rtrim($allJuruteknik, ', ');
+
+            return $allJuruteknik ?: '<div style="color:red;">--</div>';
+        })
+
+        ->editColumn('nama_pelapor', function ($data) {
+
+            return isset($data->nama_pelapor) ? strtoupper($data->nama_pelapor) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('tarikh_laporan', function ($data) {
+
+            return isset($data->tarikh_laporan) ? date(' d-m-Y ', strtotime($data->tarikh_laporan)) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('nama_bilik', function ($data) {
+
+            return isset($data->nama_bilik) ? strtoupper($data->nama_bilik) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('aras_aduan', function ($data) {
+
+            return isset($data->aras_aduan) ? strtoupper($data->aras_aduan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('blok_aduan', function ($data) {
+
+            return isset($data->blok_aduan) ? strtoupper($data->blok_aduan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('lokasi_aduan', function ($data) {
+
+            return isset($data->lokasi_aduan) ? strtoupper($data->lokasi_aduan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('kategori_aduan', function ($data) {
+
+            return isset($data->kategori_aduan) ? strtoupper($data->kategori->nama_kategori) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('jenis_kerosakan', function ($data) {
+
+            return isset($data->jenis_kerosakan) ?  strtoupper($data->jenis->jenis_kerosakan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('sebab_kerosakan', function ($data) {
+
+            return isset($data->sebab_kerosakan) ?  strtoupper($data->sebab->sebab_kerosakan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('kuantiti_unit', function ($data) {
+
+            return $data->kuantiti_unit ?? '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('caj_kerosakan', function ($data) {
+
+            return $data->caj_kerosakan ?? '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('maklumat_tambahan', function ($data) {
+
+            return isset($data->maklumat_tambahan) ? strtoupper($data->maklumat_tambahan ) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('tahap_kategori', function ($data) {
+
+            return isset($data->tahap_kategori) ? strtoupper($data->tahap->jenis_tahap ) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('tarikh_serahan_aduan', function ($data) {
+
+            return isset($data->tarikh_serahan_aduan) ? date(' d-m-Y ', strtotime($data->tarikh_serahan_aduan)) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('laporan_pembaikan', function ($data) {
+
+            return isset($data->laporan_pembaikan) ? strtoupper($data->laporan_pembaikan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('jumlah_kos', function ($data) {
+
+            return isset($data->jumlah_kos) ? 'RM'.$data->jumlah_kos : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('tarikh_selesai_aduan', function ($data) {
+
+            return isset($data->tarikh_selesai_aduan) ? date(' d-m-Y ', strtotime($data->tarikh_selesai_aduan)) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('pengesahan_pembaikan', function ($data) {
+
+            return isset($data->pengesahan_pembaikan) ? strtoupper($data->pengesahan_pembaikan) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('status_aduan', function ($data) {
+
+            return isset($data->status_aduan) ? strtoupper($data->status->nama_status) : '<div style="color:red;" > -- </div>';
+        })
+
+        ->rawColumns(['juruteknik', 'nama_pelapor', 'tarikh_laporan', 'nama_bilik', 'aras_aduan', 'blok_aduan', 'lokasi_aduan', 'kategori_aduan', 'jenis_kerosakan', 'sebab_kerosakan',
+            'kuantiti_unit', 'caj_kerosakan', 'maklumat_tambahan', 'tahap_kategori', 'tarikh_serahan_aduan', 'laporan_pembaikan', 'jumlah_kos', 'tarikh_selesai_aduan', 'pengesahan_pembaikan', 'status_aduan'])
+        ->make(true);
     }
 
     public function downloadBorang(Request $request, $id)

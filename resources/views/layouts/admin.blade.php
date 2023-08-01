@@ -712,25 +712,20 @@
                                     <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
                                 </a>
                                 <ul>
-                                    @can('view technical admin')
-                                        <li>
-                                            <a href="/export_aduan" title="Kategori" data-filter-tags="kategori">
-                                                <span class="nav-link-text" data-i18n="nav.kategori">Keseluruhan</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/export_aduan_staf" title="Kategori" data-filter-tags="kategori">
-                                                <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('view technical staff')
+                                    @canany(['view technical admin', 'view technical staff'])
+                                        @can('view technical admin')
+                                            <li>
+                                                <a href="/export_aduan" title="Kategori" data-filter-tags="kategori">
+                                                    <span class="nav-link-text" data-i18n="nav.kategori">Keseluruhan</span>
+                                                </a>
+                                            </li>
+                                        @endcan
                                         <li>
                                             <a href="/export_aduan_staf" title="Kategori" data-filter-tags="kategori">
                                                 <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
                                             </a>
                                         </li>
-                                    @endcan
+                                    @endcanany
                                 </ul>
                             </li>
                             @can('view complaint parameter')
