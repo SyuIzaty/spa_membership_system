@@ -78,11 +78,11 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"> Office No :</label></td>
                                                         <td colspan="3">
-                                                            <input type="text" class="form-control" name="office_no" value="{{ isset($main->spaceBookingMain->user_office) ? $main->spaceBookingMain->user_office : '' }}">
+                                                            {{ isset($main->spaceBookingMain->user_office) ? $main->spaceBookingMain->user_office : '' }}
                                                         </td>
                                                         <td width="20%" style="vertical-align: middle"><span class="text-danger">*</span> <label class="form-label"> H/P :</label></td>
                                                         <td colspan="3">
-                                                            <input type="text" class="form-control" name="phone_number" value="{{ isset($main->spaceBookingMain->user_phone) ? $main->spaceBookingMain->user_phone : '' }}">
+                                                            {{ isset($main->spaceBookingMain->user_phone) ? $main->spaceBookingMain->user_phone : '' }}
                                                         </td>
                                                     </div>
                                                 </tr>

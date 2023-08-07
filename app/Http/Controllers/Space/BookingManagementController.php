@@ -31,7 +31,7 @@ class BookingManagementController extends Controller
     {
         $booking = SpaceBookingVenue::with('spaceBookingMain')->get();
         $status = SpaceStatus::where('category','Application')->get();
-        $venue = SpaceBookingVenue::with('spaceBookingMain.user','spaceBookingMain','spaceVenue')
+        $venue = SpaceBookingVenue::with('spaceBookingMain.user','spaceVenue')
         ->select('space_booking_venues.*');
         
         if($request->ajax()) {

@@ -55,7 +55,7 @@
                                   <th class="hasInputFilter"></th>
                                   <th class="hasInputFilter"></th>
                                   <th class="hasInputFilter"></th>
-                                  <th><button id="resetFilter" class="btn btn-block btn-outline-danger"><i class="bx bx-block font-size-16 align-middle me-2"></i>Clear All Filter</button></th>
+                                  <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,6 +72,19 @@
 @section('script')
 <script>
   $(document).ready(function() {
+    $('#year_table thead tr .hasinput').each(function(i)
+    {
+        $('input', this).on('keyup change', function()
+        {
+            if (table.column(i).search() !== this.value)
+            {
+                table
+                    .column(i)
+                    .search(this.value)
+                    .draw();
+            }
+        });
+    });
 
     var table = $('#year_table').DataTable({
       processing: true,

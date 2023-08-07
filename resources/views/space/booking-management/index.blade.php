@@ -72,8 +72,8 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>ID</th>
-                                        <th>STAFF ID</th>
-                                        <th>STAFF NAME</th>
+                                        <th>STAFF / STUDENT ID</th>
+                                        <th>NAME</th>
                                         <th>PURPOSE</th>
                                         <th>START DATE</th>
                                         <th>END DATE</th>
@@ -81,14 +81,14 @@
                                         <th>ACTION</th>
                                     </tr>
                                     <tr id="filterRow">
-                                      <th class="hasInputFilter"></th>
-                                      <th class="hasInputFilter"></th>
-                                      <th class="hasInputFilter"></th>
-                                      <th class="hasInputFilter"></th>
-                                      <th class="hasInputFilter"></th>
-                                      <th class="hasInputFilter"></th>
-                                      <th class="hasInputFilter"></th>
-                                      <th><button id="resetFilter" class="btn btn-block btn-outline-danger"><i class="bx bx-block font-size-16 align-middle me-2"></i>Clear All Filter</button></th>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Staff / Student ID"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Purpose"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Start Date"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search End Date"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Venue"></td>
+                                      <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -172,6 +172,20 @@
 <script>
   $(document).ready(function() {
 
+    $('#year_table thead tr .hasinput').each(function(i)
+    {
+        $('input', this).on('keyup change', function()
+        {
+            if (table.column(i).search() !== this.value)
+            {
+                table
+                    .column(i)
+                    .search(this.value)
+                    .draw();
+            }
+        });
+    });
+
     var table = $('#year_table').DataTable({
       processing: true,
       serverSide: true,
@@ -194,17 +208,6 @@
       orderCellsTop: true,
       dom:"tpr",
       initComplete: function () {
-        $("#year_table thead #filterRow .hasInputFilter").each( function ( i ) {
-            var colIdx = $(this).index();
-            var input = $('<input class="form-control" type="text">')
-                .appendTo( $(this).empty() )
-                .on( 'keyup', function () {
-                    table.column(colIdx)
-                        .search( $(this).val() )
-                        .draw();
-                } );
-
-        } );
       }
     });
 

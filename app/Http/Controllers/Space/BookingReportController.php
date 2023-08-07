@@ -41,6 +41,10 @@ class BookingReportController extends Controller
         {
             $cond .= " AND (venue_id = '".$request->venue."')";
         }
+        if($request->status && $request->status != "All")
+        {
+            $cond .= " AND (application_status = '".$request->status."')";
+        }
 
         $cat = $request->category;
 
