@@ -136,7 +136,7 @@
                                                         <td colspan="5">
                                                           @foreach($main->spaceBookingItems as $item)
                                                           <ul>
-                                                            <li>{{ isset($item->spaceItem->name) ? $item->spaceItem->name : '' }} <span class="text-danger font-weight-bold">({{ $item->unit }} UNIT)</span></li>
+                                                            <li>{{ isset($item->spaceItem->name) ? $item->spaceItem->name : '' }}</li>
                                                           </ul>
                                                           @endforeach
                                                         </td>

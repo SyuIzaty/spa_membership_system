@@ -201,17 +201,11 @@
                                                             @for ($i = 0; $i < $item_count; $i += $item_per_line)
                                                               <div class="row mb-2">
                                                                 @foreach(array_slice($item_array, $i, $item_per_line) as $items)
-                                                                  <div class="col-md-4">
+                                                                  <div class="col-md-12">
                                                                     <label>
-                                                                        <input type="checkbox" name="checks[{{ $items['id'] }}]" onchange="toggleInput(this)">
+                                                                        <input type="checkbox" name="checks[{{ $items['id'] }}]" >
                                                                     </label>
                                                                     <label>{{ $items['name'] }}</label>
-                                                                  </div>
-                                                                  <div class="col-md-2">
-                                                                    <input type="number" class="form-control" name="unit[{{ $items['id'] }}]" data-max="{{ $items['quantity'] }}" oninput="checkLimit(this)" disabled>
-                                                                  </div>
-                                                                  <div class="col-md-4">
-                                                                    <span class="text-danger font-weight-bold">UNITS PER VENUE</span>
                                                                   </div>
                                                                 @endforeach
                                                               </div>
@@ -361,18 +355,6 @@
   
     $("#prevBtn").prop("disabled", false);
   });
-
-  function checkLimit(ele)
-  {
-    var max = parseFloat($(ele).data('max'));
-    var input = parseFloat($(ele).val());
-
-    if(input > max)
-    {
-        alert('More than limit');
-        $(ele).val(0);
-    }
-  }
 
   function toggleInput(checkbox) 
   {

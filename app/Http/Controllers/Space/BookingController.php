@@ -141,13 +141,12 @@ class BookingController extends Controller
                 }
             }
     
-            if(isset($request->unit)){
-                foreach($request->unit as $key_item => $value_item){
+            if(isset($request->checks)){
+                foreach($request->checks as $key_item => $value_item){
                     if($value_item != null){
                         SpaceBookingItem::create([
                             'space_main_id' => $booking,
                             'item_id' => $key_item,
-                            'unit' => $request->unit[$key_item],
                         ]);
                     }
                 }
@@ -247,11 +246,11 @@ class BookingController extends Controller
             ]);
 
 
-            if(isset($request->unit)){
+            if(isset($request->checks)){
                 $item_all = SpaceBookingItem::where('space_main_id', $venue->space_main_id)->get();
-                foreach($request->unit as $key_item => $value_item){
+                foreach($request->checks as $key_item => $value_item){
                     if($item_all->count() >= 1){
-                        $all_item = $item_all->whereNotIn('item_id',array_keys($request->unit));
+                        $all_item = $item_all->whereNotIn('item_id',array_keys($request->checks));
                         foreach($all_item as $alls){
                             $alls->delete();
                         }
@@ -262,7 +261,7 @@ class BookingController extends Controller
                             'space_main_id' => $venue->space_main_id,
                             'item_id' => $key_item,
                         ],[
-                            'unit' => $request->unit[$key_item],
+                            'unit' => 1,
                         ]);
                     }
                 }

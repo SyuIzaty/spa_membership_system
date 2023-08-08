@@ -142,13 +142,12 @@ class BookingManagementController extends Controller
                 }
             }
     
-            if(isset($request->unit)){
-                foreach($request->unit as $key_item => $value_item){
+            if(isset($request->checks)){
+                foreach($request->checks as $key_item => $value_item){
                     if($value_item != null){
                         SpaceBookingItem::create([
                             'space_main_id' => $booking,
                             'item_id' => $key_item,
-                            'unit' => $request->unit[$key_item],
                         ]);
                     }
                 }

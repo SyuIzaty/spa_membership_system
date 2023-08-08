@@ -236,7 +236,7 @@
                   application_status: '{{ isset($bookings->application_status) ? $bookings->application_status : '' }}',
                   room_venue: '{{ isset($bookings->spaceVenue->name) ? $bookings->spaceVenue->name : '' }}',
                   remark: '{{ isset($bookings->spaceBookingMain->remark) ? $bookings->spaceBookingMain->remark : '' }}',
-                  requirement: '<ul>@foreach($bookings->spaceBookingItems as $item)<li>{{ $item->spaceItem->name }} <span class="text-danger">({{ $item->unit }} UNITS)</span></li>@endforeach</ul>',
+                  requirement: '<ul>@foreach($bookings->spaceBookingItems as $item)<li>{{ $item->spaceItem->name }}</li>@endforeach</ul>',
                   created_at: '{{ $bookings->created_at }}',
               },
           @endforeach
