@@ -148,11 +148,15 @@
                                                           <div class="alert alert-info" role="alert">
                                                             <strong>Note:</strong>
                                                             <ul>
-                                                              <li><strong>Lab B: </strong> PA System, LCD, Microphone (2)</li>
+                                                              <li><strong>Lab B: </strong> PA System, LCD(1), Microphone (2)</li>
                                                               <li><strong>Lab C: </strong> LCD, Microphone Portable</li>
                                                               <li><strong>Dewan Seminar: </strong> PA System, Microphone (2), LCD</li>
                                                               <li><strong>Discussion Room: </strong> TV</li>
                                                             </ul>
+                                                            <b>
+                                                              Sekiranya memerlukan tambahan peralatan atau mengubah susun atur ruang, boleh terus berurusan dengan pihak unit majlis
+                                                              INTEC sehingga program selesai. (urusan ini di antara pegawai yang menempah ruang perpustakaan dengan unit majlis sahaja)
+                                                            </b>
                                                           </div>
                                                           <div class="frame-wrap">
                                                             @php
