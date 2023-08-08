@@ -78,6 +78,7 @@
                                         <th>START DATE</th>
                                         <th>END DATE</th>
                                         <th>VENUE</th>
+                                        <th>APPLICATION</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr id="filterRow">
@@ -88,6 +89,7 @@
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Start Date"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search End Date"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Venue"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Application"></td>
                                       <th></th>
                                     </tr>
                                 </thead>
@@ -139,6 +141,10 @@
                                         <tr>
                                           <td>Remark</td>
                                           <td colspan="3"><span id="remark"></span></td>
+                                        </tr>
+                                        <tr>
+                                          <td>Application Date</td>
+                                          <td colspan="3"><span id="created_at"></span></td>
                                         </tr>
                                         <tr>
                                             <td>Application Status</td>
@@ -202,6 +208,7 @@
               { data: 'start_dates', name: 'spaceBookingMain.start_date'},
               { data: 'end_dates', name: 'spaceBookingMain.end_date'},
               { data: 'venues', name: 'spaceVenue.name'},
+              { data: 'created_at', name: 'created_at'},
               { data: 'action'},
           ],
       order: [[ 0, "asc" ]],
@@ -230,6 +237,7 @@
                   room_venue: '{{ isset($bookings->spaceVenue->name) ? $bookings->spaceVenue->name : '' }}',
                   remark: '{{ isset($bookings->spaceBookingMain->remark) ? $bookings->spaceBookingMain->remark : '' }}',
                   requirement: '<ul>@foreach($bookings->spaceBookingItems as $item)<li>{{ $item->spaceItem->name }} <span class="text-danger">({{ $item->unit }} UNITS)</span></li>@endforeach</ul>',
+                  created_at: '{{ $bookings->created_at }}',
               },
           @endforeach
       ],
@@ -245,6 +253,7 @@
           $('#room_venue').text(calEvent.room_venue);
           $('#remark').text(calEvent.remark);
           $('#requirement').html(calEvent.requirement);
+          $('#created_at').html(calEvent.created_at);
 
           $('#bookingModal').modal('show');
           $("#bookingModal").prependTo("body");

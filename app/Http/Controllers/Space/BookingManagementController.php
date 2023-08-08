@@ -60,6 +60,9 @@ class BookingManagementController extends Controller
                 ->addColumn('venues', function($venue){
                     return isset($venue->spaceVenue->name) ? $venue->spaceVenue->name : '';
                 })
+                ->editColumn('created_at', function ($venue) {
+                    return $venue->created_at;
+                })
                 ->addColumn('action', function($venue){
                     return
                     '

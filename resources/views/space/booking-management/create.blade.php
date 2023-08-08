@@ -168,7 +168,7 @@
                                                                     <label>{{ $items['name'] }}</label>
                                                                   </div>
                                                                   <div class="col-md-4">
-                                                                    <input type="number" class="form-control" name="unit[{{ $items['id'] }}]">
+                                                                    <input type="number" class="form-control" name="unit[{{ $items['id'] }}]" data-max="{{ $items['quantity'] }}" oninput="checkLimit(this)">
                                                                   </div>
                                                                   <div class="col-md-4">
                                                                     <span class="text-danger font-weight-bold">UNITS PER VENUE</span>
@@ -214,6 +214,17 @@
 @section('script')
 <script>
   $('#user_id').select2();
+  function checkLimit(ele)
+  {
+      var max = parseFloat($(ele).data('max'));
+      var input = parseFloat($(ele).val());
+
+      if(input > max)
+      {
+          alert('More than limit');
+          $(ele).val(0);
+      }
+  }
 </script>
 @endsection
 

@@ -185,7 +185,7 @@
                                                                     <label>{{ $items['name'] }}</label>
                                                                   </div>
                                                                   <div class="col-md-4">
-                                                                    <input type="text" class="form-control" name="unit[{{ $items['id'] }}]" value="{{ isset($main->spaceBookingItems->where('item_id',$items['id'])->first()->unit) ? $main->spaceBookingItems->where('item_id',$items['id'])->first()->unit : '' }}">
+                                                                    <input type="text" class="form-control" name="unit[{{ $items['id'] }}]" value="{{ isset($main->spaceBookingItems->where('item_id',$items['id'])->first()->unit) ? $main->spaceBookingItems->where('item_id',$items['id'])->first()->unit : '' }}" data-max="{{ $items['quantity'] }}" oninput="checkLimit(this)">
                                                                   </div>
                                                                   <div class="col-md-4">
                                                                     <span class="text-danger font-weight-bold">UNITS</span>
@@ -229,5 +229,18 @@
 @endsection
 
 @section('script')
+<script>
+    function checkLimit(ele)
+    {
+        var max = parseFloat($(ele).data('max'));
+        var input = parseFloat($(ele).val());
+
+        if(input > max)
+        {
+            alert('More than limit');
+            $(ele).val(0);
+        }
+    }
+</script>
 @endsection
 
