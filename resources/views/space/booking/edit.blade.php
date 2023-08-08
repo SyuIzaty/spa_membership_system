@@ -138,10 +138,10 @@
                                                                 <li><strong>Lab C: </strong> LCD, Microphone Portable</li>
                                                                 <li><strong>Dewan Seminar: </strong> PA System, Microphone (2), LCD</li>
                                                                 <li><strong>Discussion Room: </strong> TV</li>
+                                                                <li><strong>Gallery & Reading Room: </strong>TV. The use of PA systems, LCD, microphone can be requested at Unit Majlis INTEC</li>
                                                             </ul>
                                                             <b>
-                                                                Sekiranya memerlukan tambahan peralatan atau mengubah susun atur ruang, boleh terus berurusan dengan pihak unit majlis
-                                                                INTEC sehingga program selesai. (urusan ini di antara pegawai yang menempah ruang perpustakaan dengan unit majlis sahaja)
+                                                                Additional PA systems or changing the layout of the space can be requested at Unit Majlis INTEC.
                                                             </b>
                                                           </div>
                                                           <div class="frame-wrap">
@@ -185,15 +185,21 @@
                                                             @for ($i = 0; $i < $item_count; $i += $item_per_line)
                                                               <div class="row mb-2">
                                                                 @foreach(array_slice($item_array, $i, $item_per_line) as $items)
-                                                                  <div class="col-md-4">
-                                                                    <label>{{ $items['name'] }}</label>
-                                                                  </div>
-                                                                  <div class="col-md-4">
-                                                                    <input type="text" class="form-control" name="unit[{{ $items['id'] }}]" value="{{ isset($main->spaceBookingItems->where('item_id',$items['id'])->first()->unit) ? $main->spaceBookingItems->where('item_id',$items['id'])->first()->unit : '' }}" data-max="{{ $items['quantity'] }}" oninput="checkLimit(this)">
-                                                                  </div>
-                                                                  <div class="col-md-4">
-                                                                    <span class="text-danger font-weight-bold">UNITS</span>
-                                                                  </div>
+                                                                    <div class="col-md-4">
+                                                                        <label>
+                                                                            <input type="checkbox" name="checks[{{ $items['id'] }}]" onchange="toggleInput(this)" {{ isset($main->spaceBookingItems->where('item_id',$items['id'])->first()->unit) ? 'checked' : '' }}>
+                                                                        </label>
+                                                                        <label>{{ $items['name'] }}</label>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <input type="text" class="form-control" name="unit[{{ $items['id'] }}]"
+                                                                            value="{{ isset($main->spaceBookingItems->where('item_id',$items['id'])->first()->unit) ? $main->spaceBookingItems->where('item_id',$items['id'])->first()->unit : '' }}"
+                                                                            data-max="{{ $items['quantity'] }}" oninput="checkLimit(this)"
+                                                                            {{ isset($main->spaceBookingItems->where('item_id',$items['id'])->first()->unit) ? '' : 'disabled' }}>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <span class="text-danger font-weight-bold">UNITS PER VENUE</span>
+                                                                    </div>
                                                                 @endforeach
                                                               </div>
                                                             @endfor
@@ -245,6 +251,19 @@
             $(ele).val(0);
         }
     }
+
+    function toggleInput(checkbox) 
+    {
+        var inputField = checkbox.parentNode.parentNode.nextElementSibling.querySelector('input[type="text"]');
+        
+        if (checkbox.checked) {
+            inputField.removeAttribute('disabled');
+        } else {
+            inputField.setAttribute('disabled', 'disabled');
+            inputField.value = '';
+        }
+    }
+
 </script>
 @endsection
 

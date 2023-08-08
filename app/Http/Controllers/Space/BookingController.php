@@ -248,7 +248,15 @@ class BookingController extends Controller
 
 
             if(isset($request->unit)){
+                $item_all = SpaceBookingItem::where('space_main_id', $venue->space_main_id)->get();
                 foreach($request->unit as $key_item => $value_item){
+                    if($item_all->count() >= 1){
+                        $all_item = $item_all->whereNotIn('item_id',array_keys($request->unit));
+                        foreach($all_item as $alls){
+                            $alls->delete();
+                        }
+                    }
+
                     if($value_item != null){
                         SpaceBookingItem::updateOrCreate([
                             'space_main_id' => $venue->space_main_id,
@@ -256,6 +264,13 @@ class BookingController extends Controller
                         ],[
                             'unit' => $request->unit[$key_item],
                         ]);
+                    }
+                }
+            }else{
+                $unchecked_all = SpaceBookingItem::where('space_main_id', $venue->space_main_id)->get();
+                if($unchecked_all->count() >= 1){
+                    foreach($unchecked_all as $unchecked_alls){
+                        $unchecked_alls->delete();
                     }
                 }
             }

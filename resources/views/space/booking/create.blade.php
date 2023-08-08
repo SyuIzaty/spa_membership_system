@@ -185,10 +185,10 @@
                                                               <li><strong>Lab C: </strong> LCD, Microphone Portable</li>
                                                               <li><strong>Dewan Seminar: </strong> PA System, Microphone (2), LCD</li>
                                                               <li><strong>Discussion Room: </strong> TV</li>
+                                                              <li><strong>Gallery & Reading Room: </strong>TV. The use of PA systems, LCD, microphone can be requested at Unit Majlis INTEC</li>
                                                             </ul>
                                                             <b>
-                                                              Sekiranya memerlukan tambahan peralatan atau mengubah susun atur ruang, boleh terus berurusan dengan pihak unit majlis
-                                                              INTEC sehingga program selesai. (urusan ini di antara pegawai yang menempah ruang perpustakaan dengan unit majlis sahaja)
+                                                              Additional PA systems or changing the layout of the space can be requested at Unit Majlis INTEC.
                                                             </b>
                                                           </div>
                                                           <div class="frame-wrap">
@@ -202,10 +202,13 @@
                                                               <div class="row mb-2">
                                                                 @foreach(array_slice($item_array, $i, $item_per_line) as $items)
                                                                   <div class="col-md-4">
+                                                                    <label>
+                                                                        <input type="checkbox" name="checks[{{ $items['id'] }}]" onchange="toggleInput(this)">
+                                                                    </label>
                                                                     <label>{{ $items['name'] }}</label>
                                                                   </div>
-                                                                  <div class="col-md-4">
-                                                                    <input type="number" class="form-control" name="unit[{{ $items['id'] }}]" data-max="{{ $items['quantity'] }}" oninput="checkLimit(this)">
+                                                                  <div class="col-md-2">
+                                                                    <input type="number" class="form-control" name="unit[{{ $items['id'] }}]" data-max="{{ $items['quantity'] }}" oninput="checkLimit(this)" disabled>
                                                                   </div>
                                                                   <div class="col-md-4">
                                                                     <span class="text-danger font-weight-bold">UNITS PER VENUE</span>
@@ -361,15 +364,28 @@
 
   function checkLimit(ele)
   {
-      var max = parseFloat($(ele).data('max'));
-      var input = parseFloat($(ele).val());
+    var max = parseFloat($(ele).data('max'));
+    var input = parseFloat($(ele).val());
 
-      if(input > max)
-      {
-          alert('More than limit');
-          $(ele).val(0);
-      }
+    if(input > max)
+    {
+        alert('More than limit');
+        $(ele).val(0);
+    }
   }
+
+  function toggleInput(checkbox) 
+  {
+    var inputField = checkbox.parentNode.parentNode.nextElementSibling.querySelector('input[type="number"]');
+    
+    if (checkbox.checked) {
+        inputField.removeAttribute('disabled');
+    } else {
+        inputField.setAttribute('disabled', 'disabled');
+        inputField.value = '';
+    }
+  }
+
 </script>
 @endsection
 
