@@ -290,11 +290,15 @@ class SOPController extends Controller
     {
         $update = SopDetail::where('sop_lists_id', $request->id)->first();
 
-        $originalPurpose    = $update->purpose;
-        $originalProcedure  = $update->procedure;
-        $originalScope      = $update->scope;
-        $originalReference  = $update->reference;
-        $originalDefinition = $update->definition;
+        // $originalApprovedBy = $update->approved_by;
+        // $originalReviewedBy = $update->reviewed_by;
+        // $originalPreparedBy = $update->prepared_by;
+        // $originalSopCode    = $update->sop_code;
+        // $originalPurpose    = $update->purpose;
+        // $originalProcedure  = $update->procedure;
+        // $originalScope      = $update->scope;
+        // $originalReference  = $update->reference;
+        // $originalDefinition = $update->definition;
 
         $update->update([
             'sop_code'     => $request->code,
@@ -309,10 +313,65 @@ class SOPController extends Controller
             'updated_by'   => Auth::user()->id
         ]);
 
-        // Purpose, Scope, Reference, Definition
+        // SOP Code, Prepared By, Reviewed By, Approved By, Purpose, Scope, Reference, Definition, Procedure
+        if ($update->wasChanged('sop_code')) {
+            $reviewRecord = 'Made an amendment on the SOP Code';
+
+            SopReviewRecord::create([
+                'sop_lists_id'  => $request->id,
+                'review_record' => $reviewRecord,
+                'section'       => 'SOP Code',
+                'created_by'    => Auth::user()->id
+            ]);
+        }
+
+        if ($update->wasChanged('prepared_by')) {
+
+            // $nameOri = Staff::where('staff_id', $originalPreparedBy)->first();
+            // $nameNew = Staff::where('staff_id', $request->prepared_by)->first();
+
+            $reviewRecord = 'Made an amendment on the name of Prepared By';
+
+            SopReviewRecord::create([
+                'sop_lists_id'  => $request->id,
+                'review_record' => $reviewRecord,
+                'section'       => 'Prepared By',
+                'created_by'    => Auth::user()->id
+            ]);
+        }
+
+        if ($update->wasChanged('reviewed_by')) {
+
+            // $nameOri = Staff::where('staff_id', $originalReviewedBy)->first();
+            // $nameNew = Staff::where('staff_id', $request->reviewed_by)->first();
+
+            $reviewRecord = 'Made an amendment on the name of Reviewed By';
+
+            SopReviewRecord::create([
+                'sop_lists_id'  => $request->id,
+                'review_record' => $reviewRecord,
+                'section'       => 'Reviewed By',
+                'created_by'    => Auth::user()->id
+            ]);
+        }
+
+        if ($update->wasChanged('approved_by')) {
+
+            // $nameOri = Staff::where('staff_id', $originalApprovedBy)->first();
+            // $nameNew = Staff::where('staff_id', $request->approved_by)->first();
+
+            $reviewRecord = 'Made an amendment on the name of Approved By';
+
+            SopReviewRecord::create([
+                'sop_lists_id'  => $request->id,
+                'review_record' => $reviewRecord,
+                'section'       => 'Approved By',
+                'created_by'    => Auth::user()->id
+            ]);
+        }
 
         if ($update->wasChanged('purpose')) {
-            $reviewRecord = 'Purpose updated from "' . $originalPurpose . '" to "' . $request->purpose . '"';
+            $reviewRecord = 'Made an amendment on the Purpose';
 
             SopReviewRecord::create([
                 'sop_lists_id'  => $request->id,
@@ -323,7 +382,7 @@ class SOPController extends Controller
         }
 
         if ($update->wasChanged('scope')) {
-            $reviewRecord = 'Scope updated from "' . $originalScope . '" to "' . $request->scope . '"';
+            $reviewRecord = 'Made an amendment on the Scope';
 
             SopReviewRecord::create([
                 'sop_lists_id'  => $request->id,
@@ -334,7 +393,7 @@ class SOPController extends Controller
         }
 
         if ($update->wasChanged('reference')) {
-            $reviewRecord = 'Reference updated from "' . $originalReference . '" to "' . $request->reference . '"';
+            $reviewRecord = 'Made an amendment on the Reference';
 
             SopReviewRecord::create([
                 'sop_lists_id'  => $request->id,
@@ -345,7 +404,7 @@ class SOPController extends Controller
         }
 
         if ($update->wasChanged('definition')) {
-            $reviewRecord = 'Definition updated from "' . $originalDefinition . '" to "' . $request->definition . '"';
+            $reviewRecord = 'Made an amendment on the Definition';
 
             SopReviewRecord::create([
                 'sop_lists_id'  => $request->id,
@@ -356,7 +415,7 @@ class SOPController extends Controller
         }
 
         if ($update->wasChanged('procedure')) {
-            $reviewRecord = 'Procedure updated from "' . $originalProcedure . '" to "' . $request->procedure . '"';
+            $reviewRecord = 'Made an amendment on the Procedure';
 
             SopReviewRecord::create([
                 'sop_lists_id'  => $request->id,
@@ -455,6 +514,17 @@ class SOPController extends Controller
         $exist = SopFlowChart::where('sop_lists_id', $request->id)->whereNull('deleted_at')->first();
         // dd($exist->id);
         $exist->delete();
+
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        $reviewRecord = 'Flowchart changed by ' . $staff->staff_name;
+
+        SopReviewRecord::create([
+            'sop_lists_id'  => $request->id,
+            'review_record' => $reviewRecord,
+            'section'       => 'Flowchart',
+            'created_by'    => Auth::user()->id
+        ]);
 
         $file = $request->file('file');
         if (isset($file)) {

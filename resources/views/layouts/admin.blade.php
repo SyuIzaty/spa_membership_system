@@ -171,9 +171,13 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/department-lists" title="Department List"
-                                            data-filter-tags="department">
+                                        <a href="/sop-department" title="Department List" data-filter-tags="department">
                                             <span class="nav-link-text" data-i18n="nav.department">Department</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
+                                            <span class="nav-link-text" data-i18n="nav.owner">Owner</span>
                                         </a>
                                     </li>
                                 </ul>

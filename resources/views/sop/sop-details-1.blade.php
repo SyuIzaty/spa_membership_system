@@ -171,7 +171,7 @@
                                         ? ($sop->prepared_by == $s->staff_id
                                             ? 'selected'
                                             : '')
-                                        : (old('prepared_by') == $s->staff_id
+                                        : (Auth::user()->id == $s->staff_id
                                             ? 'selected'
                                             : '') }}>
                                     {{ $s->staff_name }}
@@ -263,7 +263,7 @@
                             <span class="input-group-text" style="background-color:#f3f3f37a;">Definitions
                             </span>
                         </div>
-                        <textarea value="" class="form-control summernoteDef" id="definition" name="definition">{{ isset($sop) ? $sop->definition : old('definition') }}</textarea>
+                        <textarea value="" class="form-control summernoteDef" id="definition" name="definition" required>{{ isset($sop) ? $sop->definition : old('definition') }}</textarea>
                     </div>
                 </div>
                 <div class="row mt-2">

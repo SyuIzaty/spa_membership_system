@@ -27,17 +27,21 @@
                                     <a data-toggle="tab" style="background-color:#95BFBC;" class="nav-link" href="#one"
                                         role="tab">SOP Details</a>
                                 </li>
-                                <li class="nav-item mr-2" style="background-color:#B99FC9;">
-                                    <a data-toggle="tab" style="background-color:#B99FC9;" class="nav-link" href="#two"
-                                        role="tab">Review Record</a>
-                                </li>
                                 <li class="nav-item mr-2" style="background-color:#EEE2C7;">
-                                    <a data-toggle="tab" style="background-color:#EEE2C7;" class="nav-link" href="#three"
+                                    <a data-toggle="tab" style="background-color:#EEE2C7;" class="nav-link" href="#two"
                                         role="tab">Forms</a>
                                 </li>
                                 <li class="nav-item mr-2" style="background-color:#EBCEDE;">
-                                    <a data-toggle="tab" style="background-color:#EBCEDE;" class="nav-link" href="#four"
+                                    <a data-toggle="tab" style="background-color:#EBCEDE;" class="nav-link" href="#three"
                                         role="tab">Work Flow</a>
+                                </li>
+                                <li class="nav-item mr-2" style="background-color:#B99FC9;">
+                                    <a data-toggle="tab" style="background-color:#B99FC9;" class="nav-link" href="#four"
+                                        role="tab">Review Record</a>
+                                </li>
+                                <li class="nav-item mr-2" style="background-color:#c99f9f;">
+                                    <a data-toggle="tab" style="background-color:#c99f9f;" class="nav-link" href="#five"
+                                        role="tab">Verify SOP</a>
                                 </li>
                             </ul>
                             <div class="row">
@@ -62,19 +66,6 @@
                                         @include('sop.sop-details-1')
                                     </div>
                                     <div class="tab-pane" id="two" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
-                                        <div class="row">
-                                            <div class="col-md-12 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-header">Review Record</div>
-                                                    <div class="card-body">
-                                                        @include('sop.sop-review')
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="three" role="tabpanel">
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
@@ -115,7 +106,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="four" role="tabpanel">
+                                    <div class="tab-pane" id="three" role="tabpanel">
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
@@ -123,6 +114,32 @@
                                                     <div class="card-header">Work Flow (Flow Chart)</div>
                                                     <div class="card-body">
                                                         @include('sop.sop-work-flow')
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="four" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-header">Review Record</div>
+                                                    <div class="card-body">
+                                                        @include('sop.sop-review')
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="five" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-header">Verify SOP</div>
+                                                    <div class="card-body">
+                                                        @include('sop.sop-verify')
                                                     </div>
                                                 </div>
                                             </div>
