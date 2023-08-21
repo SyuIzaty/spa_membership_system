@@ -999,8 +999,7 @@
                                 </ul>
                             </li>
                         @endcan
-                        @canany(['Manage Booking', 'Apply Booking'])
-                            <li class="nav-title">BOOKING</li>
+                        <li class="nav-title">BOOKING</li>
                             @canany(['Manage Booking'])
                                 <li class="open">
                                     <a href="#" title="List" data-filter-tags="list">
@@ -1037,22 +1036,19 @@
                                     <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
                                 </a>
                                 <ul>
-                                    @canany(['Manage Booking', 'Apply Booking'])
-                                        <li>
-                                            <a href="/space/booking/create" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Application</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/space/booking" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">List of Application</span>
-                                            </a>
-                                        </li>
-                                    @endcanany
+                                    <li>
+                                        <a href="/space/booking/create" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Application</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/space/booking" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">List of Application</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
-                            </li>
-                        @endcanany
+                        </li>
                         @canany(['Manage Arkib', 'View Arkib'])
                             <li class="nav-title">LIBRARY</li>
                             <li class="open">
