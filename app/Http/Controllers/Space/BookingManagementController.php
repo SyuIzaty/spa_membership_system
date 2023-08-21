@@ -124,6 +124,7 @@ class BookingManagementController extends Controller
                 'user_phone' => $request->phone_number,
                 'user_office' => $request->office_no,
                 'purpose' => $request->purpose,
+                'no_user' => $request->no_user,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'start_time' => $request->start_time,

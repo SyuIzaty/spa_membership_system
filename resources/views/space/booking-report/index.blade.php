@@ -55,6 +55,8 @@
                                             <th>ID</th>
                                             <th>NAME</th>
                                             <th>CATEGORY</th>
+                                            <th>PURPOSE</th>
+                                            <th>NUMBER OF USER</th>
                                             <th>VENUE</th>
                                             <th>START DATE</th>
                                             <th>END DATE</th>
@@ -111,6 +113,8 @@
                     { data: 'user_id', name: 'spaceBookingMain.staff_id' },
                     { data: 'user_name', name: 'user_name' },
                     { data: 'user_category', name: 'user_category' },
+                    { data: 'user_purpose', name: 'spaceBookingMain.purpose' },
+                    { data: 'user_no', name: 'spaceBookingMain.no_user' },
                     { data: 'venue', name: 'spaceVenue.name' },
                     { data: 'user_start', name: 'spaceBookingMain.start_date' },
                     { data: 'user_end', name: 'spaceBookingMain.end_date' },

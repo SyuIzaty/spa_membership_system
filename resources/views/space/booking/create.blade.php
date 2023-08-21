@@ -121,6 +121,14 @@
                                                 </tr>
                                                 <tr>
                                                     <div class="form-group">
+                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Number of User :</label></td>
+                                                        <td colspan="6">
+                                                          <input type="number" class="form-control" name="no_user">
+                                                        </td>
+                                                    </div>
+                                                </tr>
+                                                <tr>
+                                                    <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Start Date :</label></td>
                                                         <td colspan="3">
                                                             <input type="date" class="form-control" id="start_date" name="start_date">

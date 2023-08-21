@@ -82,6 +82,14 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Purpose :</label></td>
                                                         <td colspan="6">
+                                                          <input type="number" class="form-control" name="no_user">
+                                                        </td>
+                                                    </div>
+                                                </tr>
+                                                <tr>
+                                                    <div class="form-group">
+                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Number of User :</label></td>
+                                                        <td colspan="6">
                                                           <input type="text" class="form-control" name="purpose">
                                                         </td>
                                                     </div>

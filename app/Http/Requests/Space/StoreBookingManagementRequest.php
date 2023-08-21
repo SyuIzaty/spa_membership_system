@@ -30,6 +30,7 @@ class StoreBookingManagementRequest extends FormRequest
     {
         return [
             'purpose' => 'required|max:200',
+            'no_user' => 'required',
             'start_date' => 'required',
             'end_date' => 'required|date|after_or_equal:start_date',
             'start_time' => 'required|before_or_equal:end_time',

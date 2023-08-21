@@ -115,6 +115,10 @@
                                             <td colspan="3"><span id="purpose"></span></td>
                                         </tr>
                                         <tr>
+                                            <td>Number of User</td>
+                                            <td colspan="3"><span id="no_user"></span></td>
+                                        </tr>
+                                        <tr>
                                             <td>Request by</td>
                                             <td colspan="3"><span id="user"></span></td>
                                         </tr>
@@ -226,6 +230,7 @@
                   start: '{{ $bookings->spaceBookingMain->start_date }}',
                   end: moment('{{ $bookings->spaceBookingMain->end_date }}').add(1, 'day').format('YYYY-MM-DD'),
                   purpose: '{{ $bookings->spaceBookingMain->purpose }}',
+                  no_user: '{{ $bookings->spaceBookingMain->no_user }}',
                   start_time: '{{ $bookings->spaceBookingMain->start_time }}',
                   end_time: '{{ $bookings->spaceBookingMain->end_time }}',
                   color: '{{ isset($bookings->spaceStatus->color) ? $bookings->spaceStatus->color : '' }}',
@@ -244,6 +249,7 @@
       eventClick: function(calEvent, jsEvent, view) {
           $('#booking_id').val(calEvent.spacebookingId);
           $('#purpose').text(calEvent.purpose);
+          $('#no_user').text(calEvent.no_user);
           $('#end_date').text(moment(calEvent.check_out).format('YYYY-MM-DD'));
           $('#start_date').text(calEvent.start.format('YYYY-MM-DD'));
           $('#start_time').text(moment(calEvent.start_time, 'HH:mm:ss').format('HH:mm:ss'));

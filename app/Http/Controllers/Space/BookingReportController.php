@@ -68,6 +68,14 @@ class BookingReportController extends Controller
             {
                 return isset($venue->spaceBookingMain->user->category) ? ($venue->spaceBookingMain->user->category) : '';
             })
+            ->addColumn('user_no',function($venue)
+            {
+                return isset($venue->spaceBookingMain->no_user) ? ($venue->spaceBookingMain->no_user) : '';
+            })
+            ->addColumn('user_purpose',function($venue)
+            {
+                return isset($venue->spaceBookingMain->purpose) ? ($venue->spaceBookingMain->purpose) : '';
+            })
             ->addColumn('venue',function($venue)
             {
                 return isset($venue->spaceVenue->name) ? Str::title($venue->spaceVenue->name) : '';

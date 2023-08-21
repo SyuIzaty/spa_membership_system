@@ -9,7 +9,7 @@ class SpaceBookingMain extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['staff_id','user_phone','user_office','purpose','start_date','end_date','start_time','end_time'];
+    protected $fillable = ['staff_id','user_phone','user_office','purpose','no_user','start_date','end_date','start_time','end_time'];
 
     public function spaceBookingVenues()
     {
