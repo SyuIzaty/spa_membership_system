@@ -77,6 +77,10 @@
       <td style="width:75%" colspan="3">{{ isset($booking->spaceBookingMain->purpose) ? $booking->spaceBookingMain->purpose : '' }}</td>
     </tr>
     <tr>
+      <td style="width:25%">NO OF USER</td>
+      <td style="width:75%" colspan="3">{{ isset($booking->spaceBookingMain->no_user) ? $booking->spaceBookingMain->no_user : '-' }}</td>
+    </tr>
+    <tr>
       <td style="width:25%">REMARK</td>
       <td style="width:75%" colspan="3">{{ isset($booking->spaceBookingMain->remark) ? $booking->spaceBookingMain->remark : '' }}</td>
     </tr>
