@@ -63,9 +63,9 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="mt-2 mb-2 text-danger">
-                                    Total entries: <span class="total_record"></span>
-                                </div>
+                                <a href="#" data-target="#add" data-toggle="modal"
+                                    class="btn btn-primary waves-effect waves-themed float-right mt-2"><i
+                                        class="fal fa-plus-square"></i> Add SOP Title</a>
                             </div>
                         </div>
                     </div>
@@ -127,6 +127,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="form-label">Cross Department (if any)</label>
+                            <select class="form-control departments" id="crossdept" name="crossdept[]" multiple>
+                                @foreach ($department as $d)
+                                    <option value="{{ $d->id }}">{{ $d->department_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label class="form-label">Status</label>
                             <select class="custom-select form-control" name="status" id="status" required>
                                 <option value="Y">Active</option>
@@ -178,6 +188,17 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="form-label">Cross Department (if any)</label>
+                            <select class="form-control departments" id="crossDept" name="crossdept[]" multiple>
+                                @foreach ($department as $d)
+                                    <option value="{{ $d->id }}">
+                                        {{ $d->department_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label class="form-label">Status</label>
                             <select class="custom-select form-control" name="status" id="status" required>
                                 <option value="Y">Active</option>
@@ -212,7 +233,19 @@
             //     dropdownParent: ('#edit')
             // });
 
-            $('#department').select2();
+            $('#add').on('shown.bs.modal', function() {
+                $('.departments').select2({
+                    dropdownParent: $('#add')
+                });
+            });
+
+            $('#edit').on('shown.bs.modal', function() {
+                $('.departments').select2({
+                    dropdownParent: $('#edit')
+                });
+            });
+
+            // $('#department').select2();
 
             $('#edit').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget)
@@ -224,6 +257,7 @@
                 $('.modal-body #id').val(id);
                 $('.modal-body #department').val(department);
                 $('.modal-body #title').val(title);
+                $('.modal-body #crossDept').val(crossDept);
                 $('.modal-body #status').val(status);
             });
 

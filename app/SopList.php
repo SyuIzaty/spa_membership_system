@@ -20,5 +20,8 @@ class SopList extends Model
         return $this->hasMany(SopCrossDepartment::class, 'sop_list_id', 'id');
     }
 
-
+    public function listStatus()
+    {
+        return $this->hasOne(SopStatus::class, 'id', 'status');
+    }
 }

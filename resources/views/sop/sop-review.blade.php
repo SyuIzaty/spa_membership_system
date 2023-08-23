@@ -20,7 +20,7 @@
                     <tr>
                         <td class="text-center">{{ $i }}</td>
                         <td class="text-center">
-                            {{ isset($sr->created_at) ? date(' j F Y h:i:s A', strtotime($sr->created_at)) : '' }}</td>
+                            {{ isset($sr->created_at) ? date(' j F Y', strtotime($sr->created_at)) : '' }}</td>
                         <td>{{ isset($sr->staff->staff_name) ? $sr->staff->staff_name : '' }}</td>
                         <td class="text-center">{{ isset($sr->section) ? $sr->section : '' }}</td>
                         <td class="text-center">{{ isset($sr->review_record) ? $sr->review_record : '' }}</td>

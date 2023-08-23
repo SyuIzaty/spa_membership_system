@@ -39,8 +39,12 @@
                                     <a data-toggle="tab" style="background-color:#B99FC9;" class="nav-link" href="#four"
                                         role="tab">Review Record</a>
                                 </li>
+                                <li class="nav-item mr-2" style="background-color:#9fc6c9;">
+                                    <a data-toggle="tab" style="background-color:#9fc6c9;" class="nav-link" href="#five"
+                                        role="tab">Generate SOP</a>
+                                </li>
                                 <li class="nav-item mr-2" style="background-color:#c99f9f;">
-                                    <a data-toggle="tab" style="background-color:#c99f9f;" class="nav-link" href="#five"
+                                    <a data-toggle="tab" style="background-color:#c99f9f;" class="nav-link" href="#six"
                                         role="tab">Verify SOP</a>
                                 </li>
                             </ul>
@@ -137,6 +141,19 @@
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="card">
+                                                    <div class="card-header">Generate SOP</div>
+                                                    <div class="card-body">
+                                                        @include('sop.sop-verify')
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="six" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="card">
                                                     <div class="card-header">Verify SOP</div>
                                                     <div class="card-body">
                                                         @include('sop.sop-verify')
@@ -158,7 +175,17 @@
     <script>
         Dropzone.autoDiscover = false;
 
+        function Print(button) {
+            var url = $(button).data('page');
+            var printWindow = window.open('{{ url('/') }}' + url + '', 'Print',
+                'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+            printWindow.addEventListener('load', function() {
+                printWindow.print();
+            }, true);
+        }
+
         $(document).ready(function() {
+
             $('#prepared_by,#reviewed_by,#approved_by').select2();
 
             $("#dropzone").dropzone({

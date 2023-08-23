@@ -90,6 +90,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-sop-department', 'SOPController@SOPDepartmentList');
     Route::get('/sop-owner', 'SOPController@owner');
     Route::post('/get-sop-owner', 'SOPController@ownerList');
+    Route::get('/generate-PDF/{id}', 'SOPController@generatePDF');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

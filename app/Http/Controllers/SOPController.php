@@ -9,11 +9,12 @@ use App\SopForm;
 use App\SopList;
 use App\SopDetail;
 use Carbon\Carbon;
+use App\SopFlowChart;
 use App\SopDepartment;
 use App\SopReviewRecord;
+use App\SopCrossDepartment;
 use Illuminate\Http\Request;
 use App\Rules\CodeFormatRule;
-use App\SopFlowChart;
 use Illuminate\Support\Facades\Auth;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Storage;
@@ -44,11 +45,27 @@ class SOPController extends Controller
 
             ->addColumn('cross_department', function ($data) {
                 $all = '';
-                foreach ($data->getCD as $c) {
-                    $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
-                    // $all .= isset($c->crossDepartment->department_name) && $c->crossDepartment->department_name !== '' ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+
+                $check = SopCrossDepartment::where('sop_list_id', $data->id);
+
+                if ($check->exists()) {
+                    foreach ($data->getCD as $c) {
+                        $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                    }
+                    return $all;
+                } else {
+                    return 'N/A';
                 }
-                return $all;
+            })
+
+            ->addColumn('status', function ($data) {
+                if ($data->status == '1') {
+                    return '<span style="color:red;"><b>'.$data->listStatus->name.'</b></span>';
+                } elseif ($data->status == '2') {
+                    return '<span style="color:green;"><b>'.$data->listStatus->name.'</b></span>';
+                } else {
+                    return '<span style="color:orange;"><b>'.$data->listStatus->name.'</b></span>';
+                }
             })
 
             ->addColumn('action', function ($data) {
@@ -60,7 +77,7 @@ class SOPController extends Controller
             })
 
             ->addIndexColumn()
-            ->rawColumns(['action','log','cross_department'])
+            ->rawColumns(['status','action','log','cross_department'])
             ->make(true);
     }
 
@@ -75,6 +92,7 @@ class SOPController extends Controller
         $data = SopList::whereRaw($cond)->where('active', 'Y');
 
         return datatables()::of($data)
+
         ->addColumn('sop', function ($data) {
             return isset($data->sop) ? ($data->sop) : 'N/A';
         })
@@ -85,10 +103,27 @@ class SOPController extends Controller
 
         ->addColumn('cross_department', function ($data) {
             $all = '';
-            foreach ($data->getCD as $c) {
-                $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+
+            $check = SopCrossDepartment::where('sop_list_id', $data->id);
+
+            if ($check->exists()) {
+                foreach ($data->getCD as $c) {
+                    $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                }
+                return $all;
+            } else {
+                return 'N/A';
             }
-            return $all;
+        })
+
+        ->addColumn('status', function ($data) {
+            if ($data->status == '1') {
+                return '<span style="color:red;"><b>'.$data->listStatus->name.'</b></span>';
+            } elseif ($data->status == '2') {
+                return '<span style="color:green;"><b>'.$data->listStatus->name.'</b></span>';
+            } else {
+                return '<span style="color:orange;"><b>'.$data->listStatus->name.'</b></span>';
+            }
         })
 
         ->addColumn('action', function ($data) {
@@ -100,7 +135,7 @@ class SOPController extends Controller
         })
 
         ->addIndexColumn()
-        ->rawColumns(['action','log','cross_department'])
+        ->rawColumns(['status','action','log','cross_department'])
         ->make(true);
     }
 
@@ -142,9 +177,12 @@ class SOPController extends Controller
             })
 
             ->addColumn('action', function ($data) {
+
+                $crossDept = SopCrossDepartment::where('sop_list_id', $data->id)->get();
+
                 return '<a href="#" data-target="#edit" data-toggle="modal"
                 data-id="'.$data->id.'" data-department="'.$data->department_id.'"
-                data-title="'.$data->sop.'" data-status="'.$data->active.'"
+                data-title="'.$data->sop.'" data-status="'.$data->active.'" data-crossDept="'.$crossDept.'"
                 class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
@@ -216,12 +254,26 @@ class SOPController extends Controller
 
     public function addSOPTitle(Request $request)
     {
-        SopList::create([
+        $sop = SopList::create([
             'sop'           => $request->title,
             'department_id' => $request->department,
             'active'        => $request->status,
+            'status'        => '1',
             'created_by'    => Auth::user()->id
         ]);
+
+        if ($request->crossdept) {
+            foreach($request->crossdept as $key => $value) {
+                SopCrossDepartment::create([
+                    'sop_list_id'   => $sop->id,
+                    'dept_id'       => $request->department,
+                    'cross_dept_id' => $value,
+                    'department_id' => $request->id,
+                    'created_by'    => Auth::user()->id,
+                    'updated_by'    => Auth::user()->id
+                ]);
+            }
+        }
 
         return redirect()->back()->with('message', 'Successfully Added!');
     }
@@ -236,6 +288,29 @@ class SOPController extends Controller
             'updated_by'    => Auth::user()->id
         ]);
 
+        if ($request->crossdept) {
+
+            $crossDept = SopCrossDepartment::where('sop_list_id', $request->id)->get();
+
+            foreach ($crossDept as $cd) {
+                foreach($request->crossdept as $key => $value) {
+                    if ($cd->cross_dept_id !=  $value) {
+                        $cd->delete();
+
+                        SopCrossDepartment::create([
+                            'sop_list_id'   => $request->id,
+                            'dept_id'       => $request->department,
+                            'cross_dept_id' => $value,
+                            'department_id' => $request->id,
+                            'created_by'    => Auth::user()->id,
+                            'updated_by'    => Auth::user()->id
+                        ]);
+                    }
+                }
+            }
+
+        }
+
         return redirect()->back()->with('message', 'Successfully Updated!');
     }
 
@@ -249,6 +324,7 @@ class SOPController extends Controller
         $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
         $sopForm    = SopForm::where('sop_lists_id', $id)->get();
         $workFlow   = SopFlowChart::where('sop_lists_id', $id)->first();
+
         return view('sop.sop-details', compact('data', 'dateNow', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
     }
 
@@ -281,6 +357,12 @@ class SOPController extends Controller
             'definition'   => $request->definition,
             'procedure'    => $request->procedure,
             'created_by'   => Auth::user()->id
+        ]);
+
+        $sopList = SopList::where('id', $request->id)->first();
+
+        $sopList->update([
+            'status'       => '2',
         ]);
 
         return redirect()->back()->with('message', 'Successfully Saved!');
@@ -540,5 +622,20 @@ class SOPController extends Controller
         ]);
         }
         return response()->json(['success'=>$fileName]);
+    }
+
+    public function generatePDF($id)
+    {
+        $data       = SopList::where('id', $id)->first();
+        $dateNow    = date(' j F Y ', strtotime(Carbon::now()->toDateTimeString()));
+        $date       = Carbon::now();
+        $staff      = Staff::get();
+        $department = SopDepartment::get();
+        $sop        = SopDetail::where('sop_lists_id', $id)->first();
+        $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
+        $sopForm    = SopForm::where('sop_lists_id', $id)->get();
+        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->first();
+
+        return view('sop.sop-pdf', compact('data', 'dateNow', 'date', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
     }
 }
