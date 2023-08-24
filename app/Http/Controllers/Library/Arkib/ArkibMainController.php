@@ -244,7 +244,7 @@ class ArkibMainController extends Controller
             'department_code' => 'required',
             'file_classification_no' => 'required',
             'title' => 'required|max:100',
-            'description' => 'required|max:100',
+            'description' => 'required',
             'status' => 'required',
             'arkib_attachment.*' => 'mimes:pdf'
         ]);
