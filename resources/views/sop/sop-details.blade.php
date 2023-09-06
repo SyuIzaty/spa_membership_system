@@ -1,316 +1,298 @@
-@extends('layouts.admin')
+@if (isset($sop))
+    {!! Form::model($sop, ['route' => ['sop.updateDetails', $sop->id], 'method' => 'put']) !!}
+@else
+    {!! Form::open(['route' => 'sop.storeDetails']) !!}
+@endif
 
-@section('content')
-    <main id="js-page-content" role="main" class="page-content">
-        <div class="subheader">
-            <h1 class="subheader-title">
-                <i class='subheader-icon ni ni-briefcase'></i> SOP Management
-            </h1>
-        </div>
-        <div class="row">
-            <div class="col-xl-12">
-                <div id="panel-1" class="panel">
-                    <div class="panel-hdr">
-                        <div class="panel-toolbar">
-                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip"
-                                data-offset="0,10" data-original-title="Collapse"></button>
-                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
-                                data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
-                                data-original-title="Close"></button>
-                        </div>
+<input type="hidden" value="{{ $id }}" name="id">
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-header" style="background-color:#ede9e9;">Cover/Front
+                Page</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="text-center" style="background-color:#95BFBC;">
+                                    <th>Department Name</th>
+                                    <th>Department Code</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($department as $d)
+                                    <tr>
+                                        <td class="text-left">
+                                            {{ $d->department_name }}</td>
+                                        <td class="text-center">
+                                            {{ $d->abbreviation }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="panel-container show">
-                        <div class="panel-content">
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item mr-2" style="background-color:#95BFBC;">
-                                    <a data-toggle="tab" style="background-color:#95BFBC;" class="nav-link" href="#one"
-                                        role="tab">SOP Details</a>
-                                </li>
-                                <li class="nav-item mr-2" style="background-color:#EEE2C7;">
-                                    <a data-toggle="tab" style="background-color:#EEE2C7;" class="nav-link" href="#two"
-                                        role="tab">Forms</a>
-                                </li>
-                                <li class="nav-item mr-2" style="background-color:#EBCEDE;">
-                                    <a data-toggle="tab" style="background-color:#EBCEDE;" class="nav-link" href="#three"
-                                        role="tab">Work Flow</a>
-                                </li>
-                                <li class="nav-item mr-2" style="background-color:#B99FC9;">
-                                    <a data-toggle="tab" style="background-color:#B99FC9;" class="nav-link" href="#four"
-                                        role="tab">Review Record</a>
-                                </li>
-                                <li class="nav-item mr-2" style="background-color:#9fc6c9;">
-                                    <a data-toggle="tab" style="background-color:#9fc6c9;" class="nav-link" href="#five"
-                                        role="tab">Generate SOP</a>
-                                </li>
-                                <li class="nav-item mr-2" style="background-color:#c99f9f;">
-                                    <a data-toggle="tab" style="background-color:#c99f9f;" class="nav-link" href="#six"
-                                        role="tab">Verify SOP</a>
-                                </li>
-                            </ul>
-                            <div class="row">
-                                <div class="tab-content col-md-12">
-                                    @if (session()->has('message'))
-                                        <div class="alert alert-success">
-                                            {{ session()->get('message') }}
-                                        </div>
-                                    @endif
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            <strong>Whoops!</strong> There were some problems with your
-                                            input.<br><br>
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
-                                    <div class="tab-pane active" id="one" role="tabpanel">
-                                        @include('sop.sop-details-1')
-                                    </div>
-                                    <div class="tab-pane" id="two" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
-                                        <div class="row">
-                                            <div class="col-md-12 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-header">Forms</div>
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="form-group col-md-12">
-                                                                <table class="table table-bordered">
-                                                                    <tbody>
-                                                                        <tr class="card-header text-center">
-                                                                            <th style="background-color:#EEE2C7; vertical-align: middle;"
-                                                                                rowspan="2">Forms
-                                                                                Code</th>
-                                                                            <td class="text-center"
-                                                                                style="background-color:#ffffff;">
-                                                                                (Work Process)/(INTEC Code)/(Department
-                                                                                Code)/(Unit Code)/(No. of Documents)-(No. of
-                                                                                Forms)
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="text-center">
-                                                                                i.e: <b>WP/INTEC/QA/RC/01-01</b>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="form-group col-md-12">
-                                                                @include('sop.sop-forms')
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="three" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
-                                        <div class="row">
-                                            <div class="col-md-12 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-header">Work Flow (Flow Chart)</div>
-                                                    <div class="card-body">
-                                                        @include('sop.sop-work-flow')
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="four" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
-                                        <div class="row">
-                                            <div class="col-md-12 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-header">Review Record</div>
-                                                    <div class="card-body">
-                                                        @include('sop.sop-review')
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="five" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
-                                        <div class="row">
-                                            <div class="col-md-12 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-header">Generate SOP</div>
-                                                    <div class="card-body">
-                                                        @include('sop.sop-verify')
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="six" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
-                                        <div class="row">
-                                            <div class="col-md-12 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-header">Verify SOP</div>
-                                                    <div class="card-body">
-                                                        @include('sop.sop-verify')
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="form-group col-md-6">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr class="card-header text-center">
+                                    <th style="background-color:#95BFBC; vertical-align: middle;" rowspan="2">SOP
+                                        Code</th>
+                                    <td class="text-center" style="background-color:#ffffff;">
+                                        (Work Process)/(INTEC Code)/(Department
+                                        Code)/(Unit Code)/(No. of Documents)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        i.e: <b>WP/INTEC/QA/RC/01</b>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr class="card-header text-center">
+                                    <th style="background-color:#95BFBC; vertical-align: middle;" rowspan="9">
+                                        Reminder</th>
+                                    <td class="text-left" style="background-color:#ffffff;">
+                                        Each of SOPs must have the following details
+                                        on:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Purpose</b> (to briefly explain
+                                        the
+                                        purpose of SOP).</td>
+                                <tr>
+                                    <td><b>Scope</b> (who would be affected/
+                                        involved with the SOP).</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Reference</b> (any references
+                                        would be
+                                        used in the SOP process).</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Definition</b> (an abbreviation
+                                        formed
+                                        from the initial letters used in the
+                                        SOP).</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Procedure</b> (main process as
+                                        stated in
+                                        the flow-chart need to briefly
+                                        explain about the process).</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Review Record</b> in <b>Part
+                                            B</b> (information to be
+                                        inserted if there is review,
+                                        revision or amendment been done with
+                                        the SOP).</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Forms</b> in <b>Part B</b> (to
+                                        list-down all the related forms used
+                                        in the SOP).</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Work Flow</b> in <b>Part C</b>
+                                        (to list/ draw flow-chart of the
+                                        process involved).</td>
+                                </tr>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr class="card-header text-center">
+                                    <th style="background-color:#95BFBC; vertical-align: middle;" rowspan="9">
+                                        Reference</th>
+                                    <td class="text-left" style="background-color:#ffffff;">
+                                        <a href="/sop-reference" title="Reference" data-filter-tags="Reference"
+                                            target="_blank" style="text-decoration: none!important">
+                                            <i class="fal fa-info-circle"></i>
+                                            <span class="nav-link-text" data-i18n="nav.SOP-Reference">SOP
+                                                Sample</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+
+                <div class="row mt-2">
+                    <div class="form-group col-md-12">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">SOP Title
+                            </span>
                         </div>
+                        <input type="text" id="title" name="title" value="{{ $data->sop }}"
+                            class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="form-group col-md-6">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">Department
+                            </span>
+                        </div>
+                        <input type="text" id="department" name="department"
+                            value="{{ $data->department->department_name }}" class="form-control" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div>
+                            <span class="input-group-text">SOP Code
+                            </span>
+                        </div>
+                        <input type="text" id="code" name="code"
+                            value="{{ isset($sop) ? $sop->sop_code : old('code') }}" class="form-control"
+                            placeholder="Please key-in SOP Code" required>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="form-group col-md-4">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">Prepared
+                                By</span>
+                        </div>
+                        <select class="form-control" name="prepared_by" id="prepared_by" required>
+                            <option disabled selected>Choose Staff</option>
+                            @foreach ($staff as $s)
+                                <option value="{{ $s->staff_id }}"
+                                    {{ isset($sop)
+                                        ? ($sop->prepared_by == $s->staff_id
+                                            ? 'selected'
+                                            : '')
+                                        : (Auth::user()->id == $s->staff_id
+                                            ? 'selected'
+                                            : '') }}>
+                                    {{ $s->staff_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">Reviewed
+                                By</span>
+                        </div>
+                        <select class="form-control" name="reviewed_by" id="reviewed_by" required>
+                            <option disabled selected>Choose Staff</option>
+                            @foreach ($staff as $s)
+                                <option value="{{ $s->staff_id }}"
+                                    {{ isset($sop)
+                                        ? ($sop->reviewed_by == $s->staff_id
+                                            ? 'selected'
+                                            : '')
+                                        : (old('reviewed_by') == $s->staff_id
+                                            ? 'selected'
+                                            : '') }}>
+                                    {{ $s->staff_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">Approved
+                                By</span>
+                        </div>
+                        <select class="form-control" name="approved_by" id="approved_by" required>
+                            <option disabled selected>Choose Staff</option>
+                            @foreach ($staff as $s)
+                                <option value="{{ $s->staff_id }}"
+                                    {{ isset($sop)
+                                        ? ($sop->approved_by == $s->staff_id
+                                            ? 'selected'
+                                            : '')
+                                        : (old('approved_by') == $s->staff_id
+                                            ? 'selected'
+                                            : '') }}>
+                                    {{ $s->staff_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
-@endsection
-@section('script')
-    <script>
-        Dropzone.autoDiscover = false;
+    </div>
+</div>
 
-        function Print(button) {
-            var url = $(button).data('page');
-            var printWindow = window.open('{{ url('/') }}' + url + '', 'Print',
-                'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
-            printWindow.addEventListener('load', function() {
-                printWindow.print();
-            }, true);
-        }
-
-        $(document).ready(function() {
-
-            $('#prepared_by,#reviewed_by,#approved_by').select2();
-
-            $("#dropzone").dropzone({
-                addRemoveLinks: true,
-                maxFiles: 1, //change limit as per your requirements
-                dictMaxFilesExceeded: "Maximum upload limit reached",
-                acceptedFiles: "image/jpeg,image/png,image/jpg",
-                init: function() {
-                    this.on("queuecomplete", function(file) {
-                        location.reload();
-                    });
-
-                    // Add event listener to display alert message for invalid file types
-                    this.on("addedfile", function(file) {
-                        if (!file.type.match(/image\/(jpeg|png|jpg)/)) {
-                            this.removeFile(file); // Remove the file from the queue
-                            alert("You can only upload JPG, JPEG, or PNG images.");
-                        }
-                    });
-                },
-            });
-
-            $("#dropzone2").dropzone({
-                addRemoveLinks: true,
-                maxFiles: 1, //change limit as per your requirements
-                dictMaxFilesExceeded: "Maximum upload limit reached",
-                acceptedFiles: "image/jpeg,image/png,image/jpg",
-                init: function() {
-                    this.on("queuecomplete", function(file) {
-                        location.reload();
-                    });
-
-                    // Add event listener to display alert message for invalid file types
-                    this.on("addedfile", function(file) {
-                        if (!file.type.match(/image\/(jpeg|png|jpg)/)) {
-                            this.removeFile(file); // Remove the file from the queue
-                            alert("You can only upload JPG, JPEG, or PNG images.");
-                        }
-                    });
-                },
-            });
-
-            $('.summernoteRef').summernote({
-                spellCheck: true,
-                placeholder: 'Please key-in the reference (if any)',
-                toolbar: [
-                    // [groupName, [list of button]]
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['para', ['ul', 'paragraph']],
-                    ['fullscreen']
-                ]
-            });
-            $('.summernoteDef').summernote({
-                spellCheck: true,
-                placeholder: 'Please key-in the definition (if any)',
-                toolbar: [
-                    // [groupName, [list of button]]
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['para', ['paragraph']],
-                    ['fullscreen']
-                ]
-            });
-            $('.summernotePro').summernote({
-                height: 500,
-                spellCheck: true,
-                placeholder: 'Please key-in the procedure',
-                toolbar: [
-                    // [groupName, [list of button]]
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['fullscreen']
-                ]
-            });
-
-            $('#review').click(function() {
-                s++;
-                $('#addReview').append(`
-                <tr id="rowReview${s}" name="rowReview${s}">
-                    <div class="form-group">
-                        <td>
-                            <input type="text" class="form-control reviewDate" value="{{ $dateNow }}" id="reviewDates"
-                            name="reviewDate[]" required disabled>
-                        </td>
-                        <td>
-                            <textarea class="form-control details" id="details${s}" rows="2" name="details[]" required></textarea>
-                        </td>
-                        <td class="text-center" style="width: 10%;">
-                            <button type="button" id="${s}" class="remove_review btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
-                        </td>
+<div class="row" style="margin-top: 15px;">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-header" style="background-color:#ede9e9;">SOP Details
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">Purpose
+                            </span>
+                        </div>
+                        <textarea class="form-control" id="example-textarea" rows="8" name="purpose"
+                            placeholder="Please key-in the purpose" required>{{ isset($sop) ? $sop->purpose : old('purpose') }}</textarea>
                     </div>
-                </tr>`);
-            });
-
-            var s = 0;
-
-            $(document).on('click', '.remove_review', function() {
-                var buttonReview = $(this).attr("id");
-                $("[name='rowReview" + buttonReview + "']").remove();
-            });
-
-            $('#form').click(function() {
-                f++;
-                $('#addForm').append(`
-                <tr id="rowForm${f}" name="rowForm${f}">
-                    <div class="form-group">
-                        <td>
-                            <input type="text" class="form-control formCode" id="formCode${f}"
-                            name="formCode[]" required>
-                        </td>
-                        <td>
-                            <textarea class="form-control formDetail${f}" id="example-textarea" rows="2" name="formDetail[]" required></textarea>
-                        </td>
-                        <td class="text-center" style="width: 10%;">
-                            <button type="button" id="${f}" class="remove_form btn btn-danger btn-sm btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-times"></i></button>
-                        </td>
+                    <div class="form-group col-md-6">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">Scope
+                            </span>
+                        </div>
+                        <textarea class="form-control" id="example-textarea" rows="8" name="scope"
+                            placeholder="Please key-in the scope" required>{{ isset($sop) ? $sop->scope : old('scope') }}</textarea>
                     </div>
-                </tr>`);
-            });
+                </div>
+                <div class="row mt-2">
+                    <div class="form-group col-md-6">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">Reference
+                            </span>
+                        </div>
+                        <textarea value="" class="form-control summernoteRef" id="reference" name="reference">{{ isset($sop) ? $sop->reference : old('reference') }}</textarea>
 
-            var f = 0;
-
-            $(document).on('click', '.remove_form', function() {
-                var buttonForm = $(this).attr("id");
-                $("[name='rowForm" + buttonForm + "']").remove();
-            });
-        });
-    </script>
-@endsection
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">Definitions
+                            </span>
+                        </div>
+                        <textarea value="" class="form-control summernoteDef" id="definition" name="definition" required>{{ isset($sop) ? $sop->definition : old('definition') }}</textarea>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="form-group col-md-12">
+                        <div>
+                            <span class="input-group-text" style="background-color:#f3f3f37a;">Procedures
+                            </span>
+                        </div>
+                        <textarea value="" class="form-control summernotePro" id="procedure" name="procedure" required>{{ isset($sop) ? $sop->procedure : old('procedure') }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (isset($sop))
+    @if ($sop->prepared_by == Auth::user()->id)
+        {!! Form::button(isset($sop) ? 'Update' : 'Save', [
+            'type' => 'submit',
+            'class' => 'btn btn-primary ml-auto float-right',
+            'style' => 'margin-top:10px',
+        ]) !!}
+        {!! Form::close() !!}
+    @endif
+@else
+    {!! Form::button(isset($sop) ? 'Update' : 'Save', [
+        'type' => 'submit',
+        'class' => 'btn btn-primary ml-auto float-right',
+        'style' => 'margin-top:10px',
+    ]) !!}
+    {!! Form::close() !!}
+@endif

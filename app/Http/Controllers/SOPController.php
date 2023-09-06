@@ -7,6 +7,7 @@ use Response;
 use App\Staff;
 use App\SopForm;
 use App\SopList;
+use App\SopOwner;
 use App\SopDetail;
 use Carbon\Carbon;
 use App\SopFlowChart;
@@ -32,7 +33,16 @@ class SOPController extends Controller
 
     public function getSOPList()
     {
-        $data = SopList::where('active', 'Y');
+        $owner = SopOwner::where('owner_id', Auth::user()->id)->first();
+
+        if (Auth::user()->hasAnyRole(['SOP Admin'])) {
+
+            $data = SopList::where('active', 'Y');
+
+        } elseif (isset($owner)) {
+
+            $data = SopList::where('department_id', $owner->department_id)->where('active', 'Y');
+        }
 
         return datatables()::of($data)
             ->addColumn('sop', function ($data) {
@@ -56,6 +66,12 @@ class SOPController extends Controller
                 } else {
                     return 'N/A';
                 }
+            })
+
+            ->addColumn('owner', function ($data) {
+                $owner = SopDetail::where('sop_lists_id', $data->id)->first();
+
+                return isset($owner->prepare->staff_name) ? ($owner->prepare->staff_name) : 'N/A';
             })
 
             ->addColumn('status', function ($data) {
@@ -114,6 +130,12 @@ class SOPController extends Controller
             } else {
                 return 'N/A';
             }
+        })
+
+        ->addColumn('owner', function ($data) {
+            $owner = SopDetail::where('sop_lists_id', $data->id)->first();
+
+            return isset($owner->prepare->staff_name) ? ($owner->prepare->staff_name) : 'N/A';
         })
 
         ->addColumn('status', function ($data) {
@@ -292,19 +314,43 @@ class SOPController extends Controller
 
             $crossDept = SopCrossDepartment::where('sop_list_id', $request->id)->get();
 
-            foreach ($crossDept as $cd) {
-                foreach($request->crossdept as $key => $value) {
+            // foreach ($crossDept as $cd) {
+            //     foreach($request->crossdept as $key => $value) {
+            //         if ($cd->cross_dept_id !=  $value) {
+            //             $cd->delete();
+
+            //             SopCrossDepartment::create([
+            //                 'sop_list_id'   => $request->id,
+            //                 'dept_id'       => $request->department,
+            //                 'cross_dept_id' => $value,
+            //                 'department_id' => $request->id,
+            //                 'created_by'    => Auth::user()->id,
+            //                 'updated_by'    => Auth::user()->id
+            //             ]);
+            //         }
+            //     }
+            // }
+
+            foreach($request->crossdept as $key => $value) {
+                if (SopCrossDepartment::where('sop_list_id', $request->id)->where('cross_dept_id', $value)->exists()) {
+                    $data = SopCrossDepartment::where('sop_list_id', $request->id)->where('cross_dept_id', $value)->first();
+                    $data->update([
+                        'updated_by'    => Auth::user()->id
+                    ]);
+                } else {
+                    SopCrossDepartment::create([
+                        'sop_list_id'   => $request->id,
+                        'dept_id'       => $request->department,
+                        'cross_dept_id' => $value,
+                        'department_id' => $request->id,
+                        'created_by'    => Auth::user()->id,
+                        // 'updated_by'    => Auth::user()->id
+                    ]);
+                }
+
+                foreach ($crossDept as $cd) {
                     if ($cd->cross_dept_id !=  $value) {
                         $cd->delete();
-
-                        SopCrossDepartment::create([
-                            'sop_list_id'   => $request->id,
-                            'dept_id'       => $request->department,
-                            'cross_dept_id' => $value,
-                            'department_id' => $request->id,
-                            'created_by'    => Auth::user()->id,
-                            'updated_by'    => Auth::user()->id
-                        ]);
                     }
                 }
             }
@@ -312,6 +358,243 @@ class SOPController extends Controller
         }
 
         return redirect()->back()->with('message', 'Successfully Updated!');
+    }
+
+    public function SOPDepartment(Request $request)
+    {
+        $selectedDepartment = $request->department;
+        $department         = SopDepartment::where('active', 'Y')->get();
+
+        return view('sop.sop-department', compact('department', 'selectedDepartment'));
+    }
+
+
+    public function getSOPDepartment()
+    {
+        $data = SopDepartment::all();
+
+        return datatables()::of($data)
+
+            ->addColumn('department', function ($data) {
+                return isset($data->department_name) ? ($data->department_name) : 'N/A';
+            })
+
+            ->addColumn('abbreviation', function ($data) {
+                return isset($data->abbreviation) ? ($data->abbreviation) : 'N/A';
+            })
+
+            ->addColumn('status', function ($data) {
+                if ($data->active == 'Y') {
+                    return '<div style="color: green;"><b>Active</b></div>';
+                } else {
+                    return '<div style="color: red;"><b>Inactive</b></div>';
+                }
+            })
+
+            ->addColumn('action', function ($data) {
+                return '<a href="#" data-target="#edit" data-toggle="modal"
+                data-id="'.$data->id.'" data-department="'.$data->department_name.'"
+                data-abbreviation="'.$data->abbreviation.'" data-status="'.$data->active.'"
+                class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->addIndexColumn()
+            ->rawColumns(['action','status'])
+            ->make(true);
+    }
+
+    public function getSOPDepartments(Request $request)
+    {
+        $cond = "1";
+
+        if ($request->department && $request->department != "All") {
+            $cond .= " AND (id = '".$request->department."')";
+        }
+
+        $data = SopDepartment::whereRaw($cond);
+
+        return datatables()::of($data)
+
+        ->addColumn('department', function ($data) {
+            return isset($data->department_name) ? ($data->department_name) : 'N/A';
+        })
+
+        ->addColumn('abbreviation', function ($data) {
+            return isset($data->abbreviation) ? ($data->abbreviation) : 'N/A';
+        })
+
+        ->addColumn('status', function ($data) {
+            if ($data->active == 'Y') {
+                return '<div style="color: green;"><b>Active</b></div>';
+            } else {
+                return '<div style="color: red;"><b>Inactive</b></div>';
+            }
+        })
+
+        ->addColumn('action', function ($data) {
+            return '<a href="#" data-target="#edit" data-toggle="modal"
+            data-id="'.$data->id.'"
+            data-abbreviation="'.$data->abbreviation.'" data-status="'.$data->active.'"
+            class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+        })
+
+        ->addIndexColumn()
+        ->rawColumns(['action','status'])
+        ->make(true);
+    }
+
+    public function addSOPDepartment(Request $request)
+    {
+        SopDepartment::create([
+            'department_name' => $request->department,
+            'abbreviation'   => $request->abbreviation,
+            'active'         => $request->status,
+            'created_by'     => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Successfully Added!');
+    }
+
+    public function editSOPDepartment(Request $request)
+    {
+        $update = SopDepartment::where('id', $request->id)->first();
+        $update->update([
+            'department_name' => $request->department,
+            'abbreviation'   => $request->abbreviation,
+            'active'         => $request->status,
+            'updated_by'     => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Successfully Updated!');
+    }
+
+    public function owner(Request $request)
+    {
+        $selectedDepartment = $request->department;
+        $department         = SopDepartment::where('active', 'Y')->get();
+
+        return view('sop.sop-owner', compact('department', 'selectedDepartment'));
+    }
+
+    public function getSOPOwner()
+    {
+        $data = SopDepartment::all();
+
+        return datatables()::of($data)
+
+            ->addColumn('department', function ($data) {
+                return isset($data->department_name) ? ($data->department_name) : 'N/A';
+            })
+
+            ->addColumn('owner', function ($data) {
+                $all = '';
+
+                $check = SopOwner::where('department_id', $data->id);
+
+                if ($check->exists()) {
+                    $owner = SopOwner::where('department_id', $data->id)->get();
+                    foreach ($owner as $o) {
+                        $all .= isset($o->staff->staff_name) ? '<div word-break: break-all;>'.$o->staff->staff_name.'</div>' : 'N/A';
+                    }
+                    return $all;
+                } else {
+                    return 'N/A';
+                }
+            })
+
+            ->addColumn('action', function ($data) {
+                return '<a href="/sop-owner/'.$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->addIndexColumn()
+            ->rawColumns(['owner','action'])
+            ->make(true);
+    }
+
+    public function getSOPOwners(Request $request)
+    {
+        $cond = "1";
+
+        if ($request->department && $request->department != "All") {
+            $cond .= " AND (id = '".$request->department."')";
+        }
+
+        $data = SopDepartment::whereRaw($cond);
+
+        return datatables()::of($data)
+
+            ->addColumn('department', function ($data) {
+                return isset($data->department_name) ? ($data->department_name) : 'N/A';
+            })
+
+            ->addColumn('owner', function ($data) {
+                $all = '';
+
+                $check = SopOwner::where('department_id', $data->id);
+
+                if ($check->exists()) {
+                    $owner = SopOwner::where('department_id', $data->id)->get();
+                    foreach ($owner as $o) {
+                        $all .= isset($o->staff->staff_name) ? '<div word-break: break-all;>'.$o->staff->staff_name.'</div>' : 'N/A';
+                    }
+                    return $all;
+                } else {
+                    return 'N/A';
+                }
+            })
+
+            ->addColumn('action', function ($data) {
+                return '<a href="/sop-owner/'.$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->addIndexColumn()
+            ->rawColumns(['owner','action'])
+            ->make(true);
+    }
+
+    public function viewOwner($id)
+    {
+        $staff      = Staff::all();
+        $owner      = SopOwner::where('department_id', $id)->get();
+        $department = SopDepartment::where('id', $id)->first();
+        return view('sop.sop-owner-detail', compact('staff', 'owner', 'id', 'department'));
+    }
+
+    public function storeSOPOwner(Request $request)
+    {
+        $error = [];
+        $message = '';
+
+        foreach($request->owner as $key => $value) {
+            if (SopOwner::where('department_id', $request->id)->where('owner_id', $value)->count() > 0) {
+                $staff = Staff::where('staff_id', $value)->first();
+                $error[] = $staff->staff_name;
+            } else {
+                SopOwner::create([
+                    'owner_id'      => $value,
+                    'department_id' => $request->id,
+                    'created_by'    => Auth::user()->id
+                ]);
+            }
+        }
+
+        if($error) {
+            $message = "[".implode(',', $error)."] already inserted";
+        }
+
+        if($message) {
+            return redirect()->back()->withErrors([$message]);
+        } else {
+            return redirect()->back()->with('message', 'Owner Added!');
+        }
+    }
+
+    public function deleteSOPOwner($id)
+    {
+        $findOwner = SopOwner::find($id);
+        $findOwner->delete();
+
+        return response()->json(['success' => 'Deleted!']);
     }
 
     public function show($id)
@@ -325,7 +608,7 @@ class SOPController extends Controller
         $sopForm    = SopForm::where('sop_lists_id', $id)->get();
         $workFlow   = SopFlowChart::where('sop_lists_id', $id)->first();
 
-        return view('sop.sop-details', compact('data', 'dateNow', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
+        return view('sop.sop-main', compact('data', 'dateNow', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
     }
 
     public function storeDetails(Request $request)
@@ -581,7 +864,7 @@ class SOPController extends Controller
                 'created_by'    => Auth::user()->id
         ]);
         }
-        return response()->json(['success'=>$fileName]);
+        return response()->json(['success' => $fileName]);
     }
 
     public function workFlowFile($id)
@@ -621,7 +904,7 @@ class SOPController extends Controller
                 'created_by'    => Auth::user()->id
         ]);
         }
-        return response()->json(['success'=>$fileName]);
+        return response()->json(['success' => $fileName]);
     }
 
     public function generatePDF($id)

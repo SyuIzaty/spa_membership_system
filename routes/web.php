@@ -76,7 +76,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/sop/{id}/log', 'SOPController@getLog');
     Route::post('/store-sop-title', 'SOPController@addSOPTitle');
     Route::post('/edit-sop-title', 'SOPController@editSOPTitle');
-    Route::post('/add', 'SOPController@add');
     Route::post('/store-details', 'SOPController@storeDetails')->name('sop.storeDetails');
     Route::put('/update/{id}', 'SOPController@updateDetails')->name('sop.updateDetails');
     Route::post('/store-review', 'SOPController@storeReviewRecord');
@@ -86,11 +85,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-work-flow/{id}', 'SOPController@workFlowFile');
     Route::post('/store-new-work-flow', 'SOPController@storeNewWorkFlow');
     Route::get('/sop/review-record/{id}', 'SOPController@getReviewRecord');
-    Route::get('/sop-department', 'SOPController@SOPDepartment');
-    Route::post('/get-sop-department', 'SOPController@SOPDepartmentList');
-    Route::get('/sop-owner', 'SOPController@owner');
-    Route::post('/get-sop-owner', 'SOPController@ownerList');
     Route::get('/generate-PDF/{id}', 'SOPController@generatePDF');
+    Route::get('/sop-department', 'SOPController@SOPDepartment');
+    Route::post('/get-sop-department', 'SOPController@getSOPDepartment');
+    Route::post('/get-sop-departments', 'SOPController@getSOPDepartments');
+    Route::post('/store-sop-department', 'SOPController@addSOPDepartment');
+    Route::post('/edit-sop-department', 'SOPController@editSOPDepartment');
+    Route::get('/sop-owner', 'SOPController@owner');
+    Route::get('/sop-owner/{id}', 'SOPController@viewOwner');
+    Route::post('/get-sop-owner', 'SOPController@getSOPOwner');
+    Route::post('/get-sop-owners', 'SOPController@getSOPOwners');
+    Route::post('/store-sop-owner', 'SOPController@storeSOPOwner');
+    Route::delete('/delete-sop-owner/{id}', 'SOPController@deleteSOPOwner');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

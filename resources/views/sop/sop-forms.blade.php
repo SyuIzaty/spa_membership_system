@@ -58,7 +58,11 @@
         </tr>
     </thead>
 </table>
-<button type="submit" style="margin-bottom: 10px;" class="btn btn-sm btn-primary float-right"><i
-        class="fal fa-save"></i> Save
-</button>
+@if (isset($sop))
+    @if ($sop->prepared_by == Auth::user()->id)
+        <button type="submit" style="margin-bottom: 10px;" class="btn btn-sm btn-primary float-right"><i
+                class="fal fa-save"></i> Save
+        </button>
+    @endif
+@endif
 {!! Form::close() !!}

@@ -150,7 +150,49 @@
                             // echo ($permission);
                         @endphp
 
-                        @role('Super Admin')
+                        @php
+                            $isAdmin = Auth::user()->hasRole('SOP Admin');
+                            $owner = App\SopOwner::where('owner_id', Auth::user()->id)->first();
+                        @endphp
+
+                        @if ($isAdmin || isset($owner))
+                            <li class="nav-title">SOP Management</li>
+                            <li>
+                                <a href="/sop" style="text-decoration: none!important;" title="SOP"
+                                    data-filter-tags="list">
+                                    <i class="ni ni-briefcase"></i>
+                                    <span class="nav-link-text" data-i18n="nav.sop">SOP</span>
+                                </a>
+                            </li>
+                            @if ($isAdmin)
+                                <li class="open">
+                                    <a href="#" title="SOP Admin" data-filter-tags="list">
+                                        <i class="fal fa-user"></i>
+                                        <span class="nav-link-text" data-i18n="nav.list">Admin</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/sop-title" title="SOP Title" data-filter-tags="sopTitle">
+                                                <span class="nav-link-text" data-i18n="nav.sopTitle">SOP Title</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/sop-department" title="Department List"
+                                                data-filter-tags="department">
+                                                <span class="nav-link-text"
+                                                    data-i18n="nav.department">Department</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
+                                                <span class="nav-link-text" data-i18n="nav.owner">SOP Owner</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
+                        @endif
+                        {{-- @role('SOP Admin')
                             <li class="nav-title">SOP Management</li>
                             <li>
                                 <a href="/sop" style="text-decoration: none!important;" title="SOP"
@@ -177,12 +219,27 @@
                                     </li>
                                     <li>
                                         <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
-                                            <span class="nav-link-text" data-i18n="nav.owner">Owner</span>
+                                            <span class="nav-link-text" data-i18n="nav.owner">SOP Owner</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                         @endrole
+
+                        @php
+                            $owner = App\SopOwner::where('owner_id', Auth::user()->id)->first();
+                        @endphp
+
+                        @if (isset($owner))
+                            <li class="nav-title">SOP Management</li>
+                            <li>
+                                <a href="/sop" style="text-decoration: none!important;" title="SOP"
+                                    data-filter-tags="list">
+                                    <i class="ni ni-briefcase"></i>
+                                    <span class="nav-link-text" data-i18n="nav.sop">SOP</span>
+                                </a>
+                            </li>
+                        @endif --}}
 
                         <!-- Start eAduan Korporat System -->
                         @role('eAduan Super Admin')
@@ -1000,54 +1057,54 @@
                             </li>
                         @endcan
                         <li class="nav-title">BOOKING</li>
-                            @canany(['Manage Booking'])
-                                <li class="open">
-                                    <a href="#" title="List" data-filter-tags="list">
-                                        <i class="fal fa-book"></i>
-                                        <span class="nav-link-text" data-i18n="nav.list">Booking Management</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="/space/venue-management" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Venue Management</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/space/item-management" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Item Management</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/space/booking-management" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Booking Management</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/space/booking-report" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            @endcanany
+                        @canany(['Manage Booking'])
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-book"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
+                                    <span class="nav-link-text" data-i18n="nav.list">Booking Management</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/space/booking/create" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Application</span>
+                                        <a href="/space/venue-management" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Venue Management</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/space/booking" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">List of Application</span>
+                                        <a href="/space/item-management" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Item Management</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/space/booking-management" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Booking Management</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/space/booking-report" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
+                        @endcanany
+                        <li class="open">
+                            <a href="#" title="List" data-filter-tags="list">
+                                <i class="fal fa-book"></i>
+                                <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/space/booking/create" title="Arkib" data-filter-tags="Arkib">
+                                        <span class="nav-link-text" data-i18n="nav.arkib">Application</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/space/booking" title="Arkib" data-filter-tags="Arkib">
+                                        <span class="nav-link-text" data-i18n="nav.arkib">List of Application</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         </li>
                         @canany(['Manage Arkib', 'View Arkib'])
                             <li class="nav-title">LIBRARY</li>

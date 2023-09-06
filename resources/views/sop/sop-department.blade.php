@@ -11,7 +11,7 @@
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>List of SOP Title</h2>
+                        <h2>List of Department</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip"
                                 data-offset="0,10" data-original-title="Collapse"></button>
@@ -45,9 +45,8 @@
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th class="text-center">No</th>
-                                            <th class="text-center">SOP Title</th>
                                             <th class="text-center">Department</th>
-                                            <th class="text-center">Cross Department</th>
+                                            <th class="text-center">Abbreviation</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Action</th>
                                         </tr>
@@ -59,36 +58,15 @@
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
-                                            <td class="hasinput"></td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <a href="#" data-target="#add" data-toggle="modal"
                                     class="btn btn-primary waves-effect waves-themed float-right mt-2"><i
-                                        class="fal fa-plus-square"></i> Add SOP Title</a>
+                                        class="fal fa-plus-square"></i> Add Department</a>
                             </div>
                         </div>
                     </div>
-                    {{-- <div
-                        class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                        <a href="#" data-target="#add" data-toggle="modal"
-                            class="btn btn-primary waves-effect waves-themed float-right" style="margin-right:7px;"><i
-                                class="fal fa-plus-square"></i> Add SOP Title</a>
-                    </div> --}}
-                    {{-- {!! Form::open([
-                        'action' => 'SOPController@add',
-                        'method' => 'POST',
-                        'enctype' => 'multipart/form-data',
-                    ]) !!}
-                    <div
-                        class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                        <input type="file" name="import_file" accept=".xlsx" class="form-control mb-3">
-                    </div>
-
-                    <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i
-                            class="fal fa-check"></i>
-                        Submit</button>
-                    {!! Form::close() !!} --}}
                 </div>
             </div>
         </div>
@@ -96,44 +74,27 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="card-header">
-                        <h5 class="card-title w-100">Add SOP Title</h5>
+                        <h5 class="card-title w-100">Add Department</h5>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['action' => 'SOPController@addSOPTitle', 'method' => 'POST']) !!}
+                        {!! Form::open(['action' => 'SOPController@addSOPDepartment', 'method' => 'POST']) !!}
 
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Department</span>
                                 </div>
-                                <select class="form-control department" name="department" id="department">
-                                    <option selected disabled value="">Select Department</option>
-                                    @foreach ($department as $d)
-                                        <option value="{{ $d->id }}">
-                                            {{ $d->department_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="department" class="form-control" required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Title</span>
+                                    <span class="input-group-text">Abbreviation</span>
                                 </div>
-                                <input type="text" name="title" class="form-control" required>
+                                <input type="text" name="abbreviation" class="form-control" required>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Cross Department (if any)</label>
-                            <select class="form-control departments" id="crossdept" name="crossdept[]" multiple>
-                                @foreach ($department as $d)
-                                    <option value="{{ $d->id }}">{{ $d->department_name }}
-                                    </option>
-                                @endforeach
-                            </select>
                         </div>
 
                         <div class="form-group">
@@ -162,40 +123,28 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="card-header">
-                        <h5 class="card-title w-100">Edit SOP Title</h5>
+                        <h5 class="card-title w-100">Edit Department</h5>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['action' => 'SOPController@editSOPTitle', 'method' => 'POST']) !!}
+                        {!! Form::open(['action' => 'SOPController@editSOPDepartment', 'method' => 'POST']) !!}
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label class="form-label">Department</label>
-                            <select class="form-control department" name="department" id="department">
-                                <option selected disabled value="">Select Department</option>
-                                @foreach ($department as $d)
-                                    <option value="{{ $d->id }}">{{ $d->department_name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Department</span>
+                                </div>
+                                <input type="text" id="department" name="department" class="form-control" required>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Title</span>
+                                    <span class="input-group-text">Abbreviation</span>
                                 </div>
-                                <input type="text" id="title" name="title" class="form-control" required>
+                                <input type="text" id="abbreviation" name="abbreviation" class="form-control"
+                                    required>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Cross Department (if any)</label>
-                            <select class="form-control departments" id="crossDept" name="crossdept[]" multiple>
-                                @foreach ($department as $d)
-                                    <option value="{{ $d->id }}">
-                                        {{ $d->department_name }}
-                                    </option>
-                                @endforeach
-                            </select>
                         </div>
 
                         <div class="form-group">
@@ -225,7 +174,6 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('.chooseDept').select2();
 
             $('#add').on('shown.bs.modal', function() {
                 $('.departments').select2({
@@ -239,19 +187,16 @@
                 });
             });
 
-            // $('#department').select2();
-
             $('#edit').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget)
                 var id = button.data('id') // data-id
-                var department = button.data('department') // data-department
-                var title = button.data('title') // data-title
+                var department = button.data('department') // data-id
+                var abbreviation = button.data('abbreviation') // data-abbreviation
                 var status = button.data('status') // data-status
 
                 $('.modal-body #id').val(id);
                 $('.modal-body #department').val(department);
-                $('.modal-body #title').val(title);
-                $('.modal-body #crossDept').val(crossDept);
+                $('.modal-body #abbreviation').val(abbreviation);
                 $('.modal-body #status').val(status);
             });
 
@@ -259,7 +204,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "/get-sop-title",
+                    url: "/get-sop-department",
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -274,18 +219,13 @@
                     },
                     {
                         className: 'text-left',
-                        data: 'sop',
-                        name: 'sop'
-                    },
-                    {
-                        className: 'text-left',
                         data: 'department',
                         name: 'department'
                     },
                     {
-                        className: 'text-left',
-                        data: 'cross_department',
-                        name: 'cross_department'
+                        className: 'text-center',
+                        data: 'abbreviation',
+                        name: 'abbreviation'
                     },
                     {
                         className: 'text-center',
@@ -313,7 +253,7 @@
                     autowidth: false,
                     deferRender: true,
                     ajax: {
-                        url: "/get-sop-titles",
+                        url: "/get-sop-departments",
                         data: {
                             department: department
                         },
@@ -332,18 +272,13 @@
                         },
                         {
                             className: 'text-left',
-                            data: 'sop',
-                            name: 'sop'
-                        },
-                        {
-                            className: 'text-left',
                             data: 'department',
                             name: 'department'
                         },
                         {
-                            className: 'text-left',
-                            data: 'cross_department',
-                            name: 'cross_department'
+                            className: 'text-center',
+                            data: 'abbreviation',
+                            name: 'abbreviation'
                         },
                         {
                             className: 'text-center',
