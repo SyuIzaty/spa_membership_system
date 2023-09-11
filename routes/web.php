@@ -97,6 +97,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-sop-owners', 'SOPController@getSOPOwners');
     Route::post('/store-sop-owner', 'SOPController@storeSOPOwner');
     Route::delete('/delete-sop-owner/{id}', 'SOPController@deleteSOPOwner');
+    Route::post('/verify-sop/{id}', 'SOPController@verifySOP');
+    Route::post('/approve-sop/{id}', 'SOPController@approveSOP');
+    Route::post('comment-sop', 'SOPController@commentSOP');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

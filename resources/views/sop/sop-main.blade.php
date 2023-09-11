@@ -39,15 +39,21 @@
                                     <a data-toggle="tab" style="background-color:#B99FC9;" class="nav-link" href="#four"
                                         role="tab">Review Record</a>
                                 </li>
+                                <li class="nav-item mr-2" style="background-color:#9fc9b2;">
+                                    <a data-toggle="tab" style="background-color:#9fc9b2;" class="nav-link" href="#five"
+                                        role="tab">Comment</a>
+                                </li>
                                 @can('Manage SOP')
-                                    <li class="nav-item mr-2" style="background-color:#9fc6c9;">
-                                        <a data-toggle="tab" style="background-color:#9fc6c9;" class="nav-link" href="#five"
-                                            role="tab">Generate SOP</a>
-                                    </li>
-                                    <li class="nav-item mr-2" style="background-color:#c99f9f;">
-                                        <a data-toggle="tab" style="background-color:#c99f9f;" class="nav-link" href="#six"
-                                            role="tab">Verify SOP</a>
-                                    </li>
+                                    @if ($data->status != '1')
+                                        <li class="nav-item mr-2" style="background-color:#9fc6c9;">
+                                            <a data-toggle="tab" style="background-color:#9fc6c9;" class="nav-link"
+                                                href="#six" role="tab">Generate SOP</a>
+                                        </li>
+                                        <li class="nav-item mr-2" style="background-color:#c99f9f;">
+                                            <a data-toggle="tab" style="background-color:#c99f9f;" class="nav-link"
+                                                href="#seven" role="tab">Verify SOP</a>
+                                        </li>
+                                    @endif
                                 @endcan
                             </ul>
                             <div class="row">
@@ -149,21 +155,34 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="tab-pane" id="five" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-header">Comment</div>
+                                                    <div class="card-body">
+                                                        @include('sop.sop-comment')
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     @can('Manage SOP')
-                                        <div class="tab-pane" id="five" role="tabpanel">
+                                        <div class="tab-pane" id="six" role="tabpanel">
                                             <hr class="mt-2 mb-3">
                                             <div class="row">
                                                 <div class="col-md-12 grid-margin stretch-card">
                                                     <div class="card">
                                                         <div class="card-header">Generate SOP</div>
                                                         <div class="card-body">
-                                                            @include('sop.sop-verify')
+                                                            @include('sop.sop-generate')
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="six" role="tabpanel">
+                                        <div class="tab-pane" id="seven" role="tabpanel">
                                             <hr class="mt-2 mb-3">
                                             <div class="row">
                                                 <div class="col-md-12 grid-margin stretch-card">
@@ -326,6 +345,183 @@
                 var buttonForm = $(this).attr("id");
                 $("[name='rowForm" + buttonForm + "']").remove();
             });
+
+            $(".delete-alert").on('click', function(e) {
+                e.preventDefault();
+
+                let id = $(this).data('path');
+
+                Swal.fire({
+                    title: 'Delete?',
+                    text: "Data cannot be restored!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Delete!',
+                    cancelButtonText: 'No'
+                }).then(function(e) {
+                    if (e.value === true) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/delete-sop-owner/" + id,
+                            data: id,
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                console.log(response);
+                                if (response) {
+                                    Swal.fire(response.success);
+                                    location.reload();
+                                }
+                            }
+                        });
+                    } else {
+                        e.dismiss;
+                    }
+                }, function(dismiss) {
+                    return false;
+                })
+            });
+
+            $(".verify").on('click', function(e) {
+                e.preventDefault();
+
+                let id = $(this).data('path');
+
+                Swal.fire({
+                    title: 'Are you sure you want to verify this SOP?',
+                    text: "Ammendment can't be made once the SOP has been verified",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, verify!',
+                    cancelButtonText: 'No'
+                }).then(function(e) {
+                    if (e.value === true) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/verify-sop/" + id,
+                            data: id,
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                console.log(response);
+                                if (response) {
+                                    Swal.fire(response.success);
+                                    location.reload();
+                                }
+                            }
+                        });
+                    } else {
+                        e.dismiss;
+                    }
+                }, function(dismiss) {
+                    return false;
+                })
+            });
+
+            $("#comment").on('click', function(e) {
+                e.preventDefault();
+
+                var datas = $('#form-comment').serialize();
+
+                Swal.fire({
+                    title: 'Are you sure you want to submit?',
+                    text: "Once submitted, comments cannot be edited.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Submit!',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+
+                    if (result.value) {
+                        Swal.fire({
+                            title: 'Loading..',
+                            text: 'Please wait..',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false,
+                            onOpen: () => {
+                                Swal.showLoading()
+                            }
+                        })
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ url('comment-sop') }}",
+                            data: datas,
+                            dataType: "json",
+                            success: function(response) {
+                                console.log(response);
+                                if (response && response.success) {
+                                    Swal.fire(response.success);
+                                    location.reload();
+                                } else {
+                                    Swal.fire(
+                                        'The comment field is required!'
+                                    );
+                                }
+                            },
+                            error: function(xhr, textStatus, errorThrown) {
+                                Swal.fire(
+                                    'The comment field is required!'
+                                );
+                                console.error(xhr.responseText);
+                            }
+                        });
+                    }
+                })
+            });
+
+            $(".approve").on('click', function(e) {
+                e.preventDefault();
+
+                let id = $(this).data('path');
+
+                Swal.fire({
+                    title: 'Are you sure you want to approve this SOP?',
+                    text: "Ammendment can't be made once the SOP has been approved",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, approve!',
+                    cancelButtonText: 'No'
+                }).then(function(e) {
+                    if (e.value === true) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/approve-sop/" + id,
+                            data: id,
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                console.log(response);
+                                if (response) {
+                                    Swal.fire(response.success);
+                                    location.reload();
+                                }
+                            }
+                        });
+                    } else {
+                        e.dismiss;
+                    }
+                }, function(dismiss) {
+                    return false;
+                })
+            });
+
+
         });
     </script>
 @endsection

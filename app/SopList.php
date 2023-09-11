@@ -17,7 +17,7 @@ class SopList extends Model
 
     public function getCD()
     {
-        return $this->hasMany(SopCrossDepartment::class, 'sop_list_id', 'id');
+        return $this->hasMany(SopCrossDepartment::class, 'sop_lists_id', 'id');
     }
 
     public function listStatus()

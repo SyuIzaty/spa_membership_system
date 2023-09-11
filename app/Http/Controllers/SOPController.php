@@ -10,6 +10,7 @@ use App\SopList;
 use App\SopOwner;
 use App\SopDetail;
 use Carbon\Carbon;
+use App\SopComment;
 use App\SopFlowChart;
 use App\SopDepartment;
 use App\SopReviewRecord;
@@ -19,6 +20,7 @@ use App\Rules\CodeFormatRule;
 use Illuminate\Support\Facades\Auth;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class SOPController extends Controller
 {
@@ -56,7 +58,7 @@ class SOPController extends Controller
             ->addColumn('cross_department', function ($data) {
                 $all = '';
 
-                $check = SopCrossDepartment::where('sop_list_id', $data->id);
+                $check = SopCrossDepartment::where('sop_lists_id', $data->id);
 
                 if ($check->exists()) {
                     foreach ($data->getCD as $c) {
@@ -79,8 +81,10 @@ class SOPController extends Controller
                     return '<span style="color:red;"><b>'.$data->listStatus->name.'</b></span>';
                 } elseif ($data->status == '2') {
                     return '<span style="color:green;"><b>'.$data->listStatus->name.'</b></span>';
-                } else {
+                } elseif ($data->status == '3') {
                     return '<span style="color:orange;"><b>'.$data->listStatus->name.'</b></span>';
+                } else {
+                    return '<span style="color:blue;"><b>'.$data->listStatus->name.'</b></span>';
                 }
             })
 
@@ -120,7 +124,7 @@ class SOPController extends Controller
         ->addColumn('cross_department', function ($data) {
             $all = '';
 
-            $check = SopCrossDepartment::where('sop_list_id', $data->id);
+            $check = SopCrossDepartment::where('sop_lists_id', $data->id);
 
             if ($check->exists()) {
                 foreach ($data->getCD as $c) {
@@ -143,8 +147,10 @@ class SOPController extends Controller
                 return '<span style="color:red;"><b>'.$data->listStatus->name.'</b></span>';
             } elseif ($data->status == '2') {
                 return '<span style="color:green;"><b>'.$data->listStatus->name.'</b></span>';
-            } else {
+            } elseif ($data->status == '3') {
                 return '<span style="color:orange;"><b>'.$data->listStatus->name.'</b></span>';
+            } else {
+                return '<span style="color:blue;"><b>'.$data->listStatus->name.'</b></span>';
             }
         })
 
@@ -200,7 +206,7 @@ class SOPController extends Controller
 
             ->addColumn('action', function ($data) {
 
-                $crossDept = SopCrossDepartment::where('sop_list_id', $data->id)->get();
+                $crossDept = SopCrossDepartment::where('sop_lists_id', $data->id)->get();
 
                 return '<a href="#" data-target="#edit" data-toggle="modal"
                 data-id="'.$data->id.'" data-department="'.$data->department_id.'"
@@ -287,7 +293,7 @@ class SOPController extends Controller
         if ($request->crossdept) {
             foreach($request->crossdept as $key => $value) {
                 SopCrossDepartment::create([
-                    'sop_list_id'   => $sop->id,
+                    'sop_lists_id'   => $sop->id,
                     'dept_id'       => $request->department,
                     'cross_dept_id' => $value,
                     'department_id' => $request->id,
@@ -312,7 +318,7 @@ class SOPController extends Controller
 
         if ($request->crossdept) {
 
-            $crossDept = SopCrossDepartment::where('sop_list_id', $request->id)->get();
+            $crossDept = SopCrossDepartment::where('sop_lists_id', $request->id)->get();
 
             // foreach ($crossDept as $cd) {
             //     foreach($request->crossdept as $key => $value) {
@@ -320,7 +326,7 @@ class SOPController extends Controller
             //             $cd->delete();
 
             //             SopCrossDepartment::create([
-            //                 'sop_list_id'   => $request->id,
+            //                 'sop_lists_id'   => $request->id,
             //                 'dept_id'       => $request->department,
             //                 'cross_dept_id' => $value,
             //                 'department_id' => $request->id,
@@ -332,14 +338,14 @@ class SOPController extends Controller
             // }
 
             foreach($request->crossdept as $key => $value) {
-                if (SopCrossDepartment::where('sop_list_id', $request->id)->where('cross_dept_id', $value)->exists()) {
-                    $data = SopCrossDepartment::where('sop_list_id', $request->id)->where('cross_dept_id', $value)->first();
+                if (SopCrossDepartment::where('sop_lists_id', $request->id)->where('cross_dept_id', $value)->exists()) {
+                    $data = SopCrossDepartment::where('sop_lists_id', $request->id)->where('cross_dept_id', $value)->first();
                     $data->update([
                         'updated_by'    => Auth::user()->id
                     ]);
                 } else {
                     SopCrossDepartment::create([
-                        'sop_list_id'   => $request->id,
+                        'sop_lists_id'   => $request->id,
                         'dept_id'       => $request->department,
                         'cross_dept_id' => $value,
                         'department_id' => $request->id,
@@ -607,8 +613,9 @@ class SOPController extends Controller
         $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
         $sopForm    = SopForm::where('sop_lists_id', $id)->get();
         $workFlow   = SopFlowChart::where('sop_lists_id', $id)->first();
+        $comment    = SopComment::where('sop_lists_id', $id)->get();
 
-        return view('sop.sop-main', compact('data', 'dateNow', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
+        return view('sop.sop-main', compact('data', 'dateNow', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow', 'comment'));
     }
 
     public function storeDetails(Request $request)
@@ -834,7 +841,7 @@ class SOPController extends Controller
     public function storeFormRecord(Request $request)
     {
         $request->validate([
-            'formCode' => 'required',
+            'formCode'   => 'required',
             'formDetail' => 'required',
         ]);
 
@@ -921,4 +928,46 @@ class SOPController extends Controller
 
         return view('sop.sop-pdf', compact('data', 'dateNow', 'date', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
     }
+
+    public function commentSOP(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'comment' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        SopComment::create([
+            'sop_lists_id' => $request->id,
+            'comment'      => $request->comment,
+            'created_by'   => Auth::user()->id
+        ]);
+
+        return response()->json(['success' => 'Submitted!']);
+    }
+
+    public function verifySOP($id)
+    {
+        $update = SopList::where('id', $id)->first();
+        $update->update([
+            'status'     => '3',
+            'updated_by' => Auth::user()->id
+        ]);
+
+        return response()->json(['success' => 'Verified!']);
+    }
+
+    public function approveSOP($id)
+    {
+        $update = SopList::where('id', $id)->first();
+        $update->update([
+            'status'     => '4',
+            'updated_by' => Auth::user()->id
+        ]);
+
+        return response()->json(['success' => 'Approved!']);
+    }
+
 }
