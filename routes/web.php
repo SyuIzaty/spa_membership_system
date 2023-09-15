@@ -80,6 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/update/{id}', 'SOPController@updateDetails')->name('sop.updateDetails');
     Route::post('/store-review', 'SOPController@storeReviewRecord');
     Route::post('/store-form', 'SOPController@storeFormRecord');
+    Route::post('/update-form', 'SOPController@updateFormRecord');
     Route::get('/sop-reference', 'SOPController@getSOPReference');
     Route::post('/store-work-flow', 'SOPController@storeWorkFlow');
     Route::get('/get-work-flow/{id}', 'SOPController@workFlowFile');

@@ -521,7 +521,58 @@
                 })
             });
 
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-Token': $("input[name=_token]").val()
+                }
+            });
 
+            $('.editable').Tabledit({
+                url: '{{ url('update-form') }}',
+                dataType: "json",
+                columns: {
+                    identifier: [1, 'id'],
+                    editable: [
+                        [2, 'code'],
+                        [3, 'details']
+                    ]
+                },
+
+                restoreButton: false,
+
+                onSuccess: function(data, textStatus, jqXHR) {
+                    if (data.action == 'delete') {
+                        $('#' + data.id).remove();
+                        location.reload();
+
+                    }
+                }
+            });
+
+            $('.tabledit-edit-button').on('click', function() {
+                $('input[data-type="changed"]').each(function() {
+                    if ($(this).hasClass('tabledit-input')) {
+                        $(this).removeClass('tabledit-input');
+                    }
+                });
+                $(this).closest('tr').find('.select').addClass('tabledit-input');
+            });
+
+            $('.tabledit-view-mode').find('select').each(function() {
+                $(this).attr('disabled', 'disabled');
+            });
+
+            $('.tabledit-edit-button').on('click', function() {
+                if ($(this).hasClass('active')) {
+                    $(this).parents('tr').find('select').attr('disabled', 'disabled');
+                } else {
+                    $(this).parents('tr').find('select').removeAttr('disabled');
+                }
+            });
+
+            $('.tabledit-save-button').on('click', function() {
+                $(this).parents('tr').find('select').attr('disabled', 'disabled');
+            })
         });
     </script>
 @endsection

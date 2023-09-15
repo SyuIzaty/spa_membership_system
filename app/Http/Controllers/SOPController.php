@@ -17,8 +17,8 @@ use App\SopReviewRecord;
 use App\SopCrossDepartment;
 use Illuminate\Http\Request;
 use App\Rules\CodeFormatRule;
+use App\Rules\FormFormatRule;
 use Illuminate\Support\Facades\Auth;
-use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -61,13 +61,24 @@ class SOPController extends Controller
                 $check = SopCrossDepartment::where('sop_lists_id', $data->id);
 
                 if ($check->exists()) {
-                    foreach ($data->getCD as $c) {
-                        $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                    $crossDepartments = $data->getCD;
+
+                    if (count($crossDepartments) >= 2) {
+                        $all = '<ul>';
+                        foreach ($crossDepartments as $c) {
+                            $departmentName = isset($c->crossDepartment->department_name) ? $c->crossDepartment->department_name : 'N/A';
+                            $all .= '<li>' . $departmentName . '</li>';
+                        }
+                        $all .= '</ul>';
+                    } else {
+                        $all = isset($crossDepartments[0]->crossDepartment->department_name) ? '<div>' . $crossDepartments[0]->crossDepartment->department_name . '</div>' : 'N/A';
                     }
+
                     return $all;
                 } else {
                     return 'N/A';
                 }
+
             })
 
             ->addColumn('owner', function ($data) {
@@ -190,10 +201,17 @@ class SOPController extends Controller
 
             ->addColumn('cross_department', function ($data) {
                 $all = '';
-                foreach ($data->getCD as $c) {
-                    $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+
+                $check = SopCrossDepartment::where('sop_lists_id', $data->id);
+
+                if ($check->exists()) {
+                    foreach ($data->getCD as $c) {
+                        $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                    }
+                    return $all;
+                } else {
+                    return 'N/A';
                 }
-                return $all;
             })
 
             ->addColumn('status', function ($data) {
@@ -240,10 +258,17 @@ class SOPController extends Controller
 
         ->addColumn('cross_department', function ($data) {
             $all = '';
-            foreach ($data->getCD as $c) {
-                $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+
+            $check = SopCrossDepartment::where('sop_lists_id', $data->id);
+
+            if ($check->exists()) {
+                foreach ($data->getCD as $c) {
+                    $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                }
+                return $all;
+            } else {
+                return 'N/A';
             }
-            return $all;
         })
 
         ->addColumn('status', function ($data) {
@@ -266,20 +291,6 @@ class SOPController extends Controller
         ->make(true);
     }
 
-    // public function add(Request $request)
-    // {
-    //     (new FastExcel())->import(request()->file('import_file'), function ($line) {
-    //         return SopList::create([
-    //             'sop' => $line['SOP'],
-    //             'department_id' => $line['Dept'],
-    //             'active' => $line['Active'],
-    //             'created_by'    => Auth::user()->id
-    //         ]);
-    //     });
-
-    //     return redirect()->back()->with('message', 'Add Successfully');
-    // }
-
     public function addSOPTitle(Request $request)
     {
         $sop = SopList::create([
@@ -293,7 +304,7 @@ class SOPController extends Controller
         if ($request->crossdept) {
             foreach($request->crossdept as $key => $value) {
                 SopCrossDepartment::create([
-                    'sop_lists_id'   => $sop->id,
+                    'sop_lists_id'  => $sop->id,
                     'dept_id'       => $request->department,
                     'cross_dept_id' => $value,
                     'department_id' => $request->id,
@@ -320,23 +331,6 @@ class SOPController extends Controller
 
             $crossDept = SopCrossDepartment::where('sop_lists_id', $request->id)->get();
 
-            // foreach ($crossDept as $cd) {
-            //     foreach($request->crossdept as $key => $value) {
-            //         if ($cd->cross_dept_id !=  $value) {
-            //             $cd->delete();
-
-            //             SopCrossDepartment::create([
-            //                 'sop_lists_id'   => $request->id,
-            //                 'dept_id'       => $request->department,
-            //                 'cross_dept_id' => $value,
-            //                 'department_id' => $request->id,
-            //                 'created_by'    => Auth::user()->id,
-            //                 'updated_by'    => Auth::user()->id
-            //             ]);
-            //         }
-            //     }
-            // }
-
             foreach($request->crossdept as $key => $value) {
                 if (SopCrossDepartment::where('sop_lists_id', $request->id)->where('cross_dept_id', $value)->exists()) {
                     $data = SopCrossDepartment::where('sop_lists_id', $request->id)->where('cross_dept_id', $value)->first();
@@ -345,12 +339,11 @@ class SOPController extends Controller
                     ]);
                 } else {
                     SopCrossDepartment::create([
-                        'sop_lists_id'   => $request->id,
+                        'sop_lists_id'  => $request->id,
                         'dept_id'       => $request->department,
                         'cross_dept_id' => $value,
                         'department_id' => $request->id,
                         'created_by'    => Auth::user()->id,
-                        // 'updated_by'    => Auth::user()->id
                     ]);
                 }
 
@@ -362,7 +355,6 @@ class SOPController extends Controller
             }
 
         }
-
         return redirect()->back()->with('message', 'Successfully Updated!');
     }
 
@@ -373,7 +365,6 @@ class SOPController extends Controller
 
         return view('sop.sop-department', compact('department', 'selectedDepartment'));
     }
-
 
     public function getSOPDepartment()
     {
@@ -453,9 +444,9 @@ class SOPController extends Controller
     {
         SopDepartment::create([
             'department_name' => $request->department,
-            'abbreviation'   => $request->abbreviation,
-            'active'         => $request->status,
-            'created_by'     => Auth::user()->id
+            'abbreviation'    => $request->abbreviation,
+            'active'          => $request->status,
+            'created_by'      => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Successfully Added!');
@@ -466,9 +457,9 @@ class SOPController extends Controller
         $update = SopDepartment::where('id', $request->id)->first();
         $update->update([
             'department_name' => $request->department,
-            'abbreviation'   => $request->abbreviation,
-            'active'         => $request->status,
-            'updated_by'     => Auth::user()->id
+            'abbreviation'    => $request->abbreviation,
+            'active'          => $request->status,
+            'updated_by'      => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Successfully Updated!');
@@ -563,6 +554,7 @@ class SOPController extends Controller
         $staff      = Staff::all();
         $owner      = SopOwner::where('department_id', $id)->get();
         $department = SopDepartment::where('id', $id)->first();
+
         return view('sop.sop-owner-detail', compact('staff', 'owner', 'id', 'department'));
     }
 
@@ -634,6 +626,7 @@ class SOPController extends Controller
         ]);
 
         $data    = SopList::where('id', $request->id)->first();
+
         SopDetail::create([
             'sop_lists_id' => $request->id,
             'sop_dept_id'  => $data->department_id,
@@ -797,7 +790,6 @@ class SOPController extends Controller
             ]);
         }
 
-
         return redirect()->back()->with('message', 'Successfully Updated!');
     }
 
@@ -822,28 +814,15 @@ class SOPController extends Controller
         return view('sop.sop-review-record', compact('sopReview'));
     }
 
-    // public function storeReviewRecord(Request $request)
-    // {
-    //     $request->validate([
-    //         'details' => 'required',
-    //     ]);
-
-    //     foreach ($request->details as $key => $value) {
-    //         SopReviewRecord::create([
-    //             'sop_lists_id'   => $request->id,
-    //             'review_record'  => $value,
-    //             'created_by'     => Auth::user()->id
-    //         ]);
-    //     }
-    //     return redirect()->back()->with('message', 'Successfully Saved!');
-    // }
-
     public function storeFormRecord(Request $request)
     {
         $request->validate([
-            'formCode'   => 'required',
-            'formDetail' => 'required',
-        ]);
+             'formCode.*' => [
+                 'required',
+                 new FormFormatRule(),
+             ],
+             'formDetail' => 'required',
+         ]);
 
         foreach ($request->formCode as $key => $value) {
             SopForm::create([
@@ -853,12 +832,53 @@ class SOPController extends Controller
                 'created_by'     => Auth::user()->id
             ]);
         }
+
         return redirect()->back()->with('message', 'Successfully Saved!');
+    }
+
+    public function updateFormRecord(Request $request)
+    {
+        $reviewRecord = 'Made an amendment on the Form';
+
+        if ($request->ajax()) {
+            if ($request->action == 'edit') {
+                $update = SopForm::where('id', $request->id)->first();
+                $update->update([
+                    'sop_code'   => $request->code,
+                    'details'    => $request->details,
+                    'updated_by' => Auth::user()->id
+                ]);
+
+                SopReviewRecord::create([
+                    'sop_lists_id'  => $update->sop_lists_id,
+                    'review_record' => $reviewRecord,
+                    'section'       => 'Form',
+                    'created_by'    => Auth::user()->id
+                ]);
+            }
+
+            if ($request->action == 'delete') {
+
+                $form = SopForm::where('id', $request->id)->first();
+
+                SopReviewRecord::create([
+                    'sop_lists_id'  => $form->sop_lists_id,
+                    'review_record' => $reviewRecord,
+                    'section'       => 'Form',
+                    'created_by'    => Auth::user()->id
+                ]);
+
+                SopForm::find($request->id)->delete();
+            }
+
+            return response()->json($request);
+        }
     }
 
     public function storeWorkFlow(Request $request)
     {
         $file = $request->file('file');
+
         if (isset($file)) {
             $fileName = time().$file->getClientOriginalName();
 
@@ -871,6 +891,7 @@ class SOPController extends Controller
                 'created_by'    => Auth::user()->id
         ]);
         }
+
         return response()->json(['success' => $fileName]);
     }
 
@@ -878,13 +899,13 @@ class SOPController extends Controller
     {
         $file = SopFlowChart::where('id', $id)->first();
         $filename = $file->upload;
+
         return Storage::disk('minio')->response('sop/'.$filename);
     }
 
     public function storeNewWorkFlow(Request $request)
     {
         $exist = SopFlowChart::where('sop_lists_id', $request->id)->whereNull('deleted_at')->first();
-        // dd($exist->id);
         $exist->delete();
 
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
@@ -911,6 +932,7 @@ class SOPController extends Controller
                 'created_by'    => Auth::user()->id
         ]);
         }
+
         return response()->json(['success' => $fileName]);
     }
 
@@ -969,5 +991,4 @@ class SOPController extends Controller
 
         return response()->json(['success' => 'Approved!']);
     }
-
 }
