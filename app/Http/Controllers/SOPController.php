@@ -138,9 +138,19 @@ class SOPController extends Controller
             $check = SopCrossDepartment::where('sop_lists_id', $data->id);
 
             if ($check->exists()) {
-                foreach ($data->getCD as $c) {
-                    $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                $crossDepartments = $data->getCD;
+
+                if (count($crossDepartments) >= 2) {
+                    $all = '<ul>';
+                    foreach ($crossDepartments as $c) {
+                        $departmentName = isset($c->crossDepartment->department_name) ? $c->crossDepartment->department_name : 'N/A';
+                        $all .= '<li>' . $departmentName . '</li>';
+                    }
+                    $all .= '</ul>';
+                } else {
+                    $all = isset($crossDepartments[0]->crossDepartment->department_name) ? '<div>' . $crossDepartments[0]->crossDepartment->department_name . '</div>' : 'N/A';
                 }
+
                 return $all;
             } else {
                 return 'N/A';
@@ -604,7 +614,7 @@ class SOPController extends Controller
         $sop        = SopDetail::where('sop_lists_id', $id)->first();
         $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
         $sopForm    = SopForm::where('sop_lists_id', $id)->get();
-        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->first();
+        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->orderBy('web_path', 'ASC')->get();
         $comment    = SopComment::where('sop_lists_id', $id)->get();
 
         return view('sop.sop-main', compact('data', 'dateNow', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow', 'comment'));
@@ -795,17 +805,9 @@ class SOPController extends Controller
 
     public function getSOPReference()
     {
-        $file = "INTEC SOP QM - Application for PA (Sample) 2022.pdf";
+        $filename = "INTEC SOP QM - Application for PA (Sample) 2022.pdf";
 
-        $path = storage_path().'/sop/'.$file;
-
-        $form = File::get($path);
-        $filetype = File::mimeType($path);
-
-        $response = Response::make($form, 200);
-        $response->header("Content-Type", $filetype);
-
-        return $response;
+        return Storage::disk('minio')->response('sop/reference/'.$filename);
     }
 
     public function getReviewRecord($id)
@@ -905,8 +907,8 @@ class SOPController extends Controller
 
     public function storeNewWorkFlow(Request $request)
     {
-        $exist = SopFlowChart::where('sop_lists_id', $request->id)->whereNull('deleted_at')->first();
-        $exist->delete();
+        // $exist = SopFlowChart::where('sop_lists_id', $request->id)->whereNull('deleted_at')->first();
+        // $exist->delete();
 
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
@@ -934,6 +936,24 @@ class SOPController extends Controller
         }
 
         return response()->json(['success' => $fileName]);
+    }
+
+    public function deleteWorkFlow($id)
+    {
+        $file = SopFlowChart::find($id);
+
+        $attach = SopFlowChart::where('id', $id)->first();
+
+        if(Storage::disk('minio')->exists($attach->web_path) == 'true') {
+            Storage::disk('minio')->delete($attach->web_path);
+        }
+
+        $attach->delete();
+
+        $file->delete();
+
+        return response()->json(['success' => 'Deleted!']);
+
     }
 
     public function generatePDF($id)
@@ -985,10 +1005,60 @@ class SOPController extends Controller
     {
         $update = SopList::where('id', $id)->first();
         $update->update([
-            'status'     => '4',
-            'updated_by' => Auth::user()->id
+            'status'      => '4',
+            'approved_at' => Carbon::now(),
+            'updated_by'  => Auth::user()->id
         ]);
 
         return response()->json(['success' => 'Approved!']);
     }
+
+    public function sopList(Request $request)
+    {
+        $selectedDepartment = $request->department;
+
+        $department         = SopDepartment::where('active', 'Y')->get();
+
+        return view('sop.sop-finalized', compact('department', 'selectedDepartment'));
+    }
+
+    public function fetchSOPList()
+    {
+        $data = SopList::where('status', '4')->where('active', 'Y');
+
+        return datatables()::of($data)
+            ->addColumn('sop', function ($data) {
+                return isset($data->sop) ? ($data->sop) : 'N/A';
+            })
+
+            ->addColumn('department', function ($data) {
+                return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
+            })
+
+            ->addColumn('action', function ($data) {
+                return '<a style="color: white" data-page="/generate-finalized-PDF/'.$data->id.'" class="btn btn-info"
+                onclick="Print(this)"><i class="fal fa-download"></i> PDF</a>';
+            })
+
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function generateFinalizePDF($id)
+    {
+        $data       = SopList::where('id', $id)->first();
+        $dateNow    = date(' j F Y ', strtotime(Carbon::now()->toDateTimeString()));
+        $date       = Carbon::now();
+        $staff      = Staff::get();
+        $department = SopDepartment::get();
+        $sop        = SopDetail::where('sop_lists_id', $id)->first();
+        $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
+        $sopForm    = SopForm::where('sop_lists_id', $id)->get();
+        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->first();
+
+        return view('sop.sop-pdf-finalized', compact('data', 'dateNow', 'date', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
+    }
+
+
 }

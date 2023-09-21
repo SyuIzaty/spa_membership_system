@@ -150,96 +150,61 @@
                             // echo ($permission);
                         @endphp
 
+                        <!-- Start SOP System -->
+
                         @php
                             $isAdmin = Auth::user()->hasRole('SOP Admin');
                             $owner = App\SopOwner::where('owner_id', Auth::user()->id)->first();
                         @endphp
 
-                        @if ($isAdmin || isset($owner))
+                        @role('Staff')
                             <li class="nav-title">SOP Management</li>
                             <li>
-                                <a href="/sop" style="text-decoration: none!important;" title="SOP"
+                                <a href="/sop-list" style="text-decoration: none!important;" title="SOP"
                                     data-filter-tags="list">
-                                    <i class="ni ni-briefcase"></i>
+                                    <i class="fal fa-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.sop">SOP</span>
                                 </a>
                             </li>
-                            @if ($isAdmin)
-                                <li class="open">
-                                    <a href="#" title="SOP Admin" data-filter-tags="list">
-                                        <i class="fal fa-user"></i>
-                                        <span class="nav-link-text" data-i18n="nav.list">Admin</span>
+                            @if ($isAdmin || isset($owner))
+                                <li>
+                                    <a href="/sop" style="text-decoration: none!important;" title="SOP Progress"
+                                        data-filter-tags="list">
+                                        <i class="ni ni-briefcase"></i>
+                                        <span class="nav-link-text" data-i18n="nav.sop">SOP Progress</span>
                                     </a>
-                                    <ul>
-                                        <li>
-                                            <a href="/sop-title" title="SOP Title" data-filter-tags="sopTitle">
-                                                <span class="nav-link-text" data-i18n="nav.sopTitle">SOP Title</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/sop-department" title="Department List"
-                                                data-filter-tags="department">
-                                                <span class="nav-link-text"
-                                                    data-i18n="nav.department">Department</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
-                                                <span class="nav-link-text" data-i18n="nav.owner">SOP Owner</span>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
+                                @if ($isAdmin)
+                                    <li class="open">
+                                        <a href="#" title="SOP Admin" data-filter-tags="list">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.list">Admin</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="/sop-title" title="SOP Title" data-filter-tags="sopTitle">
+                                                    <span class="nav-link-text" data-i18n="nav.sopTitle">SOP Title</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/sop-department" title="Department List"
+                                                    data-filter-tags="department">
+                                                    <span class="nav-link-text"
+                                                        data-i18n="nav.department">Department</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
+                                                    <span class="nav-link-text" data-i18n="nav.owner">SOP Owner</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endif
                             @endif
-                        @endif
-                        {{-- @role('SOP Admin')
-                            <li class="nav-title">SOP Management</li>
-                            <li>
-                                <a href="/sop" style="text-decoration: none!important;" title="SOP"
-                                    data-filter-tags="list">
-                                    <i class="ni ni-briefcase"></i>
-                                    <span class="nav-link-text" data-i18n="nav.sop">SOP</span>
-                                </a>
-                            </li>
-                            <li class="open">
-                                <a href="#" title="SOP Admin" data-filter-tags="list">
-                                    <i class="fal fa-user"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">Admin</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/sop-title" title="SOP Title" data-filter-tags="sopTitle">
-                                            <span class="nav-link-text" data-i18n="nav.sopTitle">SOP Title</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/sop-department" title="Department List" data-filter-tags="department">
-                                            <span class="nav-link-text" data-i18n="nav.department">Department</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
-                                            <span class="nav-link-text" data-i18n="nav.owner">SOP Owner</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
                         @endrole
 
-                        @php
-                            $owner = App\SopOwner::where('owner_id', Auth::user()->id)->first();
-                        @endphp
-
-                        @if (isset($owner))
-                            <li class="nav-title">SOP Management</li>
-                            <li>
-                                <a href="/sop" style="text-decoration: none!important;" title="SOP"
-                                    data-filter-tags="list">
-                                    <i class="ni ni-briefcase"></i>
-                                    <span class="nav-link-text" data-i18n="nav.sop">SOP</span>
-                                </a>
-                            </li>
-                        @endif --}}
+                        <!-- End SOP System -->
 
                         <!-- Start eAduan Korporat System -->
                         @role('eAduan Super Admin')

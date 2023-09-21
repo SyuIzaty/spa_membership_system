@@ -22,8 +22,15 @@
                                     <b style="color:red">A4 (8.27" x 11.69").</b>
                                 </li>
                                 <li>Save the file as <b style="color:red">.jpeg, .jpg or .png</b> only.</li>
-                                <li>Drag and drop only <b style="color:red">one file</b> in the dropzone.</li>
-                                <li>Drag a new file to replace the uploaded file.</li>
+                                <li>Drag and drop the <b style="color:red">file</b> in the dropzone.</li>
+                                <li>Please append a sequential number to the <b style="color:red">end of each file's
+                                        name</b>
+                                    when you have <b style="color:red">multiple files</b>.
+                                    For example, you can name them 'Flowchart 1,' 'Flowchart 2,' and so on.
+                                </li>
+                                <li>Drag a new file with the <b style="color:red">same name</b> to replace the uploaded
+                                    file.
+                                </li>
                             </ol>
                         </th>
                     </tr>
@@ -60,11 +67,20 @@
             @endif
         @endif
 
-        <div class="row mt-4">
-            <div class="form-group col-md-12 text-center">
-                <img src="/get-work-flow/{{ $workFlow->id }}" alt="" title="" style="max-width: 100%;" />
+        @foreach ($workFlow as $wf)
+            <div class="row mt-4">
+                <div class="form-group col-md-12 text-center">
+                    <div style="position: relative; display: inline-block;">
+                        <img src="/get-work-flow/{{ $wf->id }}" alt="" title=""
+                            style="max-width: 100%;" />
+                        <a href="#" data-path="{{ $wf->id }}" class="btn btn-danger btn-sm btn-delete"
+                            style="position: absolute; top: 0; right: -10%;">
+                            <i class="fal fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
+        @endforeach
     @else
         <form method="post" action="{{ url('store-work-flow') }}" enctype="multipart/form-data"
             class="dropzone needsclick dz-clickable" id="dropzone2">

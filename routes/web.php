@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-work-flow', 'SOPController@storeWorkFlow');
     Route::get('/get-work-flow/{id}', 'SOPController@workFlowFile');
     Route::post('/store-new-work-flow', 'SOPController@storeNewWorkFlow');
+    Route::delete('/delete-work-flow/{id}', 'SOPController@deleteWorkFlow');
     Route::get('/sop/review-record/{id}', 'SOPController@getReviewRecord');
     Route::get('/generate-PDF/{id}', 'SOPController@generatePDF');
     Route::get('/sop-department', 'SOPController@SOPDepartment');
@@ -101,6 +102,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/verify-sop/{id}', 'SOPController@verifySOP');
     Route::post('/approve-sop/{id}', 'SOPController@approveSOP');
     Route::post('comment-sop', 'SOPController@commentSOP');
+    Route::get('/sop-list', 'SOPController@sopList');
+    Route::post('/fetch-sop-list', 'SOPController@fetchSOPList');
+    Route::post('/fetch-sop-lists', 'SOPController@fetchSOPLists');
+    Route::get('/generate-finalized-PDF/{id}', 'SOPController@generateFinalizePDF');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

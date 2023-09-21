@@ -1,6 +1,22 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        /* styles.css */
+
+        /* Button style */
+        .btn-delete {
+            background-color: transparent;
+            color: #fd3995;
+            transition: background-color 0.3s;
+        }
+
+        /* Hover effect */
+        .btn-delete:hover {
+            background-color: #fd3995;
+            /* Change the background color on hover */
+        }
+    </style>
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
@@ -224,7 +240,7 @@
 
             $("#dropzone").dropzone({
                 addRemoveLinks: true,
-                maxFiles: 1, //change limit as per your requirements
+                // maxFiles: 1, //change limit as per your requirements
                 dictMaxFilesExceeded: "Maximum upload limit reached",
                 acceptedFiles: "image/jpeg,image/png,image/jpg",
                 init: function() {
@@ -244,7 +260,7 @@
 
             $("#dropzone2").dropzone({
                 addRemoveLinks: true,
-                maxFiles: 1, //change limit as per your requirements
+                // maxFiles: 1, //change limit as per your requirements
                 dictMaxFilesExceeded: "Maximum upload limit reached",
                 acceptedFiles: "image/jpeg,image/png,image/jpg",
                 init: function() {
@@ -573,6 +589,47 @@
             $('.tabledit-save-button').on('click', function() {
                 $(this).parents('tr').find('select').attr('disabled', 'disabled');
             })
+
+            $(".btn-delete").on('click', function(e) {
+                e.preventDefault();
+
+                let id = $(this).data('path');
+
+                Swal.fire({
+                    title: 'Are you sure you want to delete this image?',
+                    text: "Data cannot be restored!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete!',
+                    cancelButtonText: 'No'
+                }).then(function(e) {
+                    if (e.value === true) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/delete-work-flow/" + id,
+                            data: id,
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                console.log(response);
+                                if (response) {
+                                    Swal.fire(response.success);
+                                    location.reload();
+                                }
+                            }
+                        });
+                    } else {
+                        e.dismiss;
+                    }
+                }, function(dismiss) {
+                    return false;
+                })
+            });
+
         });
     </script>
 @endsection

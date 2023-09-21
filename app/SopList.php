@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SopList extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['sop','department_id','active','status','created_by','updated_by','deleted_by'];
+    protected $fillable = ['sop','department_id','active','status','created_by','updated_by','deleted_by','approved_at'];
 
     public function department()
     {
