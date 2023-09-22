@@ -442,9 +442,11 @@
                             </td>
                         </tr>
                     </table>
-                    @if (isset($workFlow->id))
-                        <img src="/get-work-flow/{{ $workFlow->id }}" alt="" title="" class="center"
-                            style="max-width: 100%; margin-top: 10px;" />
+                    @if (isset($workFlow))
+                        @foreach ($workFlow as $wf)
+                            <img src="/get-work-flow/{{ $wf->id }}" alt="" title="" class="center"
+                                style="max-width: 100%; margin-top: 10px;" />
+                        @endforeach
                     @else
                         <p>FLOWCHART IS NOT AVAILABLE</p>
                     @endif

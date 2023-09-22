@@ -39,9 +39,9 @@
         </div>
     </div>
 
-    @if (isset($workFlow))
-        @if (isset($sop))
-            @if ($sop->prepared_by == Auth::user()->id)
+    @if ($workFlow->count() > 0)
+        @if ($sop->prepared_by == Auth::user()->id)
+            @if ($data->status == '1' || $data->status == '2')
                 <div class="row">
                     <div class="form-group col-md-12">
                         <form method="post" action="{{ url('store-new-work-flow') }}" enctype="multipart/form-data"
@@ -73,10 +73,15 @@
                     <div style="position: relative; display: inline-block;">
                         <img src="/get-work-flow/{{ $wf->id }}" alt="" title=""
                             style="max-width: 100%;" />
-                        <a href="#" data-path="{{ $wf->id }}" class="btn btn-danger btn-sm btn-delete"
-                            style="position: absolute; top: 0; right: -10%;">
-                            <i class="fal fa-trash"></i>
-                        </a>
+                        @if ($data->status == '1' || $data->status == '2')
+                            @if ($sop->prepared_by == Auth::user()->id)
+                                <a href="#" data-path="{{ $wf->id }}"
+                                    class="btn btn-danger btn-sm btn-delete"
+                                    style="position: absolute; top: 0; right: -10%;">
+                                    <i class="fal fa-trash"></i>
+                                </a>
+                            @endif
+                        @endif
                     </div>
                 </div>
             </div>

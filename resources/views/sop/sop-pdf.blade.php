@@ -305,8 +305,8 @@
                         </thead>
                     </table>
                 </div>
-                <div class="table-responsive" style="margin-top: 10px;">
-                    <table class=" w-100" style="border: none;">
+                <div class="table-responsive" style="border: none; margin-top: 10px;">
+                    <table class=" w-100">
                         <tr>
                             <td style="font-weight: bold">1.0</td>
                             <td style="font-weight: bold"> Purpose</td>
@@ -449,20 +449,22 @@
                             </td>
                         </tr>
                     </table>
-                    @if (isset($workFlow->id))
-                        <img src="/get-work-flow/{{ $workFlow->id }}" alt="" title=""
-                            style="max-width: 100%; margin-top: 10px;" />
+                    @if (isset($workFlow))
+                        @foreach ($workFlow as $wf)
+                            <img src="/get-work-flow/{{ $wf->id }}" alt="" title="" class="center"
+                                style="max-width: 100%; margin-top: 10px;" />
+                        @endforeach
                     @else
                         <p>FLOWCHART IS NOT AVAILABLE</p>
                     @endif
                 </div>
 
-                <div id="footer" class="text-center">
+                {{-- <div id="footer" class="text-center">
                     <p>UiTM Private Education Sdn Bhd, 947874-D, INTEC Education College, Jalan Senangin Satu 17/2A, Seksyen
                         17, 40200 Shah Alam, Selangor Darul Ehsan, MALAYSIA
                         No Tel : +603 5522 7000 No Fax : +603 5522 7010
                     </p>
-                </div>
+                </div> --}}
             </div>
         </div>
     </main>

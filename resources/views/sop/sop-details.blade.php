@@ -281,12 +281,14 @@
 </div>
 @if (isset($sop))
     @if ($sop->prepared_by == Auth::user()->id)
-        {!! Form::button(isset($sop) ? 'Update' : 'Save', [
-            'type' => 'submit',
-            'class' => 'btn btn-primary ml-auto float-right',
-            'style' => 'margin-top:10px',
-        ]) !!}
-        {!! Form::close() !!}
+        @if ($data->status == '1' || $data->status == '2')
+            {!! Form::button(isset($sop) ? 'Update' : 'Save', [
+                'type' => 'submit',
+                'class' => 'btn btn-primary ml-auto float-right',
+                'style' => 'margin-top:10px',
+            ]) !!}
+            {!! Form::close() !!}
+        @endif
     @endif
 @else
     {!! Form::button(isset($sop) ? 'Update' : 'Save', [

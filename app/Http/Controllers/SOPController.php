@@ -948,12 +948,22 @@ class SOPController extends Controller
             Storage::disk('minio')->delete($attach->web_path);
         }
 
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        $reviewRecord = 'Flowchart deleted by ' . $staff->staff_name;
+
+        SopReviewRecord::create([
+            'sop_lists_id'  => $attach->sop_lists_id,
+            'review_record' => $reviewRecord,
+            'section'       => 'Flowchart',
+            'created_by'    => Auth::user()->id
+        ]);
+
         $attach->delete();
 
         $file->delete();
 
         return response()->json(['success' => 'Deleted!']);
-
     }
 
     public function generatePDF($id)
@@ -966,13 +976,14 @@ class SOPController extends Controller
         $sop        = SopDetail::where('sop_lists_id', $id)->first();
         $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
         $sopForm    = SopForm::where('sop_lists_id', $id)->get();
-        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->first();
+        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->orderBy('web_path', 'ASC')->get();
 
         return view('sop.sop-pdf', compact('data', 'dateNow', 'date', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
     }
 
     public function commentSOP(Request $request)
     {
+        dd($request->comment);
         $validator = Validator::make($request->all(), [
             'comment' => 'required',
         ]);
@@ -1055,10 +1066,8 @@ class SOPController extends Controller
         $sop        = SopDetail::where('sop_lists_id', $id)->first();
         $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
         $sopForm    = SopForm::where('sop_lists_id', $id)->get();
-        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->first();
+        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->orderBy('web_path', 'ASC')->get();
 
         return view('sop.sop-pdf-finalized', compact('data', 'dateNow', 'date', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
     }
-
-
 }
