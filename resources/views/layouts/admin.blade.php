@@ -566,8 +566,8 @@
                         <!-- End Engagement Management System -->
 
                         <!-- Start ShortCourse Management System -->
-                        {{-- @role('Super Admin') --}}
-                        {{-- @can('Short Course Management - View All')
+                        @role('Super Admin')
+                        @can('Short Course Management - View All')
                             <li class="nav-title">Short Course Management</li>
                             <li>
                                 <a href="#" title="Catalogues" data-filter-tags="catalogues">
@@ -613,14 +613,14 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li> --}}
-                        {{-- <li>
+                            </li>
+                        <li>
                                 <a href="/events" title="Event Management" data-filter-tags="event-management">
                                     <i class="ni ni-calendar-fine"></i>
                                     <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
                                 </a>
-                            </li> --}}
-                        {{-- <li>
+                            </li>
+                        <li>
                                 <a href="#" title="People" data-filter-tags="people">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.people">People</span>
@@ -633,8 +633,8 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li> --}}
-                        {{-- <li>
+                            </li>
+                        <li>
                                 <a href="#" title="Application" data-filter-tags="application">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.application">Application</span>
@@ -647,23 +647,23 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li> --}}
+                            </li>
 
-                        {{-- <li>
+                        <li>
                                 <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">
                                     <i class="fal fa-users"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Public View</span>
                                 </a>
                             </li>
- --}}
-                        {{-- <li>
+
+                        <li>
                                 <a href="/feedback/form" title="Feedback" data-filter-tags="feedback">
                                     <i class="ni ni-note"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Feedback</span>
                                 </a>
-                            </li> --}}
-                        {{-- @endcan --}}
-                        {{-- @endrole --}}
+                            </li>
+                        @endcan
+                        @endrole
                         <!-- End ShortCourse Management System -->
 
                         {{-- Start Aduan --}}
