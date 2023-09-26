@@ -12,7 +12,7 @@ use App\Student;
 use Carbon\Carbon;
 use App\Department;
 use App\eKenderaan;
-use App\Programmes;
+use App\Programme;
 use App\Departments;
 use App\eKenderaanLog;
 use App\eKenderaanStatus;
@@ -150,7 +150,7 @@ class EKenderaanController extends Controller
             $staff = Staff::where('staff_code', $dept->staff_code)->get()->pluck('staff_id')->toArray();
             $data = eKenderaan::whereIn('intec_id', $staff)->get();
         } else {
-            $program = Programmes::where('head_of_programme', Auth::user()->id)->pluck('id')->toArray();
+            $program = Programme::where('head_of_programme', Auth::user()->id)->pluck('id')->toArray();
 
             $data = eKenderaan::where('status', $id)->whereHas('student', function ($query) use ($program) {
                 $query->whereIn('students_programme', $program);

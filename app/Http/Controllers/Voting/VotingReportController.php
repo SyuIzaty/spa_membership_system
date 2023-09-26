@@ -1,25 +1,42 @@
 <?php
 
-namespace App\Http\Controllers\API\eVoting;
+namespace App\Http\Controllers\Voting;
 
-use App\Http\Controllers\API\BaseController as BaseController;
-use App\Http\Controllers\Controller;
-use App\Models\eVoting\Programme;
+use App\EvmVote;
+use App\EvmVoter;
 use Illuminate\Http\Request;
-use Auth;
+use App\Http\Controllers\Controller;
 
-class ProgrammeController extends BaseController
+class VotingReportController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $programme=Programme::all();
-        return $this->sendResponse($programme, 'Programme fetched!');
+        $vote = EvmVote::all();
+        $voteData = null;
+        $selectedVote = $request->vote;
+
+        if ($selectedVote) {
+            $voteData = EvmVote::where('id', $selectedVote)->first();
+        }
+
+        if ($request->ajax()) {
+            return view('voting.voting-report-section', compact('voteData'));
+        }
+
+        return view('voting.voting-report', compact('vote', 'voteData', 'selectedVote'));
+    }
+
+    public function votingPdf(Request $request)
+    {
+        $voteData = EvmVote::where('id', $request->input('voteData'))->first();
+
+        return view('voting.voting-report-pdf', compact('voteData'));
+
     }
 
     /**
@@ -72,15 +89,9 @@ class ProgrammeController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $programme_id)
+    public function update(Request $request, $id)
     {
         //
-        $programme = Programme::find($programme_id);
-        $programme->programme_category_id=$request->programme_category_id;
-        $programme->updated_by=Auth::user()->id;
-        $programme->save();
-
-        return $this->sendResponse($programme, 'Programme updated!');
     }
 
     /**

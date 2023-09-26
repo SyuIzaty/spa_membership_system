@@ -1,25 +1,54 @@
 <?php
 
-namespace App\Http\Controllers\API\eVoting;
+namespace App\Http\Controllers\Voting;
 
-use App\Http\Controllers\API\BaseController as BaseController;
-use App\Http\Controllers\Controller;
-use App\Models\eVoting\Programme;
+use App\EvmVote;
+use App\EvmVoter;
 use Illuminate\Http\Request;
-use Auth;
+use App\Http\Controllers\Controller;
 
-class ProgrammeController extends BaseController
+class VotingDashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $programme=Programme::all();
-        return $this->sendResponse($programme, 'Programme fetched!');
+        $vote = EvmVote::all();
+
+        $voteData = null;
+
+        $selectedVote = $request->vote;
+
+        if ($selectedVote) {
+            $voteData = EvmVote::where('id', $selectedVote)->first();
+        }
+
+        if ($request->ajax()) {
+            return view('voting.voting-dashboard-section', compact('voteData'));
+        }
+
+        return view('voting.voting-dashboard', compact('vote', 'voteData', 'selectedVote'));
+    }
+
+    public function getVotingDate(Request $request, $selectedVote)
+    {
+        $voteData = EvmVote::find($selectedVote);
+
+        if ($voteData) {
+            return response()->json([
+                'success' => true,
+                'start_date' => $voteData->start_date,
+                'end_date' => $voteData->end_date,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vote data not found',
+            ]);
+        }
     }
 
     /**
@@ -72,15 +101,9 @@ class ProgrammeController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $programme_id)
+    public function update(Request $request, $id)
     {
         //
-        $programme = Programme::find($programme_id);
-        $programme->programme_category_id=$request->programme_category_id;
-        $programme->updated_by=Auth::user()->id;
-        $programme->save();
-
-        return $this->sendResponse($programme, 'Programme updated!');
     }
 
     /**

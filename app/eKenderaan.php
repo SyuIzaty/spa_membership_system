@@ -42,7 +42,7 @@ class eKenderaan extends Model
 
     public function programmes()
     {
-        return $this->hasOne('App\Programmes', 'id', 'students_programme');
+        return $this->hasOne('App\Programme', 'id', 'students_programme');
     }
 
     public function statusList()

@@ -461,9 +461,47 @@
                         <!-- End eDocument Management System -->
 
                         <!-- Start eVoting Management System -->
-                        @role('Super Admin')
-                            <li class="nav-title">eVoting</li>
 
+                        <li class="nav-title">E-VOTING</li>
+
+                        @can('Manage eVoting')
+                            <li>
+                                <a href="#" title="e-Voting Management"
+                                    data-filter-tags="vote-management">
+                                    <i class="ni ni-briefcase"></i>
+                                    <span class="nav-link-text" data-i18n="nav.vote-management">Voting Management</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/voting-dashboard" title="dashboard" data-filter-tags="dashboard">
+                                            <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard Analysis</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/voting-manage" title="parameter" data-filter-tags="parameter">
+                                            <span class="nav-link-text" data-i18n="nav.parameter">Manage Voting</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/voting-report" title="report" data-filter-tags="report">
+                                            <span class="nav-link-text" data-i18n="nav.report">Manage Report</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endcan
+
+                        @can('View eVoting Platform')
+                            <li>
+                                <a href="/voting-platform" title="platform" data-filter-tags="platform">
+                                    <i class="ni ni-envelope-letter"></i>
+                                    <span class="nav-link-text" data-i18n="nav.platform">Voting Platform</span>
+                                </a>
+                            </li>
+                        @endcan
+
+                        @role('Super Admin')
+                            <li class="nav-title">E-VOTING OLD VERSION</li>
                             @can('eVoting - Management System')
                                 <li>
                                     <a href="/vote-management" title="e-Voting Management"
@@ -491,6 +529,7 @@
                                 </li>
                             @endcan
                         @endrole
+
                         <!-- End eVoting Management System -->
 
                         <!-- Start Engagement Management System -->
