@@ -57,7 +57,7 @@
                                 <div class="alert alert-success" style="color: #3b6324;"> <i class="icon fal fa-check-circle mr-2"></i> {{ Session::get('message') }}</div>
                             @endif
                             <div class="row">
-                                <div class="col-sm-12 col-xl-2">
+                                <div class="col-xs-12 col-xl-2">
                                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                         @foreach($vote->categories as $key => $category)
                                             <a class="nav-link mb-2 {{ $key === 0 ? 'active' : '' }}" id="category-tab-{{ $category->id }}" data-toggle="pill" href="#category-pane-{{ $category->id }}" role="tab" aria-controls="category-pane-{{ $category->id }}" aria-selected="{{ $key === 0 ? 'true' : 'false' }}" style="border: 1px solid;">
@@ -67,7 +67,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-xl-10">
+                                <div class="col-xs-12 col-xl-10">
                                     <div class="tab-content" id="v-pills-tabContent">
                                         @foreach($vote->categories as $key => $category)
                                             <div class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" id="category-pane-{{ $category->id }}" role="tabpanel" style="margin-top: -30px"><br>
@@ -181,23 +181,25 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                             <div class="col-12" data-programme-id="{{ $programmes->id }}">
-                                                                                                                <table class="table table-bordered table-hover table-striped w-100 candidate-table">
-                                                                                                                    <thead>
-                                                                                                                        <tr class="text-center" style="white-space: nowrap; background-color:#f7f9fa">
-                                                                                                                            <th style="width:30px">NO</th>
-                                                                                                                            <th>IMAGE</th>
-                                                                                                                            <th>ID</th>
-                                                                                                                            <th>NAME</th>
-                                                                                                                            {{-- <th>TAGLINE</th> --}}
-                                                                                                                            <th>CAST VOTE</th>
-                                                                                                                            <th>VERIFICATION</th>
-                                                                                                                            <th>VOTER</th>
-                                                                                                                            @if (strtotime(Carbon\Carbon::now()) < strtotime($vote->start_date))
-                                                                                                                                <th>ACTION</th>
-                                                                                                                            @endif
-                                                                                                                        </tr>
-                                                                                                                    </thead>
-                                                                                                                </table>
+                                                                                                                <div class="table-responsive">
+                                                                                                                    <table class="table table-bordered table-hover table-striped w-100 candidate-table">
+                                                                                                                        <thead>
+                                                                                                                            <tr class="text-center" style="white-space: nowrap; background-color:#f7f9fa">
+                                                                                                                                <th style="width:30px">NO</th>
+                                                                                                                                <th>IMAGE</th>
+                                                                                                                                <th>ID</th>
+                                                                                                                                <th>NAME</th>
+                                                                                                                                {{-- <th>TAGLINE</th> --}}
+                                                                                                                                <th>CAST VOTE</th>
+                                                                                                                                <th>VERIFICATION</th>
+                                                                                                                                <th>VOTER</th>
+                                                                                                                                @if (strtotime(Carbon\Carbon::now()) < strtotime($vote->start_date))
+                                                                                                                                    <th>ACTION</th>
+                                                                                                                                @endif
+                                                                                                                            </tr>
+                                                                                                                        </thead>
+                                                                                                                    </table>
+                                                                                                                </div>
                                                                                                             </div>
                                                                                                             <div class="panel-content mt-2 py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex pull-right">
                                                                                                                 @if (strtotime(Carbon\Carbon::now()) < strtotime($vote->start_date))
