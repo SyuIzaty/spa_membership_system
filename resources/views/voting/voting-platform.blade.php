@@ -54,9 +54,11 @@
         </h1>
     </div>
     @php
-        $exist = \App\EvmCandidate::where('student_id', '2021039049')->whereHas('programme', function($query) use($category){
-            $query->whereHas('category', function($subQuery) use($category){
-                $subQuery->where('id', $category->id);
+        $exist = \App\EvmVoter::where('voter_id', '2021039049')->whereHas('candidate', function($q) use($category){
+            $q->whereHas('programme', function($query) use($category){
+                $query->whereHas('category', function($subQuery) use($category){
+                    $subQuery->where('id', $category->id);
+                });
             });
         })->first();
     @endphp

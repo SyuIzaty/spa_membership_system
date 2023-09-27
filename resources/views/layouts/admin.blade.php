@@ -466,8 +466,7 @@
 
                         @can('Manage eVoting')
                             <li>
-                                <a href="#" title="e-Voting Management"
-                                    data-filter-tags="vote-management">
+                                <a href="#" title="e-Voting Management" data-filter-tags="vote-management">
                                     <i class="ni ni-briefcase"></i>
                                     <span class="nav-link-text" data-i18n="nav.vote-management">Voting Management</span>
                                 </a>
