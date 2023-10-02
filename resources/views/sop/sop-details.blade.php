@@ -237,16 +237,14 @@
                             <span class="input-group-text" style="background-color:#f3f3f37a;">Purpose
                             </span>
                         </div>
-                        <textarea class="form-control" id="example-textarea" rows="8" name="purpose"
-                            placeholder="Please key-in the purpose" required>{{ isset($sop) ? $sop->purpose : old('purpose') }}</textarea>
+                        <textarea class="form-control" rows="8" name="purpose" placeholder="Please key-in the purpose" required>{{ isset($sop) ? $sop->purpose : old('purpose') }}</textarea>
                     </div>
                     <div class="form-group col-md-6">
                         <div>
                             <span class="input-group-text" style="background-color:#f3f3f37a;">Scope
                             </span>
                         </div>
-                        <textarea class="form-control" id="example-textarea" rows="8" name="scope"
-                            placeholder="Please key-in the scope" required>{{ isset($sop) ? $sop->scope : old('scope') }}</textarea>
+                        <textarea class="form-control" rows="8" name="scope" placeholder="Please key-in the scope" required>{{ isset($sop) ? $sop->scope : old('scope') }}</textarea>
                     </div>
                 </div>
                 <div class="row mt-2">

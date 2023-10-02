@@ -89,22 +89,22 @@ class SOPController extends Controller
 
             ->addColumn('status', function ($data) {
                 if ($data->status == '1') {
-                    return '<span style="color:red;"><b>'.$data->listStatus->name.'</b></span>';
+                    return '<span style="color:red;"><b>' . $data->listStatus->name . '</b></span>';
                 } elseif ($data->status == '2') {
-                    return '<span style="color:green;"><b>'.$data->listStatus->name.'</b></span>';
+                    return '<span style="color:green;"><b>' . $data->listStatus->name . '</b></span>';
                 } elseif ($data->status == '3') {
-                    return '<span style="color:orange;"><b>'.$data->listStatus->name.'</b></span>';
+                    return '<span style="color:orange;"><b>' . $data->listStatus->name . '</b></span>';
                 } else {
-                    return '<span style="color:blue;"><b>'.$data->listStatus->name.'</b></span>';
+                    return '<span style="color:blue;"><b>' . $data->listStatus->name . '</b></span>';
                 }
             })
 
             ->addColumn('action', function ($data) {
-                return '<a href="/sop/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                return '<a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
             })
 
             ->addColumn('log', function ($data) {
-                return '<a href="/sop/'.$data->id.'/log" class="btn btn-sm btn-info"><i class="fal fa-list-alt"></i></a>';
+                return '<a href="/sop/' . $data->id . '/log" class="btn btn-sm btn-info"><i class="fal fa-list-alt"></i></a>';
             })
 
             ->addIndexColumn()
@@ -117,7 +117,7 @@ class SOPController extends Controller
         $cond = "1";
 
         if ($request->department && $request->department != "All") {
-            $cond .= " AND (department_id = '".$request->department."')";
+            $cond .= " AND (department_id = '" . $request->department . "')";
         }
 
         $data = SopList::whereRaw($cond)->where('active', 'Y');
@@ -165,22 +165,22 @@ class SOPController extends Controller
 
         ->addColumn('status', function ($data) {
             if ($data->status == '1') {
-                return '<span style="color:red;"><b>'.$data->listStatus->name.'</b></span>';
+                return '<span style="color:red;"><b>' . $data->listStatus->name . '</b></span>';
             } elseif ($data->status == '2') {
-                return '<span style="color:green;"><b>'.$data->listStatus->name.'</b></span>';
+                return '<span style="color:green;"><b>' . $data->listStatus->name . '</b></span>';
             } elseif ($data->status == '3') {
-                return '<span style="color:orange;"><b>'.$data->listStatus->name.'</b></span>';
+                return '<span style="color:orange;"><b>' . $data->listStatus->name . '</b></span>';
             } else {
-                return '<span style="color:blue;"><b>'.$data->listStatus->name.'</b></span>';
+                return '<span style="color:blue;"><b>' . $data->listStatus->name . '</b></span>';
             }
         })
 
         ->addColumn('action', function ($data) {
-            return '<a href="/sop/'.$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            return '<a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
         })
 
         ->addColumn('log', function ($data) {
-            return '<a href="/sop/'.$data->id.'/log" class="btn btn-sm btn-info"><i class="fal fa-list-alt"></i></a>';
+            return '<a href="/sop/' . $data->id . '/log" class="btn btn-sm btn-info"><i class="fal fa-list-alt"></i></a>';
         })
 
         ->addIndexColumn()
@@ -216,7 +216,7 @@ class SOPController extends Controller
 
                 if ($check->exists()) {
                     foreach ($data->getCD as $c) {
-                        $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                        $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>' . $c->crossDepartment->department_name . '</div>' : 'N/A';
                     }
                     return $all;
                 } else {
@@ -237,8 +237,8 @@ class SOPController extends Controller
                 $crossDept = SopCrossDepartment::where('sop_lists_id', $data->id)->get();
 
                 return '<a href="#" data-target="#edit" data-toggle="modal"
-                data-id="'.$data->id.'" data-department="'.$data->department_id.'"
-                data-title="'.$data->sop.'" data-status="'.$data->active.'" data-crossDept="'.$crossDept.'"
+                data-id="' . $data->id . '" data-department="' . $data->department_id . '"
+                data-title="' . $data->sop . '" data-status="' . $data->active . '" data-crossDept="' . $crossDept . '"
                 class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
@@ -252,7 +252,7 @@ class SOPController extends Controller
         $cond = "1";
 
         if ($request->department && $request->department != "All") {
-            $cond .= " AND (department_id = '".$request->department."')";
+            $cond .= " AND (department_id = '" . $request->department . "')";
         }
 
         $data = SopList::whereRaw($cond);
@@ -273,7 +273,7 @@ class SOPController extends Controller
 
             if ($check->exists()) {
                 foreach ($data->getCD as $c) {
-                    $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>'.$c->crossDepartment->department_name.'</div>' : 'N/A';
+                    $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>' . $c->crossDepartment->department_name . '</div>' : 'N/A';
                 }
                 return $all;
             } else {
@@ -291,8 +291,8 @@ class SOPController extends Controller
 
         ->addColumn('action', function ($data) {
             return '<a href="#" data-target="#edit" data-toggle="modal"
-            data-id="'.$data->id.'" data-department="'.$data->department_id.'"
-            data-title="'.$data->sop.'" data-status="'.$data->active.'"
+            data-id="' . $data->id . '" data-department="' . $data->department_id . '"
+            data-title="' . $data->sop . '" data-status="' . $data->active . '"
             class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
         })
 
@@ -400,8 +400,8 @@ class SOPController extends Controller
 
             ->addColumn('action', function ($data) {
                 return '<a href="#" data-target="#edit" data-toggle="modal"
-                data-id="'.$data->id.'" data-department="'.$data->department_name.'"
-                data-abbreviation="'.$data->abbreviation.'" data-status="'.$data->active.'"
+                data-id="' . $data->id . '" data-department="' . $data->department_name . '"
+                data-abbreviation="' . $data->abbreviation . '" data-status="' . $data->active . '"
                 class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
@@ -415,7 +415,7 @@ class SOPController extends Controller
         $cond = "1";
 
         if ($request->department && $request->department != "All") {
-            $cond .= " AND (id = '".$request->department."')";
+            $cond .= " AND (id = '" . $request->department . "')";
         }
 
         $data = SopDepartment::whereRaw($cond);
@@ -440,8 +440,8 @@ class SOPController extends Controller
 
         ->addColumn('action', function ($data) {
             return '<a href="#" data-target="#edit" data-toggle="modal"
-            data-id="'.$data->id.'"
-            data-abbreviation="'.$data->abbreviation.'" data-status="'.$data->active.'"
+            data-id="' . $data->id . '"
+            data-abbreviation="' . $data->abbreviation . '" data-status="' . $data->active . '"
             class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
         })
 
@@ -501,7 +501,7 @@ class SOPController extends Controller
                 if ($check->exists()) {
                     $owner = SopOwner::where('department_id', $data->id)->get();
                     foreach ($owner as $o) {
-                        $all .= isset($o->staff->staff_name) ? '<div word-break: break-all;>'.$o->staff->staff_name.'</div>' : 'N/A';
+                        $all .= isset($o->staff->staff_name) ? '<div word-break: break-all;>' . $o->staff->staff_name . '</div>' : 'N/A';
                     }
                     return $all;
                 } else {
@@ -510,7 +510,7 @@ class SOPController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                return '<a href="/sop-owner/'.$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                return '<a href="/sop-owner/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
             ->addIndexColumn()
@@ -523,7 +523,7 @@ class SOPController extends Controller
         $cond = "1";
 
         if ($request->department && $request->department != "All") {
-            $cond .= " AND (id = '".$request->department."')";
+            $cond .= " AND (id = '" . $request->department . "')";
         }
 
         $data = SopDepartment::whereRaw($cond);
@@ -542,7 +542,7 @@ class SOPController extends Controller
                 if ($check->exists()) {
                     $owner = SopOwner::where('department_id', $data->id)->get();
                     foreach ($owner as $o) {
-                        $all .= isset($o->staff->staff_name) ? '<div word-break: break-all;>'.$o->staff->staff_name.'</div>' : 'N/A';
+                        $all .= isset($o->staff->staff_name) ? '<div word-break: break-all;>' . $o->staff->staff_name . '</div>' : 'N/A';
                     }
                     return $all;
                 } else {
@@ -551,7 +551,7 @@ class SOPController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                return '<a href="/sop-owner/'.$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                return '<a href="/sop-owner/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
             ->addIndexColumn()
@@ -587,7 +587,7 @@ class SOPController extends Controller
         }
 
         if($error) {
-            $message = "[".implode(',', $error)."] already inserted";
+            $message = "[" . implode(',', $error) . "] already inserted";
         }
 
         if($message) {
@@ -807,7 +807,7 @@ class SOPController extends Controller
     {
         $filename = "INTEC SOP QM - Application for PA (Sample) 2022.pdf";
 
-        return Storage::disk('minio')->response('sop/reference/'.$filename);
+        return Storage::disk('minio')->response('sop/reference/' . $filename);
     }
 
     public function getReviewRecord($id)
@@ -882,14 +882,14 @@ class SOPController extends Controller
         $file = $request->file('file');
 
         if (isset($file)) {
-            $fileName = time().$file->getClientOriginalName();
+            $fileName = time() . $file->getClientOriginalName();
 
-            Storage::disk('minio')->put("/sop/".$fileName, file_get_contents($file));
+            Storage::disk('minio')->put("/sop/" . $fileName, file_get_contents($file));
 
             SopFlowChart::create([
                 'sop_lists_id'  => $request->id,
                 'upload'        => $fileName,
-                'web_path'      => "sop/".$fileName,
+                'web_path'      => "sop/" . $fileName,
                 'created_by'    => Auth::user()->id
         ]);
         }
@@ -902,7 +902,7 @@ class SOPController extends Controller
         $file = SopFlowChart::where('id', $id)->first();
         $filename = $file->upload;
 
-        return Storage::disk('minio')->response('sop/'.$filename);
+        return Storage::disk('minio')->response('sop/' . $filename);
     }
 
     public function storeNewWorkFlow(Request $request)
@@ -923,14 +923,14 @@ class SOPController extends Controller
 
         $file = $request->file('file');
         if (isset($file)) {
-            $fileName = time().$file->getClientOriginalName();
+            $fileName = time() . $file->getClientOriginalName();
 
-            Storage::disk('minio')->put("/sop/".$fileName, file_get_contents($file));
+            Storage::disk('minio')->put("/sop/" . $fileName, file_get_contents($file));
 
             SopFlowChart::create([
                 'sop_lists_id'  => $request->id,
                 'upload'        => $fileName,
-                'web_path'      => "sop/".$fileName,
+                'web_path'      => "sop/" . $fileName,
                 'created_by'    => Auth::user()->id
         ]);
         }
@@ -983,7 +983,6 @@ class SOPController extends Controller
 
     public function commentSOP(Request $request)
     {
-        dd($request->comment);
         $validator = Validator::make($request->all(), [
             'comment' => 'required',
         ]);
@@ -1047,7 +1046,7 @@ class SOPController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                return '<a style="color: white" data-page="/generate-finalized-PDF/'.$data->id.'" class="btn btn-info"
+                return '<a style="color: white" data-page="/generate-finalized-PDF/' . $data->id . '" class="btn btn-info"
                 onclick="Print(this)"><i class="fal fa-download"></i> PDF</a>';
             })
 

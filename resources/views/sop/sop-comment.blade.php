@@ -20,7 +20,7 @@
                                     @csrf
                                     <input type="hidden" id="id" name="id" value="{{ $id }}">
                                     <textarea class="form-control" rows="5" name="comment" required></textarea> <br>
-                                    <button class="btn btn-warning float-right" id="comment" name="submit"><i
+                                    <button class="btn btn-warning float-right" id="comments" name="submit"><i
                                             class="fal fa-check"></i>
                                         Submit
                                     </button>

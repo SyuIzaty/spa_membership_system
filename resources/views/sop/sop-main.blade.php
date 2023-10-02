@@ -238,6 +238,56 @@
 
             $('#prepared_by,#reviewed_by,#approved_by').select2();
 
+            $("#comments").on('click', function(e) {
+                e.preventDefault();
+                var datas = $('#form-comment').serialize();
+
+                Swal.fire({
+                    title: 'Are you sure you want to submit?',
+                    text: "Once submitted, comments cannot be edited.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Cancel!',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+
+                    if (result.value) {
+                        Swal.fire({
+                            title: 'Loading..',
+                            text: 'Please wait..',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false,
+                            onOpen: () => {
+                                Swal.showLoading()
+                            }
+                        })
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ url('comment-sop') }}",
+                            data: datas,
+                            dataType: "json",
+                            success: function(response) {
+                                console.log(response);
+                                if (response) {
+                                    Swal.fire(response.success);
+                                    location.reload();
+                                }
+                            },
+                            error: function(xhr, textStatus, errorThrown) {
+                                Swal.fire(
+                                    'The comment field is required!'
+                                );
+                                console.error(xhr.responseText);
+                            }
+                        });
+                    }
+                })
+            });
+
             $("#dropzone").dropzone({
                 addRemoveLinks: true,
                 // maxFiles: 1, //change limit as per your requirements
@@ -442,61 +492,6 @@
                 })
             });
 
-            $("#comment").on('click', function(e) {
-                e.preventDefault();
-
-                var datas = $('#form-comment').serialize();
-
-                Swal.fire({
-                    title: 'Are you sure you want to submit?',
-                    text: "Once submitted, comments cannot be edited.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, Submit!',
-                    cancelButtonText: 'No'
-                }).then((result) => {
-
-                    if (result.value) {
-                        Swal.fire({
-                            title: 'Loading..',
-                            text: 'Please wait..',
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            allowEnterKey: false,
-                            onOpen: () => {
-                                Swal.showLoading()
-                            }
-                        })
-                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ url('comment-sop') }}",
-                            data: datas,
-                            dataType: "json",
-                            success: function(response) {
-                                console.log(response);
-                                if (response && response.success) {
-                                    Swal.fire(response.success);
-                                    location.reload();
-                                } else {
-                                    Swal.fire(
-                                        'The comment field is required!'
-                                    );
-                                }
-                            },
-                            error: function(xhr, textStatus, errorThrown) {
-                                Swal.fire(
-                                    'The comment field is required!'
-                                );
-                                console.error(xhr.responseText);
-                            }
-                        });
-                    }
-                })
-            });
-
             $(".approve").on('click', function(e) {
                 e.preventDefault();
 
@@ -629,6 +624,8 @@
                     return false;
                 })
             });
+
+
 
         });
     </script>
