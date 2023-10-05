@@ -9,7 +9,7 @@ class EvmProgramme extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['category_id','programme_code','min_vote','max_vote','created_by','updated_by','deleted_by'];
+    protected $fillable = ['category_id','programme_code','created_by','updated_by','deleted_by'];
 
     public function programme()
     {

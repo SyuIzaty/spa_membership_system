@@ -804,9 +804,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/voting-setting-store', 'Voting\VotingManagementController@vote_setting_store');
     Route::post('/voting-setting-update', 'Voting\VotingManagementController@vote_setting_update');
     Route::delete('/voting-setting-delete/{id}', 'Voting\VotingManagementController@vote_setting_delete');
-    Route::post('/voting-programme-store', 'Voting\VotingManagementController@vote_programme_store');
-    Route::post('/voting-programme-update', 'Voting\VotingManagementController@vote_programme_update');
-    Route::delete('/voting-programme-delete/{id}', 'Voting\VotingManagementController@vote_programme_delete');
     Route::post('/voting-candidate-store', 'Voting\VotingManagementController@vote_candidate_store');
     Route::post('/voting-candidate-update', 'Voting\VotingManagementController@vote_candidate_update');
     Route::delete('/voting-candidate-delete/{id}', 'Voting\VotingManagementController@vote_candidate_delete');

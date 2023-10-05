@@ -109,14 +109,22 @@ class VotingManagementController extends Controller
         $request->validate([
             'category_name'          => 'required',
             'category_description'   => 'nullable',
+            'programme_code'         => 'required',
         ]);
 
-        EvmCategory::create([
+        $category = EvmCategory::create([
             'vote_id'                   => $request->voteId,
             'category_name'             => $request->category_name,
             'category_description'      => $request->category_description,
             'created_by'                => Auth::user()->id,
             'updated_by'                => Auth::user()->id,
+        ]);
+
+        $programme = EvmProgramme::create([
+            'category_id'       => $category->id,
+            'programme_code'    => $request->programme_code,
+            'created_by'        => Auth::user()->id,
+            'updated_by'        => Auth::user()->id,
         ]);
 
         Session::flash('message',' Category is saved successfully.');
@@ -127,15 +135,24 @@ class VotingManagementController extends Controller
     public function vote_setting_update(Request $request)
     {
         $request->validate([
-            'names'          => 'required',
-            'descriptions'   => 'nullable',
+            'names'             => 'required',
+            'descriptions'      => 'nullable',
+            'programme_codes'   => 'required',
         ]);
 
-        EvmCategory::where('id', $request->ids)->update([
+        $category = EvmCategory::where('id', $request->ids)->update([
             'category_name'             => $request->names,
             'category_description'      => $request->descriptions,
             'updated_by'                => Auth::user()->id,
         ]);
+
+        $programme = EvmProgramme::find($category->id);
+
+        $programme->update([
+            'programme_code'    => $request->programme_codes,
+            'updated_by'        => Auth::user()->id,
+        ]);
+
 
         Session::flash('message',' Category is updated successfully.');
 
@@ -166,77 +183,6 @@ class VotingManagementController extends Controller
         $category->delete();
 
         return response()->json(['message' => 'Category is deleted successfully.']);
-    }
-
-    public function vote_programme_store(Request $request)
-    {
-        $request->validate([
-            'programme_code'    => 'required',
-            // 'min_vote'          => 'required',
-            // 'max_vote'          => 'required',
-        ]);
-
-        $programme = EvmProgramme::create([
-            'category_id'       => $request->categoryId,
-            'programme_code'    => $request->programme_code,
-            // 'min_vote'          => $request->min_vote,
-            // 'max_vote'          => $request->max_vote,
-            'created_by'        => Auth::user()->id,
-            'updated_by'        => Auth::user()->id,
-        ]);
-
-        Session::flash('message',' Programme is saved successfully for '.$programme->category->category_name.'.');
-
-        return redirect()->back();
-    }
-
-    public function vote_programme_update(Request $request)
-    {
-        $request->validate([
-            'programme_codes'    => 'required',
-            // 'min_votes'          => 'required',
-            // 'max_votes'          => 'required',
-        ]);
-
-        $programme = EvmProgramme::find($request->ids);
-
-        if (!$programme) {
-            return redirect()->back()->with('error', 'Programme not found.');
-        }
-
-        $programme->update([
-            'programme_code'    => $request->programme_codes,
-            // 'min_vote'          => $request->min_votes,
-            // 'max_vote'          => $request->max_votes,
-            'updated_by'        => Auth::user()->id,
-        ]);
-
-        $categoryName = $programme->category->category_name;
-
-        Session::flash('message', ' Programme is updated successfully for ' . $categoryName . '.');
-
-        return redirect()->back();
-    }
-
-    public function vote_programme_delete($id)
-    {
-        $programme = EvmProgramme::findOrFail($id);
-
-        $candidates = EvmCandidate::where('programme_id', $programme->id)->get();
-
-            foreach ($candidates as $candidate) {
-                $candidate->update(['deleted_by' => Auth::user()->id]);
-            }
-
-        EvmCandidate::where('programme_id', $programme->id)->delete();
-
-        $programme->update(['deleted_by' => Auth::user()->id]);
-
-        $programme->delete();
-
-        $message = 'Programme is deleted successfully for ' . $programme->category->category_name . '.';
-
-        return response()->json(['message' => $message]);
     }
 
     public function vote_candidate_store(Request $request)

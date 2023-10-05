@@ -24,7 +24,7 @@ class VotingPlatformController extends Controller
      */
     public function index()
     {
-        $student = Student::where('students_id', '2021039049')->first();
+        $student = Student::where('students_id', Auth::user()->id)->first();
 
         $today = now();
 
@@ -96,7 +96,7 @@ class VotingPlatformController extends Controller
 
             $candidate->save();
 
-            $student = Student::where('students_id', '2021039049')->first();
+            $student = Student::where('students_id', Auth::user()->id)->first();
 
             EvmVoter::create([
                 'candidate_id'      => $candidate->id,

@@ -79,12 +79,16 @@
                                                                     <h1 class="subheader-title w-100"><i class="fal fa-cube width-2 fs-xxl"></i> CATEGORY : {{ $category->category_name }}</h1>
                                                                     @php
                                                                         $existInProgramme = \App\EvmProgramme::where('category_id', $category->id)->first();
+
+                                                                        $existInCandidate = \App\EvmCandidate::whereHas('programme', function($query) use($category){
+                                                                            $query->where('category_id', $category->id);
+                                                                        })->first();
                                                                     @endphp
                                                                     @if (strtotime(Carbon\Carbon::now()) < strtotime($vote->start_date))
                                                                         <div class="float-right" style="margin-top:-28px">
                                                                             <a href="" data-target="#crud-modal-categories" data-toggle="modal" data-id="{{ $category->id }}" data-name="{{ $category->category_name }}"
-                                                                            data-description="{{ $category->category_description }}" class="btn btn-xs btn-warning"><i class="fal fa-pencil"></i></a>
-                                                                            @if (!isset($existInProgramme))
+                                                                            data-description="{{ $category->category_description }}" data-programme="{{ $existInProgramme->programme_code }}" class="btn btn-xs btn-warning"><i class="fal fa-pencil"></i></a>
+                                                                            @if (!isset($existInCandidate))
                                                                                 <form method="POST" action="/voting-setting-delete/{{ $category->id }}" style="display: inline;">
                                                                                     @csrf
                                                                                     @method('DELETE')
@@ -135,22 +139,6 @@
                                                                                                                         </a>
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                                @php
-                                                                                                                    $existInCandidate = \App\EvmCandidate::where('programme_id', $programmes->id)->first();
-                                                                                                                @endphp
-                                                                                                                @if (strtotime(Carbon\Carbon::now()) < strtotime($vote->start_date))
-                                                                                                                    <div class="float-right" style="margin-top:-28px">
-                                                                                                                        <a href="" data-target="#crud-modal-programmes" data-toggle="modal" data-id="{{ $programmes->id }}" data-programme="{{ $programmes->programme_code }}"
-                                                                                                                        data-min="{{ $programmes->min_vote }}" data-max="{{ $programmes->max_vote }}" class="btn btn-xs btn-warning"><i class="fal fa-pencil"></i></a>
-                                                                                                                        @if (!isset($existInCandidate))
-                                                                                                                            <form method="POST" action="/voting-programme-delete/{{ $programmes->id }}" style="display: inline;">
-                                                                                                                                @csrf
-                                                                                                                                @method('DELETE')
-                                                                                                                                <button type="submit" class="btn btn-xs btn-danger btn-delete"><i class="fal fa-trash"></i></button>
-                                                                                                                            </form>
-                                                                                                                        @endif
-                                                                                                                    </div>
-                                                                                                                @endif
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <div class="col-4 col-md-2 col-xl-1 hidden-md-down">
@@ -189,7 +177,6 @@
                                                                                                                                 <th>IMAGE</th>
                                                                                                                                 <th>ID</th>
                                                                                                                                 <th>NAME</th>
-                                                                                                                                {{-- <th>TAGLINE</th> --}}
                                                                                                                                 <th>CAST VOTE</th>
                                                                                                                                 <th>VERIFICATION</th>
                                                                                                                                 <th>VOTER</th>
@@ -218,13 +205,6 @@
                                                                     @else
                                                                         <p>No data available to display.</p>
                                                                     @endif
-                                                                    <div class="panel-content mt-2 py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex pull-right">
-                                                                        @if (strtotime(Carbon\Carbon::now()) < strtotime($vote->start_date))
-                                                                            @if(!isset($existInProgramme))
-                                                                                <a href="javascript:;" data-toggle="modal" class="btn btn-primary ml-auto float-right new-programme" data-categoryid="{{ $category->id }}"><i class="fal fa-plus-square"></i> Add New Programme</a>
-                                                                            @endif
-                                                                        @endif
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -273,6 +253,21 @@
                                                     @enderror
                                                 </td>
                                             </div>
+                                            <div class="form-group">
+                                                <td width="10%"><label class="form-label" for="programme_code"><span class="text-danger">*</span> Programme :</label></td>
+                                                <td colspan="4">
+                                                    <select name="programme_code" id="programme_code" class="form-control" required>
+                                                        <option value=""> Please select</option>
+                                                        @foreach ($programme as $program)
+                                                            <option value="{{ $program->id }}" {{ old('programme_code') ==  $program->id  ? 'selected' : '' }}>
+                                                                {{ $program->id }} - {{ $program->programme_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('programme_code')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </td>
+                                            </div>
                                             <div class="footer">
                                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                                                 <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -311,79 +306,6 @@
                                                     @enderror
                                                 </td>
                                             </div>
-                                            <div class="footer">
-                                                <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
-                                                <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
-                                            </div>
-                                        {!! Form::close() !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="crud-modal-programme" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="card-header bg-primary text-white">
-                                        <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> NEW PROGRAMME INFO</h5>
-                                    </div>
-                                    <div class="modal-body">
-                                        {!! Form::open(['action' => 'Voting\VotingManagementController@vote_programme_store', 'method' => 'POST']) !!}
-                                            <input type="hidden" id="categoryId" name="categoryId">
-                                            <p><span class="text-danger">*</span> Required Field</p>
-                                            <div class="form-group">
-                                                <td width="10%"><label class="form-label" for="programme_code"><span class="text-danger">*</span> Programme :</label></td>
-                                                <td colspan="4">
-                                                    <select name="programme_code" id="programme_code" class="form-control" required>
-                                                        <option value=""> Please select</option>
-                                                        @foreach ($programme as $program)
-                                                            <option value="{{ $program->id }}" {{ old('programme_code') ==  $program->id  ? 'selected' : '' }}>
-                                                                {{ $program->id }} - {{ $program->programme_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('programme_code')
-                                                        <p style="color: red">{{ $message }}</p>
-                                                    @enderror
-                                                </td>
-                                            </div>
-                                            {{-- <div class="form-group">
-                                                <td width="10%"><label class="form-label" for="min_vote"><span class="text-danger">*</span> Minimum Vote :</label></td>
-                                                <td colspan="4">
-                                                    <input type="number" value="{{ old('min_vote') }}" class="form-control" id="min_vote" name="min_vote" required>
-                                                    @error('min_vote')
-                                                        <p style="color: red">{{ $message }}</p>
-                                                    @enderror
-                                                </td>
-                                            </div>
-                                            <div class="form-group">
-                                                <td width="10%"><label class="form-label" for="max_vote"><span class="text-danger">*</span> Maximum Vote :</label></td>
-                                                <td colspan="4">
-                                                    <input type="number" value="{{ old('max_vote') }}" class="form-control" id="max_vote" name="max_vote" required>
-                                                    @error('max_vote')
-                                                        <p style="color: red">{{ $message }}</p>
-                                                    @enderror
-                                                </td>
-                                            </div> --}}
-                                            <div class="footer">
-                                                <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                                                <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
-                                            </div>
-                                        {!! Form::close() !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="crud-modal-programmes" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="card-header bg-primary text-white">
-                                        <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT PROGRAMME INFO</h5>
-                                    </div>
-                                    <div class="modal-body">
-                                        {!! Form::open(['action' => 'Voting\VotingManagementController@vote_programme_update', 'method' => 'POST']) !!}
-                                            <input type="hidden" id="ids" name="ids">
-                                            <p><span class="text-danger">*</span> Required Field</p>
                                             <div class="form-group">
                                                 <td width="10%"><label class="form-label" for="programme_codes"><span class="text-danger">*</span> Programme :</label></td>
                                                 <td colspan="4">
@@ -398,24 +320,6 @@
                                                     @enderror
                                                 </td>
                                             </div>
-                                            {{-- <div class="form-group">
-                                                <td width="10%"><label class="form-label" for="min_votes"><span class="text-danger">*</span> Minimum Vote :</label></td>
-                                                <td colspan="4">
-                                                    <input type="number" class="form-control" id="min_votes" name="min_votes" required>
-                                                    @error('min_votes')
-                                                        <p style="color: red">{{ $message }}</p>
-                                                    @enderror
-                                                </td>
-                                            </div>
-                                            <div class="form-group">
-                                                <td width="10%"><label class="form-label" for="max_votes"><span class="text-danger">*</span> Maximum Vote :</label></td>
-                                                <td colspan="4">
-                                                    <input type="number" class="form-control" id="max_votes" name="max_votes" required>
-                                                    @error('max_votes')
-                                                        <p style="color: red">{{ $message }}</p>
-                                                    @enderror
-                                                </td>
-                                            </div> --}}
                                             <div class="footer">
                                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
                                                 <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -562,37 +466,20 @@
             var id = button.data('id');
             var name = button.data('name');
             var description = button.data('description');
+            var programme = button.data('programme');
 
             $('.modal-body #ids').val(id);
             $('.modal-body #names').val(name);
             $('.modal-body #descriptions').val(description);
-        });
+            $('.modal-body #programme_codes').val(programme);
 
-        $('.new-programme').click(function () {
-            var categoryId = $(this).data('categoryid');
-            $('#categoryId').val(categoryId);
-            $('#crud-modal-programme').modal('show');
+            $('#programme_codes').select2({
+                dropdownParent: $('#crud-modal-categories')
+            });
         });
 
         $('#programme_code').select2({
-            dropdownParent: $('#crud-modal-programme')
-        });
-
-        $('#crud-modal-programmes').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var id = button.data('id');
-            var programme = button.data('programme');
-            var min = button.data('min');
-            var max = button.data('max');
-
-            $('.modal-body #ids').val(id);
-            $('.modal-body #programme_codes').val(programme);
-            $('.modal-body #min_votes').val(min);
-            $('.modal-body #max_votes').val(max);
-
-            $('#programme_codes').select2({
-                dropdownParent: $('#crud-modal-programmes')
-            });
+            dropdownParent: $('#crud-modal-category')
         });
 
         $('.new-candidate').click(function () {
@@ -701,38 +588,6 @@
 
         Swal.fire({
             title: 'Delete Category Info?',
-            text: "Data cannot be recovered back after deletion process!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No'
-        }).then((result) => {
-            if (result.value) {
-                $.ajax({
-                    url: form.action,
-                    type: 'DELETE',
-                    data: $(form).serialize(),
-                    success: function (response) {
-                        console.log(response);
-                        location.reload();
-                    },
-                    error: function (xhr) {
-
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-        });
-    });
-
-    $('form[action^="/voting-programme-delete/"]').on('submit', function (e) {
-        e.preventDefault();
-        var form = this;
-
-        Swal.fire({
-            title: 'Delete Programme Info?',
             text: "Data cannot be recovered back after deletion process!",
             icon: 'warning',
             showCancelButton: true,
