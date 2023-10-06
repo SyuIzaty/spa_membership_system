@@ -59,8 +59,15 @@ class VotingManagementController extends Controller
             $exist = EvmCategory::where('vote_id', $data->id)->first();
 
             if(isset($exist)){
-                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$data->id.'" data-name="'.$data->name.'" data-description="'.$data->description.'"
-                        data-start_date="'.$data->start_date.'" data-end_date="'.$data->end_date.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
+
+                    $verify = EvmCandidate::where('verify_status', 'Y')->whereHas('programme', function($query) use($exist){
+                        $query->where('category_id', $exist->id);
+                    })->first();
+
+                    if(!isset($verify)){
+                        return '<a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$data->id.'" data-name="'.$data->name.'" data-description="'.$data->description.'"
+                                data-start_date="'.$data->start_date.'" data-end_date="'.$data->end_date.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
+                    }
             }else{
                 return '<a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$data->id.'" data-name="'.$data->name.'" data-description="'.$data->description.'"
                         data-start_date="'.$data->start_date.'" data-end_date="'.$data->end_date.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
@@ -193,7 +200,7 @@ class VotingManagementController extends Controller
             'img_name'        => 'required',
         ]);
 
-        $student = Student::find($request->student_id);
+        $student = Student::where('students_id', $request->student_id)->first();
 
         $candidate = EvmCandidate::create([
             'programme_id'      => $request->id,
