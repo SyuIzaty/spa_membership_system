@@ -13,6 +13,7 @@ use App\EvmCandidate;
 use App\Programme;
 use App\EvmVoter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -153,13 +154,12 @@ class VotingManagementController extends Controller
             'updated_by'                => Auth::user()->id,
         ]);
 
-        $programme = EvmProgramme::find($category->id);
+        $programme = EvmProgramme::where('category_id',$request->ids)->first();
 
         $programme->update([
             'programme_code'    => $request->programme_codes,
             'updated_by'        => Auth::user()->id,
         ]);
-
 
         Session::flash('message',' Category is updated successfully.');
 
@@ -249,6 +249,12 @@ class VotingManagementController extends Controller
 
         if (isset($file)) {
 
+            if(isset($candidate->img_name)){
+                if(Storage::disk('minio')->exists($candidate->img_path) == 'true'){
+                    Storage::disk('minio')->delete($candidate->img_path);
+                }
+            }
+
             $originalName = $file->getClientOriginalName();
             $fileSize = $file->getSize();
             $fileName = date('dmyhi') . ' - ' . $originalName;
@@ -281,6 +287,10 @@ class VotingManagementController extends Controller
         $candidate = EvmCandidate::findOrFail($id);
 
         $candidate->update(['deleted_by' => Auth::user()->id]);
+
+        if(Storage::disk('minio')->exists($candidate->img_path) == 'true'){
+            Storage::disk('minio')->delete($candidate->img_path);
+        }
 
         $candidate->delete();
 
@@ -454,7 +464,7 @@ class VotingManagementController extends Controller
 
     public function data_voter_list($id)
     {
-        $data = EvmVoter::where('candidate_id', $id)->with(['student','programme'])->select('evm_voters.*');;
+        $data = EvmVoter::where('candidate_id', $id)->with(['student','programme'])->get();
 
         return datatables()::of($data)
 
@@ -504,8 +514,16 @@ class VotingManagementController extends Controller
         $request->validate([
             'name'          => 'required',
             'description'   => 'nullable',
-            'start_date'    => 'required|date',
-            'end_date'      => 'required|date|after:start_date',
+            'start_date'    => [
+                'required',
+                'date',
+                'after_or_equal:' . Date::today()->toDateString(),
+            ],
+            'end_date'      => [
+                'required',
+                'date',
+                'after:start_date',
+            ],
         ]);
 
         EvmVote::create([
@@ -553,10 +571,18 @@ class VotingManagementController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'names'          => 'required',
-            'descriptions'   => 'nullable',
-            'start_dates'    => 'required|date',
-            'end_dates'      => 'required|date|after:start_date',
+            'names' => 'required',
+            'descriptions' => 'nullable',
+            'start_dates' => [
+                'required',
+                'date',
+                'after_or_equal:' . Date::today()->toDateString(),
+            ],
+            'end_dates' => [
+                'required',
+                'date',
+                'after:start_dates',
+            ],
         ]);
 
         EvmVote::where('id', $request->ids)->update([
