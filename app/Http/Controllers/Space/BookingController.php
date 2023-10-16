@@ -140,6 +140,22 @@ class BookingController extends Controller
                         'venue_id' => $key,
                         'application_status' => 5,
                     ]);
+
+                    $main_venue = SpaceVenue::find($key);
+
+                    $data = [
+                        'receivers'   => isset($main_venue->departmentList->name) ? $main_venue->departmentList->name : '',
+                        'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
+                    ];
+        
+                    Mail::send('space.booking.application-email', $data, function ($message) {
+                        $message->subject(isset($main_venue->departmentList->name) ? $main_venue->departmentList->name : ''.': PERMOHONAN TEMPAHAN RUANG');
+                        $message->from(Auth::user()->email);
+                        $message->to(isset($main_venue->departmentList->email) ? $main_venue->departmentList->email : '');
+                    });
+        
+                    $message = 'Application Sent';
+                    $stat = 'success';
                 }
             }
     
@@ -153,20 +169,6 @@ class BookingController extends Controller
                     }
                 }
             }
-
-            $data = [
-                'receivers'   => 'INTEC Library User',
-                'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
-            ];
-
-            Mail::send('space.booking.application-email', $data, function ($message) {
-                $message->subject('LIBRARY: PERMOHONAN TEMPAHAN RUANG');
-                $message->from(Auth::user()->email);
-                $message->to('inteclibraryuser@intec.edu.my');
-            });
-
-            $message = 'Application Sent';
-            $stat = 'success';
         }
 
         return redirect()->back()->with($stat, $message);

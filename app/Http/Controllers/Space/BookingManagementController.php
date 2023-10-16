@@ -229,7 +229,7 @@ class BookingManagementController extends Controller
 
             Mail::send('space.booking-management.email', $data, function ($message) use ($user_email) {
                 $message->subject(isset($venue_main->departmentList->name) ? $venue_main->departmentList->name : ''.': TEMPAHAN RUANG');
-                $message->from(isset($venue_main->departmentList->email) ? $venue_main->departmentList->name : '');
+                $message->from(isset($venue_main->departmentList->email) ? $venue_main->departmentList->email : '');
                 $message->to($user_email);
             });
         }
