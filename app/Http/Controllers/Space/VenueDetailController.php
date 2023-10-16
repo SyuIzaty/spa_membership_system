@@ -9,7 +9,9 @@ use App\SpaceBookingVenue;
 use App\DepartmentList;
 use App\SpaceStatus;
 use App\SpaceVenue;
+use App\SpaceStaff;
 use DataTables;
+use Auth;
 
 class VenueDetailController extends Controller
 {
@@ -23,7 +25,13 @@ class VenueDetailController extends Controller
         $status = SpaceStatus::Main()->get();
         $student = SpaceStatus::Student()->get();
         $department = DepartmentList::all();
-        $venue = SpaceVenue::with('spaceStatus','departmentList')->select('space_venues.*');
+        $check = SpaceStaff::StaffId(Auth::user()->id)->first();
+        if(isset($check)){
+            $venue = SpaceVenue::with('spaceStatus','departmentList')
+            ->where('department_id',$check->department_id)->select('space_venues.*');
+        }else{
+            $venue = SpaceVenue::with('spaceStatus','departmentList')->select('space_venues.*');
+        }
         if($request->ajax()) {
         return DataTables::of($venue)
             ->addColumn('venue_status', function($venue){

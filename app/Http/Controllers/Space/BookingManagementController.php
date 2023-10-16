@@ -12,6 +12,7 @@ use App\SpaceBookingItem;
 use App\SpaceBookingVenue;
 use App\SpaceStatus;
 use App\SpaceVenue;
+use App\SpaceStaff;
 use App\DepartmentList;
 use App\SpaceItem;
 use App\Student;
@@ -30,10 +31,23 @@ class BookingManagementController extends Controller
      */
     public function index(Request $request)
     {
-        $booking = SpaceBookingVenue::with('spaceBookingMain')->get();
         $status = SpaceStatus::where('category','Application')->get();
-        $venue = SpaceBookingVenue::with('spaceBookingMain.user','spaceVenue')
-        ->select('space_booking_venues.*');
+        $check = SpaceStaff::StaffId(Auth::user()->id)->first();
+        if(isset($check)){
+            $booking = SpaceBookingVenue::with('spaceBookingMain')
+            ->wherehas('spaceVenue',function($query) use ($check){
+                $query->where('department_id',$check->department_id);
+            })->get();
+            $venue = SpaceBookingVenue::with('spaceBookingMain.user','spaceVenue')
+            ->wherehas('spaceVenue',function($query) use ($check){
+                $query->where('department_id',$check->department_id);
+            })
+            ->select('space_booking_venues.*');
+        }else{
+            $booking = SpaceBookingVenue::with('spaceBookingMain')->get();
+            $venue = SpaceBookingVenue::with('spaceBookingMain.user','spaceVenue')
+            ->select('space_booking_venues.*');
+        }
         
         if($request->ajax()) {
             return DataTables::of($venue)
@@ -92,7 +106,12 @@ class BookingManagementController extends Controller
         $staff = Staff::pluck('staff_id')->toArray();
         $all_active = array_merge($student,$staff);
         $user = User::whereIn('id',$all_active)->get();
-        $venue = SpaceVenue::Active()->get();
+        $check = SpaceStaff::StaffId(Auth::user()->id)->first();
+        if(isset($check)){
+            $venue = SpaceVenue::Active()->where('department_id',$check->department_id)->get();
+        }else{
+            $venue = SpaceVenue::Active()->get();
+        }
         $item = SpaceItem::Active()->get();
 
         return view('space.booking-management.create',compact('user','venue','item'));
