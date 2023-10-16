@@ -40,10 +40,10 @@
                                   <tr class="bg-primary-50 text-center">
                                       <th>ID</th>
                                       <th>VENUE</th>
-                                      <th>DESCRIPTION</th>
                                       <th>MAXIMUM</th>
                                       <th>OPEN TO STUDENT</th>
                                       <th>STATUS</th>
+                                      <th>DEPARTMENT</th>
                                       <th>ACTION</th>
                                   </tr>
                                   <tr id="filterRow">
@@ -94,6 +94,17 @@
                                           </td>
                                         </tr>
                                         <tr>
+                                          <td>Department <span class="text-danger">*</span></td>
+                                          <td>
+                                            <select class="form-control" name="department_id">
+                                              <option disabled selected>Please Select</option>
+                                              @foreach($department as $departments)
+                                              <option value="{{ $departments->id }}">{{ $departments->name }}</option>
+                                              @endforeach
+                                            </select>
+                                          </td>
+                                        </tr>
+                                        <tr>
                                           <td>Status <span class="text-danger">*</span></td>
                                           <td>
                                             <div class="custom-control custom-switch">
@@ -138,6 +149,17 @@
                                               <input type="checkbox" class="custom-control-input" name="open_student" id="open_student">
                                               <label class="custom-control-label" for="open_student"></label>
                                             </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Department <span class="text-danger">*</span></td>
+                                          <td>
+                                            <select class="form-control" name="department_id" id="department_id">
+                                              <option disabled selected>Please Select</option>
+                                              @foreach($department as $departments)
+                                              <option value="{{ $departments->id }}">{{ $departments->name }}</option>
+                                              @endforeach
+                                            </select>
                                           </td>
                                         </tr>
                                         <tr>
@@ -186,10 +208,10 @@
         columns: [
                 { data: 'id', name: 'id'},
                 { data: 'name', name: 'name'},
-                { data: 'description', name: 'description'},
                 { data: 'maximum', name: 'maximum'},
                 { data: 'open_to_student', name: 'openStudent.name'},
                 { data: 'venue_status', name: 'spaceStatus.name'},
+                { data: 'department_name', name: 'departmentList.name'},
                 { data: 'action'},
             ],
         order: [[ 0, "asc" ]],
@@ -228,6 +250,7 @@
                 $('#name').val(data.name);
                 $('#description').val(data.description);
                 $('#maximum').val(data.maximum);
+                $('#department_id').val(data.department_id);
 
                 if(data.status == 1){
                   $('#status').prop('checked', true);

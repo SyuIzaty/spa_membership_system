@@ -45,12 +45,12 @@
                               <p>Assalammualaikum/Salam Sejahtera,</p><br>
                               <p style="line-height: 0.5em">{{ $receivers }},</p>
                               <p>
-                                Berikut disertakan senarai penggunaan bilik & ruang Perpustakaan INTEC 
+                                Berikut disertakan senarai penggunaan bilik & ruang {{ $departmentName }} INTEC 
                                 yang telah ditempah untuk makluman pihak Tuan/Puan.
                               </p><br>
                               <p>
                                   Mohon maklumkan kepada pihak kami sekiranya terdapat pembatalan atau 
-                                  perubahan pada tempahan melalui emel di talian EXT7097
+                                  perubahan pada tempahan melalui emel di talian {{ $departmentPhone }}
                               </p>
                               <br>
                               <p>Tarikh Mula : {{ $departDate }}</p>
@@ -59,8 +59,9 @@
                               <p>Masa Akhir : {{ $returnTime }}</p>
                               <p>Tempat / Ruang : {{ $destination }}</p>
                               <p>Tujuan : {{ $purpose }}</p>
-                              <p style="margin-top:20px">
-                                Sebagai peringatan para pengguna wajib untuk membawa kad ID pelajar/staf
+                              <p style="margin-top:20px"> 
+                                Sebagai peringatan kepada staff / pelajar yang menempah ruang di perpustakaan
+                                para pengguna wajib untuk membawa kad ID pelajar/staf
                                 untuk mengimbas <i>QR Code</i> pada <i>barrier gate</i> sebelum masuk ke
                                 dalam banggunan perpustakaan. Proses yang sama juga hendaklah dilakukan
                                 ketika keluar daripada banggunan.

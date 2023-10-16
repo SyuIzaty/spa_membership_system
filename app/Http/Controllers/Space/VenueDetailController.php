@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreVenueRequest;
 use App\SpaceBookingVenue;
+use App\DepartmentList;
 use App\SpaceStatus;
 use App\SpaceVenue;
 use DataTables;
@@ -21,7 +22,8 @@ class VenueDetailController extends Controller
     {
         $status = SpaceStatus::Main()->get();
         $student = SpaceStatus::Student()->get();
-        $venue = SpaceVenue::with('spaceStatus')->select('space_venues.*');
+        $department = DepartmentList::all();
+        $venue = SpaceVenue::with('spaceStatus','departmentList')->select('space_venues.*');
         if($request->ajax()) {
         return DataTables::of($venue)
             ->addColumn('venue_status', function($venue){
@@ -29,6 +31,9 @@ class VenueDetailController extends Controller
             })
             ->addColumn('open_to_student', function($venue){
                 return isset($venue->openStudent->name) ? $venue->openStudent->name : '';
+            })
+            ->addColumn('department_name', function($venue){
+                return isset($venue->departmentList->name) ? $venue->departmentList->name : '';
             })
             ->addColumn('action', function($venue){
                 if($venue->spaceBookingVenues->count() >= 1){
@@ -48,7 +53,7 @@ class VenueDetailController extends Controller
             ->make(true);
         }
 
-        return view('space.venue.index',compact('venue','status','student'));
+        return view('space.venue.index',compact('venue','status','student','department'));
     }
 
     public function getVenueDetail(Request $request)
@@ -81,6 +86,7 @@ class VenueDetailController extends Controller
             'minimum' => $request->minimum,
             'maximum' => $request->maximum,
             'open_student' => ($request->open_student == 'on') ? 7 : 8,
+            'department_id' => $request->department_id,
             'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 
@@ -125,6 +131,7 @@ class VenueDetailController extends Controller
             'description' => $request->description,
             'maximum' => $request->maximum,
             'open_student' => ($request->open_student == 'on') ? 7 : 8,
+            'department_id' => $request->department_id,
             'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 

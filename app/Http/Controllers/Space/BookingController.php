@@ -12,6 +12,7 @@ use App\Rules\UpdateSpaceBookingRule;
 use App\SpaceBookingVenue;
 use App\SpaceBookingMain;
 use App\SpaceBookingItem;
+use App\DepartmentList;
 use App\SpaceVenue;
 use App\SpaceItem;
 use App\User;
@@ -91,7 +92,7 @@ class BookingController extends Controller
         if($user->category == 'STD'){
             $venue = SpaceVenue::Active()->Student()->get();
         }else{
-            $venue = SpaceVenue::Active()->get();
+            $venue = SpaceVenue::Active()->get()->groupby('department_id');
         }
         $item = SpaceItem::Active()->get();
         return view('space.booking.create',compact('user','venue','item'));

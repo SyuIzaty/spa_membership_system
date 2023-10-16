@@ -32,6 +32,7 @@ class StoreVenueRequest extends FormRequest
             'name' => 'required|max:200',
             'description' => 'required|max:255',
             'maximum' => 'required',
+            'department_id' => 'required',
         ];
     }
 }

@@ -12,6 +12,7 @@ use App\SpaceBookingItem;
 use App\SpaceBookingVenue;
 use App\SpaceStatus;
 use App\SpaceVenue;
+use App\DepartmentList;
 use App\SpaceItem;
 use App\Student;
 use App\Staff;
@@ -211,6 +212,7 @@ class BookingManagementController extends Controller
             $main = SpaceBookingMain::find($booking_venue->space_main_id);
             $user = User::find($main->staff_id);
             $user_email = $user->email;
+            $venue_main = SpaceVenue::find($booking_venue->venue_id);
 
             $data = [
                 'receivers'   => $user->name,
@@ -220,12 +222,14 @@ class BookingManagementController extends Controller
                 'returnTime'  => date(' h:i A ', strtotime($main->end_time)),
                 'destination' => isset($booking_venue->spaceVenue->name) ? $booking_venue->spaceVenue->name : '',
                 'purpose'     => $main->purpose,
+                'departmentName' => isset($venue_main->departmentList->name) ? $venue_main->departmentList->name : '',
+                'departmentPhone' => isset($venue_main->departmentList->phone) ? $venue_main->departmentList->phone : '',
                 'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
             ];
 
             Mail::send('space.booking-management.email', $data, function ($message) use ($user_email) {
-                $message->subject('LIBRARY: TEMPAHAN RUANG');
-                $message->from('library@intec.edu.my');
+                $message->subject(isset($venue_main->departmentList->name) ? $venue_main->departmentList->name : ''.': TEMPAHAN RUANG');
+                $message->from(isset($venue_main->departmentList->email) ? $venue_main->departmentList->name : '');
                 $message->to($user_email);
             });
         }

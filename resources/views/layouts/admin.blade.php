@@ -1095,6 +1095,11 @@
                             </a>
                             <ul>
                                 <li>
+                                    <a href="/space/booking-calendar" title="Arkib" data-filter-tags="Arkib">
+                                        <span class="nav-link-text" data-i18n="nav.arkib">Booking Calendar</span>
+                                    </a>
+                                  </li>
+                                <li>
                                     <a href="/space/booking/create" title="Arkib" data-filter-tags="Arkib">
                                         <span class="nav-link-text" data-i18n="nav.arkib">Application</span>
                                     </a>

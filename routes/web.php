@@ -903,6 +903,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/space/booking', 'Space\BookingController');
     Route::resource('/space/booking-report', 'Space\BookingReportController');
     Route::post('/data_exportbooking', 'Space\BookingReportController@data_exportbooking');
+    Route::resource('/space/booking-calendar', 'Space\BookingCalendarController');
 });
 
 //SCM - Public View

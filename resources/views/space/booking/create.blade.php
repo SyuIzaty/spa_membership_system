@@ -157,26 +157,28 @@
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Venue :</label></td>
                                                         <td colspan="5">
                                                           <div class="frame-wrap">
-                                                            @php
-                                                              $input_per_line = 3;
-                                                              $venue_array = $venue->toArray();
-                                                              $venue_count = count($venue_array);
-                                                            @endphp
-                                                          
-                                                            @for ($i = 0; $i < $venue_count; $i += $input_per_line)
-                                                              <div class="row mb-2">
-                                                                @foreach(array_slice($venue_array, $i, $input_per_line) as $venues)
-                                                                  <div class="col">
-                                                                    <div class="custom-control custom-checkbox custom-control-inline custom-checkbox-circle">
-                                                                      <input type="checkbox" class="custom-control-input" id="defaultInline{{ $venues['id'] }}" name="venue[{{ $venues['id'] }}]">
-                                                                      <label class="custom-control-label" for="defaultInline{{ $venues['id'] }}">
-                                                                        {{ $venues['name'] }} <span class="text-danger font-weight-bold">({{ $venues['maximum'] }} MAX)</span>
-                                                                      </label>
+                                                            @foreach ($venue as $venue_dept)
+                                                              <div style="margin-bottom: 30px;">
+                                                                <strong class="text-info">{{ isset($venue_dept->first()->department_id) ? $venue_dept->first()->departmentList->name : '' }}</strong>
+                                                                @php
+                                                                    $chunkedVenues = array_chunk($venue_dept->all(), 3);
+                                                                @endphp
+                                                                @foreach ($chunkedVenues as $rowVenues)
+                                                                    <div class="row">
+                                                                        @foreach ($rowVenues as $venues)
+                                                                          <div class="col">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline custom-checkbox-circle">
+                                                                                <input type="checkbox" class="custom-control-input" id="defaultInline{{ $venues['id'] }}" name="venue[{{ $venues['id'] }}]">
+                                                                                <label class="custom-control-label" for="defaultInline{{ $venues['id'] }}">
+                                                                                    {{ $venues['name'] }} <span class="text-danger font-weight-bold">({{ $venues['maximum'] }} MAX)</span>
+                                                                                </label>
+                                                                            </div>
+                                                                          </div>
+                                                                        @endforeach
                                                                     </div>
-                                                                  </div>
                                                                 @endforeach
                                                               </div>
-                                                            @endfor
+                                                            @endforeach
                                                           </div>
                                                           
                                                         </td>
@@ -187,9 +189,10 @@
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label">Requirement :</label></td>
                                                         <td colspan="5">
                                                           <div class="alert alert-info" role="alert">
-                                                            <strong>Note:</strong>
+                                                            <strong>Note:</strong><br>
+                                                            <strong>LIBRARY</strong>
                                                             <ul>
-                                                              <li><strong>Lab B: </strong> PA System, LCD (1), Microphone (2)</li>
+                                                              <li><strong>Lab B : </strong> PA System, LCD (1), Microphone (2)</li>
                                                               <li><strong>Lab C: </strong> LCD, Microphone Portable</li>
                                                               <li><strong>Dewan Seminar: </strong> PA System, Microphone (2), LCD</li>
                                                               <li><strong>Discussion Room: </strong> TV</li>
@@ -240,11 +243,11 @@
 
                                 <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                                   <h5 style="text-align: center" class="mt-3">
-                                    <b>PERATURAN PENGGUNAAN RUANG PERPUSTAKAAN</b>
+                                    <b>PERATURAN PENGGUNAAN RUANG INTEC</b>
                                   </h5>
                                   <ol>
                                     <li style="margin-bottom:10pt">
-                                      Tempahan ruang perpustakaan hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
+                                      Tempahan ruang hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
                                       (Sebarang tembahan tanpa borang tidak akan dilayan)
                                     </li>
                                     <li style="margin-bottom:10pt">
@@ -277,9 +280,9 @@
 
                                   <h5 style="text-align: center" class="mt-5">
                                     <b>AKUAN PEMOHON</b><br>
-                                    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG PERPUSTAKAAN INTEC</b>
+                                    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG INTEC</b>
                                   </h5>
-                                  Saya yang bernama <b>{{Auth::user()->name}}</b> Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dn Ruang Perpustakaan INTEC dan saya telah membaca
+                                  Saya yang bernama <b>{{Auth::user()->name}}</b> Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dan Ruang INTEC dan saya telah membaca
                                   serta memahami peraturan dan prosedur dibawah ini:
                                   <ol >
                                     <li style="margin-bottom:10pt">Saya mengaku bahawa butiran diri yang saya berikan adalah sah dan benar.</li>
