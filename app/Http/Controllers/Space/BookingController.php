@@ -148,10 +148,10 @@ class BookingController extends Controller
                         'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
                     ];
         
-                    Mail::send('space.booking.application-email', $data, function ($message) {
+                    Mail::send('space.booking.application-email', $data, function ($message) use ($main_venue) {
                         $message->subject(isset($main_venue->departmentList->name) ? $main_venue->departmentList->name : ''.': PERMOHONAN TEMPAHAN RUANG');
                         $message->from(Auth::user()->email);
-                        $message->to(isset($main_venue->departmentList->email) ? $main_venue->departmentList->email : '');
+                        $message->to(isset($main_venue->departmentList->email) ? $main_venue->departmentList->email : 'itadmin@intec.edu.my');
                     });
         
                     $message = 'Application Sent';
