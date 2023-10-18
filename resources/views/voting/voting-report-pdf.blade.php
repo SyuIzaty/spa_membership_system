@@ -164,6 +164,12 @@
                                                     </thead>
                                                     <tbody>
                                                         @foreach($programme->candidates as $candidate)
+                                                            @php
+                                                                $votesCast = $candidate->cast_vote;
+                                                                $totalVoters = $engageVoter;
+                                                                // Check if $totalVoters is not zero before performing division
+                                                                $candidatePercentage = ($totalVoters !== 0) ? ($votesCast / $totalVoters) * 100 : 0;
+                                                            @endphp
                                                             <tr class="text-center">
                                                                 <td>{{ $loop->iteration }}</td>
                                                                 <td>{{ $candidate->student_id ?? 'N/A' }}</td>
@@ -171,7 +177,7 @@
                                                                 <td>{{ $candidate->student->gender->gender_name ?? 'N/A' }}</td>
                                                                 <td>{{ $candidate->voter_programme ?? 'N/A' }}</td>
                                                                 <td>{{ $candidate->voter_session ?? 'N/A' }}</td>
-                                                                <td>{{ $candidate->cast_vote ?? '0' }}</td>
+                                                                <td>{{ $candidate->cast_vote ?? '0' }} ({{ number_format($candidatePercentage, 2) }}%)</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
