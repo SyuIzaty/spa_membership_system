@@ -203,7 +203,7 @@ class BookingManagementController extends Controller
     {
         $main = SpaceBookingVenue::find($id);
         $venue_department = SpaceVenue::find($main->venue_id);
-        $venue = SpaceVenue::Active()->DepartmentId($venue_department->department_id)->get();
+        $venue = SpaceVenue::DepartmentId($venue_department->department_id)->get();
         $user = User::find(isset($main->spaceBookingMain->staff_id) ? $main->spaceBookingMain->staff_id : '');
         $status = SpaceStatus::where('category','Application')->get();
         return view('space.booking-management.edit',compact('main','status','user','venue'));
