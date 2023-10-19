@@ -495,7 +495,7 @@ class AduanController extends Controller
 
         ->addColumn('action', function ($list) {
 
-            if ($list->status_aduan == 'DJ' && auth()->user()->cannot('view complaint list - HEP')) {
+            if ($list->status_aduan == 'DJ' && auth()->user()->can('view technical admin')) {
 
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                         <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
@@ -527,16 +527,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if (auth()->user()->can('view complaint list - HEP')) {
-
-                if ($list->status_aduan == 'BS') {
-                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>';
-                } elseif ($list->status_aduan == 'DJ') {
-                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>';
-                } else {
-                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>';
-                }
-            } else {
+            if (auth()->user()->can('view technical admin')) {
 
                 if ($list->status_aduan == 'BS') {
                     return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
@@ -548,6 +539,17 @@ class AduanController extends Controller
                     return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
                             <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
                 }
+
+            } else {
+
+                if ($list->status_aduan == 'BS') {
+                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>';
+                } elseif ($list->status_aduan == 'DJ') {
+                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>';
+                } else {
+                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>';
+                }
+
             }
         })
 
@@ -606,7 +608,7 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if ($list->status_aduan == 'DJ' && auth()->user()->cannot('view complaint list - HEP')) {
+            if ($list->status_aduan == 'DJ' && auth()->user()->can('view technical admin')) {
 
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                         <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
@@ -638,16 +640,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if (auth()->user()->can('view complaint list - HEP')) {
-
-                if ($list->status_aduan == 'BS') {
-                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>';
-                } elseif ($list->status_aduan == 'DJ') {
-                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>';
-                } else {
-                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>';
-                }
-            } else {
+            if (auth()->user()->can('view technical admin')) {
 
                 if ($list->status_aduan == 'BS') {
                     return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
@@ -659,6 +652,17 @@ class AduanController extends Controller
                     return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
                             <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
                 }
+
+            } else {
+
+                if ($list->status_aduan == 'BS') {
+                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>';
+                } elseif ($list->status_aduan == 'DJ') {
+                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>';
+                } else {
+                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>';
+                }
+
             }
         })
 
@@ -716,7 +720,7 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if ($list->status_aduan == 'DJ' && auth()->user()->cannot('view complaint list - HEP')) {
+            if ($list->status_aduan == 'DJ' && auth()->user()->can('view technical admin')) {
 
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                         <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
@@ -748,16 +752,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if (auth()->user()->can('view complaint list - HEP')) {
-
-                if ($list->status_aduan == 'BS') {
-                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>';
-                } elseif ($list->status_aduan == 'DJ') {
-                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>';
-                } else {
-                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>';
-                }
-            } else {
+            if (auth()->user()->can('view technical admin')) {
 
                 if ($list->status_aduan == 'BS') {
                     return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
@@ -769,6 +764,17 @@ class AduanController extends Controller
                     return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
                             <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
                 }
+
+            } else {
+
+                if ($list->status_aduan == 'BS') {
+                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>';
+                } elseif ($list->status_aduan == 'DJ') {
+                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>';
+                } else {
+                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>';
+                }
+
             }
         })
 
