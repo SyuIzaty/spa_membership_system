@@ -1096,15 +1096,32 @@
                                 <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
                             </a>
                             <ul>
-                                <li>
+                                {{-- <li>
                                     <a href="/space/booking-calendar" title="Arkib" data-filter-tags="Arkib">
                                         <span class="nav-link-text" data-i18n="nav.arkib">Booking Calendar</span>
                                     </a>
-                                  </li>
-                                <li>
-                                    <a href="/space/booking/create" title="Arkib" data-filter-tags="Arkib">
-                                        <span class="nav-link-text" data-i18n="nav.arkib">Application</span>
+                                  </li> --}}
+                                <li class="open">
+                                    <a href="#" title="List" data-filter-tags="list">
+                                        <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
                                     </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/space/booking/create/10" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Library</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/space/booking/create/1" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">IITU</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/space/booking/create/11" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Facility</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
                                     <a href="/space/booking" title="Arkib" data-filter-tags="Arkib">

@@ -901,6 +901,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-item-detail', 'Space\ItemDetailController@getItemDetail');
     Route::resource('/space/booking-management', 'Space\BookingManagementController');
     Route::resource('/space/booking', 'Space\BookingController');
+    Route::get('/space/booking/create/{id}', 'Space\BookingController@create');
     Route::resource('/space/booking-report', 'Space\BookingReportController');
     Route::post('/data_exportbooking', 'Space\BookingReportController@data_exportbooking');
     Route::resource('/space/booking-calendar', 'Space\BookingCalendarController');

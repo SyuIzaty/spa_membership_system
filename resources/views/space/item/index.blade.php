@@ -40,7 +40,7 @@
                                   <tr class="bg-primary-50 text-center">
                                       <th>ID</th>
                                       <th>ITEM</th>
-                                      <th>DESCRIPTION</th>
+                                      <th>DEPARTMENT</th>
                                       <th>QUANTITY</th>
                                       <th>STATUS</th>
                                       <th>ACTION</th>
@@ -83,6 +83,17 @@
                                           <td><input type="number" class="form-control" name="quantity"></td>
                                         </tr>
                                         <tr>
+                                          <td>Department <span class="text-danger">*</span></td>
+                                          <td>
+                                            <select class="form-control" name="department_id">
+                                              <option disabled selected>Please Select</option>
+                                              @foreach($department as $departments)
+                                              <option value="{{ $departments->id }}">{{ $departments->name }}</option>
+                                              @endforeach
+                                            </select>
+                                          </td>
+                                        </tr>
+                                        <tr>
                                           <td>Status <span class="text-danger">*</span></td>
                                           <td>
                                             <div class="custom-control custom-switch">
@@ -119,6 +130,17 @@
                                         <tr>
                                           <td>Quantity <span class="text-danger">*</span></td>
                                           <td><input type="number" class="form-control" name="quantity" id="quantity"></td>
+                                        </tr>
+                                        <tr>
+                                          <td>Department <span class="text-danger">*</span></td>
+                                          <td>
+                                            <select class="form-control" name="department_id" id="department_id">
+                                              <option disabled selected>Please Select</option>
+                                              @foreach($department as $departments)
+                                              <option value="{{ $departments->id }}">{{ $departments->name }}</option>
+                                              @endforeach
+                                            </select>
+                                          </td>
                                         </tr>
                                         <tr>
                                           <td>Status <span class="text-danger">*</span></td>
@@ -165,7 +187,7 @@
         columns: [
                 { data: 'id', name: 'id'},
                 { data: 'name', name: 'name'},
-                { data: 'description', name: 'description'},
+                { data: 'department_name', name: 'departmentList.name'},
                 { data: 'quantity', name: 'quantity'},
                 { data: 'venue_status', name: 'spaceStatus.name'},
                 { data: 'action'},
@@ -206,6 +228,7 @@
                 $('#name').val(data.name);
                 $('#description').val(data.description);
                 $('#quantity').val(data.quantity);
+                $('#department_id').val(data.department_id);
                 if(data.status == 1){
                   $('#status').prop('checked', true);
                 } if(data.status != 1) {

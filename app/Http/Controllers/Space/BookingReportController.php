@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\SpaceBookingVenue;
 use App\SpaceStatus;
+use App\SpaceStaff;
 use App\SpaceVenue;
+use Auth;
 
 class BookingReportController extends Controller
 {
@@ -18,8 +20,14 @@ class BookingReportController extends Controller
      */
     public function index(Request $request)
     {
-        $venue = SpaceVenue::Active()->get();
-        $status = SpaceStatus::Application()->get();
+        $check = SpaceStaff::StaffId(Auth::user()->id)->first();
+        if(isset($check)){
+            $venue = SpaceVenue::Active()->DepartmentId($check->department_id)->get();
+            $status = SpaceStatus::Application()->get();
+        }else{
+            $venue = SpaceVenue::Active()->get();
+            $status = SpaceStatus::Application()->get();
+        }
         return view('space.booking-report.index',compact('request','venue','status'));
     }
 
@@ -48,12 +56,26 @@ class BookingReportController extends Controller
 
         $cat = $request->category;
 
-        $venue = SpaceBookingVenue::whereRaw($cond)
-        ->wherehas('spaceBookingMain',function($query) use ($cond_main){
-            $query->whereRaw($cond_main);
-        })
-        ->with('spaceBookingMain','spaceBookingMain.user','spaceVenue')
-        ->get();
+        $check = SpaceStaff::StaffId(Auth::user()->id)->first();
+        if(isset($check)){
+            $venue = SpaceBookingVenue::whereRaw($cond)
+            ->wherehas('spaceBookingMain',function($query) use ($cond_main){
+                $query->whereRaw($cond_main);
+            })
+            ->wherehas('spaceVenue',function($query) use ($check){
+                $query->where('department_id',$check->department_id);
+            })
+            ->with('spaceBookingMain','spaceBookingMain.user','spaceVenue')
+            ->get();
+        }else{
+            $venue = SpaceBookingVenue::whereRaw($cond)
+            ->wherehas('spaceBookingMain',function($query) use ($cond_main){
+                $query->whereRaw($cond_main);
+            })
+            ->with('spaceBookingMain','spaceBookingMain.user','spaceVenue')
+            ->get();
+        }
+
 
         return datatables()::of($venue)
             ->addColumn('user_id',function($venue)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Space;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreItemRequest;
+use App\DepartmentList;
 use App\SpaceBookingItem;
 use App\SpaceStatus;
 use App\SpaceItem;
@@ -20,11 +21,15 @@ class ItemDetailController extends Controller
     public function index(Request $request)
     {
         $status = SpaceStatus::Main()->get();
-        $item = SpaceItem::with('spaceStatus')->select('space_items.*');
+        $department = DepartmentList::whereIn('id',[1,10,11])->get();
+        $item = SpaceItem::with('spaceStatus','departmentList')->select('space_items.*');
         if($request->ajax()) {
         return DataTables::of($item)
             ->addColumn('venue_status', function($item){
                 return isset($item->spaceStatus->name) ? $item->spaceStatus->name : '';
+            })
+            ->addColumn('department_name', function($venue){
+                return isset($venue->departmentList->name) ? $venue->departmentList->name : '';
             })
             ->addColumn('action', function($item){
                 if($item->spaceBookingItems->count() >= 1){
@@ -44,7 +49,7 @@ class ItemDetailController extends Controller
             ->make(true);
         }
 
-        return view('space.item.index',compact('item','status'));
+        return view('space.item.index',compact('item','status','department'));
     }
 
     public function getItemDetail(Request $request)
@@ -75,6 +80,7 @@ class ItemDetailController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'quantity' => $request->quantity,
+            'department_id' => $request->department_id,
             'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 
@@ -118,6 +124,7 @@ class ItemDetailController extends Controller
             'name' => ($check >= 1) ? $item->name : $request->name,
             'description' => $request->description,
             'quantity' => $request->quantity,
+            'department_id' => $request->department_id,
             'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 

@@ -9,7 +9,7 @@ class SpaceItem extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['name','description','quantity','status'];
+    protected $fillable = ['name','description','quantity','department_id','status'];
 
     public function spaceStatus()
     {
@@ -21,6 +21,11 @@ class SpaceItem extends Model
         return $this->hasMany('App\SpaceBookingItem','item_id','id');
     }
 
+    public function departmentList()
+    {
+        return $this->hasOne('App\DepartmentList','id','department_id');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status','1');
@@ -29,5 +34,10 @@ class SpaceItem extends Model
     public function scopeMain($query)
     {
         return $query->where('category','Main');
+    }
+
+    public function scopeDepartmentId($query, $department_id)
+    {
+        return $query->where('department_id',$department_id);
     }
 }

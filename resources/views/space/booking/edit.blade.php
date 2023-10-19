@@ -139,6 +139,7 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Venue :</label></td>
                                                         <td colspan="5">
+                                                          @if($venue_department->department_id == 10)
                                                           <div class="alert alert-info" role="alert">
                                                             <strong>Note:</strong>
                                                             <ul>
@@ -152,6 +153,7 @@
                                                                 Additional PA systems or changing the layout of the space can be requested at Unit Majlis INTEC.
                                                             </b>
                                                           </div>
+                                                          @endif
                                                           <div class="frame-wrap">
                                                             @php
                                                               $input_per_line = 3;

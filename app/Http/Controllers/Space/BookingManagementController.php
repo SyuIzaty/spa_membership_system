@@ -109,10 +109,11 @@ class BookingManagementController extends Controller
         $check = SpaceStaff::StaffId(Auth::user()->id)->first();
         if(isset($check)){
             $venue = SpaceVenue::Active()->where('department_id',$check->department_id)->get();
+            $item = SpaceItem::Active()->where('department_id',$check->department_id)->get();
         }else{
             $venue = SpaceVenue::Active()->get();
+            $item = SpaceItem::Active()->get();
         }
-        $item = SpaceItem::Active()->get();
 
         return view('space.booking-management.create',compact('user','venue','item'));
     }

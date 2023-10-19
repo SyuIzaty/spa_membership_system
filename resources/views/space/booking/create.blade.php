@@ -157,40 +157,36 @@
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Venue :</label></td>
                                                         <td colspan="5">
                                                           <div class="frame-wrap">
-                                                            @foreach ($venue as $venue_dept)
-                                                              <div style="margin-bottom: 30px;">
-                                                                <strong class="text-info">{{ isset($venue_dept->first()->department_id) ? $venue_dept->first()->departmentList->name : '' }}</strong>
-                                                                @php
-                                                                    $chunkedVenues = array_chunk($venue_dept->all(), 3);
-                                                                @endphp
-                                                                @foreach ($chunkedVenues as $rowVenues)
-                                                                    <div class="row">
-                                                                        @foreach ($rowVenues as $venues)
-                                                                          <div class="col">
-                                                                            <div class="custom-control custom-checkbox custom-control-inline custom-checkbox-circle">
-                                                                                <input type="checkbox" class="custom-control-input" id="defaultInline{{ $venues['id'] }}" name="venue[{{ $venues['id'] }}]">
-                                                                                <label class="custom-control-label" for="defaultInline{{ $venues['id'] }}">
-                                                                                    {{ $venues['name'] }} <span class="text-danger font-weight-bold">({{ $venues['maximum'] }} MAX)</span>
-                                                                                </label>
-                                                                            </div>
-                                                                          </div>
-                                                                        @endforeach
-                                                                    </div>
-                                                                @endforeach
-                                                              </div>
-                                                            @endforeach
+                                                            @php
+                                                              $input_per_line = 3;
+                                                              $venue_array = $venue->toArray();
+                                                              $venue_count = count($venue_array);
+                                                            @endphp
+                                                            @for ($i = 0; $i < $venue_count; $i += $input_per_line)
+                                                            <div class="row mb-2">
+                                                              @foreach(array_slice($venue_array, $i, $input_per_line) as $venues)
+                                                                <div class="col">
+                                                                  <div class="custom-control custom-checkbox custom-control-inline custom-checkbox-circle">
+                                                                    <input type="checkbox" class="custom-control-input" id="defaultInline{{ $venues['id'] }}" name="venue[{{ $venues['id'] }}]">
+                                                                    <label class="custom-control-label" for="defaultInline{{ $venues['id'] }}">
+                                                                      {{ $venues['name'] }} <span class="text-danger font-weight-bold">({{ $venues['maximum'] }} MAX)</span>
+                                                                    </label>
+                                                                  </div>
+                                                                </div>
+                                                              @endforeach
+                                                            </div>
+                                                            @endfor
                                                           </div>
-                                                          
                                                         </td>
                                                     </div>
                                                 </tr>
                                                 <tr>
+                                                    @if($id == 10)
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label">Requirement :</label></td>
                                                         <td colspan="5">
                                                           <div class="alert alert-info" role="alert">
                                                             <strong>Note:</strong><br>
-                                                            <strong>LIBRARY</strong>
                                                             <ul>
                                                               <li><strong>Lab B : </strong> PA System, LCD (1), Microphone (2)</li>
                                                               <li><strong>Lab C: </strong> LCD, Microphone Portable</li>
@@ -225,6 +221,7 @@
                                                           
                                                         </td>
                                                     </div>
+                                                    @endif
                                                 </tr>
                                                 <tr>
                                                     <div class="form-group">
@@ -243,13 +240,26 @@
 
                                 <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                                   <h5 style="text-align: center" class="mt-3">
-                                    <b>PERATURAN PENGGUNAAN RUANG INTEC</b>
+                                    @if($id == 10)
+                                    <b>PERATURAN PENGGUNAAN RUANG PERPUSTAKAAN</b>
+                                    @endif
+                                    @if($id == 1)
+                                    <b>PERATURAN PENGGUNAAN RUANG LAB KOMPUTER</b>
+                                    @endif
                                   </h5>
                                   <ol>
                                     <li style="margin-bottom:10pt">
-                                      Tempahan ruang hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
+                                      Tempahan ruang 
+                                      @if($id == 10)
+                                      <b>perpustakaan</b>
+                                      @endif
+                                      @if($id == 1)
+                                      <b>lab komputer</b>
+                                      @endif 
+                                      hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
                                       (Sebarang tembahan tanpa borang tidak akan dilayan)
                                     </li>
+                                    @if($id == 10)
                                     <li style="margin-bottom:10pt">
                                       Pemohon hendaklah menghubungi pegawai yang bertugas di kaunter IT dan kaunter Perkhidmatan Pelanggan untuk
                                       memastikan kekosongan ruang sebelum mengisi borang tempahan.
@@ -261,28 +271,55 @@
                                       Sebarang tempahan ruang lain di perpustakaan selain Makmal IT hendaklah berurusan dengan pegawai 
                                       Kaunter Perkhidmatan Pelanggan (ext: 7219) sahaja.
                                     </li>
+                                    @endif
                                     <li style="margin-bottom:10pt">
-                                      Pihak perpustakaan tidak menyediakan sebarang perkhidmatan mengubah susun atur bilik / ruang perpustakaan.
+                                      Pihak 
+                                      @if($id == 10)
+                                      <b>perpustakaan</b>
+                                      @endif
+                                      @if($id == 1)
+                                      <b>IITU</b>
+                                      @endif
+                                      tidak menyediakan sebarang perkhidmatan mengubah susun atur bilik / ruang perpustakaan.
                                     </li>
                                     <li style="margin-bottom:10pt">
                                       Sekiranya memerlukan tambahan peralatan atau mengubah susun atur ruang, boleh terus berurusan dengan pihak unit majlis
                                       INTEC sehingga program selesai. (urusan ini di antara pegawai yang menempah ruang perpustakaan dengan unit majlis sahaja)
                                     </li>
                                     <li style="margin-bottom:10pt">
-                                      Sebanarang pembatalan tempahan ruang, mohon untuk memaklumkan kepada pegawai yang bertugas sekurang - kurangnya
+                                      Sebarang pembatalan tempahan ruang, mohon untuk memaklumkan kepada pegawai yang bertugas sekurang - kurangnya
                                       sehari sebelum tarikh penggunaan.
                                     </li>
                                     <li style="margin-bottom:10pt">
-                                      Sila pastikan keadaakn bilik / ruang perpustakaan yang telah digunakan berkeadaan baik seperti sediakala selepas
+                                      Sila pastikan keadaan bilik / ruang
+                                      @if($id == 10)
+                                      <b>perpustakaan</b>
+                                      @endif
+                                      @if($id == 1)
+                                      <b>lab komputer</b>
+                                      @endif 
+                                      yang telah digunakan berkeadaan baik seperti sediakala selepas
                                       penggunaan untuk memberi keselesaan kepada pengguna seterusnya.
                                     </li>
                                   </ol>
 
                                   <h5 style="text-align: center" class="mt-5">
                                     <b>AKUAN PEMOHON</b><br>
-                                    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG INTEC</b>
+                                    @if($id == 10)
+                                    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG PERPUSTAKAAN</b>
+                                    @endif
+                                    @if($id == 1)
+                                    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG LAB KOMPUTER</b>
+                                    @endif
                                   </h5>
-                                  Saya yang bernama <b>{{Auth::user()->name}}</b> Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dan Ruang INTEC dan saya telah membaca
+                                  Saya yang bernama <b>{{Auth::user()->name}}</b> Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dan Ruang 
+                                  @if($id == 10)
+                                  <b>perpustakaan</b>
+                                  @endif
+                                  @if($id == 1)
+                                  <b>lab komputer</b>
+                                  @endif 
+                                  dan saya telah membaca
                                   serta memahami peraturan dan prosedur dibawah ini:
                                   <ol >
                                     <li style="margin-bottom:10pt">Saya mengaku bahawa butiran diri yang saya berikan adalah sah dan benar.</li>

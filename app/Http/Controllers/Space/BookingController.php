@@ -86,16 +86,16 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         $user = User::find(Auth::user()->id);
         if($user->category == 'STD'){
-            $venue = SpaceVenue::Active()->Student()->get();
+            $venue = SpaceVenue::Active()->Student()->DepartmentId($id)->get();
         }else{
-            $venue = SpaceVenue::Active()->get()->groupby('department_id');
+            $venue = SpaceVenue::Active()->DepartmentId($id)->get();
         }
-        $item = SpaceItem::Active()->get();
-        return view('space.booking.create',compact('user','venue','item'));
+        $item = SpaceItem::Active()->DepartmentId($id)->get();
+        return view('space.booking.create',compact('user','venue','item','id'));
     }
 
     /**
@@ -200,12 +200,13 @@ class BookingController extends Controller
     public function edit($id)
     {
         $main = SpaceBookingVenue::find($id);
-        $venue = SpaceVenue::Active()->get();
-        $item = SpaceItem::Active()->get();
+        $venue_department = SpaceVenue::find($main->venue_id);
+        $venue = SpaceVenue::Active()->DepartmentId($venue_department->department_id)->get();
+        $item = SpaceItem::Active()->DepartmentId($venue_department->department_id)->get();
         $user = User::find(isset($main->spaceBookingMain->staff_id) ? $main->spaceBookingMain->staff_id : Auth::user()->id);
         $booking_item = SpaceBookingItem::MainId($main->space_main_id)->pluck('item_id')->toArray();
 
-        return view('space.booking.edit',compact('main','venue','item','booking_item','user'));
+        return view('space.booking.edit',compact('main','venue','item','booking_item','user','venue_department'));
     }
 
     /**

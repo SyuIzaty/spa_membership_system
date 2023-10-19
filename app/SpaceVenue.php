@@ -40,4 +40,9 @@ class SpaceVenue extends Model
     {
         return $query->where('open_student','7');
     }
+
+    public function scopeDepartmentId($query, $department_id)
+    {
+        return $query->where('department_id',$department_id);
+    }
 }

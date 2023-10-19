@@ -31,6 +31,7 @@ class StoreItemRequest extends FormRequest
         return [
             'name' => 'required|max:200',
             'description' => 'required|max:255',
+            'department_id' => 'required',
             'quantity' => 'required',
         ];
     }
