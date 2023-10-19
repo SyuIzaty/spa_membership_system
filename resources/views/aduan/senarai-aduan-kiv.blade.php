@@ -25,24 +25,28 @@
                         <div class="row">
                             <div class="col-auto mt-4">
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link mb-2 active" id="staf-tab" data-toggle="pill" href="#staf" role="tab" aria-controls="staf" aria-selected="false" style="border: 1px solid;">
-                                        <i class="fal fa-info-circle"></i>
-                                        <span class="hidden-sm-down ml-1"> STAF </span>
-                                    </a>
-                                    <a class="nav-link mb-2" id="pelajar-tab" data-toggle="pill" href="#pelajar" role="tab" aria-controls="pelajar" aria-selected="false" style="border: 1px solid;">
+                                    @cannot('view complaint list - HEP')
+                                        <a class="nav-link mb-2 " id="staf-tab" data-toggle="pill" href="#staf" role="tab" aria-controls="staf" aria-selected="false" style="border: 1px solid;">
+                                            <i class="fal fa-info-circle"></i>
+                                            <span class="hidden-sm-down ml-1"> STAF </span>
+                                        </a>
+                                    @endcannot
+                                    <a class="nav-link mb-2 active" id="pelajar-tab" data-toggle="pill" href="#pelajar" role="tab" aria-controls="pelajar" aria-selected="false" style="border: 1px solid;">
                                         <i class="fal fa-road"></i>
                                         <span class="hidden-sm-down ml-1"> PELAJAR </span>
                                     </a>
-                                    <a class="nav-link mb-2" id="luar-tab" data-toggle="pill" href="#luar" role="tab" aria-controls="luar" aria-selected="false" style="border: 1px solid;">
-                                        <i class="fal fa-database"></i>
-                                        <span class="hidden-sm-down ml-1"> PENGGUNA LUAR </span>
-                                    </a>
+                                    @cannot('view complaint list - HEP')
+                                        <a class="nav-link mb-2" id="luar-tab" data-toggle="pill" href="#luar" role="tab" aria-controls="luar" aria-selected="false" style="border: 1px solid;">
+                                            <i class="fal fa-database"></i>
+                                            <span class="hidden-sm-down ml-1"> PENGGUNA LUAR </span>
+                                        </a>
+                                    @endcannot
                                 </div>
                             </div>
 
                             <div class="col">
                                 <div class="tab-content" id="v-pills-tabContent">
-                                    <div class="tab-pane mt-1 active" id="staf" role="tabpanel"><br>
+                                    <div class="tab-pane mt-1 " id="staf" role="tabpanel"><br>
                                         <div class="col-sm-12 mb-4">
                                             <div class="table-responsive">
                                                 <table id="kiv" class="table table-bordered table-hover table-striped w-100" style="white-space: nowrap">
@@ -81,7 +85,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane mt-1" id="pelajar" role="tabpanel"><br>
+                                    <div class="tab-pane mt-1 active" id="pelajar" role="tabpanel"><br>
                                         <div class="col-sm-12 mb-4">
                                             <div class="table-responsive">
                                                 <table id="senarai_pelajar" class="table table-bordered table-hover table-striped w-100" style="white-space: nowrap">

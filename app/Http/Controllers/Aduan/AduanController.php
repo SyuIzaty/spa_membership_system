@@ -459,9 +459,11 @@ class AduanController extends Controller
         if($staff->staff_code == 'IITU') {
 
             $kategori = KategoriAduan::whereIn('kod_kategori', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->get();
+
         } elseif($staff->staff_code == 'OFM' || $staff->staff_code == 'AA') {
 
             $kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+
         } else {
 
             $kategori = KategoriAduan::select('kod_kategori', 'nama_kategori')->get();
@@ -490,12 +492,15 @@ class AduanController extends Controller
         }
 
         return datatables()::of($list)
+
         ->addColumn('action', function ($list) {
 
-            if($list->status_aduan == 'DJ') {
+            if ($list->status_aduan == 'DJ' && auth()->user()->cannot('view complaint list - HEP')) {
+
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                         <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
             } else {
+
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a></div>';
             }
         })
@@ -522,21 +527,27 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+            if (auth()->user()->can('view complaint list - HEP')) {
 
-            }
-            if($list->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                if ($list->status_aduan == 'BS') {
+                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>';
+                } elseif ($list->status_aduan == 'DJ') {
+                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>';
+                } else {
+                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>';
+                }
+            } else {
+
+                if ($list->status_aduan == 'BS') {
+                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
+                            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                } elseif ($list->status_aduan == 'DJ') {
+                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
+                            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                } else {
+                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
+                            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                }
             }
         })
 
@@ -595,10 +606,12 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if($list->status_aduan == 'DJ') {
+            if ($list->status_aduan == 'DJ' && auth()->user()->cannot('view complaint list - HEP')) {
+
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                         <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
             } else {
+
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a></div>';
             }
         })
@@ -625,21 +638,27 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+            if (auth()->user()->can('view complaint list - HEP')) {
 
-            }
-            if($list->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                if ($list->status_aduan == 'BS') {
+                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>';
+                } elseif ($list->status_aduan == 'DJ') {
+                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>';
+                } else {
+                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>';
+                }
+            } else {
+
+                if ($list->status_aduan == 'BS') {
+                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
+                            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                } elseif ($list->status_aduan == 'DJ') {
+                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
+                            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                } else {
+                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
+                            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                }
             }
         })
 
@@ -697,10 +716,12 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if($list->status_aduan == 'DJ') {
+            if ($list->status_aduan == 'DJ' && auth()->user()->cannot('view complaint list - HEP')) {
+
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                         <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
             } else {
+
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a></div>';
             }
         })
@@ -727,21 +748,27 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if($list->status_aduan=='BS')
-            {
-                return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+            if (auth()->user()->can('view complaint list - HEP')) {
 
-            }
-            if($list->status_aduan=='DJ')
-            {
-                return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
-            }
-            else
-            {
-                return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
-                <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                if ($list->status_aduan == 'BS') {
+                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>';
+                } elseif ($list->status_aduan == 'DJ') {
+                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>';
+                } else {
+                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>';
+                }
+            } else {
+
+                if ($list->status_aduan == 'BS') {
+                    return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
+                            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                } elseif ($list->status_aduan == 'DJ') {
+                    return '<span class="badge badge-sent">' . strtoupper($list->status->nama_status) . '</span>
+                            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                } else {
+                    return '<span class="badge badge-done">' . strtoupper($list->status->nama_status) . '</span>
+                            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'. $list->id.'"><i class="fal fa-pencil" style="color: red"></i></a>';
+                }
             }
         })
 
@@ -794,9 +821,22 @@ class AduanController extends Controller
 
         $juruteknik_exist = array_column($exist->toArray(), 'juruteknik_bertugas');
 
-        $juruteknik = User::whereHas('roles', function($query){
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        if ($staff->staff_code == 'IITU') {
+            $staff_code = 'IITU';
+            $staff_exist = Staff::where('staff_code', 'IITU')->pluck('staff_id')->toArray();
+        } elseif ($staff->staff_code == 'OFM') {
+            $staff_code = 'OFM';
+            $staff_exists = Staff::where('staff_code', 'OFM')->pluck('staff_id')->toArray();
+        }
+
+        $juruteknik = User::whereHas('roles', function ($query) {
             $query->where('id', 'CMS002');
-        })->whereNotIn('id', $juruteknik_exist)->get();
+        })->whereIn('id', $staff_code === 'IITU' ? $staff_exist : $staff_exists)
+            ->whereNotIn('id', $juruteknik_exist)
+            ->where('active', 'Y')
+            ->get();
 
         $resit = ResitAduan::where('id_aduan', $id)->get();
 

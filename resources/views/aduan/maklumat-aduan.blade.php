@@ -77,9 +77,6 @@
                                     </ol>
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
-                                            {{-- <tr>
-                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
-                                            </tr> --}}
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->nama_pelapor)}}</td>
@@ -108,9 +105,6 @@
                                     </ol>
                                     <table id="aduan" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
-                                            {{-- <tr>
-                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> BUTIRAN ADUAN</label></td>
-                                            </tr> --}}
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle">Pejabat/Bahagian/ Fakulti/Kolej : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->lokasi_aduan) }}</td>
@@ -168,9 +162,6 @@
                                     </ol>
                                     <table id="muatnaik" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
-                                            {{-- <tr>
-                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-upload"></i> BUKTI DIMUATNAIK</label></td>
-                                            </tr> --}}
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle"> Gambar : </th>
                                                 <td colspan="2" style="text-transform: uppercase">
@@ -245,46 +236,6 @@
                                     </ol>
                                     <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
-                                            {{-- <tr>
-                                                <td colspan="5" class="bg-primary-50">
-                                                    <label class="form-label">
-                                                        <i class="fal fa-check-circle"></i> STATUS TERKINI ADUAN :
-                                                            @if($aduan->status_aduan=='BS')
-                                                            {
-                                                            <span class="badge badge-new">{{ strtoupper($aduan->status->nama_status) }}</span>
-                                                            }
-                                                            @elseif($aduan->status_aduan=='DJ')
-                                                            {
-                                                                <span class="badge badge-sent">{{ strtoupper($aduan->status->nama_status) }}</span>
-                                                            }
-                                                            @elseif($aduan->status_aduan=='TD')
-                                                            {
-                                                                <span class="badge badge-done">{{ strtoupper($aduan->status->nama_status) }}</span>
-                                                            }
-                                                            @elseif($aduan->status_aduan=='AS')
-                                                            {
-                                                                <span class="badge badge-success">{{ strtoupper($aduan->status->nama_status) }}</span>
-                                                            }
-                                                            @elseif($aduan->status_aduan=='LK')
-                                                            {
-                                                                <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
-                                                            }
-                                                            @elseif($aduan->status_aduan=='LU')
-                                                            {
-                                                                <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
-                                                            }
-                                                            @elseif($aduan->status_aduan=='AK')
-                                                            {
-                                                                <span class="badge badge-kiv">{{ strtoupper($aduan->status->nama_status) }}</span>
-                                                            }
-                                                            @else
-                                                            {
-                                                                <span class="badge badge-duplicate">{{ strtoupper($aduan->status->nama_status) }}</span>
-                                                            }
-                                                            @endif
-                                                    </label>
-                                                </td>
-                                            </tr> --}}
                                             @if($aduan->status_aduan == 'AB')
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle">Sebab Pembatalan : </th>

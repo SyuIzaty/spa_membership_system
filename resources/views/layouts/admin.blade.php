@@ -701,8 +701,8 @@
                                 </ul>
                             </li>
                         @endcan
-                        @can('view complaint list')
-                            @can('view technical admin')
+                        @canany(['view complaint list', 'view complaint list - HEP'])
+                            @canany(['view technical admin', 'view complaint list - HEP'])
                                 <li class="open">
                                     <a href="#" title="Aduan" data-filter-tags="aduan">
                                         <i class="fal fa-list"></i>
@@ -733,7 +733,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                            @endcan
+                            @endcanany
                             @can('view technical staff')
                                 <li class="open">
                                     <a href="#" title="Aduan" data-filter-tags="aduan">
@@ -768,28 +768,30 @@
                                     </ul>
                                 </li>
                             @endcan
-                            <li>
-                                <a href="#" title="Laporan" data-filter-tags="laporan">
-                                    <i class="fal fa-file-excel"></i>
-                                    <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
-                                </a>
-                                <ul>
-                                    @canany(['view technical admin', 'view technical staff'])
-                                        @can('view technical admin')
+                            @cannot('view complaint list - HEP')
+                                <li>
+                                    <a href="#" title="Laporan" data-filter-tags="laporan">
+                                        <i class="fal fa-file-excel"></i>
+                                        <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
+                                    </a>
+                                    <ul>
+                                        @canany(['view technical admin', 'view technical staff'])
+                                            @can('view technical admin')
+                                                <li>
+                                                    <a href="/export_aduan" title="Kategori" data-filter-tags="kategori">
+                                                        <span class="nav-link-text" data-i18n="nav.kategori">Keseluruhan</span>
+                                                    </a>
+                                                </li>
+                                            @endcan
                                             <li>
-                                                <a href="/export_aduan" title="Kategori" data-filter-tags="kategori">
-                                                    <span class="nav-link-text" data-i18n="nav.kategori">Keseluruhan</span>
+                                                <a href="/export_aduan_staf" title="Kategori" data-filter-tags="kategori">
+                                                    <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
                                                 </a>
                                             </li>
-                                        @endcan
-                                        <li>
-                                            <a href="/export_aduan_staf" title="Kategori" data-filter-tags="kategori">
-                                                <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
-                                            </a>
-                                        </li>
-                                    @endcanany
-                                </ul>
-                            </li>
+                                        @endcanany
+                                    </ul>
+                                </li>
+                            @endcannot
                             @can('view complaint parameter')
                                 <li>
                                     <a href="#" title="Parameter" data-filter-tags="parameter">
@@ -820,7 +822,7 @@
                                     </ul>
                                 </li>
                             @endcan
-                        @endcan
+                        @endcanany
                         {{-- End Aduan --}}
 
                         {{-- Start Training --}}

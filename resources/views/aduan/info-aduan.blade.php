@@ -26,24 +26,27 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="row">
-                            @if(Auth::user()->hasRole('Technical Admin'))
-                                @if($aduan->status_aduan == 'BS' || $aduan->status_aduan == 'DJ' || $aduan->status_aduan == 'TD')
+
+                            @if(auth()->user()->can('view technical admin'))
+                                @if(in_array($aduan->status_aduan, ['BS', 'DJ', 'TD']))
                                     <div class="col-md-7">
                                 @else
                                     <div class="col-md-12">
                                 @endif
                             @endif
-                            @if(Auth::user()->hasRole('Technical Staff'))
-                                @if($juru->jenis_juruteknik == 'K')
-                                    @if($aduan->status_aduan == 'DJ')
-                                        <div class="col-md-7">
-                                    @else
-                                        <div class="col-md-12">
-                                    @endif
+
+                            @if(auth()->user()->can('view technical staff'))
+                                @if($juru->jenis_juruteknik == 'K' && $aduan->status_aduan == 'DJ')
+                                    <div class="col-md-7">
                                 @else
                                     <div class="col-md-12">
                                 @endif
                             @endif
+
+                            @if(auth()->user()->can('view complaint list - HEP'))
+                                <div class="col-md-12">
+                            @endif
+
                                 <div class="card card-primary card-outline p-4">
                                     <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
                                     <h4 style="text-align: center">
@@ -497,7 +500,7 @@
                                                                                                 <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" required>
                                                                                                     <option value="" disabled selected>Sila Pilih</option>
                                                                                                     @foreach ($juruteknik as $juru)
-                                                                                                    <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
+                                                                                                        <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
                                                                                                             {{ $juru->name }}</option>
                                                                                                     @endforeach
                                                                                                 </select>
