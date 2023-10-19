@@ -1096,11 +1096,11 @@
                                 <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
                             </a>
                             <ul>
-                                {{-- <li>
+                                <li>
                                     <a href="/space/booking-calendar" title="Arkib" data-filter-tags="Arkib">
                                         <span class="nav-link-text" data-i18n="nav.arkib">Booking Calendar</span>
                                     </a>
-                                  </li> --}}
+                                  </li>
                                 <li class="open">
                                     <a href="#" title="List" data-filter-tags="list">
                                         <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
