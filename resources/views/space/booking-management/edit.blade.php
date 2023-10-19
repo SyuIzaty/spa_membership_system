@@ -136,7 +136,29 @@
                                                 <tr>
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Venue :</label></td>
-                                                        <td colspan="5">{{ $main->spaceVenue->name }}</td>
+                                                        <td colspan="5">
+                                                            @php
+                                                              $input_per_line = 3;
+                                                              $venue_array = $venue->toArray();
+                                                              $venue_count = count($venue_array);
+                                                            @endphp
+                                                          
+                                                            @for ($i = 0; $i < $venue_count; $i += $input_per_line)
+                                                            <div class="row mb-2">
+                                                              @foreach(array_slice($venue_array, $i, $input_per_line) as $venues)
+                                                                  <div class="col">
+                                                                      <div class="custom-control custom-radio custom-control-inline custom-checkbox-circle">
+                                                                          <input type="radio" class="custom-control-input" id="defaultInline{{ $venues['id'] }}" name="venue" value="{{ $venues['id'] }}"
+                                                                          {{ ($venues['id'] == $main->venue_id) ? 'checked' : '' }}>
+                                                                          <label class="custom-control-label" for="defaultInline{{ $venues['id'] }}">
+                                                                              {{ $venues['name'] }} <span class="text-danger font-weight-bold">({{ $venues['maximum'] }} MAX)</span>
+                                                                          </label>
+                                                                      </div>
+                                                                  </div>
+                                                              @endforeach
+                                                            </div>
+                                                            @endfor
+                                                        </td>
                                                     </div>
                                                 </tr>
                                                 <tr>

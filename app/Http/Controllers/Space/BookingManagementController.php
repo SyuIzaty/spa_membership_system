@@ -202,9 +202,11 @@ class BookingManagementController extends Controller
     public function edit($id)
     {
         $main = SpaceBookingVenue::find($id);
+        $venue_department = SpaceVenue::find($main->venue_id);
+        $venue = SpaceVenue::Active()->DepartmentId($venue_department->department_id)->get();
         $user = User::find(isset($main->spaceBookingMain->staff_id) ? $main->spaceBookingMain->staff_id : '');
         $status = SpaceStatus::where('category','Application')->get();
-        return view('space.booking-management.edit',compact('main','status','user'));
+        return view('space.booking-management.edit',compact('main','status','user','venue'));
     }
 
     /**
@@ -222,6 +224,7 @@ class BookingManagementController extends Controller
         ]);
 
         SpaceBookingVenue::where('id',$request->booking_id)->update([
+            'venue_id' => $request->venue,
             'application_status' => $request->application_status,
             'verify_by' => Auth::user()->id,
         ]);
