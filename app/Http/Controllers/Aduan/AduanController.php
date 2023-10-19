@@ -823,20 +823,17 @@ class AduanController extends Controller
 
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
+        $staff_exists = [];
+
         if ($staff->staff_code == 'IITU') {
-            $staff_code = 'IITU';
-            $staff_exist = Staff::where('staff_code', 'IITU')->pluck('staff_id')->toArray();
+            $staff_exists = Staff::where('staff_code', 'IITU')->whereNotIn('staff_id', $juruteknik_exist)->pluck('staff_id')->toArray();
         } elseif ($staff->staff_code == 'OFM') {
-            $staff_code = 'OFM';
-            $staff_exists = Staff::where('staff_code', 'OFM')->pluck('staff_id')->toArray();
+            $staff_exists = Staff::where('staff_code', 'OFM')->whereNotIn('staff_id', $juruteknik_exist)->pluck('staff_id')->toArray();
         }
 
         $juruteknik = User::whereHas('roles', function ($query) {
             $query->where('id', 'CMS002');
-        })->whereIn('id', $staff_code === 'IITU' ? $staff_exist : $staff_exists)
-            ->whereNotIn('id', $juruteknik_exist)
-            ->where('active', 'Y')
-            ->get();
+        })->whereIn('id', $staff_exists)->where('active', 'Y')->get();
 
         $resit = ResitAduan::where('id_aduan', $id)->get();
 

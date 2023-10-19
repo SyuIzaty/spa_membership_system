@@ -25,7 +25,7 @@
                         <div class="row">
                             <div class="col-auto mt-4">
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    @cannot('view complaint list - HEP')
+                                    @cannot('view technical admin')
                                         <a class="nav-link mb-2 " id="staf-tab" data-toggle="pill" href="#staf" role="tab" aria-controls="staf" aria-selected="false" style="border: 1px solid;">
                                             <i class="fal fa-info-circle"></i>
                                             <span class="hidden-sm-down ml-1"> STAF </span>
@@ -35,7 +35,7 @@
                                         <i class="fal fa-road"></i>
                                         <span class="hidden-sm-down ml-1"> PELAJAR </span>
                                     </a>
-                                    @cannot('view complaint list - HEP')
+                                    @cannot('view technical admin')
                                         <a class="nav-link mb-2" id="luar-tab" data-toggle="pill" href="#luar" role="tab" aria-controls="luar" aria-selected="false" style="border: 1px solid;">
                                             <i class="fal fa-database"></i>
                                             <span class="hidden-sm-down ml-1"> PENGGUNA LUAR </span>

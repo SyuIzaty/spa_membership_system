@@ -33,17 +33,13 @@
                                 @else
                                     <div class="col-md-12">
                                 @endif
-                            @endif
-
-                            @if(auth()->user()->can('view technical staff'))
+                            @elseif(auth()->user()->can('view technical staff'))
                                 @if($juru->jenis_juruteknik == 'K' && $aduan->status_aduan == 'DJ')
                                     <div class="col-md-7">
                                 @else
                                     <div class="col-md-12">
                                 @endif
-                            @endif
-
-                            @if(auth()->user()->can('view complaint list - HEP'))
+                            @elseif(auth()->user()->can('view complaint list - HEP'))
                                 <div class="col-md-12">
                             @endif
 
