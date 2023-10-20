@@ -246,6 +246,9 @@
                                     @if($id == 1)
                                     <b>PERATURAN PENGGUNAAN RUANG LAB KOMPUTER</b>
                                     @endif
+                                    @if($id == 11)
+                                    <b>PERATURAN PENGGUNAAN RUANG FASILITI</b>
+                                    @endif
                                   </h5>
                                   <ol>
                                     <li style="margin-bottom:10pt">
@@ -255,6 +258,9 @@
                                       @endif
                                       @if($id == 1)
                                       <b>lab komputer</b>
+                                      @endif 
+                                      @if($id == 1)
+                                      <b>fasiliti</b>
                                       @endif 
                                       hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
                                       (Sebarang tembahan tanpa borang tidak akan dilayan)
@@ -272,6 +278,7 @@
                                       Kaunter Perkhidmatan Pelanggan (ext: 7219) sahaja.
                                     </li>
                                     @endif
+                                    @if($id == 10 && $id == 1)
                                     <li style="margin-bottom:10pt">
                                       Pihak 
                                       @if($id == 10)
@@ -282,6 +289,7 @@
                                       @endif
                                       tidak menyediakan sebarang perkhidmatan mengubah susun atur bilik / ruang perpustakaan.
                                     </li>
+                                    @endif
                                     <li style="margin-bottom:10pt">
                                       Sekiranya memerlukan tambahan peralatan atau mengubah susun atur ruang, boleh terus berurusan dengan pihak unit majlis
                                       INTEC sehingga program selesai. (urusan ini di antara pegawai yang menempah ruang perpustakaan dengan unit majlis sahaja)
