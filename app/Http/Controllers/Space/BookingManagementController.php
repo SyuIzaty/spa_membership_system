@@ -224,7 +224,7 @@ class BookingManagementController extends Controller
         ]);
 
         SpaceBookingVenue::where('id',$request->booking_id)->update([
-            'venue_id' => $request->venue,
+            // 'venue_id' => $request->venue,
             'application_status' => $request->application_status,
             'verify_by' => Auth::user()->id,
         ]);
