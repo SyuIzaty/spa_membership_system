@@ -128,7 +128,7 @@
     <b>NOTE :</b><br>
     <p style="font-size:8pt">1. Approval is subject to the venue availability or no maintenance work in the room.</p>
     <p style="font-size:8pt">2. Contact Details:</p>
-    <table class="first-table" style="margin-top:5pt;">
+    {{-- <table class="first-table" style="margin-top:5pt;">
       <tr>
         <td style="width:50%;"><b>LIBRARY SPACE REQUEST</b></td>
         <td style="width:50%;"><b>COMPUTER LAB (LIBRARY)</b></td>
@@ -139,11 +139,11 @@
       </tr>
       <tr>
       </tr>
-    </table>
+    </table> --}}
   </p>
   <div style="margin-left:110pt;">
     <p style="margin-top:300px; margin-bottom:20pt">
-      <b>PERATURAN PENGGUNAAN RUANG PERPUSTAKAAN</b>
+      <b>PERATURAN PENGGUNAAN RUANG INTEC</b>
     </p>
   </div>
   <ol style="font-size:8pt;">
@@ -151,7 +151,7 @@
       Tempahan ruang perpustakaan hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
       (Sebarang tembahan tanpa borang tidak akan dilayan)
     </li>
-    <li style="margin-bottom:10pt">
+    {{-- <li style="margin-bottom:10pt">
       Pemohon hendaklah menghubungi pegawai yang bertugas di kaunter IT dan kaunter Perkhidmatan Pelanggan untuk
       memastikan kekosongan ruang sebelum mengisi borang tempahan.
     </li>
@@ -164,7 +164,7 @@
     </li>
     <li style="margin-bottom:10pt">
       Pihak perpustakaan tidak menyediakan sebarang perkhidmatan mengubah susun atur bilik / ruang perpustakaan.
-    </li>
+    </li> --}}
     <li style="margin-bottom:10pt">
       Sekiranya memerlukan tambahan peralatan atau mengubah susun atur ruang, boleh terus berurusan dengan pihak unit majlis
       INTEC sehingga program selesai. (urusan ini di antara pegawai yang menempah ruang perpustakaan dengan unit majlis sahaja)
@@ -182,7 +182,7 @@
     <b>AKUAN PEMOHON</b>
   </p>
   <p style="margin-left:60pt">
-    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG PERPUSTAKAAN INTEC</b>
+    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG INTEC</b>
   </p>
   <p style="font-size:8pt;">
     Saya yang bernama {{ $user->name }} No K/P 
@@ -192,7 +192,7 @@
     @if($user->category == 'STD')
       {{ isset($user->student->students_ic) ? $user->student->students_ic : '' }}.
     @endif
-    Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dn Ruang Perpustakaan INTEC dan saya telah membaca
+    Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dn Ruang INTEC dan saya telah membaca
     serta memahami peraturan dan prosedur dibawah ini:
     <ol style="font-size:8pt;">
       <li style="margin-bottom:10pt">Saya mengaku bahawa butiran diri yang saya berikan adalah sah dan benar.</li>
