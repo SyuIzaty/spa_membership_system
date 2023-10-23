@@ -17,6 +17,11 @@ class SpaceStaff extends Model
         return $this->hasOne('App\DepartmentList','id','department_id');
     }
 
+    public function user()
+    {
+        return $this->hasOne('App\User','id','staff_id');
+    }
+
     public function scopeStaffId($query, $staff_id)
     {
         return $query->where('staff_id',$staff_id);

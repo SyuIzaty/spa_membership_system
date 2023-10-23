@@ -187,7 +187,17 @@ class BookingController extends Controller
         $venue = SpaceVenue::Active()->get();
         $item = SpaceItem::Active()->get();
         $user = User::find(isset($booking->spaceBookingMain->staff_id) ? $booking->spaceBookingMain->staff_id : Auth::user()->id);
-        $pdf = PDF::loadView('space.booking.show', compact('booking','user','venue','item','booking_item'));
+        if(isset($booking->spaceVenue)){
+            if($booking->spaceVenue->department_id == 10){
+                $pdf = PDF::loadView('space.booking.show', compact('booking','user','venue','item','booking_item'));
+            }
+            if($booking->spaceVenue->department_id == 1){
+                $pdf = PDF::loadView('space.booking.iitu', compact('booking','user','venue','item','booking_item'));
+            }
+            if($booking->spaceVenue->department_id == 11){
+                $pdf = PDF::loadView('space.booking.facility', compact('booking','user','venue','item','booking_item'));
+            }
+        }
         return $pdf->stream('Booking.pdf');
     }
 

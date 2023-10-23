@@ -113,11 +113,6 @@
     </tr>
     @endforeach
   </table>
-  <p style="margin-top:20pt; font-size:8pt">
-    <i>Note:</i><br>
-    <i>* Microphone, LCD and Notebook loans are only in Seminar Halls, IT Labs and Meeting Rooms</i><br>
-    <i>* Television use is only in Seminar Halls, Discussion Rooms and Meeting Rooms</i>
-  </p>
   <div style="border: 5px solid black; margin-top: 20pt">
     <b style="padding-left:180pt">FOR OFFICE USE ONLY</b>
   </div>
@@ -127,62 +122,35 @@
   <p style="margin-top:20pt; font-size:8pt;">
     <b>NOTE :</b><br>
     <p style="font-size:8pt">1. Approval is subject to the venue availability or no maintenance work in the room.</p>
-    <p style="font-size:8pt">2. Contact Details:</p>
-    <table class="first-table" style="margin-top:5pt;">
-      <tr>
-        <td style="width:50%;"><b>LIBRARY SPACE REQUEST</b></td>
-        <td style="width:50%;"><b>COMPUTER LAB (LIBRARY)</b></td>
-      </tr>
-      <tr>
-        <td style="width:50%;">Kaunter Khidmat Pelanggan: 03 8603 7093</td>
-        <td style="width:50%;">En.Mohd Airwan Miskun: 03 8603 7097</td>
-      </tr>
-      <tr>
-      </tr>
-    </table>
   </p>
-  <div style="margin-left:110pt;">
-    <p style="margin-top:300px; margin-bottom:20pt">
-      <b>PERATURAN PENGGUNAAN RUANG PERPUSTAKAAN</b>
+  <div style="margin-left:150pt;">
+    <p style="margin-top:200px; margin-bottom:20pt">
+      <b>PERATURAN PENGGUNAAN RUANG</b>
     </p>
   </div>
   <ol style="font-size:8pt;">
     <li style="margin-bottom:10pt">
-      Tempahan ruang perpustakaan hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
+      Tempahan ruang hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
       (Sebarang tembahan tanpa borang tidak akan dilayan)
     </li>
     <li style="margin-bottom:10pt">
-      Pemohon hendaklah menghubungi pegawai yang bertugas di kaunter IT dan kaunter Perkhidmatan Pelanggan untuk
-      memastikan kekosongan ruang sebelum mengisi borang tempahan.
-    </li>
-    <li style="margin-bottom:10pt">
-      Sebarang tempahan Makmal IT hendaklah berurusan dengan pegawai di kaunter Makmal IT (ext: 7097) sahaja.
-    </li>
-    <li style="margin-bottom:10pt">
-      Sebarang tempahan ruang lain di perpustakaan selain Makmal IT hendaklah berurusan dengan pegawai 
-      Kaunter Perkhidmatan Pelanggan (ext: 7219) sahaja.
-    </li>
-    <li style="margin-bottom:10pt">
-      Pihak perpustakaan tidak menyediakan sebarang perkhidmatan mengubah susun atur bilik / ruang perpustakaan.
-    </li>
-    <li style="margin-bottom:10pt">
       Sekiranya memerlukan tambahan peralatan atau mengubah susun atur ruang, boleh terus berurusan dengan pihak unit majlis
-      INTEC sehingga program selesai. (urusan ini di antara pegawai yang menempah ruang perpustakaan dengan unit majlis sahaja)
+      INTEC sehingga program selesai.
     </li>
     <li style="margin-bottom:10pt">
-      Sebarang pembatalan tempahan ruang, mohon untuk memaklumkan kepada pegawai yang bertugas sekurang - kurangnya
+      Sebaarang pembatalan tempahan ruang, mohon untuk memaklumkan kepada pegawai yang bertugas sekurang - kurangnya
       sehari sebelum tarikh penggunaan.
     </li>
     <li style="margin-bottom:10pt">
-      Sila pastikan keadaan bilik / ruang perpustakaan yang telah digunakan berkeadaan baik seperti sediakala selepas
+      Sila pastikan keadaan bilik / ruang yang telah digunakan berkeadaan baik seperti sediakala selepas
       penggunaan untuk memberi keselesaan kepada pengguna seterusnya.
     </li>
   </ol>
   <p style="margin-top:50pt; margin-left:180pt">
     <b>AKUAN PEMOHON</b>
   </p>
-  <p style="margin-left:60pt">
-    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG PERPUSTAKAAN INTEC</b>
+  <p style="margin-left:100pt">
+    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG INTEC</b>
   </p>
   <p style="font-size:8pt;">
     Saya yang bernama {{ $user->name }} No K/P 
@@ -192,7 +160,7 @@
     @if($user->category == 'STD')
       {{ isset($user->student->students_ic) ? $user->student->students_ic : '' }}.
     @endif
-    Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dan Ruang Perpustakaan INTEC dan saya telah membaca
+    Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dan Ruang INTEC dan saya telah membaca
     serta memahami peraturan dan prosedur dibawah ini:
     <ol style="font-size:8pt;">
       <li style="margin-bottom:10pt">Saya mengaku bahawa butiran diri yang saya berikan adalah sah dan benar.</li>
