@@ -29,9 +29,9 @@
                                           <div class="form-group">
                                               <td style="width: 250px"><i style="color: red"><b>Note</b></i>
                                                   <br><br>
-                                                  <label class="low" style="margin-left: 14px !important"><label class="" style="margin-left: 30px;">Approved</label></label>
-                                                  <label class="medium" style="margin-left: 85px !important"><label class="" style="margin-left: 30px;">Pending</label></label>
-                                                  <label class="high" style="margin-left: 85px !important"><label class="" style="margin-left: 30px; width: 130px">Rejected</label></label>
+                                                  <label class="low" style="margin-left: 14px !important; background-color: #33F0FF"><label class="" style="margin-left: 30px;">IITU</label></label>
+                                                  <label class="medium" style="margin-left: 70px !important; background-color: #FFD133"><label class="" style="margin-left: 30px;">LIBRARY</label></label>
+                                                  <label class="high" style="margin-left: 85px !important; background-color: #FF6E33"><label class="" style="margin-left: 30px; width: 130px">FACILITY</label></label>
                                               </td>
                                           </div>
                                       </tr>
@@ -94,7 +94,7 @@
                   end: moment('{{ $bookings->spaceBookingMain->end_date }}').add(1, 'day').format('YYYY-MM-DD'),
                   start_time: '{{ $bookings->spaceBookingMain->start_time }}',
                   end_time: '{{ $bookings->spaceBookingMain->end_time }}',
-                  color: '{{ isset($bookings->spaceStatus->color) ? $bookings->spaceStatus->color : '' }}',
+                  color: '{{ isset($bookings->spaceVenue->departmentList->color) ? $bookings->spaceVenue->departmentList->color : '' }}',
                   check_out: '{{ $bookings->spaceBookingMain->end_date }}',
                   spacebookingId: '{{ $bookings->id }}',
                   room_venue: '{{ isset($bookings->spaceVenue->name) ? $bookings->spaceVenue->name : '' }}',

@@ -154,6 +154,16 @@
                                                             </b>
                                                           </div>
                                                           @endif
+                                                          @if($venue_department->department_id == 1)
+                                                            <ul>
+                                                              <li><strong>Lab C : </strong> Projector (1)</li>
+                                                              <li><strong>Lab U123 : </strong> Projector (1)</li>
+                                                              <li><strong>Lab R201 : </strong> Projector (1)</li>
+                                                              <li><strong>Lab R202 : </strong> Projector (1)</li>
+                                                              <li><strong>Lab R203 : </strong> Projector (1)</li>
+                                                              <li><strong>Lab R204 : </strong> Projector (1)</li>
+                                                            </ul>
+                                                          @endif
                                                           <div class="frame-wrap">
                                                             @php
                                                               $input_per_line = 3;

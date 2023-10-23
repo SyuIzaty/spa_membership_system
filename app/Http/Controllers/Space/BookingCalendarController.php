@@ -15,7 +15,7 @@ class BookingCalendarController extends Controller
      */
     public function index()
     {
-        $booking = SpaceBookingVenue::with('spaceBookingMain')->get();
+        $booking = SpaceBookingVenue::with('spaceBookingMain')->where('application_status',3)->get();
 
         return view('space.booking-calendar.index',compact('booking'));
     }

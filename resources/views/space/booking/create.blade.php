@@ -181,12 +181,12 @@
                                                     </div>
                                                 </tr>
                                                 <tr>
-                                                    @if($id == 10)
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label">Requirement :</label></td>
                                                         <td colspan="5">
                                                           <div class="alert alert-info" role="alert">
                                                             <strong>Note:</strong><br>
+                                                            @if($id == 10)
                                                             <ul>
                                                               <li><strong>Lab B : </strong> PA System, LCD (1), Microphone (2)</li>
                                                               <li><strong>Lab C: </strong> LCD, Microphone Portable</li>
@@ -197,6 +197,17 @@
                                                             <b>
                                                               Additional PA systems or changing the layout of the space can be requested at Unit Majlis INTEC.
                                                             </b>
+                                                            @endif
+                                                            @if($id == 1)
+                                                            <ul>
+                                                              <li><strong>Lab C : </strong> Projector (1)</li>
+                                                              <li><strong>Lab U123 : </strong> Projector (1)</li>
+                                                              <li><strong>Lab R201 : </strong> Projector (1)</li>
+                                                              <li><strong>Lab R202 : </strong> Projector (1)</li>
+                                                              <li><strong>Lab R203 : </strong> Projector (1)</li>
+                                                              <li><strong>Lab R204 : </strong> Projector (1)</li>
+                                                            </ul>
+                                                            @endif
                                                           </div>
                                                           <div class="frame-wrap">
                                                             @php
@@ -221,7 +232,6 @@
                                                           
                                                         </td>
                                                     </div>
-                                                    @endif
                                                 </tr>
                                                 <tr>
                                                     <div class="form-group">
