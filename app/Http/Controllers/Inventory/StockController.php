@@ -112,6 +112,11 @@ class StockController extends Controller
 
     public function uploadImages(Request $request)
     {
+        $request->validate([
+            'upload_image'     => 'required|array',
+            'upload_image.*'   => 'mimes:jpg,jpeg,png',
+        ]);
+
         $files = $request->file('upload_image');
 
         if (isset($files) && count($files) > 0) {
