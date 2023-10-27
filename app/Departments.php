@@ -10,5 +10,5 @@ class Departments extends Model
     use SoftDeletes;
     protected $connection = 'mysql2';
     protected $table = 'departments';
-    protected $fillable = ['hod', 'department_code','department_name'];
+    protected $fillable = ['hod', 'department_code','department_name','department_email'];
 }

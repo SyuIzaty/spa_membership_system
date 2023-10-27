@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Stock extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_stock';
+    protected $table = 'inv_stocks';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'stock_code', 'stock_name', 'model', 'brand', 'status', 'created_by', 'department_id'
+        'stock_code', 'stock_name', 'model', 'brand', 'status', 'created_by', 'current_owner', 'updated_by', 'department_id',
+        'applicable_for_stationary', 'applicable_for_aduan', 'deleted_by'
     ];
 
     public function type()
@@ -21,16 +22,16 @@ class Stock extends Model
 
     public function user()
     {
-        return $this->hasOne('App\User', 'id', 'created_by');
+        return $this->hasOne('App\User', 'id', 'current_owner');
     }
 
     public function transaction()
     {
-        return $this->hasMany('App\StockTransaction','stock_id')->orderBy('trans_date', 'asc');  
+        return $this->hasMany('App\StockTransaction','stock_id')->orderBy('trans_date', 'asc');
     }
 
     public function departments()
     {
-        return $this->hasOne('App\AssetDepartment', 'id', 'department_id');
+        return $this->hasOne('App\Departments', 'department_code', 'department_id');
     }
 }

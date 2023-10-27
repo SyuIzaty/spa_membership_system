@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-dolly'></i>STOCK LISTS
+        <i class='subheader-icon fal fa-dolly'></i>STOCK LIST MANAGEMENT
         </h1>
     </div>
     <div class="row">
@@ -23,82 +23,74 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         @if (Session::has('message'))
-                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
+                            <div class="alert alert-success" style="color: #3b6324"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                         @endif
                         <div class="table-responsive">
                             <table id="stock" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                         <th>#ID</th>
-                                        <th>DEPARTMENT</th>
+                                        @can('view stock')
+                                            <th>DEPARTMENT</th>
+                                        @endcan
                                         <th>CODE</th>
                                         <th>NAME</th>
-                                        <th>MODEL</th>
-                                        <th>BRAND</th>
+                                        <th>STATUS</th>
+                                        @can('view stock')
+                                            <th>CURRENT OWNER</th>
+                                        @endcan
                                         <th>CURRENT BALANCE</th>
-                                        <th style="width: 150px">BALANCE STATUS</th>
-                                        <th style="width: 150px">STATUS</th>
-                                        <th>CREATED DATE</th>
+                                        <th>BALANCE STATUS</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Code"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Model"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Brand"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Current Balance"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Balance Status"></td>
-                                        <td class="hasinput">
-                                            <select id="statuss" name="statuss" class="form-control">
-                                                <option value="">ALL</option>
-                                                <option value="1">ACTIVE</option>
-                                                <option value="0">INACTIVE</option>
-                                            </select>
-                                        </td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Created Date"></td>
+                                        @can('view stock')
+                                            <td class="hasinput"><input type="text" class="form-control" placeholder=" Department"></td>
+                                        @endcan
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder=" Code"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder=" Name"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder=" Status"></td>
+                                        @can('view stock')
+                                            <td class="hasinput"><input type="text" class="form-control" placeholder=" Current Owner"></td>
+                                        @endcan
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
                     </div>
-                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                        <a href="javascript:;" data-toggle="modals" id="news" class="btn btn-info float-right mr-2 ml-auto"><i class="fal fa-file-excel"></i> Import</a>
-                        <a class="btn btn-warning float-right mr-2" href="/export-stock"><i class="fal fa-file-excel"></i> Export</a>
-                        <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary float-right"><i class="fal fa-plus-square"></i> Add New Stock</a>
-                    </div>
+                    @cannot('view stock')
+                        <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
+                            <a href="javascript:;" data-toggle="modals" id="news" class="btn btn-info float-right mr-2 ml-auto"><i class="fal fa-file-excel"></i> Import</a>
+                            <a class="btn btn-warning float-right mr-2" href="/export-stock"><i class="fal fa-file-excel"></i> Export</a>
+                            <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary float-right"><i class="fal fa-plus-square"></i> Add New Stock</a>
+                        </div>
+                    @endcannot
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="crud-modal" aria-hidden="true" >
+    <div class="modal fade" id="crud-modal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header bg-secondary text-white">
                     <h5 class="card-title w-100"><i class="fal fa-dolly width-2 fs-xl"></i>NEW STOCK DETAILS</h5>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['action' => 'StockController@newStockStore', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                    {!! Form::open(['action' => 'Inventory\StockController@newStockStore', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                     <p><span class="text-danger">*</span> Required fields</p>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department :</label></td>
                             <td colspan="4">
-                                <select name="department_id" id="department_id" class="department form-control" required>
-                                    <option value="">Select Department</option>
-                                    @foreach ($department as $depart)
-                                        <option value="{{ $depart->id }}" {{ old('department_id') ? 'selected' : '' }}>{{ $depart->department_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('department_id')
-                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                @enderror
+                                <input value="{{ $staff->departments->department_name }}" class="form-control" id="department_id" name="department_id" disabled>
                             </td>
                         </div>
                         <div class="form-group">
-                            <td width="10%"><label class="form-label" for="stock_name"><span class="text-danger">*</span> Stock Name :</label></td>
+                            <td width="10%"><label class="form-label" for="stock_name"><span class="text-danger">*</span> Name :</label></td>
                                 <td colspan="4"><input value="{{ old('stock_name') }}" class="form-control" id="stock_name" name="stock_name" style="text-transform: uppercase" required>
                                     @error('stock_name')
                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -108,7 +100,7 @@
                         </div>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="model"><span class="text-danger">*</span> Model :</label></td>
-                                <td colspan="4"><input value="{{ old('model') }}" class="form-control" id="model" name="model" style="text-transform: uppercase" required>
+                                <td colspan="4"><input value="{{ old('model') }}" class="form-control" id="model" name="model" style="text-transform: uppercase">
                                     @error('model')
                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                     @enderror
@@ -127,8 +119,8 @@
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="status"><span class="text-danger">*</span> Status :</label></td>
                             <td colspan="4">
-                                <select class="form-control stat" id="status" name="status" required>
-                                    <option value="">Select Status</option>
+                                <select class="form-control" id="status" name="status" required>
+                                    <option value="">Please select</option>
                                     <option value="1" {{ old('status') == '1' ? 'selected':''}} >Active</option>
                                     <option value="0" {{ old('status') == '0' ? 'selected':''}} >Inactive</option>
                                 </select>
@@ -140,12 +132,28 @@
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="upload_image"> Image :</label></td>
                             <td colspan="4">
-                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
+                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple accept=".jpg, .jpeg, .png, .gif">
                                 @error('upload_image')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
                             </td>
                         </div>
+                        @if($staff->staff_code == 'OFM')
+                            <div class="form-group">
+                                <label class="form-label mr-4" for="applicable_for_stationary"> Applicable for i-Stationary ?</label>
+                                <label style="vertical-align: middle;">
+                                    <input type="checkbox" name="applicable_for_stationary" value="1" id="applicable_for_stationary" style="vertical-align: middle;">
+                                </label> Yes
+                            </div>
+                        @endif
+                        @if($staff->staff_code == 'OFM' || $staff->staff_code == 'IITU' )
+                            <div class="form-group">
+                                <label class="form-label mr-4" for="applicable_for_aduan"> Applicable for e-Aduan ?</label>
+                                <label style="vertical-align: middle;">
+                                    <input type="checkbox" name="applicable_for_aduan" value="1" id="applicable_for_aduan" style="vertical-align: middle;">
+                                </label> Yes
+                            </div>
+                        @endif
                         <div class="footer">
                             <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                             <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -171,7 +179,7 @@
                                 @endforeach
                         </div>
                     @endif
-                    {!! Form::open(['action' => 'StockController@bulkStockStore', 'method' => 'POST', 'id' => 'data', 'enctype' => 'multipart/form-data']) !!}
+                    {!! Form::open(['action' => 'Inventory\StockController@bulkStockStore', 'method' => 'POST', 'id' => 'data', 'enctype' => 'multipart/form-data']) !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <table class="table mb-0">
                             <p><span class="text-danger">*</span> Required fields</p>
@@ -179,7 +187,7 @@
                                 <div class="form-group">
                                     <td width="20%"><label class="form-label" for="import_file"><span class="text-danger">*</span> File : </td>
                                     <td colspan="5"><input type="file" name="import_file" class="form-control mb-3" required>
-                                        <p style="color:red; font-size: 10px"><span class="text-danger">**</span><i>Notes:</i><br>
+                                        <p style="color:red; font-size: 14px"><span class="text-danger">**</span><i>Notes:</i><br>
                                         - This upload function is suitable to use for only first time stock entry.<br>
                                         - Delete the example column data when uploading to avoid data error.<br>
                                         - io_no = invoice number.<br>
@@ -269,7 +277,7 @@
                                                     <tbody>
                                                         @foreach($department as $departs)
                                                             <tr align="center">
-                                                                <td>{{ $departs->id ?? '--' }}</td>
+                                                                <td>{{ $departs->department_code ?? '--' }}</td>
                                                                 <td>{{ $departs->department_name ?? '--' }}</td>
                                                             </tr>
                                                         @endforeach
@@ -293,6 +301,40 @@
         </div>
     </div>
 
+    <div class="modal fade" id="crud-modal-owner" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> CHANGE OWNERSHIP</h5>
+                </div>
+                <div class="modal-body">
+                    {!! Form::open(['action' => 'Inventory\StockController@changeOwner', 'method' => 'POST']) !!}
+                    <input type="hidden" name="owner_id" id="id">
+                    <p><span class="text-danger">*</span> Required fields</p>
+                    <div class="form-group int">
+                        <td width="15%"><label class="form-label" for="current_owner"><span class="text-danger">*</span> Staff :</label></td>
+                        <td colspan="7">
+                            <select class="form-control current_owner" name="current_owner" id="current_owner" required>
+                                <option value="" disabled selected> Please select </option>
+                                @foreach ($role as $roles)
+                                    <option value="{{ $roles->id }}" {{ old('current_owner') ==  $roles->id  ? 'selected' : '' }}>{{ $roles->id }} - {{ $roles->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('current_owner')
+                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                            @enderror
+                        </td>
+                    </div>
+                    <div class="footer">
+                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
+                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 @endsection
 
@@ -301,9 +343,7 @@
 <script>
     $(document).ready(function()
     {
-        $('#statuss').select2();
-
-        $('.stat, .department').select2({
+        $('#status').select2({
             dropdownParent: $('#crud-modal')
         });
 
@@ -313,6 +353,17 @@
 
         $('#news').click(function () {
             $('#crud-modals').modal('show');
+        });
+
+        $('#crud-modal-owner').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+
+            $('.modal-body #id').val(id);
+
+            $('#current_owner').select2({
+                dropdownParent: $('#crud-modal-owner')
+            });
         });
 
         $('#stock thead tr .hasinput').each(function(i)
@@ -350,15 +401,17 @@
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { className: 'text-center', data: 'department_id', name: 'department_id' },
+                    @can('view stock')
+                        { className: 'text-center', data: 'department_id', name: 'departments.department_name' },
+                    @endcan
                     { className: 'text-center', data: 'stock_code', name: 'stock_code' },
                     { className: 'text-center', data: 'stock_name', name: 'stock_name' },
-                    { className: 'text-center', data: 'model', name: 'model' },
-                    { className: 'text-center', data: 'brand', name: 'brand' },
-                    { className: 'text-center', data: 'current_balance', name: 'current_balance' },
-                    { className: 'text-center', data: 'balance_status', name: 'balance_status' },
                     { className: 'text-center', data: 'status', name: 'status' },
-                    { className: 'text-center', data: 'created_at', name: 'created_at'},
+                    @can('view stock')
+                        { className: 'text-center', data: 'current_owner', name: 'user.name' },
+                    @endcan
+                    { className: 'text-center', data: 'current_balance', name: 'current_balance', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'balance_status', name: 'balance_status', orderable: false, searchable: false },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,

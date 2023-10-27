@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class StockTransaction extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_stock_transaction';
+    protected $table = 'inv_stock_transactions';
     protected $primaryKey = 'id';
     protected $fillable = [
         'stock_id', 'stock_in', 'lo_no', 'io_no', 'unit_price', 'purchase_date', 'trans_date', 'remark', 'stock_out', 'reason', 'supply_type', 'ext_supply_to', 'supply_to', 'status', 'created_by'

@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use App\Stock;
-use App\AssetCustodian;
+use App\Staff;
 use Auth;
 
 class StockExport implements FromCollection, WithHeadings, WithMapping, WithEvents, ShouldAutoSize
@@ -20,18 +20,7 @@ class StockExport implements FromCollection, WithHeadings, WithMapping, WithEven
     */
     public function collection()
     {
-        if( Auth::user()->hasRole('Inventory Admin') )
-        { 
-            $stock = Stock::all();
-        }
-        else
-        {
-            $as = AssetCustodian::where('custodian_id', Auth::user()->id)->pluck('department_id');
-            
-            $stock = Stock::whereHas('departments', function($q) use ($as){
-                    $q->whereIn('id', $as);
-                 })->get();
-        }
+        $stock = Stock::where('current_owner', Auth::user()->id)->get();
 
         return $stock;
     }
@@ -83,7 +72,7 @@ class StockExport implements FromCollection, WithHeadings, WithMapping, WithEven
             'CURRENT BALANCE',
             'BALANCE STATUS',
             'STATUS',
-            'CREATED BY',
+            'CURRENT OWNER',
             'CREATED DATE',
         ];
     }
@@ -96,7 +85,7 @@ class StockExport implements FromCollection, WithHeadings, WithMapping, WithEven
                 $cellRange = 'A1:K'.$all.'';
                 $head_title = 'A1:K1';
                 $event->sheet->getDelegate()->getStyle($head_title)->getFont()->setBold(true)->setName('Arial');
-                $event->sheet->getDelegate()->getStyle($head_title)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('F7E7E4');
+                $event->sheet->getDelegate()->getStyle($head_title)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffe1b7');
                 $event->sheet->getStyle($cellRange)->applyFromArray([
                     'borders' => [
                         'allBorders' => [

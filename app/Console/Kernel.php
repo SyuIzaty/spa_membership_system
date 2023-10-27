@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\StockBalanceReminder::class,
     ];
 
     /**
@@ -24,8 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('stock_balance:reminder')
+                 ->mondays()
+                 ->at('09:00');
+
+        // $schedule->command('stock_balance:reminder')->everyMinute();
     }
 
     /**
@@ -35,8 +38,10 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
-
         require base_path('routes/console.php');
+
+        // $this->load(__DIR__.'/Commands');
+
+        // require base_path('routes/console.php');
     }
 }

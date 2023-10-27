@@ -16,4 +16,9 @@ class Staff extends Model
     {
         return $this->hasOne('App\User', 'id', 'staff_id');
     }
+
+    public function departments()
+    {
+        return $this->hasOne('App\Departments', 'department_code', 'staff_code');
+    }
 }

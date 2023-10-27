@@ -314,27 +314,32 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/asset-dashboard', 'AssetController@dashboard');
     Route::post('printBarcode', 'AssetController@printBarcode');
 
-    // Stock
-    Route::get('/stock-index', 'StockController@stockIndex');
-    Route::post('newStockStore', 'StockController@newStockStore')->name('newStock');
-    Route::post('stockList', 'StockController@data_stockList');
-    Route::delete('stock-index/{id}', 'StockController@stockDelete');
-    Route::get('/stock-detail/{id}', 'StockController@stockDetail');
-    Route::get('get-file-images/{filename}', 'StockController@getImages');
-    Route::post('stockUpdate', 'StockController@stockUpdate');
-    Route::post('createTransIn', 'StockController@createTransIn');
-    Route::post('createTransOut', 'StockController@createTransOut');
-    Route::get('/stockPdf/{id}', 'StockController@stockPdf')->name('stockPdf');
-    Route::get('deleteImages/{id}/{stock_id}', 'StockController@deleteImages')->name('deleteImages');
-    Route::get('deleteTrans/{id}/{stock_id}', 'StockController@deleteTrans')->name('deleteTrans');
-    Route::post('updateTransin', 'StockController@updateTransin');
-    Route::post('updateTransout', 'StockController@updateTransout');
-    Route::get('/export-stock', 'StockController@exportStock');
-    Route::get('/stockTemplate', 'StockController@stockTemplate');
-    Route::post('store-bulk-stock', 'StockController@bulkStockStore');
-    Route::get('/transactionTemplate', 'StockController@transactionTemplate');
-    Route::post('store-bulk-transaction', 'StockController@bulkTransactionStore');
-    Route::post('upload-stock-image', 'StockController@uploadImages');
+    // Stock Management
+    Route::get('/stock-index', 'Inventory\StockController@stockIndex');
+    Route::post('stockList', 'Inventory\StockController@data_stockList');
+    Route::delete('stock-index/{id}', 'Inventory\StockController@stockDelete');
+    Route::get('/stock-detail/{id}', 'Inventory\StockController@stockDetail');
+    Route::get('get-file-images/{filename}', 'Inventory\StockController@getImages');
+    Route::post('stockUpdate', 'Inventory\StockController@stockUpdate');
+    Route::post('createTransIn', 'Inventory\StockController@createTransIn');
+    Route::post('createTransOut', 'Inventory\StockController@createTransOut');
+    Route::post('updateTransin', 'Inventory\StockController@updateTransin');
+    Route::post('updateTransout', 'Inventory\StockController@updateTransout');
+    Route::post('upload-stock-image', 'Inventory\StockController@uploadImages');
+    Route::post('newStockStore', 'Inventory\StockController@newStockStore')->name('newStock');
+    Route::delete('deleteTrans/{id}', 'Inventory\StockController@deleteTrans')->name('deleteTrans');
+    Route::delete('deleteImages/{id}', 'Inventory\StockController@deleteImages')->name('deleteImages');
+    Route::get('/stock-report', 'Inventory\StockController@stockReport');
+    Route::get('/get-stock-by-department', 'Inventory\StockController@getStockByDepartment');
+    Route::get('/get-owner-by-department', 'Inventory\StockController@getOwnerByDepartment');
+    Route::post('data-stock-report', 'Inventory\StockController@dataStockReport');
+    Route::get('/stock-report-excel/{department}/{stock}/{owner}', 'Inventory\StockController@stockReportExcel');
+    Route::get('/export-stock', 'Inventory\StockController@exportStock');
+    Route::get('/stockTemplate', 'Inventory\StockController@stockTemplate');
+    Route::post('store-bulk-stock', 'Inventory\StockController@bulkStockStore');
+    Route::get('/transactionTemplate', 'Inventory\StockController@transactionTemplate');
+    Route::post('store-bulk-transaction', 'Inventory\StockController@bulkTransactionStore');
+    Route::post('changeOwner', 'Inventory\StockController@changeOwner');
 
     // Borrow
     Route::get('/borrow-index', 'BorrowController@borrowIndex');

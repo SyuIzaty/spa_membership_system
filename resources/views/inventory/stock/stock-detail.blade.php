@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-cogs'></i> STOCK DETAILS
+            <i class='subheader-icon fal fa-cogs'></i> STOCK DETAIL MANAGEMENT
         </h1>
     </div>
 
@@ -24,38 +24,28 @@
 
                     <div class="panel-container show">
                         <div class="panel-content">
-
+                            @if (Session::has('message'))
+                                <div class="alert alert-success" style="color: #3b6324"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
+                            @endif
                             <div class="row">
-
                                 <div class="col-sm-12 col-md-4 mb-4">
-                                    {!! Form::open(['action' => ['StockController@stockUpdate'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
+                                    {!! Form::open(['action' => ['Inventory\StockController@stockUpdate'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
                                     {{Form::hidden('id', $stock->id)}}
                                         <div class="card card-primary card-outline">
                                             <div class="card-header">
-                                                <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>STOCK PROFILE</h5>
+                                                <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>STOCK DETAIL</h5>
                                             </div>
                                             <div class="card-body">
-                                                @if (Session::has('notification'))
-                                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
-                                                @endif
                                                 <div class="table-responsive">
                                                     <table id="asset" class="table table-bordered table-hover table-striped w-100 mb-1">
                                                         <thead>
-                                                            <div style="float: right"><i><b>Updated Date : </b>{{ date(' j F Y | h:i:s A', strtotime($stock->updated_at) )}}</i></div><br>
+                                                            <div style="float: right"><b>Updated Date : </b>{{ date(' j F Y | h:i:s A', strtotime($stock->updated_at) )}}</div><br>
                                                             <p style="margin-bottom: -15px"><span class="text-danger">*</span> Required fields</p>
                                                             <tr>
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department : </label></td>
                                                                     <td colspan="3">
-                                                                        <select class="form-control department" name="department_id" id="department_id" disabled>
-                                                                            <option value="">Select Department</option>
-                                                                            @foreach ($department as $depart)
-                                                                                <option value="{{ $depart->id }}" {{ $stock->department_id == $depart->id ? 'selected="selected"' : '' }}>{{ strtoupper($depart->department_name) }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                        @error('department_id')
-                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                        @enderror
+                                                                        <input value="{{ $stock->departments->department_name }}" class="form-control" id="department_id" name="department_id" disabled>
                                                                     </td>
                                                                 </div>
                                                             </tr>
@@ -117,9 +107,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="created_by"> Created By : </label></td>
+                                                                    <td width="25%"><label class="form-label" for="current_owner"> Current Owner : </label></td>
                                                                     <td colspan="3">
-                                                                        <input class="form-control" id="created_by" style="cursor:context-menu" name="created_by" value="{{ $stock->user->name }}" readonly>
+                                                                        <input class="form-control" id="current_owner" style="cursor:context-menu" name="current_owner" value="{{ $stock->user->name }}" readonly>
                                                                     </td>
                                                                 </div>
                                                             </tr>
@@ -146,11 +136,36 @@
                                                                     </td>
                                                                 </div>
                                                             </tr>
+                                                            @if($stock->department_id == 'OFM')
+                                                                <tr>
+                                                                    <div class="form-group">
+                                                                        <td colspan="4">
+                                                                            <label class="form-label mr-4" for="applicable_for_stationary"> Applicable for i-Stationary ?</label>
+                                                                            <label style="vertical-align: middle;">
+                                                                                <input type="checkbox" name="applicable_for_stationary" value="1" id="applicable_for_stationary" {{ $stock->applicable_for_stationary == 1 ? 'checked' : '' }} style="vertical-align: middle">
+                                                                            </label> Yes
+                                                                        </td>
+                                                                    </div>
+                                                                </tr>
+                                                            @endif
+                                                            @if($stock->department_id == 'OFM' || $stock->department_id == 'IITU')
+                                                                <tr>
+                                                                    <div class="form-group">
+                                                                        <td colspan="4">
+                                                                            <label class="form-label mr-4" for="applicable_for_aduan"> Applicable for e-Aduan ?</label>
+                                                                            <label style="vertical-align: middle;">
+                                                                                <input type="checkbox" name="applicable_for_aduan" value="1" id="applicable_for_aduan" {{ $stock->applicable_for_aduan == 1 ? 'checked' : '' }} style="vertical-align: middle">
+                                                                            </label> Yes
+                                                                        </td>
+                                                                    </div>
+                                                                </tr>
+                                                            @endif
                                                         </thead>
                                                     </table>
                                                     <br>
-                                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
-                                                    <a style="margin-right:5px; color: white" data-page="/stockPdf/{{ $stock->id }}" class="btn btn-danger ml-auto float-right" onclick="Print(this)"><i class="fal fa-download"></i> PDF</a>
+                                                    @cannot('view stock')
+                                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
+                                                    @endcannot
                                                     <a style="margin-right:5px" href="/stock-index" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br><br>
                                                 </div>
                                             </div>
@@ -180,38 +195,41 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-sm-12">
-                                                            @if (Session::has('messages'))
-                                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
-                                                            @endif
-                                                            {!! Form::open(['action' => 'StockController@uploadImages', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                                            {{Form::hidden('img_id', $stock->id)}}
-                                                            <table>
-                                                                <tr>
-                                                                    <td width="10%"><label class="form-label" for="upload_image"> Image :</label></td>
-                                                                    <td colspan="4">
-                                                                        <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required>
-                                                                        @error('upload_image')
-                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                        @enderror
-                                                                    </td>
-                                                                    <td>
-                                                                        <button type="submit" class="btn btn-primary float-right"><i class="fal fa-save"></i> Upload</button>
-                                                                    </td>
-                                                                </tr>
-                                                            </table><br>
-                                                            {!! Form::close() !!}
-                                                            <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1">
+                                                            @cannot('view stock')
+                                                                {!! Form::open(['action' => 'Inventory\StockController@uploadImages', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                                                {{Form::hidden('stock_id', $stock->id)}}
+                                                                <table width="100%">
+                                                                    <tr>
+                                                                        <td style="vertical-align: middle">
+                                                                            <div class="btn-group w-100">
+                                                                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required accept=".jpg, .jpeg, .png, .gif">
+                                                                                <button type="submit" class="btn btn-primary" style="min-width: fit-content"><i class="fal fa-save"></i> Upload</button>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table><br>
+                                                                {!! Form::close() !!}
+                                                            @endcannot
+                                                            <table class="table table-bordered table-hover table-striped w-100 mb-1">
                                                                 <thead>
                                                                     <tr align="center">
-                                                                        @if(isset($image->first()->upload_image))
-                                                                            @foreach($image as $images)
+                                                                        @if($image->isNotEmpty())
+                                                                            @foreach($image as $img)
                                                                             <td colspan="5">
-                                                                                <a data-fancybox="gallery" href="/get-file-images/{{ $images->upload_image }}"><img src="/get-file-images/{{ $images->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2"></a><br><br>
-                                                                                <a href="{{ action('StockController@deleteImages', ['id' => $images->id, 'stock_id' => $images->stock_id]) }}" class="btn btn-danger btn-sm"><i class="fal fa-trash"></i> Delete</a>
+                                                                                <a data-fancybox="gallery" href="/get-file-images/{{ $img->img_name }}">
+                                                                                    <img src="/get-file-images/{{ $img->img_name }}" style="width:150px; height:130px;" class="img-fluid mr-2">
+                                                                                </a><br><br>
+                                                                                @cannot('view stock')
+                                                                                    <a href="#" class="btn btn-danger btn-sm delete-image" data-id="{{ $img->id }}">
+                                                                                        <i class="fal fa-trash"></i> Delete
+                                                                                    </a>
+                                                                                @endcannot
                                                                             </td>
                                                                             @endforeach
                                                                         @else
-                                                                            <span>No Image Uploaded</span>
+                                                                            <td>
+                                                                                <span>No Image Uploaded</span>
+                                                                            </td>
                                                                         @endif
                                                                     </tr>
                                                                 </thead>
@@ -228,18 +246,6 @@
                                             <h5 class="card-title w-100"><i class="fal fa-cog width-2 fs-xl"></i>TRANSACTION LOG</h5>
                                         </div>
                                         <div class="card-body">
-                                            @if (Session::has('msg'))
-                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('msg') }}</div>
-                                            @endif
-                                            @if (Session::has('noty'))
-                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('noty') }}</div>
-                                            @endif
-                                            @if (Session::has('notyIn'))
-                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notyIn') }}</div>
-                                            @endif
-                                            @if (Session::has('notyOut'))
-                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notyOut') }}</div>
-                                            @endif
                                             <div class="table-responsive">
                                                 <table id="log" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
@@ -251,16 +257,15 @@
                                                             <th style="vertical-align: middle">UnitPrice (RM)</th>
                                                             <th style="vertical-align: middle">Status</th>
                                                             <th style="vertical-align: middle">Transaction Date</th>
-                                                            <th style="vertical-align: middle">Remark</th>
-                                                            <th style="vertical-align: middle">L.O. Number</th>
-                                                            <th style="vertical-align: middle">Invoice Number</th>
                                                             <th style="vertical-align: middle">Purchase Date</th>
                                                             <th style="vertical-align: middle">Supply Type</th>
                                                             <th style="vertical-align: middle">Supply To</th>
                                                             <th style="vertical-align: middle">Reason</th>
                                                             <th style="vertical-align: middle">Created By</th>
                                                             <th style="vertical-align: middle">Created Date</th>
-                                                            <th style="vertical-align: middle">Action</th>
+                                                            @cannot('view stock')
+                                                                <th style="vertical-align: middle">Action</th>
+                                                            @endcannot
                                                         </tr>
                                                         <tr>
                                                             <td class="hasinput"></td>
@@ -270,16 +275,15 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Unit Price"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Status"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Transaction Date"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Remark"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="L.O. Number"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Invoice Number"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Purchase Date"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Supply Type"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Supply To"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Reason"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Created By"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Created At"></td>
-                                                            <td class="hasinput"></td>
+                                                            @cannot('view stock')
+                                                                <td class="hasinput"></td>
+                                                            @endcannot
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -287,7 +291,7 @@
 
                                                     @foreach($stock->transaction as $list)
                                                     <tr align="center" class="data-row">
-                                                        <td>{{ isset($list->id) ? $list->id : '--'}}</td>
+                                                        <td>{{ isset($list->id) ? '#'.$list->id : '--'}}</td>
                                                         <td>{{ isset($list->stock_in) ? $list->stock_in : '--'}}</td>
                                                         <td>{{ isset($list->stock_out) ? $list->stock_out : '--'}}</td>
                                                         <td>{{ $total_bal += ($list->stock_in - $list->stock_out) }}</td>
@@ -303,9 +307,6 @@
                                                         @endif
                                                         </td>
                                                         <td>{{ isset($list->trans_date) ? date('Y-m-d', strtotime($list->trans_date)) : '--' }}</td>
-                                                        <td>{{ isset($list->remark) ? $list->remark : '--'}}</td>
-                                                        <td>{{ isset($list->lo_no) ? $list->lo_no : '--'}}</td>
-                                                        <td>{{ isset($list->io_no) ? $list->io_no : '--'}}</td>
                                                         <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
                                                         @if($list->supply_type == 'INT')
                                                             <td>INTERNAL</td>
@@ -321,32 +322,36 @@
                                                         @endif
                                                         <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
                                                         <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
-                                                        <td>{{ isset($list->created_at) ? date('Y-m-d |  h:i A', strtotime($list->created_at)) : '--' }}</td>
-                                                        <td><div class="btn-group">
-                                                            @if($list->status == '1')
-                                                                <a href="" data-target="#crud-modalIn" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_in}}" data-lo="{{$list->lo_no}}" data-io="{{$list->io_no}}"
-                                                                    data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success mr-1"><i class="fal fa-pencil"></i></a>
-                                                            @else
-                                                                <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}"
-                                                                    data-extsupply="{{$list->ext_supply_to}}" data-trans="{{$list->trans_date}}" data-type="{{$list->supply_type}}"  class="btn btn-sm btn-danger mr-1"><i class="fal fa-pencil"></i></a>
-                                                            @endif
-                                                            <a href="{{ action('StockController@deleteTrans', ['id' => $list->id, 'stock_id' => $list->stock_id]) }}" class="btn btn-warning btn-sm"><i class="fal fa-trash"></i></a>
-                                                        </div></td>
+                                                        <td>{{ isset($list->created_at) ? date('Y-m-d', strtotime($list->created_at)) : '--' }}</td>
+                                                        @cannot('view stock')
+                                                            <td><div class="btn-group">
+                                                                @if($list->status == '1')
+                                                                    <a href="" data-target="#crud-modalIn" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_in}}" data-lo="{{$list->lo_no}}" data-io="{{$list->io_no}}"
+                                                                        data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success mr-1"><i class="fal fa-pencil"></i></a>
+                                                                @else
+                                                                    <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}"
+                                                                        data-extsupply="{{$list->ext_supply_to}}" data-trans="{{$list->trans_date}}" data-type="{{$list->supply_type}}"  class="btn btn-sm btn-danger mr-1"><i class="fal fa-pencil"></i></a>
+                                                                @endif
+                                                                <a href="{{ action('Inventory\StockController@deleteTrans', ['id' => $list->id]) }}" class="btn btn-warning btn-sm delete-transaction" data-id="{{ $list->id }}"><i class="fal fa-trash"></i></a>
+                                                            </div></td>
+                                                        @endcannot
                                                     </tr>
                                                     @endforeach
                                                     </tbody>
                                                 </table>
                                             </div><br>
-                                            @if(isset($total_bal))
-                                                @if($total_bal > 0)
-                                                    <a href="javascript:;" data-toggle="modal" id="news" class="btn btn-danger ml-2 float-right"><i class="fal fa-minus-square"></i> Transaction Out</a>
+                                            @cannot('view stock')
+                                                @if(isset($total_bal))
+                                                    @if($total_bal > 0)
+                                                        <a href="javascript:;" data-toggle="modal" id="news" class="btn btn-danger ml-2 float-right"><i class="fal fa-minus-square"></i> Transaction Out</a>
+                                                    @else
+                                                        <a href="#" data-toggle="modal" class="btn btn-secondary ml-2 float-right disabled"><i class="fal fa-minus-square"></i> Transaction Out</a>
+                                                    @endif
                                                 @else
                                                     <a href="#" data-toggle="modal" class="btn btn-secondary ml-2 float-right disabled"><i class="fal fa-minus-square"></i> Transaction Out</a>
                                                 @endif
-                                            @else
-                                                <a href="#" data-toggle="modal" class="btn btn-secondary ml-2 float-right disabled"><i class="fal fa-minus-square"></i> Transaction Out</a>
-                                            @endif
-                                            <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-success ml-auto float-right"><i class="fal fa-plus-square"></i> Transaction In</a>
+                                                <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-success ml-auto float-right"><i class="fal fa-plus-square"></i> Transaction In</a>
+                                            @endcannot
                                         </div>
                                     </div>
                                 </div>
@@ -355,14 +360,14 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" id="crud-modal" aria-hidden="true" >
+                    <div class="modal fade" id="crud-modal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="card-header bg-secondary text-white">
                                     <h5 class="card-title w-100">TRANSACTION IN DETAIL</h5>
                                 </div>
                                 <div class="modal-body">
-                                    {!! Form::open(['action' => 'StockController@createTransIn', 'method' => 'POST']) !!}
+                                    {!! Form::open(['action' => 'Inventory\StockController@createTransIn', 'method' => 'POST']) !!}
                                     {{Form::hidden('id', $stock->id)}}
                                     <p><span class="text-danger">*</span> Required fields</p>
                                         <div class="form-group">
@@ -375,7 +380,6 @@
                                         </div>
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="unit_price">
-                                                {{-- <span class="text-danger">*</span> --}}
                                                 Unit Price (RM) :</label></td>
                                             <td colspan="7">
                                                 <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control" id="unit_price" name="unit_price">
@@ -385,7 +389,6 @@
                                         </div>
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="purchase_date">
-                                                {{-- <span class="text-danger">*</span> --}}
                                                 Purchase Date :</label></td>
                                             <td colspan="7">
                                                 <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}">
@@ -403,7 +406,6 @@
                                         </div>
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="lo_no">
-                                                {{-- <span class="text-danger">*</span> --}}
                                                 L.O. Number :</label></td>
                                             <td colspan="7">
                                                 <input value="{{ old('lo_no') }}" class="form-control" id="lo_no" name="lo_no">
@@ -413,7 +415,6 @@
                                         </div>
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="io_no">
-                                                {{-- <span class="text-danger">*</span>  --}}
                                                 Invoice Number :</label></td>
                                             <td colspan="7">
                                                 <input value="{{ old('io_no') }}" class="form-control" id="io_no" name="io_no">
@@ -440,14 +441,14 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" id="crud-modals" aria-hidden="true" >
+                    <div class="modal fade" id="crud-modals" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="card-header bg-secondary text-white">
                                     <h5 class="card-title w-100">TRANSACTION OUT DETAIL</h5>
                                 </div>
                                 <div class="modal-body">
-                                    {!! Form::open(['action' => 'StockController@createTransOut', 'method' => 'POST']) !!}
+                                    {!! Form::open(['action' => 'Inventory\StockController@createTransOut', 'method' => 'POST']) !!}
                                     {{Form::hidden('id', $stock->id)}}
                                     <p><span class="text-danger">*</span> Required fields</p>
                                         <div class="form-group">
@@ -483,8 +484,8 @@
                                             <td colspan="7">
                                                 <select class="form-control supply_to" name="supply_to" id="supply_to">
                                                     <option value=""> Please select </option>
-                                                    @foreach ($staff as $staffs)
-                                                        <option value="{{ $staffs->staff_id }}" {{ old('supply_to') ==  $staffs->staff_id  ? 'selected' : '' }}>{{ $staffs->staff_id }} - {{ $staffs->staff_name }}</option>
+                                                    @foreach ($user as $staffs)
+                                                        <option value="{{ $staffs->id }}" {{ old('supply_to') ==  $staffs->id  ? 'selected' : '' }}>{{ $staffs->id }} - {{ $staffs->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('supply_to')
@@ -519,14 +520,14 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" id="crud-modalIn" aria-hidden="true" >
+                    <div class="modal fade" id="crud-modalIn" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="card-header bg-secondary text-white">
                                     <h5 class="card-title w-100"><i class="fal fa-sign-in-alt width-2 fs-xl"></i>EDIT TRANSACTION IN</h5>
                                 </div>
                                 <div class="modal-body">
-                                    {!! Form::open(['action' => 'StockController@updateTransin', 'method' => 'POST']) !!}
+                                    {!! Form::open(['action' => 'Inventory\StockController@updateTransin', 'method' => 'POST']) !!}
                                     <input type="hidden" name="ids" id="ids">
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="stock_in"><span class="text-danger">*</span> Stock In :</label></td>
@@ -537,17 +538,17 @@
                                             @enderror
                                     </div>
                                     <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="unit_price"><span class="text-danger">*</span> Unit Price (RM) :</label></td>
+                                        <td width="15%"><label class="form-label" for="unit_price"> Unit Price (RM) :</label></td>
                                         <td colspan="7">
-                                            <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control price" id="unit_price" name="unit_price" required>
+                                            <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control price" id="unit_price" name="unit_price">
                                             @error('unit_price')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
                                     </div>
                                     <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="purchase_date"><span class="text-danger">*</span> Purchase Date :</label></td>
+                                        <td width="15%"><label class="form-label" for="purchase_date"> Purchase Date :</label></td>
                                         <td colspan="7">
-                                            <input type="date" class="form-control purchase" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}" required>
+                                            <input type="date" class="form-control purchase" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}">
                                             @error('purchase_date')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -561,17 +562,17 @@
                                             @enderror
                                     </div>
                                     <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="lo_no"><span class="text-danger">*</span> L.O. Number :</label></td>
+                                        <td width="15%"><label class="form-label" for="lo_no"> L.O. Number :</label></td>
                                         <td colspan="7">
-                                            <input value="{{ old('lo_no') }}" class="form-control lo" id="lo_no" name="lo_no" required>
+                                            <input value="{{ old('lo_no') }}" class="form-control lo" id="lo_no" name="lo_no" >
                                             @error('lo_no')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
                                     </div>
                                     <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="io_no"><span class="text-danger">*</span> Invoice Number :</label></td>
+                                        <td width="15%"><label class="form-label" for="io_no"> Invoice Number :</label></td>
                                         <td colspan="7">
-                                            <input value="{{ old('io_no') }}" class="form-control io" id="io_no" name="io_no" required>
+                                            <input value="{{ old('io_no') }}" class="form-control io" id="io_no" name="io_no">
                                             @error('io_no')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -595,14 +596,14 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" id="crud-modalOut" aria-hidden="true" >
+                    <div class="modal fade" id="crud-modalOut" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="card-header bg-secondary text-white">
                                     <h5 class="card-title w-100"><i class="fal fa-sign-in-alt width-2 fs-xl"></i>EDIT TRANSACTION OUT</h5>
                                 </div>
                                 <div class="modal-body">
-                                    {!! Form::open(['action' => 'StockController@updateTransout', 'method' => 'POST']) !!}
+                                    {!! Form::open(['action' => 'Inventory\StockController@updateTransout', 'method' => 'POST']) !!}
                                     <input type="hidden" name="ids" id="ids">
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="stock_out"><span class="text-danger">*</span> Stock Out :</label></td>
@@ -637,8 +638,8 @@
                                         <td colspan="7">
                                             <select class="form-control supply" name="supply" id="supply">
                                                 <option value=""> Please Select </option>
-                                                @foreach ($staff as $staffs)
-                                                    <option value="{{ $staffs->staff_id }}" {{ old('supply') ==  $staffs->staff_id  ? 'selected' : '' }}>{{ $staffs->staff_id }} - {{ $staffs->staff_name }}</option>
+                                                @foreach ($user as $staffs)
+                                                    <option value="{{ $staffs->id }}" {{ old('supply') ==  $staffs->id  ? 'selected' : '' }}>{{ $staffs->id }} - {{ $staffs->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('supply')
@@ -788,8 +789,6 @@
 
     $(document).ready(function()
     {
-        $('#statuss').select2();
-
         $('#log thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
@@ -825,14 +824,72 @@
 
     });
 
-    function Print(button)
-    {
-        var url = $(button).data('page');
-        var printWindow = window.open( '{{url("/")}}'+url+'', 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
-        printWindow.addEventListener('load', function(){
-            printWindow.print();
-        }, true);
-    }
+    $(document).on('click', '.delete-image', function (e) {
+        e.preventDefault();
+        var imageId = $(this).data('id');
+
+        Swal.fire({
+            title: 'Delete Image?',
+            text: 'Data cannot be recovered after deletion!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: '/deleteImages/' + imageId,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}', // Add CSRF token if needed
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.delete-transaction', function (e) {
+        e.preventDefault();
+        var deleteLink = $(this).attr('href');
+        var imageId = $(this).data('id');
+
+        Swal.fire({
+            title: 'Delete Transaction?',
+            text: 'Data cannot be recovered after deletion!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: deleteLink, // Use the deleteLink variable
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}', // Add CSRF token if needed
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
 
 </script>
 

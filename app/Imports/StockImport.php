@@ -54,7 +54,8 @@ class StockImport implements ToModel, WithHeadingRow, WithValidation
                 'status'                    => $row['status'],
                 'department_id'             => $row['department_id'],
                 'created_by'                => $row['created_by'],
-                // 'created_by'                => Auth::user()->id,
+                'updated_by'                => $row['created_by'],
+                'current_owner'             => $row['created_by'],
             ]);
 
             $transaction = StockTransaction::create([
@@ -69,7 +70,6 @@ class StockImport implements ToModel, WithHeadingRow, WithValidation
                 'remark'                  => $row['remark'],
                 'status'                  => '1',
                 'created_by'              => $row['created_by'],
-                // 'created_by'              => Auth::user()->id,
             ]);
 
             Session::flash('message', 'Stock and Transaction In Data Imported Successfully');

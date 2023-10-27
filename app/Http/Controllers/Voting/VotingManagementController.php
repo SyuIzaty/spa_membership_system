@@ -31,7 +31,7 @@ class VotingManagementController extends Controller
 
     public function data_vote_list()
     {
-        $data = EvmVote::select('evm_votes.*');;
+        $data = EvmVote::select('evm_votes.*');
 
         return datatables()::of($data)
 
