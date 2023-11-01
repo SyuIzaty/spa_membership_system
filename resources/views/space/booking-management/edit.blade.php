@@ -163,7 +163,7 @@
                                                 </tr>
                                                 <tr>
                                                     <div class="form-group">
-                                                        <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Requirement :</label></td>
+                                                        <td width="20%" style="vertical-align: middle"><label class="form-label">Requirement :</label></td>
                                                         <td colspan="5">
                                                           @foreach($main->spaceBookingItems as $item)
                                                           <ul>
@@ -171,6 +171,12 @@
                                                           </ul>
                                                           @endforeach
                                                         </td>
+                                                    </div>
+                                                </tr>
+                                                <tr>
+                                                    <div class="form-group">
+                                                        <td width="20%" style="vertical-align: middle"><label class="form-label">Remark :</label></td>
+                                                        <td colspan="5">{{ isset($main->spaceBookingMain->remark) ? $main->spaceBookingMain->remark : '' }}</td>
                                                     </div>
                                                 </tr>
                                                 <tr>
