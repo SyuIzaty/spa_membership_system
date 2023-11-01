@@ -175,8 +175,8 @@
                                                                 <td>{{ $candidate->student_id ?? 'N/A' }}</td>
                                                                 <td>{{ $candidate->student->students_name ?? 'N/A' }}</td>
                                                                 <td>{{ $candidate->student->gender->gender_name ?? 'N/A' }}</td>
-                                                                <td>{{ $candidate->voter_programme ?? 'N/A' }}</td>
-                                                                <td>{{ $candidate->voter_session ?? 'N/A' }}</td>
+                                                                <td>{{ $candidate->student_programme ?? 'N/A' }}</td>
+                                                                <td>{{ $candidate->student_session ?? 'N/A' }}</td>
                                                                 <td>{{ $candidate->cast_vote ?? '0' }} ({{ number_format($candidatePercentage, 2) }}%)</td>
                                                             </tr>
                                                         @endforeach
