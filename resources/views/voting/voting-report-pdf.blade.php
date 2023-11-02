@@ -91,7 +91,7 @@
                                             </h5>
                                             <ul>
                                                 @php
-                                                    $activeStudent = \App\Student::where('students_programme', $programme->programme_code)->count();
+                                                    $activeStudent = \App\Student::where('students_programme', $programme->programme_code)->where('students_status', 'AKTIF')->count();
 
                                                     $engageVoter = \App\EvmVoter::where('voter_programme', $programme->programme_code)->whereHas('candidate', function($query) use($category, $voteData){
                                                         $query->whereHas('programme', function($subQuery) use($category, $voteData){
