@@ -364,6 +364,55 @@ class VotingManagementController extends Controller
             return "<a href='/voter-list/{$data->id}' class='btn btn-xs btn-info'><i class='fal fa-users'></i></a>";
         })
 
+        // ->addColumn('verify', function ($data) {
+        //     if ($data->verify_status === 'Y') {
+        //         return '<div style="text-align: left;">
+        //                     <p>VERIFIED BY:<br><b>' . $data->staff->staff_name . '</b></p>
+        //                     <p>VERIFIED ON:<br><b>' . date('d-m-Y', strtotime($data->verify_date)) . '</b></p>
+        //                     REMARK:<br><b>' . $data->verify_remark . '</b>
+        //                 </div>';
+        //     }
+
+        //     $endTimestamp = strtotime($data->programme->category->vote->end_date);
+        //     $threeDaysAfterEndTimestamp = $endTimestamp + (3 * 24 * 60 * 60); // 3 days * 24 hours * 60 minutes * 60 seconds
+        //     $currentTimestamp = now()->timestamp;
+
+        //     if (!($currentTimestamp > $endTimestamp && $currentTimestamp <= $threeDaysAfterEndTimestamp)) {
+        //         return 'N/A';
+        //     }
+
+        //     $exist = EvmCandidate::where('programme_id', $data->programme_id)->where('verify_status', 'Y')->first();
+
+        //     if (isset($exist)) {
+        //         return 'N/A';
+        //     }
+
+        //     $records = EvmCandidate::where('programme_id', $data->programme_id)->get();
+        //     $highest_cast_vote = 0;
+        //     $highest_cast_vote_index = 0;
+
+        //     foreach ($records as $index => $record) {
+        //         if ($record->cast_vote > $highest_cast_vote) {
+        //             $highest_cast_vote = $record->cast_vote;
+        //             $highest_cast_vote_index = $index;
+        //         }
+        //     }
+
+        //     $formatted_cast_vote = $data->cast_vote ?? 0;
+
+        //     if ($highest_cast_vote === null || $highest_cast_vote === 0) {
+
+        //         $formatted_cast_vote = '<input type="checkbox" class="verification-checkbox" data-id="' . $data->id . '">';
+        //     } elseif ($data->cast_vote === $highest_cast_vote) {
+
+        //         $formatted_cast_vote = '<input type="checkbox" class="verification-checkbox" data-id="' . $data->id . '">';
+        //     } else {
+        //         $formatted_cast_vote = 'N/A';
+        //     }
+
+        //     return $formatted_cast_vote;
+        // })
+
         ->addColumn('verify', function ($data) {
             if ($data->verify_status === 'Y') {
                 return '<div style="text-align: left;">
@@ -385,32 +434,9 @@ class VotingManagementController extends Controller
 
             if (isset($exist)) {
                 return 'N/A';
-            }
-
-            $records = EvmCandidate::where('programme_id', $data->programme_id)->get();
-            $highest_cast_vote = 0;
-            $highest_cast_vote_index = 0;
-
-            foreach ($records as $index => $record) {
-                if ($record->cast_vote > $highest_cast_vote) {
-                    $highest_cast_vote = $record->cast_vote;
-                    $highest_cast_vote_index = $index;
-                }
-            }
-
-            $formatted_cast_vote = $data->cast_vote ?? 0;
-
-            if ($highest_cast_vote === null || $highest_cast_vote === 0) {
-
-                $formatted_cast_vote = '<input type="checkbox" class="verification-checkbox" data-id="' . $data->id . '">';
-            } elseif ($data->cast_vote === $highest_cast_vote) {
-
-                $formatted_cast_vote = '<input type="checkbox" class="verification-checkbox" data-id="' . $data->id . '">';
             } else {
-                $formatted_cast_vote = 'N/A';
+                return '<input type="checkbox" class="verification-checkbox" data-id="' . $data->id . '">';
             }
-
-            return $formatted_cast_vote;
         })
 
         ->addColumn('action', function ($data) {
