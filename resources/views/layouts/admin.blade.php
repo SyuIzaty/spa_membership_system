@@ -206,6 +206,43 @@
 
                         <!-- End SOP System -->
 
+                        <!-- Start File Classification System -->
+                        {{-- @can('View File Classification') --}}
+                        <li class="nav-title">File Classification</li>
+                        <li>
+                            <a href="/file" style="text-decoration: none!important;" title="File Classification"
+                                data-filter-tags="fileClassification">
+                                <i class="fal fa-file"></i>
+                                <span class="nav-link-text" data-i18n="nav.fileClassification">File
+                                    Classification</span>
+                            </a>
+                        </li>
+                        {{-- @role('File Admin') --}}
+                        <li class="open">
+                            <a href="#" title="File Admin" data-filter-tags="File Admin">
+                                <i class="fal fa-user"></i>
+                                <span class="nav-link-text" data-i18n="nav.File Admin">Admin</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/function-code" title="Function Code List"
+                                        data-filter-tags="functionCode">
+                                        <span class="nav-link-text" data-i18n="nav.functionCode">Function
+                                            Code</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/file-owner" title="File Owner List" data-filter-tags="fileOwner">
+                                        <span class="nav-link-text" data-i18n="nav.fileOwner">Owner</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{-- @endrole
+                        @endcan --}}
+
+                        <!-- End File Classification System -->
+
                         <!-- Start eAduan Korporat System -->
                         @role('eAduan Super Admin')
                             <li class="nav-title">i-Complaint</li>
@@ -473,7 +510,8 @@
                                 <ul>
                                     <li>
                                         <a href="/voting-dashboard" title="dashboard" data-filter-tags="dashboard">
-                                            <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard Analysis</span>
+                                            <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard
+                                                Analysis</span>
                                         </a>
                                     </li>
                                     <li>
@@ -612,13 +650,13 @@
                                     </li>
                                 </ul>
                             </li>
-                        <li>
+                            <li>
                                 <a href="/events" title="Event Management" data-filter-tags="event-management">
                                     <i class="ni ni-calendar-fine"></i>
                                     <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
                                 </a>
                             </li>
-                        <li>
+                            <li>
                                 <a href="#" title="People" data-filter-tags="people">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.people">People</span>
@@ -632,7 +670,7 @@
                                     </li>
                                 </ul>
                             </li>
-                        <li>
+                            <li>
                                 <a href="#" title="Application" data-filter-tags="application">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.application">Application</span>
@@ -647,14 +685,14 @@
                                 </ul>
                             </li>
 
-                        <li>
+                            <li>
                                 <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">
                                     <i class="fal fa-users"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Public View</span>
                                 </a>
                             </li>
 
-                        <li>
+                            <li>
                                 <a href="/feedback/form" title="Feedback" data-filter-tags="feedback">
                                     <i class="ni ni-note"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Feedback</span>
@@ -944,107 +982,107 @@
                         {{-- Start Inventory --}}
                         @can('view inventory menu')
                             <li class="nav-title">INVENTORY MANAGEMENT</li>
-                                @can('manage asset')
-                                    <li>
-                                        <a href="/asset-dashboard" title="Application Intel"
-                                            data-filter-tags="application intel">
-                                            <i class="fal fa-chart-pie"></i>
-                                            <span class="nav-link-text" data-i18n="nav.application_intel">Inventory
-                                                Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li class="open">
-                                        <a href="#" title="Asset" data-filter-tags="asset">
-                                            <i class="fal fa-barcode-read"></i>
-                                            <span class="nav-link-text" data-i18n="nav.asset">Asset Management</span>
-                                        </a>
-                                        <ul>
+                            @can('manage asset')
+                                <li>
+                                    <a href="/asset-dashboard" title="Application Intel"
+                                        data-filter-tags="application intel">
+                                        <i class="fal fa-chart-pie"></i>
+                                        <span class="nav-link-text" data-i18n="nav.application_intel">Inventory
+                                            Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="open">
+                                    <a href="#" title="Asset" data-filter-tags="asset">
+                                        <i class="fal fa-barcode-read"></i>
+                                        <span class="nav-link-text" data-i18n="nav.asset">Asset Management</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/asset-index" title="Detail" data-filter-tags="detail">
+                                                <span class="nav-link-text" data-i18n="nav.detail"> Asset Detail</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/asset-upload" title="Upload" data-filter-tags="upload">
+                                                <span class="nav-link-text" data-i18n="nav.upload"> Bulk Upload</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/export_asset" title="Report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="open">
+                                    <a href="#" title="Borrow" data-filter-tags="borrow">
+                                        <i class="fal fa-address-book"></i>
+                                        <span class="nav-link-text" data-i18n="nav.borrow">Borrower Management</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/borrow-index" title="Detail" data-filter-tags="detail">
+                                                <span class="nav-link-text" data-i18n="nav.detail"> Borrower Detail</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/monitor-list" title="Monitoring" data-filter-tags="delay">
+                                                <span class="nav-link-text" data-i18n="nav.delay"> Monitoring</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/export-borrow" title="Report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="open">
+                                    <a href="#" title="Parameter" data-filter-tags="parameter">
+                                        <i class="fal fa-asterisk"></i>
+                                        <span class="nav-link-text" data-i18n="nav.parameter">Parameter Settings</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/asset-type" title="Asset" data-filter-tags="asset">
+                                                <span class="nav-link-text" data-i18n="nav.asset">Asset Type</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/asset-class" title="Asset" data-filter-tags="asset">
+                                                <span class="nav-link-text" data-i18n="nav.asset">Asset Class</span>
+                                            </a>
+                                        </li>
+                                        @can('create custodian')
                                             <li>
-                                                <a href="/asset-index" title="Detail" data-filter-tags="detail">
-                                                    <span class="nav-link-text" data-i18n="nav.detail"> Asset Detail</span>
+                                                <a href="/asset-custodian" title="Manager" data-filter-tags="manager">
+                                                    <span class="nav-link-text" data-i18n="nav.manager">Manager List</span>
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a href="/asset-upload" title="Upload" data-filter-tags="upload">
-                                                    <span class="nav-link-text" data-i18n="nav.upload"> Bulk Upload</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/export_asset" title="Report" data-filter-tags="report">
-                                                    <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="open">
-                                        <a href="#" title="Borrow" data-filter-tags="borrow">
-                                            <i class="fal fa-address-book"></i>
-                                            <span class="nav-link-text" data-i18n="nav.borrow">Borrower Management</span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="/borrow-index" title="Detail" data-filter-tags="detail">
-                                                    <span class="nav-link-text" data-i18n="nav.detail"> Borrower Detail</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/monitor-list" title="Monitoring" data-filter-tags="delay">
-                                                    <span class="nav-link-text" data-i18n="nav.delay"> Monitoring</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/export-borrow" title="Report" data-filter-tags="report">
-                                                    <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="open">
-                                        <a href="#" title="Parameter" data-filter-tags="parameter">
-                                            <i class="fal fa-asterisk"></i>
-                                            <span class="nav-link-text" data-i18n="nav.parameter">Parameter Settings</span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="/asset-type" title="Asset" data-filter-tags="asset">
-                                                    <span class="nav-link-text" data-i18n="nav.asset">Asset Type</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/asset-class" title="Asset" data-filter-tags="asset">
-                                                    <span class="nav-link-text" data-i18n="nav.asset">Asset Class</span>
-                                                </a>
-                                            </li>
-                                            @can('create custodian')
-                                                <li>
-                                                    <a href="/asset-custodian" title="Manager" data-filter-tags="manager">
-                                                        <span class="nav-link-text" data-i18n="nav.manager">Manager List</span>
-                                                    </a>
-                                                </li>
-                                            @endcan
-                                        </ul>
-                                    </li>
-                                @endcan
-                                @can('manage stock')
-                                    <li class="open">
-                                        <a href="#" title="Stock" data-filter-tags="stock">
-                                            <i class="fal fa-calendar-times"></i>
-                                            <span class="nav-link-text" data-i18n="nav.stock">Stock Management</span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="/stock-index" title="Detail" data-filter-tags="detail">
-                                                    <span class="nav-link-text" data-i18n="nav.detail"> Stock Detail</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/stock-report" title="Detail" data-filter-tags="detail">
-                                                    <span class="nav-link-text" data-i18n="nav.detail"> Stock Reporting</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                @endcan
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcan
+                            @can('manage stock')
+                                <li class="open">
+                                    <a href="#" title="Stock" data-filter-tags="stock">
+                                        <i class="fal fa-calendar-times"></i>
+                                        <span class="nav-link-text" data-i18n="nav.stock">Stock Management</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/stock-index" title="Detail" data-filter-tags="detail">
+                                                <span class="nav-link-text" data-i18n="nav.detail"> Stock Detail</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/stock-report" title="Detail" data-filter-tags="detail">
+                                                <span class="nav-link-text" data-i18n="nav.detail"> Stock Reporting</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endcan
                             @can('view myasset')
                                 <li class="nav-title">MYASSET</li>
                                 <li class="open">
@@ -1066,792 +1104,797 @@
                                         </li>
                                     </ul>
                                 </li>
-                            @endif
-                        @endcan
-                        <li class="nav-title">BOOKING</li>
-                        @canany(['Manage Booking'])
-                            <li class="open">
-                                <a href="#" title="List" data-filter-tags="list">
-                                    <i class="fal fa-book"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">Booking Management</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/space/venue-management" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Venue Management</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/space/item-management" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Item Management</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/space/booking-management" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Booking Management</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/space/booking-report" title="Arkib" data-filter-tags="Arkib">
-                                            <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcanany
-                        <li class="open">
-                            <a href="#" title="List" data-filter-tags="list">
-                                <i class="fal fa-book"></i>
-                                <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="/space/booking-calendar" title="Arkib" data-filter-tags="Arkib">
-                                        <span class="nav-link-text" data-i18n="nav.arkib">Booking Calendar</span>
-                                    </a>
-                                  </li>
+                                @endif
+                            @endcan
+                            <li class="nav-title">BOOKING</li>
+                            @canany(['Manage Booking'])
                                 <li class="open">
                                     <a href="#" title="List" data-filter-tags="list">
-                                        <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
+                                        <i class="fal fa-book"></i>
+                                        <span class="nav-link-text" data-i18n="nav.list">Booking Management</span>
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="/space/booking/create/10" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Library</span>
+                                            <a href="/space/venue-management" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Venue Management</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/space/booking/create/1" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">IITU</span>
+                                            <a href="/space/item-management" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Item Management</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/space/booking/create/11" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Facility</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="/space/booking" title="Arkib" data-filter-tags="Arkib">
-                                        <span class="nav-link-text" data-i18n="nav.arkib">List of Application</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        </li>
-                        @canany(['Manage Arkib', 'View Arkib'])
-                            <li class="nav-title">LIBRARY</li>
-                            <li class="open">
-                                <a href="#" title="List" data-filter-tags="list">
-                                    <i class="fal fa-book"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">Arkib</span>
-                                </a>
-                                <ul>
-                                    @canany(['Manage Arkib'])
-                                        <li>
-                                            <a href="/library/dashboard" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Analysis Dashboard</span>
+                                            <a href="/space/booking-management" title="Arkib" data-filter-tags="Arkib">
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Booking Management</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/library/arkib-main" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Manage Arkib</span>
-                                            </a>
-                                        </li>
-                                    @endcanany
-                                    @canany(['Manage Arkib', 'View Arkib'])
-                                        <li>
-                                            <a href="/library/arkib" title="Arkib" data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Arkib List</span>
-                                            </a>
-                                        </li>
-                                    @endcanany
-                                    @canany(['Manage Arkib'])
-                                        <li>
-                                            <a href="/library/report/arkib" title="Arkib" data-filter-tags="Arkib">
+                                            <a href="/space/booking-report" title="Arkib" data-filter-tags="Arkib">
                                                 <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
                                             </a>
                                         </li>
-                                    @endcanany
-                                </ul>
-                            </li>
-                            </li>
-                        @endcanany
-                        {{-- End Inventory --}}
-
-                        {{-- Start Computer Grant Management --}}
-                        @role('Lecturer|Computer Grant (IT Admin)|Computer Grant (Finance Admin)|Super Admin')
-                            <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
-
-                            {{-- User --}}
-                            @role('Lecturer|Super Admin')
-                                <li>
-                                    <a href="/grant-list" title="Grant" data-filter-tags="grant">
-                                        <i class="fal fa-archive"></i>
-                                        <span class="nav-link-text" data-i18n="nav.grant">Grant</span>
-                                    </a>
-                                </li>
-                            @endrole
-
-                            {{-- All --}}
-                            <li>
-                                <a href="/faq" title="Grant FAQ" data-filter-tags="faq">
-                                    <i class="fal fa-info"></i>
-                                    <span class="nav-link-text" data-i18n="nav.faq">FAQ</span>
-                                </a>
-                            </li>
-
-                            {{-- IT Admin --}}
-                            @role('Computer Grant (IT Admin)')
-                                <li class="open">
-                                    <a href="#" title="List" data-filter-tags="list">
-                                        <i class="fal fa-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.list">Grant List</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            @inject('grant', 'App\ComputerGrant')
-                                            <a href="/all-grant-list/1" title="Pending" data-filter-tags="pending">
-                                                <span class="nav-link-text" data-i18n="nav.pending">Pending
-                                                    ({{ $grant->countPending() }})</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/all-grant-list/2" title="Approved for Purchase"
-                                                data-filter-tags="approve">
-                                                <span class="nav-link-text" data-i18n="nav.approve">Purchase Approved
-                                                    ({{ $grant->countPurchase() }})</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/all-grant-list/3" title="Pending for Verification"
-                                                data-filter-tags="verification">
-                                                <span class="nav-link-text" data-i18n="nav.verification">Pending Purchase
-                                                    Verification ({{ $grant->countPendingVerifyPurchase() }})</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/all-grant-list/4" title="Purchase Verified"
-                                                data-filter-tags="verified">
-                                                <span class="nav-link-text" data-i18n="nav.verified">Purchase Verified
-                                                    ({{ $grant->countPurchaseVerified() }})</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/all-grant-list/6" title="Reimbursement Completed"
-                                                data-filter-tags="reimbursement">
-                                                <span class="nav-link-text" data-i18n="nav.reimbursement">Completed
-                                                    ({{ $grant->countReimbursement() }})</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/all-grant-list/7" title="Request for Cancellation"
-                                                data-filter-tags="cancel">
-                                                <span class="nav-link-text" data-i18n="nav.cancel">Request Cancellation
-                                                    ({{ $grant->countRequestCancel() }})</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/all-grant-list/8" title="Request for Cancellation Verified"
-                                                data-filter-tags="cancelverified">
-                                                <span class="nav-link-text" data-i18n="nav.cancelverified">Cancellation
-                                                    Verified ({{ $grant->countCancelVerified() }})</span>
-                                            </a>
-                                        </li>
                                     </ul>
                                 </li>
-                            @endrole
-
-                            {{-- Finance Admin --}}
-                            @role('Computer Grant (Finance Admin)')
-                                <li class="open">
-                                    <a href="#" title="Grant Claim" data-filter-tags="claim">
-                                        <i class="fal fa-dollar-sign"></i>
-                                        <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            @inject('grant', 'App\ComputerGrant')
-                                            <a href="/all-grant-list/4" title="Pending" data-filter-tags="signed">
-                                                <span class="nav-link-text" data-i18n="nav.signed">Pending Reimbursement
-                                                    ({{ $grant->countPurchaseVerified() }})</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/all-grant-list/6" title="Completed" data-filter-tags="completed">
-                                                <span class="nav-link-text" data-i18n="nav.completed">Completed
-                                                    ({{ $grant->countReimbursement() }})</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            @endrole
-
-                            @role('Computer Grant (IT Admin)')
-                                <li class="open">
-                                    <a href="#" title="Grant" data-filter-tags="grant">
-                                        <i class="fal fa-cogs"></i>
-                                        <span class="nav-link-text" data-i18n="nav.grant">Setting</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="/quota-list" title="Grant Quota" data-filter-tags="quota">
-                                                <span class="nav-link-text" data-i18n="nav.quota">Grant Quota</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/faq-list" title="FAQ Grant" data-filter-tags="createFAQ">
-                                                <span class="nav-link-text" data-i18n="nav.createFAQ">Grant FAQ</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            @endrole
-                            @role('Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
-                                <li>
-                                    <a href="/report/all" title="Grant Report" data-filter-tags="report">
-                                        <i class="fal fa-clipboard-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.report">Report</span>
-                                    </a>
-                                </li>
-                            @endrole
-                        @endrole
-                        {{-- End Computer Grant Management --}}
-
-                        {{-- Start Covid --}}
-                        @can('view admin')
-                            <li class="nav-title">COVID19 MANAGEMENT</li>
+                            @endcanany
                             <li class="open">
-                                <a href="/covid-dashboard" title="Application Intel"
-                                    data-filter-tags="application intel">
-                                    <i class="fal fa-chart-pie"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Covid19 Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="open">
-                                <a href="/declarationList/{{ Auth::user()->id }}" title="Declaration"
-                                    data-filter-tags="declaration">
-                                    <i class="fal fa-calendar-times"></i>
-                                    <span class="nav-link-text" data-i18n="nav.declaration">Today Declaration List</span>
-                                </a>
-                            </li>
-                            <li class="open">
-                                <a href="#" title="Category" data-filter-tags="category">
-                                    <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.category">Category</span>
+                                <a href="#" title="List" data-filter-tags="list">
+                                    <i class="fal fa-book"></i>
+                                    <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/catA" title="catA" data-filter-tags="catA">
-                                            <span class="nav-link-text" data-i18n="nav.catA"> Category A</span>
+                                        <a href="/space/booking-calendar" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">Booking Calendar</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="/catB" title="catB" data-filter-tags="catB">
-                                            <span class="nav-link-text" data-i18n="nav.catB"> Category B</span>
+                                    <li class="open">
+                                        <a href="#" title="List" data-filter-tags="list">
+                                            <span class="nav-link-text" data-i18n="nav.list">Booking Application</span>
                                         </a>
+                                        <ul>
+                                            <li>
+                                                <a href="/space/booking/create/10" title="Arkib"
+                                                    data-filter-tags="Arkib">
+                                                    <span class="nav-link-text" data-i18n="nav.arkib">Library</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/space/booking/create/1" title="Arkib"
+                                                    data-filter-tags="Arkib">
+                                                    <span class="nav-link-text" data-i18n="nav.arkib">IITU</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/space/booking/create/11" title="Arkib"
+                                                    data-filter-tags="Arkib">
+                                                    <span class="nav-link-text" data-i18n="nav.arkib">Facility</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                                     <li>
-                                        <a href="/catC" title="catC" data-filter-tags="catC">
-                                            <span class="nav-link-text" data-i18n="nav.catC"> Category C</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/catD" title="catD" data-filter-tags="catD">
-                                            <span class="nav-link-text" data-i18n="nav.catD"> Category D</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/catE" title="catE" data-filter-tags="catE">
-                                            <span class="nav-link-text" data-i18n="nav.catE"> Category E</span>
+                                        <a href="/space/booking" title="Arkib" data-filter-tags="Arkib">
+                                            <span class="nav-link-text" data-i18n="nav.arkib">List of Application</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-                            <li class="open">
-                                <a href="/historyForm/{{ Auth::user()->id }}" title="History"
-                                    data-filter-tags="history">
-                                    <i class="fal fa-clock"></i>
-                                    <span class="nav-link-text" data-i18n="nav.history">History List</span>
-                                </a>
                             </li>
-                            <li class="open">
-                                <a href="/declareNew" title="Declaration" data-filter-tags="declaration">
-                                    <i class="fal fa-user"></i>
-                                    <span class="nav-link-text" data-i18n="nav.declaration">Declaration Form</span>
-                                </a>
-                            </li>
-                            <li class="open">
-                                <a href="/export_covid" title="Report" data-filter-tags="report">
-                                    <i class="fal fa-file-alt"></i>
-                                    <span class="nav-link-text" data-i18n="nav.report">Report</span>
-                                </a>
-                            </li>
-                            <li class="open">
-                                <a href="/vaccineIndex" title="Vaccine" data-filter-tags="vaccine">
-                                    <i class="fal fa-head-side-mask"></i>
-                                    <span class="nav-link-text" data-i18n="nav.vaccine">Vaccination Details</span>
-                                </a>
-                            </li>
-                        @endcan
-
-                        @can('view user')
-                            <li class="nav-title">Covid19 Daily Declaration</li>
-
-                            <li class="open">
-                                <a href="/declarationForm" title="Declaration" data-filter-tags="declaration">
-                                    <i class="fal fa-calendar-times"></i>
-                                    <span class="nav-link-text" data-i18n="nav.declaration">Today Declaration</span>
-                                </a>
-                            </li>
-                            @role('Staff')
+                            @canany(['Manage Arkib', 'View Arkib'])
+                                <li class="nav-title">LIBRARY</li>
                                 <li class="open">
-                                    <a href="/vaccineForm" title="Vaccine" data-filter-tags="vaccine">
-                                        <i class="fal fa-syringe"></i>
-                                        <span class="nav-link-text" data-i18n="nav.vaccine">Vaccination</span>
+                                    <a href="#" title="List" data-filter-tags="list">
+                                        <i class="fal fa-book"></i>
+                                        <span class="nav-link-text" data-i18n="nav.list">Arkib</span>
+                                    </a>
+                                    <ul>
+                                        @canany(['Manage Arkib'])
+                                            <li>
+                                                <a href="/library/dashboard" title="Arkib" data-filter-tags="Arkib">
+                                                    <span class="nav-link-text" data-i18n="nav.arkib">Analysis Dashboard</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/library/arkib-main" title="Arkib" data-filter-tags="Arkib">
+                                                    <span class="nav-link-text" data-i18n="nav.arkib">Manage Arkib</span>
+                                                </a>
+                                            </li>
+                                        @endcanany
+                                        @canany(['Manage Arkib', 'View Arkib'])
+                                            <li>
+                                                <a href="/library/arkib" title="Arkib" data-filter-tags="Arkib">
+                                                    <span class="nav-link-text" data-i18n="nav.arkib">Arkib List</span>
+                                                </a>
+                                            </li>
+                                        @endcanany
+                                        @canany(['Manage Arkib'])
+                                            <li>
+                                                <a href="/library/report/arkib" title="Arkib" data-filter-tags="Arkib">
+                                                    <span class="nav-link-text" data-i18n="nav.arkib">Report</span>
+                                                </a>
+                                            </li>
+                                        @endcanany
+                                    </ul>
+                                </li>
+                                </li>
+                            @endcanany
+                            {{-- End Inventory --}}
+
+                            {{-- Start Computer Grant Management --}}
+                            @role('Lecturer|Computer Grant (IT Admin)|Computer Grant (Finance Admin)|Super Admin')
+                                <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
+
+                                {{-- User --}}
+                                @role('Lecturer|Super Admin')
+                                    <li>
+                                        <a href="/grant-list" title="Grant" data-filter-tags="grant">
+                                            <i class="fal fa-archive"></i>
+                                            <span class="nav-link-text" data-i18n="nav.grant">Grant</span>
+                                        </a>
+                                    </li>
+                                @endrole
+
+                                {{-- All --}}
+                                <li>
+                                    <a href="/faq" title="Grant FAQ" data-filter-tags="faq">
+                                        <i class="fal fa-info"></i>
+                                        <span class="nav-link-text" data-i18n="nav.faq">FAQ</span>
                                     </a>
                                 </li>
-                                <li class="open">
-                                    <a href="/dependentForm" title="Vaccine" data-filter-tags="vaccine">
-                                        <i class="fal fa-pills"></i>
-                                        <span class="nav-link-text" data-i18n="nav.vaccine">Dependent Vaccination</span>
-                                    </a>
-                                </li>
+
+                                {{-- IT Admin --}}
+                                @role('Computer Grant (IT Admin)')
+                                    <li class="open">
+                                        <a href="#" title="List" data-filter-tags="list">
+                                            <i class="fal fa-list"></i>
+                                            <span class="nav-link-text" data-i18n="nav.list">Grant List</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                @inject('grant', 'App\ComputerGrant')
+                                                <a href="/all-grant-list/1" title="Pending" data-filter-tags="pending">
+                                                    <span class="nav-link-text" data-i18n="nav.pending">Pending
+                                                        ({{ $grant->countPending() }})</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/all-grant-list/2" title="Approved for Purchase"
+                                                    data-filter-tags="approve">
+                                                    <span class="nav-link-text" data-i18n="nav.approve">Purchase Approved
+                                                        ({{ $grant->countPurchase() }})</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/all-grant-list/3" title="Pending for Verification"
+                                                    data-filter-tags="verification">
+                                                    <span class="nav-link-text" data-i18n="nav.verification">Pending Purchase
+                                                        Verification ({{ $grant->countPendingVerifyPurchase() }})</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/all-grant-list/4" title="Purchase Verified"
+                                                    data-filter-tags="verified">
+                                                    <span class="nav-link-text" data-i18n="nav.verified">Purchase Verified
+                                                        ({{ $grant->countPurchaseVerified() }})</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/all-grant-list/6" title="Reimbursement Completed"
+                                                    data-filter-tags="reimbursement">
+                                                    <span class="nav-link-text" data-i18n="nav.reimbursement">Completed
+                                                        ({{ $grant->countReimbursement() }})</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/all-grant-list/7" title="Request for Cancellation"
+                                                    data-filter-tags="cancel">
+                                                    <span class="nav-link-text" data-i18n="nav.cancel">Request Cancellation
+                                                        ({{ $grant->countRequestCancel() }})</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/all-grant-list/8" title="Request for Cancellation Verified"
+                                                    data-filter-tags="cancelverified">
+                                                    <span class="nav-link-text" data-i18n="nav.cancelverified">Cancellation
+                                                        Verified ({{ $grant->countCancelVerified() }})</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endrole
+
+                                {{-- Finance Admin --}}
+                                @role('Computer Grant (Finance Admin)')
+                                    <li class="open">
+                                        <a href="#" title="Grant Claim" data-filter-tags="claim">
+                                            <i class="fal fa-dollar-sign"></i>
+                                            <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                @inject('grant', 'App\ComputerGrant')
+                                                <a href="/all-grant-list/4" title="Pending" data-filter-tags="signed">
+                                                    <span class="nav-link-text" data-i18n="nav.signed">Pending Reimbursement
+                                                        ({{ $grant->countPurchaseVerified() }})</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/all-grant-list/6" title="Completed" data-filter-tags="completed">
+                                                    <span class="nav-link-text" data-i18n="nav.completed">Completed
+                                                        ({{ $grant->countReimbursement() }})</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endrole
+
+                                @role('Computer Grant (IT Admin)')
+                                    <li class="open">
+                                        <a href="#" title="Grant" data-filter-tags="grant">
+                                            <i class="fal fa-cogs"></i>
+                                            <span class="nav-link-text" data-i18n="nav.grant">Setting</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="/quota-list" title="Grant Quota" data-filter-tags="quota">
+                                                    <span class="nav-link-text" data-i18n="nav.quota">Grant Quota</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/faq-list" title="FAQ Grant" data-filter-tags="createFAQ">
+                                                    <span class="nav-link-text" data-i18n="nav.createFAQ">Grant FAQ</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endrole
+                                @role('Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
+                                    <li>
+                                        <a href="/report/all" title="Grant Report" data-filter-tags="report">
+                                            <i class="fal fa-clipboard-list"></i>
+                                            <span class="nav-link-text" data-i18n="nav.report">Report</span>
+                                        </a>
+                                    </li>
+                                @endrole
                             @endrole
-                            <li class="open">
-                                <a href="/selfHistory/{{ Auth::user()->id }}" title="History"
-                                    data-filter-tags="history">
-                                    <i class="fal fa-clock"></i>
-                                    <span class="nav-link-text" data-i18n="nav.history">Declaration History</span>
-                                </a>
-                            </li>
-                        @endcan
-                        {{-- End Covid --}}
-                    </ul>
+                            {{-- End Computer Grant Management --}}
 
-                    <div class="filter-message js-filter-message bg-success-600"></div>
+                            {{-- Start Covid --}}
+                            @can('view admin')
+                                <li class="nav-title">COVID19 MANAGEMENT</li>
+                                <li class="open">
+                                    <a href="/covid-dashboard" title="Application Intel"
+                                        data-filter-tags="application intel">
+                                        <i class="fal fa-chart-pie"></i>
+                                        <span class="nav-link-text" data-i18n="nav.application_intel">Covid19
+                                            Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="open">
+                                    <a href="/declarationList/{{ Auth::user()->id }}" title="Declaration"
+                                        data-filter-tags="declaration">
+                                        <i class="fal fa-calendar-times"></i>
+                                        <span class="nav-link-text" data-i18n="nav.declaration">Today Declaration
+                                            List</span>
+                                    </a>
+                                </li>
+                                <li class="open">
+                                    <a href="#" title="Category" data-filter-tags="category">
+                                        <i class="fal fa-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.category">Category</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/catA" title="catA" data-filter-tags="catA">
+                                                <span class="nav-link-text" data-i18n="nav.catA"> Category A</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/catB" title="catB" data-filter-tags="catB">
+                                                <span class="nav-link-text" data-i18n="nav.catB"> Category B</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/catC" title="catC" data-filter-tags="catC">
+                                                <span class="nav-link-text" data-i18n="nav.catC"> Category C</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/catD" title="catD" data-filter-tags="catD">
+                                                <span class="nav-link-text" data-i18n="nav.catD"> Category D</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/catE" title="catE" data-filter-tags="catE">
+                                                <span class="nav-link-text" data-i18n="nav.catE"> Category E</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="open">
+                                    <a href="/historyForm/{{ Auth::user()->id }}" title="History"
+                                        data-filter-tags="history">
+                                        <i class="fal fa-clock"></i>
+                                        <span class="nav-link-text" data-i18n="nav.history">History List</span>
+                                    </a>
+                                </li>
+                                <li class="open">
+                                    <a href="/declareNew" title="Declaration" data-filter-tags="declaration">
+                                        <i class="fal fa-user"></i>
+                                        <span class="nav-link-text" data-i18n="nav.declaration">Declaration Form</span>
+                                    </a>
+                                </li>
+                                <li class="open">
+                                    <a href="/export_covid" title="Report" data-filter-tags="report">
+                                        <i class="fal fa-file-alt"></i>
+                                        <span class="nav-link-text" data-i18n="nav.report">Report</span>
+                                    </a>
+                                </li>
+                                <li class="open">
+                                    <a href="/vaccineIndex" title="Vaccine" data-filter-tags="vaccine">
+                                        <i class="fal fa-head-side-mask"></i>
+                                        <span class="nav-link-text" data-i18n="nav.vaccine">Vaccination Details</span>
+                                    </a>
+                                </li>
+                            @endcan
 
-                    {{-- @php
+                            @can('view user')
+                                <li class="nav-title">Covid19 Daily Declaration</li>
+
+                                <li class="open">
+                                    <a href="/declarationForm" title="Declaration" data-filter-tags="declaration">
+                                        <i class="fal fa-calendar-times"></i>
+                                        <span class="nav-link-text" data-i18n="nav.declaration">Today Declaration</span>
+                                    </a>
+                                </li>
+                                @role('Staff')
+                                    <li class="open">
+                                        <a href="/vaccineForm" title="Vaccine" data-filter-tags="vaccine">
+                                            <i class="fal fa-syringe"></i>
+                                            <span class="nav-link-text" data-i18n="nav.vaccine">Vaccination</span>
+                                        </a>
+                                    </li>
+                                    <li class="open">
+                                        <a href="/dependentForm" title="Vaccine" data-filter-tags="vaccine">
+                                            <i class="fal fa-pills"></i>
+                                            <span class="nav-link-text" data-i18n="nav.vaccine">Dependent Vaccination</span>
+                                        </a>
+                                    </li>
+                                @endrole
+                                <li class="open">
+                                    <a href="/selfHistory/{{ Auth::user()->id }}" title="History"
+                                        data-filter-tags="history">
+                                        <i class="fal fa-clock"></i>
+                                        <span class="nav-link-text" data-i18n="nav.history">Declaration History</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            {{-- End Covid --}}
+                        </ul>
+
+                        <div class="filter-message js-filter-message bg-success-600"></div>
+
+                        {{-- @php
                             $user = Auth::user();
                             $permissionNames = $user->getPermissionNames();
                             // dd($user);
                             dd($permissionNames);
                         @endphp --}}
-                </nav>
-                <!-- END PRIMARY NAVIGATION -->
-                <!-- NAV FOOTER -->
+                    </nav>
+                    <!-- END PRIMARY NAVIGATION -->
+                    <!-- NAV FOOTER -->
 
-            </aside>
-            <!-- END Left Aside -->
-            <div class="page-content-wrapper">
-                <!-- BEGIN Page Header -->
-                <header class="page-header" role="banner">
-                    <!-- we need this logo when user switches to nav-function-top -->
-                    <div class="page-logo">
-                        <a href="#"
-                            class="page-logo-link press-scale-down d-flex align-items-center position-relative"
-                            data-toggle="modal" data-target="#modal-shortcut">
-                            <img src="{{ asset('img/logo.png') }}" alt="SmartAdmin WebApp"
-                                aria-roledescription="logo">
-                            <span class="page-logo-text mr-1"><b>INTEC</b> CMS</span>
-                            <span
-                                class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2">SeedProject</span>
-                            <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
-                        </a>
-                    </div>
-                    <!-- DOC: nav menu layout change shortcut -->
-                    <div class="hidden-md-down dropdown-icon-menu position-relative">
-                        <a href="#" class="header-btn btn js-waves-off" data-action="toggle"
-                            data-class="nav-function-hidden" title="Hide Navigation">
-                            <i class="ni ni-menu"></i>
-                        </a>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn js-waves-off" data-action="toggle"
-                                    data-class="nav-function-minify" title="Minify Navigation">
-                                    <i class="ni ni-minify-nav"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="btn js-waves-off" data-action="toggle"
-                                    data-class="nav-function-fixed" title="Lock Navigation">
-                                    <i class="ni ni-lock-nav"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- DOC: mobile button appears during mobile width -->
-                    <div class="hidden-lg-up">
-                        <a href="#" class="header-btn btn press-scale-down" data-action="toggle"
-                            data-class="mobile-nav-on">
-                            <i class="ni ni-menu"></i>
-                        </a>
-                    </div>
-                    <div class="ml-auto d-flex">
-
-                        <!-- app user menu -->
-                        <div>
-                            <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com"
-                                class="header-icon d-flex align-items-center justify-content-center ml-2">
-                                <img style="cursor:pointer;" src="{{ asset('img/demo/avatars/avatar-m.png') }}"
-                                    class="profile-image rounded-circle" alt="">
-                                <!-- you can also add username next to the avatar with the codes below:
-                                <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
-                                <i class="ni ni-chevron-down hidden-xs-down"></i> -->
+                </aside>
+                <!-- END Left Aside -->
+                <div class="page-content-wrapper">
+                    <!-- BEGIN Page Header -->
+                    <header class="page-header" role="banner">
+                        <!-- we need this logo when user switches to nav-function-top -->
+                        <div class="page-logo">
+                            <a href="#"
+                                class="page-logo-link press-scale-down d-flex align-items-center position-relative"
+                                data-toggle="modal" data-target="#modal-shortcut">
+                                <img src="{{ asset('img/logo.png') }}" alt="SmartAdmin WebApp"
+                                    aria-roledescription="logo">
+                                <span class="page-logo-text mr-1"><b>INTEC</b> CMS</span>
+                                <span
+                                    class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2">SeedProject</span>
+                                <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
-                                <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
-                                    <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
-                                        <span class="mr-2">
-                                            <img src="{{ asset('img/demo/avatars/avatar-m.png') }}"
-                                                class="rounded-circle profile-image" alt="Dr. Codex Lantern">
-                                        </span>
-                                        <div class="info-card-text">
-                                            <div class="fs-lg text-truncate text-truncate-lg">
-                                                {{ Auth::user()->name }}
+                        </div>
+                        <!-- DOC: nav menu layout change shortcut -->
+                        <div class="hidden-md-down dropdown-icon-menu position-relative">
+                            <a href="#" class="header-btn btn js-waves-off" data-action="toggle"
+                                data-class="nav-function-hidden" title="Hide Navigation">
+                                <i class="ni ni-menu"></i>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="#" class="btn js-waves-off" data-action="toggle"
+                                        data-class="nav-function-minify" title="Minify Navigation">
+                                        <i class="ni ni-minify-nav"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="btn js-waves-off" data-action="toggle"
+                                        data-class="nav-function-fixed" title="Lock Navigation">
+                                        <i class="ni ni-lock-nav"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- DOC: mobile button appears during mobile width -->
+                        <div class="hidden-lg-up">
+                            <a href="#" class="header-btn btn press-scale-down" data-action="toggle"
+                                data-class="mobile-nav-on">
+                                <i class="ni ni-menu"></i>
+                            </a>
+                        </div>
+                        <div class="ml-auto d-flex">
+
+                            <!-- app user menu -->
+                            <div>
+                                <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com"
+                                    class="header-icon d-flex align-items-center justify-content-center ml-2">
+                                    <img style="cursor:pointer;" src="{{ asset('img/demo/avatars/avatar-m.png') }}"
+                                        class="profile-image rounded-circle" alt="">
+                                    <!-- you can also add username next to the avatar with the codes below:
+                                                                <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
+                                                                <i class="ni ni-chevron-down hidden-xs-down"></i> -->
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
+                                    <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
+                                        <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
+                                            <span class="mr-2">
+                                                <img src="{{ asset('img/demo/avatars/avatar-m.png') }}"
+                                                    class="rounded-circle profile-image" alt="Dr. Codex Lantern">
+                                            </span>
+                                            <div class="info-card-text">
+                                                <div class="fs-lg text-truncate text-truncate-lg">
+                                                    {{ Auth::user()->name }}
+                                                </div>
+                                                <span
+                                                    class="text-truncate text-truncate-md opacity-80">{{ Auth::user()->email }}</span>
                                             </div>
-                                            <span
-                                                class="text-truncate text-truncate-md opacity-80">{{ Auth::user()->email }}</span>
                                         </div>
                                     </div>
+                                    <div class="dropdown-divider m-0"></div>
+                                    <a class="dropdown-item fw-500 pt-3 pb-3" href="/change-password">
+                                        <span data-i18n="drpdwn.page-logout">Change Password</span>
+                                    </a>
+                                    <div class="dropdown-divider m-0"></div>
+                                    <a class="dropdown-item fw-500 pt-3 pb-3" href="">
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <!--span data-i18n="drpdwn.page-logout">Logout</span-->
+                                            <button type="submit" class="btn btn-danger btn-sm">Log Out</button>
+                                            <!--span class="float-right fw-n">&commat;codexlantern</span-->
+                                        </form>
+
+
+                                    </a>
                                 </div>
-                                <div class="dropdown-divider m-0"></div>
-                                <a class="dropdown-item fw-500 pt-3 pb-3" href="/change-password">
-                                    <span data-i18n="drpdwn.page-logout">Change Password</span>
-                                </a>
-                                <div class="dropdown-divider m-0"></div>
-                                <a class="dropdown-item fw-500 pt-3 pb-3" href="">
-                                    <form action="{{ route('logout') }}" method="POST">
-                                        @csrf
-                                        <!--span data-i18n="drpdwn.page-logout">Logout</span-->
-                                        <button type="submit" class="btn btn-danger btn-sm">Log Out</button>
-                                        <!--span class="float-right fw-n">&commat;codexlantern</span-->
-                                    </form>
-
-
-                                </a>
                             </div>
                         </div>
-                    </div>
-                </header>
-                <!-- END Page Header -->
-                <!-- BEGIN Page Content -->
-                <!-- the #js-page-content id is needed for some plugins to initialize -->
+                    </header>
+                    <!-- END Page Header -->
+                    <!-- BEGIN Page Content -->
+                    <!-- the #js-page-content id is needed for some plugins to initialize -->
 
-                <!--@yield('breadcrumbs')-->
-                @yield('content')
-                <router-view></router-view>
+                    <!--@yield('breadcrumbs')-->
+                    @yield('content')
+                    <router-view></router-view>
 
-                <!-- this overlay is activated only when mobile menu is triggered -->
-                <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
-                <!-- END Page Content -->
-                <!-- BEGIN Page Footer -->
-                <footer class="page-footer" role="contentinfo">
-                    <div class="d-flex align-items-center flex-1 text-muted">
-                        <span class="hidden-md-down fw-700">{{ \Carbon\Carbon::now()->format('Y') }} </span>© INTEC
-                        Education College
-                    </div>
-                </footer>
-                <!-- END Page Footer -->
+                    <!-- this overlay is activated only when mobile menu is triggered -->
+                    <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
+                    <!-- END Page Content -->
+                    <!-- BEGIN Page Footer -->
+                    <footer class="page-footer" role="contentinfo">
+                        <div class="d-flex align-items-center flex-1 text-muted">
+                            <span class="hidden-md-down fw-700">{{ \Carbon\Carbon::now()->format('Y') }} </span>© INTEC
+                            Education College
+                        </div>
+                    </footer>
+                    <!-- END Page Footer -->
 
+                </div>
             </div>
         </div>
-    </div>
-    <!-- END Page Wrapper -->
+        <!-- END Page Wrapper -->
 
-    <!-- END Quick Menu -->
+        <!-- END Quick Menu -->
 
-    <!-- base vendor bundle:
-   DOC: if you remove pace.js from core please note on Internet Explorer some CSS animations may execute before a page is fully loaded, resulting 'jump' animations
-      + pace.js (recommended)
-      + jquery.js (core)
-      + jquery-ui-cust.js (core)
-      + popper.js (core)
-      + bootstrap.js (core)
-      + slimscroll.js (extension)
-      + app.navigation.js (core)
-      + ba-throttle-debounce.js (core)
-      + waves.js (extension)
-      + smartpanels.js (extension)
-      + src/../jquery-snippets.js (core) -->
-
+        <!-- base vendor bundle:
+                                   DOC: if you remove pace.js from core please note on Internet Explorer some CSS animations may execute before a page is fully loaded, resulting 'jump' animations
+                                      + pace.js (recommended)
+                                      + jquery.js (core)
+                                      + jquery-ui-cust.js (core)
+                                      + popper.js (core)
+                                      + bootstrap.js (core)
+                                      + slimscroll.js (extension)
+                                      + app.navigation.js (core)
+                                      + ba-throttle-debounce.js (core)
+                                      + waves.js (extension)
+                                      + smartpanels.js (extension)
+                                      + src/../jquery-snippets.js (core) -->
 
 
 
 
-</body>
-<script src="{{ asset('js/vendors.bundle.js') }}"></script>
-<script src="{{ asset('js/app.bundle.js') }}"></script>
-<script src="{{ asset('js/datagrid/datatables/datatables.bundle.js') }}"></script>
-<script src="{{ asset('js/notifications/sweetalert2/sweetalert2.bundle.js') }}"></script>
-<script src="{{ asset('js/sweetalert.min.js') }} "></script>
-<script src="{{ asset('js/statistics/chartjs/chartjs.bundle.js') }}"></script>
-<script src="{{ asset('js/statistics/easypiechart/easypiechart.bundle.js') }}"></script>
-<script src="{{ asset('js/formplugins/dropzone/dropzone.js') }}"></script>
-{{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+    </body>
+    <script src="{{ asset('js/vendors.bundle.js') }}"></script>
+    <script src="{{ asset('js/app.bundle.js') }}"></script>
+    <script src="{{ asset('js/datagrid/datatables/datatables.bundle.js') }}"></script>
+    <script src="{{ asset('js/notifications/sweetalert2/sweetalert2.bundle.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }} "></script>
+    <script src="{{ asset('js/statistics/chartjs/chartjs.bundle.js') }}"></script>
+    <script src="{{ asset('js/statistics/easypiechart/easypiechart.bundle.js') }}"></script>
+    <script src="{{ asset('js/formplugins/dropzone/dropzone.js') }}"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> --}}
-{{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script> --}}
 
-{{-- <script src="{{asset('js/select2.min.js')}}"></script> --}}
-<link rel="stylesheet" media="screen, print" href="{{ asset('css/formplugins/select2/select2.bundle.css') }}">
-<script src="{{ asset('js/formplugins/select2/select2.bundle.js') }}"></script>
+    {{-- <script src="{{asset('js/select2.min.js')}}"></script> --}}
+    <link rel="stylesheet" media="screen, print" href="{{ asset('css/formplugins/select2/select2.bundle.css') }}">
+    <script src="{{ asset('js/formplugins/select2/select2.bundle.js') }}"></script>
 
-<script src="{{ asset('js/formplugins/summernote/summernote-bs4.js') }}"></script>
-<script src="{{ asset('js/jquery.tabledit.min.js') }}"></script>
-<script src="{{ asset('js/jquery.fancybox.js') }}"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
-{{-- <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/decoupled-document/ckeditor.js"></script> --}}
-<!-- DOC: script to save and load page settings -->
+    <script src="{{ asset('js/formplugins/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('js/jquery.tabledit.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.fancybox.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/decoupled-document/ckeditor.js"></script> --}}
+    <!-- DOC: script to save and load page settings -->
 
-@yield('script')
-<script>
-    /**
-     *	This script should be placed right after the body tag for fast execution
-     *	Note: the script is written in pure javascript and does not depend on thirdparty library
-     **/
-    'use strict';
-
-    var classHolder = document.getElementsByTagName("BODY")[0],
+    @yield('script')
+    <script>
         /**
-         * Load from localstorage
+         *	This script should be placed right after the body tag for fast execution
+         *	Note: the script is written in pure javascript and does not depend on thirdparty library
          **/
-        themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) :
-        {},
-        themeURL = themeSettings.themeURL || '',
-        themeOptions = themeSettings.themeOptions || '';
-    /**
-     * Load theme options
-     **/
-    if (themeSettings.themeOptions) {
-        classHolder.className = themeSettings.themeOptions;
-        console.log("%c✔ Theme settings loaded", "color: #148f32");
-    } else {
-        console.log("Heads up! Theme settings is empty or does not exist, loading default settings...");
-    }
-    if (themeSettings.themeURL && !document.getElementById('mytheme')) {
-        var cssfile = document.createElement('link');
-        cssfile.id = 'mytheme';
-        cssfile.rel = 'stylesheet';
-        cssfile.href = themeURL;
-        document.getElementsByTagName('head')[0].appendChild(cssfile);
-    }
-    /**
-     * Save to localstorage
-     **/
-    var saveSettings = function() {
-        themeSettings.themeOptions = String(classHolder.className).split(/[^\w-]+/).filter(function(item) {
-            return /^(nav|header|mod|display)-/i.test(item);
-        }).join(' ');
-        if (document.getElementById('mytheme')) {
-            themeSettings.themeURL = document.getElementById('mytheme').getAttribute("href");
-        };
-        localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
-    }
-    /**
-     * Reset settings
-     **/
-    var resetSettings = function() {
-        localStorage.setItem("themeSettings", "");
-    }
-</script>
-<script>
-    // var CKEDITOR = require('@ckeditor/ckeditor5-build-[name]');
-    // $('.collapsable-list li a').on('click', function() {
-    //     $('.collapsable-list').find('a').next().collapse('hide');
-    //     $(this).next().collapse('toggle');
-    // });
+        'use strict';
+
+        var classHolder = document.getElementsByTagName("BODY")[0],
+            /**
+             * Load from localstorage
+             **/
+            themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) :
+            {},
+            themeURL = themeSettings.themeURL || '',
+            themeOptions = themeSettings.themeOptions || '';
+        /**
+         * Load theme options
+         **/
+        if (themeSettings.themeOptions) {
+            classHolder.className = themeSettings.themeOptions;
+            console.log("%c✔ Theme settings loaded", "color: #148f32");
+        } else {
+            console.log("Heads up! Theme settings is empty or does not exist, loading default settings...");
+        }
+        if (themeSettings.themeURL && !document.getElementById('mytheme')) {
+            var cssfile = document.createElement('link');
+            cssfile.id = 'mytheme';
+            cssfile.rel = 'stylesheet';
+            cssfile.href = themeURL;
+            document.getElementsByTagName('head')[0].appendChild(cssfile);
+        }
+        /**
+         * Save to localstorage
+         **/
+        var saveSettings = function() {
+            themeSettings.themeOptions = String(classHolder.className).split(/[^\w-]+/).filter(function(item) {
+                return /^(nav|header|mod|display)-/i.test(item);
+            }).join(' ');
+            if (document.getElementById('mytheme')) {
+                themeSettings.themeURL = document.getElementById('mytheme').getAttribute("href");
+            };
+            localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
+        }
+        /**
+         * Reset settings
+         **/
+        var resetSettings = function() {
+            localStorage.setItem("themeSettings", "");
+        }
+    </script>
+    <script>
+        // var CKEDITOR = require('@ckeditor/ckeditor5-build-[name]');
+        // $('.collapsable-list li a').on('click', function() {
+        //     $('.collapsable-list').find('a').next().collapse('hide');
+        //     $(this).next().collapse('toggle');
+        // });
 
 
 
-    // DecoupledEditor
-    //     .create(document.querySelector('.document-editor__editable'), {
-    //         cloudServices: {
-    //             ....
-    //         }
-    //     })
-    //     .then(editor => {
-    //         const toolbarContainer = document.querySelector('.document-editor__toolbar');
+        // DecoupledEditor
+        //     .create(document.querySelector('.document-editor__editable'), {
+        //         cloudServices: {
+        //             ....
+        //         }
+        //     })
+        //     .then(editor => {
+        //         const toolbarContainer = document.querySelector('.document-editor__toolbar');
 
-    //         toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+        //         toolbarContainer.appendChild(editor.ui.view.toolbar.element);
 
-    //         window.editor = editor;
-    //     })
-    //     .catch(err => {
-    //         console.error(err);
-    //     });
+        //         window.editor = editor;
+        //     })
+        //     .catch(err => {
+        //         console.error(err);
+        //     });
 
-    $(function() {
-        $('li a').each(function(x, val) {
-            var link = $(this).attr('href');
-            var url = "{{ url()->current() }}";
-            if (link && url.indexOf(link) !== -1) {
-                $(this).addClass('highlight');
-                $(this).parent().parent().attr('style', 'display:block');
-                $(this).parent()
-                    .addClass('open')
-                    .find("a:first")
-                    .attr('aria-expanded', true)
-                    .find("b:first")
-                    .delay(500)
-                    .html(`<em class="fal fa-angle-up"></em>`);
-            } else {
-                $(this).removeClass('highlight');
-                // $(this).parent().parent().attr('style','display:none');
-                $(this).parent()
-                    .removeClass('open')
-                    .find("a:first")
-                    .attr('aria-expanded', false)
-                    .find("b:first")
-                    .delay(500)
-                    .html(`<em class="fal fa-angle-down"></em>`);
-            }
-        })
-    });
-</script>
-@yield('style')
-<style>
-    /* For CKEditor */
+        $(function() {
+            $('li a').each(function(x, val) {
+                var link = $(this).attr('href');
+                var url = "{{ url()->current() }}";
+                if (link && url.indexOf(link) !== -1) {
+                    $(this).addClass('highlight');
+                    $(this).parent().parent().attr('style', 'display:block');
+                    $(this).parent()
+                        .addClass('open')
+                        .find("a:first")
+                        .attr('aria-expanded', true)
+                        .find("b:first")
+                        .delay(500)
+                        .html(`<em class="fal fa-angle-up"></em>`);
+                } else {
+                    $(this).removeClass('highlight');
+                    // $(this).parent().parent().attr('style','display:none');
+                    $(this).parent()
+                        .removeClass('open')
+                        .find("a:first")
+                        .attr('aria-expanded', false)
+                        .find("b:first")
+                        .delay(500)
+                        .html(`<em class="fal fa-angle-down"></em>`);
+                }
+            })
+        });
+    </script>
+    @yield('style')
+    <style>
+        /* For CKEditor */
 
-    .ck-editor__editable_inline {
-        min-height: 250px;
-    }
+        .ck-editor__editable_inline {
+            min-height: 250px;
+        }
 
-    .document-editor {
-        border: 1px solid var(--ck-color-base-border);
-        border-radius: var(--ck-border-radius);
+        .document-editor {
+            border: 1px solid var(--ck-color-base-border);
+            border-radius: var(--ck-border-radius);
 
-        /* Set vertical boundaries for the document editor. */
-        max-height: 700px;
+            /* Set vertical boundaries for the document editor. */
+            max-height: 700px;
 
-        /* This element is a flex container for easier rendering. */
-        display: flex;
-        flex-flow: column nowrap;
-    }
+            /* This element is a flex container for easier rendering. */
+            display: flex;
+            flex-flow: column nowrap;
+        }
 
-    .document-editor__toolbar {
-        /* Make sure the toolbar container is always above the editable. */
-        z-index: 1;
+        .document-editor__toolbar {
+            /* Make sure the toolbar container is always above the editable. */
+            z-index: 1;
 
-        /* Create the illusion of the toolbar floating over the editable. */
-        box-shadow: 0 0 5px hsla(0, 0%, 0%, .2);
+            /* Create the illusion of the toolbar floating over the editable. */
+            box-shadow: 0 0 5px hsla(0, 0%, 0%, .2);
 
-        /* Use the CKEditor CSS variables to keep the UI consistent. */
-        border-bottom: 1px solid var(--ck-color-toolbar-border);
-    }
+            /* Use the CKEditor CSS variables to keep the UI consistent. */
+            border-bottom: 1px solid var(--ck-color-toolbar-border);
+        }
 
-    /* Adjust the look of the toolbar inside the container. */
-    .document-editor__toolbar .ck-toolbar {
-        border: 0;
-        border-radius: 0;
-    }
+        /* Adjust the look of the toolbar inside the container. */
+        .document-editor__toolbar .ck-toolbar {
+            border: 0;
+            border-radius: 0;
+        }
 
-    /* Make the editable container look like the inside of a native word processor application. */
-    .document-editor__editable-container {
-        padding: calc(2 * var(--ck-spacing-large));
-        background: var(--ck-color-base-foreground);
+        /* Make the editable container look like the inside of a native word processor application. */
+        .document-editor__editable-container {
+            padding: calc(2 * var(--ck-spacing-large));
+            background: var(--ck-color-base-foreground);
 
-        /* Make it possible to scroll the "page" of the edited content. */
-        overflow-y: scroll;
-    }
+            /* Make it possible to scroll the "page" of the edited content. */
+            overflow-y: scroll;
+        }
 
-    .document-editor__editable-container .ck-editor__editable {
-        /* Set the dimensions of the "page". */
-        width: 15.8cm;
-        min-height: 21cm;
+        .document-editor__editable-container .ck-editor__editable {
+            /* Set the dimensions of the "page". */
+            width: 15.8cm;
+            min-height: 21cm;
 
-        /* Keep the "page" off the boundaries of the container. */
-        padding: 1cm 2cm 2cm;
+            /* Keep the "page" off the boundaries of the container. */
+            padding: 1cm 2cm 2cm;
 
-        border: 1px hsl(0, 0%, 82.7%) solid;
-        border-radius: var(--ck-border-radius);
-        background: white;
+            border: 1px hsl(0, 0%, 82.7%) solid;
+            border-radius: var(--ck-border-radius);
+            background: white;
 
-        /* The "page" should cast a slight shadow (3D illusion). */
-        box-shadow: 0 0 5px hsla(0, 0%, 0%, .1);
+            /* The "page" should cast a slight shadow (3D illusion). */
+            box-shadow: 0 0 5px hsla(0, 0%, 0%, .1);
 
-        /* Center the "page". */
-        margin: 0 auto;
-    }
+            /* Center the "page". */
+            margin: 0 auto;
+        }
 
-    /* Set the default font for the "page" of the content. */
-    .document-editor .ck-content,
-    .document-editor .ck-heading-dropdown .ck-list .ck-button__label {
-        font: 16px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
+        /* Set the default font for the "page" of the content. */
+        .document-editor .ck-content,
+        .document-editor .ck-heading-dropdown .ck-list .ck-button__label {
+            font: 16px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
 
-    /* Adjust the headings dropdown to host some larger heading styles. */
-    .document-editor .ck-heading-dropdown .ck-list .ck-button__label {
-        line-height: calc(1.7 * var(--ck-line-height-base) * var(--ck-font-size-base));
-        min-width: 6em;
-    }
+        /* Adjust the headings dropdown to host some larger heading styles. */
+        .document-editor .ck-heading-dropdown .ck-list .ck-button__label {
+            line-height: calc(1.7 * var(--ck-line-height-base) * var(--ck-font-size-base));
+            min-width: 6em;
+        }
 
-    /* Scale down all heading previews because they are way too big to be presented in the UI.
-Preserve the relative scale, though. */
-    .document-editor .ck-heading-dropdown .ck-list .ck-button:not(.ck-heading_paragraph) .ck-button__label {
-        transform: scale(0.8);
-        transform-origin: left;
-    }
+        /* Scale down all heading previews because they are way too big to be presented in the UI.
+                                Preserve the relative scale, though. */
+        .document-editor .ck-heading-dropdown .ck-list .ck-button:not(.ck-heading_paragraph) .ck-button__label {
+            transform: scale(0.8);
+            transform-origin: left;
+        }
 
-    /* Set the styles for "Heading 1". */
-    .document-editor .ck-content h2,
-    .document-editor .ck-heading-dropdown .ck-heading_heading1 .ck-button__label {
-        font-size: 2.18em;
-        font-weight: normal;
-    }
+        /* Set the styles for "Heading 1". */
+        .document-editor .ck-content h2,
+        .document-editor .ck-heading-dropdown .ck-heading_heading1 .ck-button__label {
+            font-size: 2.18em;
+            font-weight: normal;
+        }
 
-    .document-editor .ck-content h2 {
-        line-height: 1.37em;
-        padding-top: .342em;
-        margin-bottom: .142em;
-    }
+        .document-editor .ck-content h2 {
+            line-height: 1.37em;
+            padding-top: .342em;
+            margin-bottom: .142em;
+        }
 
-    /* Set the styles for "Heading 2". */
-    .document-editor .ck-content h3,
-    .document-editor .ck-heading-dropdown .ck-heading_heading2 .ck-button__label {
-        font-size: 1.75em;
-        font-weight: normal;
-        color: hsl(203, 100%, 50%);
-    }
+        /* Set the styles for "Heading 2". */
+        .document-editor .ck-content h3,
+        .document-editor .ck-heading-dropdown .ck-heading_heading2 .ck-button__label {
+            font-size: 1.75em;
+            font-weight: normal;
+            color: hsl(203, 100%, 50%);
+        }
 
-    .document-editor .ck-heading-dropdown .ck-heading_heading2.ck-on .ck-button__label {
-        color: var(--ck-color-list-button-on-text);
-    }
+        .document-editor .ck-heading-dropdown .ck-heading_heading2.ck-on .ck-button__label {
+            color: var(--ck-color-list-button-on-text);
+        }
 
-    /* Set the styles for "Heading 2". */
-    .document-editor .ck-content h3 {
-        line-height: 1.86em;
-        padding-top: .171em;
-        margin-bottom: .357em;
-    }
+        /* Set the styles for "Heading 2". */
+        .document-editor .ck-content h3 {
+            line-height: 1.86em;
+            padding-top: .171em;
+            margin-bottom: .357em;
+        }
 
-    /* Set the styles for "Heading 3". */
-    .document-editor .ck-content h4,
-    .document-editor .ck-heading-dropdown .ck-heading_heading3 .ck-button__label {
-        font-size: 1.31em;
-        font-weight: bold;
-    }
+        /* Set the styles for "Heading 3". */
+        .document-editor .ck-content h4,
+        .document-editor .ck-heading-dropdown .ck-heading_heading3 .ck-button__label {
+            font-size: 1.31em;
+            font-weight: bold;
+        }
 
-    .document-editor .ck-content h4 {
-        line-height: 1.24em;
-        padding-top: .286em;
-        margin-bottom: .952em;
-    }
+        .document-editor .ck-content h4 {
+            line-height: 1.24em;
+            padding-top: .286em;
+            margin-bottom: .952em;
+        }
 
-    /* Set the styles for "Paragraph". */
-    .document-editor .ck-content p {
-        font-size: 1em;
-        line-height: 1.63em;
-        padding-top: .5em;
-        margin-bottom: 1.13em;
-    }
+        /* Set the styles for "Paragraph". */
+        .document-editor .ck-content p {
+            font-size: 1em;
+            line-height: 1.63em;
+            padding-top: .5em;
+            margin-bottom: 1.13em;
+        }
 
-    /* Make the block quoted text serif with some additional spacing. */
-    .document-editor .ck-content blockquote {
-        font-family: Georgia, serif;
-        margin-left: calc(2 * var(--ck-spacing-large));
-        margin-right: calc(2 * var(--ck-spacing-large));
-    }
-</style>
+        /* Make the block quoted text serif with some additional spacing. */
+        .document-editor .ck-content blockquote {
+            font-family: Georgia, serif;
+            margin-left: calc(2 * var(--ck-spacing-large));
+            margin-right: calc(2 * var(--ck-spacing-large));
+        }
+    </style>
 
-</html>
+    </html>
