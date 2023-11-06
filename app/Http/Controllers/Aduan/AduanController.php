@@ -11,11 +11,13 @@ use App\User;
 use App\Aduan;
 use Carbon\Carbon;
 use App\Staff;
+use App\Stock;
 use App\Student;
 use App\ImejAduan;
 use App\AlatGanti;
 use App\ResitAduan;
 use App\StatusAduan;
+use App\StokPembaikan;
 use App\TahapKategori;
 use App\ImejPembaikan;
 use App\KategoriAduan;
@@ -23,6 +25,7 @@ use App\SebabKerosakan;
 use App\JenisKerosakan;
 use App\AlatanPembaikan;
 use App\JuruteknikBertugas;
+use App\StockTransaction;
 use Illuminate\Http\Request;
 use App\Exports\AduanExport;
 use App\Exports\JuruteknikExport;
@@ -829,6 +832,8 @@ class AduanController extends Controller
 
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
+        $stok = Stock::where('department_id', $staff->staff_code)->where('applicable_for_aduan','1')->get();
+
         $staff_exists = [];
 
         if ($staff->staff_code == 'IITU') {
@@ -851,6 +856,8 @@ class AduanController extends Controller
 
         $alatan_ganti = AlatanPembaikan::where('id_aduan', $id)->get();
 
+        $stok_pembaikan = StokPembaikan::where('id_aduan', $id)->get();
+
         $data = array_column($alatan_ganti->toArray(), 'alat_ganti');
 
         $senarai_alat =  AlatGanti::whereNotIn('id', $data)->get();
@@ -861,7 +868,27 @@ class AduanController extends Controller
 
         $pengadu = User::where('id', $aduan->id_pelapor)->first();
 
-        return view('aduan.info-aduan', compact('pengadu', 'aduan', 'juru', 'tahap', 'juruteknik', 'status', 'tukarStatus', 'resit', 'imej', 'senarai_juruteknik', 'alatan', 'alatan_ganti', 'senarai_alat', 'gambar'))->with('no', 1)->with('urutan', 1);
+        return view('aduan.info-aduan', compact('pengadu', 'aduan', 'juru', 'tahap', 'juruteknik', 'status', 'tukarStatus',
+        'resit', 'imej', 'senarai_juruteknik', 'alatan', 'alatan_ganti', 'senarai_alat', 'gambar','stok','stok_pembaikan'));
+    }
+
+    public function cariKuantiti(Request $request)
+    {
+        $total_bal = 0;
+        $stockId = $request->input('id_stok');
+        $stockData = Stock::where('id', $stockId)->first();
+
+        if ($stockData) {
+            foreach ($stockData->transaction as $list) {
+                $total_bal += ($list->stock_in - $list->stock_out);
+            }
+
+            $numbers = $total_bal > 0 ? range(1, $total_bal) : [];
+
+            return response()->json($numbers);
+        }
+
+        return response()->json([]);
     }
 
     public function kemaskiniTahap(Request $request)
@@ -988,6 +1015,35 @@ class AduanController extends Controller
                     'id_aduan'      => $aduan->id,
                     'upload_image'  => date('dmyhi').' - '.$originalsName,
                     'web_path'      => "app/pembaikan/".date('dmyhi').' - '.$fileNames,
+                ]);
+            }
+        }
+
+        if (isset($request->id_stok)) {
+
+            $idStokArray = $request->id_stok;
+            $kuantitiArray = $request->kuantiti;
+
+            for ($i = 0; $i < count($idStokArray); $i++) {
+                $stockId = $idStokArray[$i];
+                $kuantiti = $kuantitiArray[$i];
+
+                StockTransaction::create([
+                    'stock_id'      => $stockId,
+                    'stock_in'      => '0',
+                    'stock_out'     => $kuantiti,
+                    'created_by'    => Auth::user()->id,
+                    'reason'        => 'Transaction Out For E-Aduan.',
+                    'supply_type'   => 'INT',
+                    'supply_to'     => Auth::user()->id,
+                    'trans_date'    => $request->tarikh_selesai_aduan,
+                    'status'        => '0',
+                ]);
+
+                StokPembaikan::create([
+                    'id_aduan'   => $aduan->id,
+                    'id_stok'    => $stockId,
+                    'kuantiti'   => $kuantiti
                 ]);
             }
         }
@@ -2869,9 +2925,11 @@ class AduanController extends Controller
 
         $alatan_ganti = AlatanPembaikan::where('id_aduan', $id)->get();
 
+        $stok_pembaikan = StokPembaikan::where('id_aduan', $id)->get();
+
         $pengadu = User::where('id', $aduan->id_pelapor)->first();
 
-        return view('aduan.aduan-pdf', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik','alatan_ganti','pengadu'));
+        return view('aduan.aduan-pdf', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik','alatan_ganti','pengadu','stok_pembaikan'));
     }
 
     public function aduan_all(Request $request)

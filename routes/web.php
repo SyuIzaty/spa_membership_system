@@ -234,6 +234,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('teknikal-selesai-luar', 'Aduan\AduanController@teknikal_selesai_luar');
     Route::post('teknikal-kiv-luar', 'Aduan\AduanController@teknikal_kiv_luar');
     Route::post('teknikal-bertindih-luar', 'Aduan\AduanController@teknikal_bertindih_luar');
+    Route::get('/cariKuantiti', 'Aduan\AduanController@cariKuantiti');
 
     // Kategori
     Route::resource('kategori-aduan', 'Aduan\KategoriAduanController');

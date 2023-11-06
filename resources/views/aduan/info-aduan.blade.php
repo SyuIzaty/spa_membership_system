@@ -290,13 +290,30 @@
                                                         <tr>
                                                             <div class="form-group">
                                                                 <td width="20%"><label class="form-label" for="laporan_pembaikan">Laporan Penambahbaikan:</label></td>
-                                                                <td colspan="2">{{ $aduan->laporan_pembaikan ?? '--'   }}</td>
+                                                                <td colspan="4">{{ $aduan->laporan_pembaikan ?? '--'   }}</td>
+                                                            </div>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <div class="form-group">
                                                                 <td width="20%"><label class="form-label" for="bahan_alat">Bahan/ Alat Ganti :</label></td>
                                                                 <td colspan="2">
                                                                     @if(isset($alatan_ganti->first()->alat_ganti))
                                                                         <ol>
                                                                             @foreach($alatan_ganti as $al)
                                                                                 <li>{{ $al->alat->alat_ganti}}</li>
+                                                                            @endforeach
+                                                                        </ol>
+                                                                    @else
+                                                                        --
+                                                                    @endif
+                                                                </td>
+                                                                <td width="20%"><label class="form-label" for="bahan_alat">Stok :</label></td>
+                                                                <td colspan="2">
+                                                                    @if(isset($stok_pembaikan->first()->id_stok))
+                                                                        <ol>
+                                                                            @foreach($stok_pembaikan as $sp)
+                                                                                <li>{{ $sp->stok->stock_name}} [ kuantiti: {{ $sp->kuantiti}} ]</li>
                                                                             @endforeach
                                                                         </ol>
                                                                     @else
@@ -613,7 +630,7 @@
                                                                                 <br>
                                                                                 <div class="card-body">
                                                                                     @if(session()->has('message'))
-                                                                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
+                                                                                        <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
                                                                                             {{ session()->get('message') }}
                                                                                         </div>
                                                                                     @endif
@@ -626,7 +643,7 @@
                                                                                         @if(!empty($alatan_ganti) && $alatan_ganti->count() > 0)
                                                                                             @foreach ($alatan_ganti as $aG)
                                                                                             <tr align="center">
-                                                                                                <td>{{ $urutan++}}</td>
+                                                                                                <td>{{ $loop->iteration}}</td>
                                                                                                 <td>{{ $aG->alat->alat_ganti }}</td>
                                                                                                 <td>
                                                                                                     <a href="{{ action('Aduan\AduanController@padamAlatan', ['id' => $aG->id, 'id_aduan' => $aG->id_aduan]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"></i></a>
@@ -640,6 +657,45 @@
                                                                                         @endif
                                                                                     </table>
                                                                                 </div>
+                                                                            </td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td colspan="2" style="vertical-align: middle"><label class="form-label" for="id_stok">Stok
+                                                                            <sub class="ml-2" style="color: red"> [ Stok yang dipilih akan ditolak secara terus dari sistem <i>Stock Management</i>.]</sub>
+                                                                            : </label></td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <div class="form-group stoks" id="stoks">
+                                                                            <td colspan="2">
+                                                                                <table class="table table-bordered" id="head_field_stoks">
+                                                                                    <tr class="bg-primary-50 text-center">
+                                                                                        <td>Stok</td>
+                                                                                        <td>Kuantiti</td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <select class="form-control id_stok" name="id_stok[]">
+                                                                                                <option value="" disabled selected>Sila Pilih</option>
+                                                                                                @foreach ($stok as $stoks)
+                                                                                                    <option value="{{ $stoks->id }}" {{ old('id_stok') ? 'selected' : '' }}>
+                                                                                                        {{ $stoks->stock_name }}
+                                                                                                    </option>
+                                                                                                @endforeach
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <select class="form-control kuantiti" name="kuantiti[]">
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            <button type="button" name="addheadstoks" id="addheadstoks" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
                                                                             </td>
                                                                         </div>
                                                                     </tr>
@@ -756,7 +812,6 @@
                                                                         </div>
                                                                     </tr>
 
-
                                                                 </thead>
                                                             </table>
                                                         </div>
@@ -842,8 +897,39 @@
 @section('script')
     <script>
 
+        $(document).ready(function () {
+            var idStokSelect = $('.id_stok');
+            var kuantitiSelect = $('.kuantiti');
+
+            kuantitiSelect.prop('disabled', true);
+
+            idStokSelect.on('change', function () {
+                var selectedStok = $(this).val();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/cariKuantiti',
+                    data: { id_stok: selectedStok },
+                    success: function (data) {
+                        kuantitiSelect.empty();
+                        kuantitiSelect.append($('<option></option>').attr('value', '').text('Sila Pilih').prop('selected', true).prop('disabled', true));
+
+                        $.each(data, function (index, value) {
+                            kuantitiSelect.append($('<option></option>').attr('value', value).text(value));
+                        });
+
+                        if (selectedStok) {
+                            kuantitiSelect.prop('disabled', false);
+                        } else {
+                            kuantitiSelect.prop('disabled', true);
+                        }
+                    }
+                });
+            });
+        });
+
         $(document).ready(function() {
-            $('.tahap_kategori, .juruteknik_bertugas, .status_aduan, .status_adu, .tukar_status, .jenis_juruteknik, .bahan_alat').select2();
+            $('.tahap_kategori, .juruteknik_bertugas, .status_aduan, .status_adu, .tukar_status, .jenis_juruteknik, .bahan_alat, .id_stok, .kuantiti').select2();
 
             sum();
             $("#ak_upah, #ak_bahan_alat").on("keydown keyup", function() {
@@ -874,6 +960,31 @@
                 </tr>
                 `);
                 $('.juruteknik_bertugas, .jenis_juruteknik').select2();
+            });
+
+            // Tambah Stok
+            $('#addheadstoks').click(function(){
+                i++;
+                $('#head_field_stoks').append(`
+                <tr id="row${i}" class="head-added">
+                    <td>
+                        <select class="form-control id_stok" name="id_stok[]" required>
+                            <option value="" disabled selected>Sila Pilih</option>
+                            @foreach ($stok as $stoks)
+                                <option value="{{ $stoks->id }}" {{ old('id_stok') ? 'selected' : '' }}>
+                                    {{ $stoks->stock_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-control kuantiti" name="kuantiti[]" required>
+                        </select>
+                    </td>
+                    <td class="text-center"><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
+                </tr>
+                `);
+                $('.id_stok, .kuantiti').select2();
             });
 
             var postURL = "<?php echo url('addmore'); ?>";
@@ -916,6 +1027,35 @@
 
         });
 
+        $(document).ready(function () {
+             $('.kuantiti').prop('disabled', true);
+
+             $('#head_field_stoks').on('change', '.id_stok', function () {
+                var selectedStok = $(this).val();
+                var kuantitiSelect = $(this).closest('tr').find('.kuantiti');
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/cariKuantiti',
+                    data: { id_stok: selectedStok },
+                    success: function (data) {
+                        kuantitiSelect.empty();
+                        kuantitiSelect.append($('<option></option>').attr('value', '').text('Sila Pilih').prop('selected', true).prop('disabled', true));
+
+                        $.each(data, function (index, value) {
+                            kuantitiSelect.append($('<option></option>').attr('value', value).text(value));
+                        });
+
+                        if (selectedStok) {
+                            kuantitiSelect.prop('disabled', false);
+                        } else {
+                            kuantitiSelect.prop('disabled', true);
+                        }
+                    }
+                });
+            });
+        });
+
         function sum() {
             var ak_upah = $('#ak_upah').val();
             var ak_bahan_alat = $('#ak_bahan_alat').val();
@@ -951,6 +1091,25 @@
             $("#datass").submit(function () {
                 $("#submitheadss").attr("disabled", true);
                 return true;
+            });
+        });
+
+        $(document).ready(function () {
+            // Initially, disable kuantiti and remove the required attribute
+            $('.kuantiti').prop('disabled', true).removeAttr('required');
+
+            // Handle the change event for id_stok selects
+            $('.id_stok').on('change', function () {
+                var selectedStok = $(this).val();
+                var kuantitiSelect = $(this).closest('td').next().find('.kuantiti');
+
+                if (selectedStok) {
+                    // Enable kuantiti and add the required attribute
+                    kuantitiSelect.prop('disabled', false).attr('required', 'required');
+                } else {
+                    // If no id_stok is selected, disable and remove the required attribute from kuantiti
+                    kuantitiSelect.prop('disabled', true).removeAttr('required');
+                }
             });
         });
 
