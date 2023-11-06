@@ -290,52 +290,52 @@
                                                     @php $total_bal = 0; @endphp
 
                                                     @foreach($stock->transaction as $list)
-                                                    <tr align="center" class="data-row">
-                                                        <td>{{ isset($list->id) ? '#'.$list->id : '--'}}</td>
-                                                        <td>{{ isset($list->stock_in) ? $list->stock_in : '--'}}</td>
-                                                        <td>{{ isset($list->stock_out) ? $list->stock_out : '--'}}</td>
-                                                        <td>{{ $total_bal += ($list->stock_in - $list->stock_out) }}</td>
-                                                        <td>{{ isset($list->unit_price) ? $list->unit_price : '--'}}</td>
-                                                        @if($list->status == '1')
-                                                            <td style="background-color: #1dc9b7">
-                                                                <div style="text-transform: uppercase; color: #000000"><b>IN</b></div>
+                                                        <tr align="center" class="data-row">
+                                                            <td>{{ isset($list->id) ? '#'.$list->id : '--'}}</td>
+                                                            <td>{{ isset($list->stock_in) ? $list->stock_in : '--'}}</td>
+                                                            <td>{{ isset($list->stock_out) ? $list->stock_out : '--'}}</td>
+                                                            <td>{{ $total_bal += ($list->stock_in - $list->stock_out) }}</td>
+                                                            <td>{{ isset($list->unit_price) ? $list->unit_price : '--'}}</td>
+                                                            @if($list->status == '1')
+                                                                <td style="background-color: #1dc9b7">
+                                                                    <div style="text-transform: uppercase; color: #000000"><b>IN</b></div>
+                                                                </td>
+                                                            @else
+                                                                <td style="background-color: #fd3995">
+                                                                    <div style="text-transform: uppercase; color: #000000"><b>OUT</b></div>
+                                                                </td>
+                                                            @endif
                                                             </td>
-                                                        @else
-                                                            <td style="background-color: #fd3995">
-                                                                <div style="text-transform: uppercase; color: #000000"><b>OUT</b></div>
-                                                            </td>
-                                                        @endif
-                                                        </td>
-                                                        <td>{{ isset($list->trans_date) ? date('Y-m-d', strtotime($list->trans_date)) : '--' }}</td>
-                                                        <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
-                                                        @if($list->supply_type == 'INT')
-                                                            <td>INTERNAL</td>
-                                                        @elseif($list->supply_type == 'EXT')
-                                                            <td>EXTERNAL</td>
-                                                        @else
-                                                            <td>--</td>
-                                                        @endif
-                                                        @if($list->supply_type == 'INT')
-                                                            <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>
-                                                        @else
-                                                            <td>{{ isset($list->ext_supply_to) ? strtoupper($list->ext_supply_to) : '--' }}</td>
-                                                        @endif
-                                                        <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
-                                                        <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
-                                                        <td>{{ isset($list->created_at) ? date('Y-m-d', strtotime($list->created_at)) : '--' }}</td>
-                                                        @cannot('view stock')
-                                                            <td><div class="btn-group">
-                                                                @if($list->status == '1')
-                                                                    <a href="" data-target="#crud-modalIn" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_in}}" data-lo="{{$list->lo_no}}" data-io="{{$list->io_no}}"
-                                                                        data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success mr-1"><i class="fal fa-pencil"></i></a>
-                                                                @else
-                                                                    <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}"
-                                                                        data-extsupply="{{$list->ext_supply_to}}" data-trans="{{$list->trans_date}}" data-type="{{$list->supply_type}}"  class="btn btn-sm btn-danger mr-1"><i class="fal fa-pencil"></i></a>
-                                                                @endif
-                                                                <a href="{{ action('Inventory\StockController@deleteTrans', ['id' => $list->id]) }}" class="btn btn-warning btn-sm delete-transaction" data-id="{{ $list->id }}"><i class="fal fa-trash"></i></a>
-                                                            </div></td>
-                                                        @endcannot
-                                                    </tr>
+                                                            <td>{{ isset($list->trans_date) ? date('Y-m-d', strtotime($list->trans_date)) : '--' }}</td>
+                                                            <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
+                                                            @if($list->supply_type == 'INT')
+                                                                <td>INTERNAL</td>
+                                                            @elseif($list->supply_type == 'EXT')
+                                                                <td>EXTERNAL</td>
+                                                            @else
+                                                                <td>--</td>
+                                                            @endif
+                                                            @if($list->supply_type == 'INT')
+                                                                <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>
+                                                            @else
+                                                                <td>{{ isset($list->ext_supply_to) ? strtoupper($list->ext_supply_to) : '--' }}</td>
+                                                            @endif
+                                                            <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
+                                                            <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
+                                                            <td>{{ isset($list->created_at) ? date('Y-m-d', strtotime($list->created_at)) : '--' }}</td>
+                                                            @cannot('view stock')
+                                                                <td><div class="btn-group">
+                                                                    @if($list->status == '1')
+                                                                        <a href="" data-target="#crud-modalIn" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_in}}" data-lo="{{$list->lo_no}}" data-io="{{$list->io_no}}"
+                                                                            data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success mr-1"><i class="fal fa-pencil"></i></a>
+                                                                    @else
+                                                                        <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}"
+                                                                            data-extsupply="{{$list->ext_supply_to}}" data-trans="{{$list->trans_date}}" data-type="{{$list->supply_type}}"  class="btn btn-sm btn-danger mr-1"><i class="fal fa-pencil"></i></a>
+                                                                    @endif
+                                                                    <a href="{{ action('Inventory\StockController@deleteTrans', ['id' => $list->id]) }}" class="btn btn-warning btn-sm delete-transaction" data-id="{{ $list->id }}"><i class="fal fa-trash"></i></a>
+                                                                </div></td>
+                                                            @endcannot
+                                                        </tr>
                                                     @endforeach
                                                     </tbody>
                                                 </table>
@@ -817,7 +817,7 @@
         var table = $('#log').DataTable({
             columnDefs: [],
                 orderCellsTop: true,
-                "order": [[ 6, "desc" ]],
+                "order": [[ 6, "desc" ],[ 0, "desc" ]],
                 "initComplete": function(settings, json) {
                 }
         });
