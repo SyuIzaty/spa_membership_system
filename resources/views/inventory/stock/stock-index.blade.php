@@ -78,7 +78,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header bg-secondary text-white">
-                    <h5 class="card-title w-100"><i class="fal fa-dolly width-2 fs-xl"></i>NEW STOCK DETAILS</h5>
+                    <h5 class="card-title w-100"><i class="fal fa-dolly width-2 fs-xl"></i>NEW STOCK DETAIL</h5>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'Inventory\StockController@newStockStore', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}

@@ -501,43 +501,47 @@
 
                         <!-- Start eVoting Management System -->
 
-                        <li class="nav-title">E-VOTING</li>
+                        @canany(['Manage eVoting', 'View eVoting Platform'])
 
-                        @can('Manage eVoting')
-                            <li>
-                                <a href="#" title="e-Voting Management" data-filter-tags="vote-management">
-                                    <i class="ni ni-briefcase"></i>
-                                    <span class="nav-link-text" data-i18n="nav.vote-management">Voting Management</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/voting-dashboard" title="dashboard" data-filter-tags="dashboard">
-                                            <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard
-                                                Analysis</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/voting-manage" title="parameter" data-filter-tags="parameter">
-                                            <span class="nav-link-text" data-i18n="nav.parameter">Manage Voting</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/voting-report" title="report" data-filter-tags="report">
-                                            <span class="nav-link-text" data-i18n="nav.report">Manage Report</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcan
+                            <li class="nav-title">E-VOTING</li>
 
-                        @can('View eVoting Platform')
-                            <li>
-                                <a href="/voting-platform" title="platform" data-filter-tags="platform">
-                                    <i class="ni ni-envelope-letter"></i>
-                                    <span class="nav-link-text" data-i18n="nav.platform">Voting Platform</span>
-                                </a>
-                            </li>
-                        @endcan
+                            @can('Manage eVoting')
+                                <li>
+                                    <a href="#" title="e-Voting Management" data-filter-tags="vote-management">
+                                        <i class="ni ni-briefcase"></i>
+                                        <span class="nav-link-text" data-i18n="nav.vote-management">Voting Management</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/voting-dashboard" title="dashboard" data-filter-tags="dashboard">
+                                                <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard
+                                                    Analysis</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/voting-manage" title="parameter" data-filter-tags="parameter">
+                                                <span class="nav-link-text" data-i18n="nav.parameter">Manage Voting</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/voting-report" title="report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report">Manage Report</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endcan
+
+                            @can('View eVoting Platform')
+                                <li>
+                                    <a href="/voting-platform" title="platform" data-filter-tags="platform">
+                                        <i class="ni ni-envelope-letter"></i>
+                                        <span class="nav-link-text" data-i18n="nav.platform">Voting Platform</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                        @endcanany
 
                         @role('Super Admin')
                             <li class="nav-title">E-VOTING OLD VERSION</li>

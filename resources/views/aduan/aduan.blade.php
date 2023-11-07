@@ -23,6 +23,30 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="table-responsive">
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                                </button>
+                                <div class="d-flex align-items-center">
+                                    <div class="alert-icon width-8">
+                                        <span class="icon-stack icon-stack-md">
+                                            <i class="base-2 icon-stack-3x color-danger-400"></i>
+                                            <i class="base-10 text-white icon-stack-1x"></i>
+                                            <i class="fal fa-info-circle color-danger-800 icon-stack-2x"></i>
+                                        </span>
+                                    </div>
+                                    <div class="flex-1 pl-1">
+                                        <ul class="mb-0 pb-0">
+                                            <li>Pengadu wajib mengesahkan semua penambahbaikan yang dilakukan selepas status aduan bertukar kepada
+                                                <b style="text-transform: uppercase">Aduan Selesai</b>, <b style="text-transform: uppercase">Selesai (Lantikan Kontraktor)</b>,
+                                                <b style="text-transform: uppercase">Selesai (Lantikan UiTM)</b>, atau <b style="text-transform: uppercase">Aduan Bertindih</b>.
+                                            </li>
+                                            <li>Kegagalan untuk mengesahkan tindakan ini akan dianggap sebagai tidak sah dan akan diberi perhatian lanjut.</li>
+                                            <li>Jika anda menghadapi sebarang masalah, sila berhubung dengan juruteknik yang ditugaskan kepada aduan anda atau hubungi pihak Fasiliti.</li>
+                                          </ul>
+                                    </div>
+                                </div>
+                            </div>
                             @if (Session::has('message'))
                                 <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                             @endif
