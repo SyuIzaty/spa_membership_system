@@ -48,11 +48,11 @@ class StockReportExport implements FromView, WithColumnFormatting
 
         } elseif (!empty($department) && $stock == 'null' && !empty($owner)) {
 
-            $data->where('department_id', $department)->where('created_by', $owner);
+            $data->where('department_id', $department)->where('current_owner', $owner);
 
         } elseif (!empty($department) && !empty($stock) && !empty($owner)) {
 
-            $data->where('department_id', $department)->where('id', $stock)->where('created_by', $owner);
+            $data->where('department_id', $department)->where('id', $stock)->where('current_owner', $owner);
 
         } else {
 

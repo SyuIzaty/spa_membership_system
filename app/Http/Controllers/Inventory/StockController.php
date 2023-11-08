@@ -581,11 +581,11 @@ class StockController extends Controller
 
         } elseif (!empty($department) && empty($stock) && !empty($owner)) {
 
-            $query->where('department_id', $department)->where('created_by', $owner);
+            $query->where('department_id', $department)->where('current_owner', $owner);
 
         } elseif (!empty($department) && !empty($stock) && !empty($owner)) {
 
-            $query->where('department_id', $department)->where('id', $stock)->where('created_by', $owner);
+            $query->where('department_id', $department)->where('id', $stock)->where('current_owner', $owner);
 
         } else {
 
