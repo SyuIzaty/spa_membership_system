@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FcsOwner extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['staff_id','created_by','updated_by','deleted_by'];
+    protected $fillable = ['staff_id','dept_id','created_by','updated_by','deleted_by'];
 
     public function staff()
     {
@@ -17,6 +17,6 @@ class FcsOwner extends Model
 
     public function department()
     {
-        return $this->hasOne(SopDepartment::class, 'id', 'department_id');
+        return $this->hasOne(SopDepartment::class, 'id', 'dept_id');
     }
 }

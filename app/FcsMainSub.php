@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FcsMainSub extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['code_id','sub_code','file','remark','created_by','updated_by','deleted_by'];
+    protected $fillable = ['code_id','code','file','remark','sub_activity','created_by','updated_by','deleted_by'];
 
     public function mainCode()
     {
