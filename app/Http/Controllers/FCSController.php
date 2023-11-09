@@ -9,6 +9,7 @@ use App\SopDepartment;
 use App\FcsMainSubActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class FCSController extends Controller
 {
@@ -125,7 +126,7 @@ class FCSController extends Controller
         $data          = FcsMain::where('id', $id)->first();
         $subActivities = FcsMainSub::where('code_id', $id)->get();
         $selectedSub   = $request->subActivities;
-        $act           = FcsMainSubActivity::where('code_sub_id', $subActivities->first->id)->first();
+        $act = FcsMainSubActivity::where('code_sub_id', $subActivities->pluck('id')->toArray())->exists();
 
         return view('file-classification.file', compact('data', 'subActivities', 'id', 'selectedSub', 'act'));
     }
@@ -145,12 +146,12 @@ class FCSController extends Controller
                     return '<a href="/file-class/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
-                    data-file="' . $data->file . '" data-remark="' . $data->remark . '"
+                    data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
                     class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 } else {
                     return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
-                    data-file="' . $data->file . '" data-remark="' . $data->remark . '"
+                    data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
                     class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 }
             })
@@ -280,5 +281,12 @@ class FCSController extends Controller
         ]);
 
         return redirect()->back()->with('message', 'Successfully Updated!');
+    }
+
+    public function note()
+    {
+        $file = "FILE CLASSIFICATION SYSTEM NOTE.pdf";
+
+        return Storage::disk('minio')->response('file-classification/' . $file);
     }
 }

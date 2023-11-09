@@ -119,6 +119,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/sub-activity-list/{id}', 'FCSController@subActList');
     Route::post('/store-sub-act', 'FCSController@storeNewSubActivity');
     Route::post('/update-sub-act', 'FCSController@updateSubActivity');
+    Route::get('/file-classification-note', 'FCSController@note');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

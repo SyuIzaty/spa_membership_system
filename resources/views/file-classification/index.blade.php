@@ -50,7 +50,7 @@
                                         <tr class="bg-primary-50 text-center">
                                             <th class="text-center">No</th>
                                             <th class="text-center">Code</th>
-                                            <th class="text-center">File</th>
+                                            <th class="text-center">Activity</th>
                                             <th class="text-center">Remark</th>
                                             <th class="text-center">Department</th>
                                             <th class="text-center">Action</th>
@@ -71,7 +71,7 @@
                                 </table>
                                 <a href="javascript:;" data-toggle="modal" id="new-file"
                                     class="btn btn-primary ml-auto float-right mt-4"><i class="fal fa-plus"></i>
-                                    Add New File Classification</a>
+                                    Add Activity</a>
                             </div>
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="card-header bg-primary text-white">
-                                    <h5 class="card-title w-100"><i class="fal fa-info fs-xl"></i> NEW CLASSIFICATION FILE
+                                    <h5 class="card-title w-100"><i class="fal fa-info fs-xl"></i> NEW ACTIVITY
                                     </h5>
                                 </div>
                                 <div class="modal-body">
@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="form-group">
                                         <td width="10%"><label class="form-label" for="fileName"><span
-                                                    class="text-danger">*</span> File Name :</label></td>
+                                                    class="text-danger">*</span> Activity :</label></td>
                                         <td colspan="4">
                                             <input value="{{ old('fileName') }}" class="form-control" id="fileName"
                                                 name="fileName" required>

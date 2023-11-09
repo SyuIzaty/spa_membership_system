@@ -77,7 +77,7 @@
                                                             <thead>
                                                                 <tr class="bg-primary-50 text-center">
                                                                     <th class="text-center">Code</th>
-                                                                    <th class="text-center">File</th>
+                                                                    <th class="text-center">Sub-Activity</th>
                                                                     <th class="text-center">Remark</th>
                                                                     <th class="text-center">Action</th>
                                                                 </tr>
@@ -94,7 +94,7 @@
                                                         <a href="javascript:;" data-toggle="modal" id="new-sub"
                                                             class="btn btn-primary ml-auto float-right mt-4"><i
                                                                 class="fal fa-plus"></i>
-                                                            Add New Sub Category</a>
+                                                            Add Sub-Activity</a>
 
                                                         <a href="/file-class"
                                                             class="btn btn-success ml-auto float-left mt-4 waves-effect waves-themed"><i
@@ -114,7 +114,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="card-header bg-primary text-white">
-                                    <h5 class="card-title w-100"><i class="fal fa-info fs-xl"></i> NEW SUB CATEGORY</h5>
+                                    <h5 class="card-title w-100"><i class="fal fa-info fs-xl"></i> NEW SUB-ACTIVITY</h5>
                                 </div>
                                 <div class="modal-body">
                                     {!! Form::open([
@@ -142,7 +142,7 @@
                                     </div>
                                     <div class="form-group">
                                         <td width="10%"><label class="form-label" for="fileName"><span
-                                                    class="text-danger">*</span> File Name :</label></td>
+                                                    class="text-danger">*</span> Sub-Activity :</label></td>
                                         <td colspan="4">
                                             <input value="{{ old('fileName') }}" class="form-control" id="fileName"
                                                 name="fileName" required>
@@ -166,8 +166,8 @@
                                             <input type="checkbox" class="custom-control-input" name ="subAct"
                                                 id="customSwitch1">
                                             <label class="custom-control-label" for="customSwitch1">Have
-                                                Sub-Activities?</label>
-                                            <span>If yes, you can add the sub-activities after save this
+                                                file(s)?</label>
+                                            <span>If yes, you can add the file(s) after save this
                                                 details.</span>
                                         </div>
                                     </div>
@@ -187,8 +187,9 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="card-header bg-primary text-white">
-                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT SUB
-                                        ACTIVITY</h5>
+                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT
+                                        SUB-ACTIVITY
+                                    </h5>
                                 </div>
                                 <div class="modal-body">
                                     {!! Form::open([
@@ -210,7 +211,7 @@
                                     </div>
                                     <div class="form-group">
                                         <td width="10%"><label class="form-label" for="fileName"><span
-                                                    class="text-danger">*</span> File Name :</label></td>
+                                                    class="text-danger">*</span> Sub-Activity :</label></td>
                                         <td colspan="4">
                                             <input class="form-control" id="fileName" name="fileName" required>
                                             @error('fileName')
@@ -227,19 +228,16 @@
                                             @enderror
                                         </td>
                                     </div>
-                                    @if (!isset($act))
-                                        <div class="form-group">
-                                            <div class="custom-control custom-switch">
-                                                <input type="checkbox" class="custom-control-input" name ="subAct"
-                                                    id="customSwitch2">
-                                                <label class="custom-control-label" for="customSwitch2">Have
-                                                    Sub-Activities?</label>
-                                                <span>If yes, you can add the sub-activities after save this
-                                                    details.</span>
-                                            </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" name ="subAct"
+                                                id="customSwitch2">
+                                            <label class="custom-control-label" for="customSwitch2">Have
+                                                file(s)?</label>
+                                            <span>If yes, you can add the file(s) after save this
+                                                details.</span>
                                         </div>
-                                    @endif
-
+                                    </div>
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i
                                                 class="fal fa-save"></i> Update</button>

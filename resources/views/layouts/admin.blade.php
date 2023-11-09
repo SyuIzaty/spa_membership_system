@@ -218,6 +218,13 @@
                                         Classification</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="/file-classification-note" style="text-decoration: none!important;"
+                                    title="File Classification Note" data-filter-tags="fileNote" target="_blank">
+                                    <i class="fal fa-info"></i>
+                                    <span class="nav-link-text" data-i18n="nav.fileNote">Note</span>
+                                </a>
+                            </li>
                             @can('Manage File Classification')
                                 {{-- Role: Library Executive, Library Manager, AQA Admin  --}}
                                 <li class="open">
@@ -1546,8 +1553,8 @@
                                     <img style="cursor:pointer;" src="{{ asset('img/demo/avatars/avatar-m.png') }}"
                                         class="profile-image rounded-circle" alt="">
                                     <!-- you can also add username next to the avatar with the codes below:
-                                                                            <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
-                                                                            <i class="ni ni-chevron-down hidden-xs-down"></i> -->
+                                                                                        <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
+                                                                                        <i class="ni ni-chevron-down hidden-xs-down"></i> -->
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
                                     <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
@@ -1612,18 +1619,18 @@
         <!-- END Quick Menu -->
 
         <!-- base vendor bundle:
-                                               DOC: if you remove pace.js from core please note on Internet Explorer some CSS animations may execute before a page is fully loaded, resulting 'jump' animations
-                                                  + pace.js (recommended)
-                                                  + jquery.js (core)
-                                                  + jquery-ui-cust.js (core)
-                                                  + popper.js (core)
-                                                  + bootstrap.js (core)
-                                                  + slimscroll.js (extension)
-                                                  + app.navigation.js (core)
-                                                  + ba-throttle-debounce.js (core)
-                                                  + waves.js (extension)
-                                                  + smartpanels.js (extension)
-                                                  + src/../jquery-snippets.js (core) -->
+                                                           DOC: if you remove pace.js from core please note on Internet Explorer some CSS animations may execute before a page is fully loaded, resulting 'jump' animations
+                                                              + pace.js (recommended)
+                                                              + jquery.js (core)
+                                                              + jquery-ui-cust.js (core)
+                                                              + popper.js (core)
+                                                              + bootstrap.js (core)
+                                                              + slimscroll.js (extension)
+                                                              + app.navigation.js (core)
+                                                              + ba-throttle-debounce.js (core)
+                                                              + waves.js (extension)
+                                                              + smartpanels.js (extension)
+                                                              + src/../jquery-snippets.js (core) -->
 
 
 
@@ -1836,7 +1843,7 @@
         }
 
         /* Scale down all heading previews because they are way too big to be presented in the UI.
-                                            Preserve the relative scale, though. */
+                                                        Preserve the relative scale, though. */
         .document-editor .ck-heading-dropdown .ck-list .ck-button:not(.ck-heading_paragraph) .ck-button__label {
             transform: scale(0.8);
             transform-origin: left;
