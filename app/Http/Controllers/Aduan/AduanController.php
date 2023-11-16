@@ -498,7 +498,7 @@ class AduanController extends Controller
 
         ->addColumn('action', function ($list) {
 
-            if ($list->status_aduan == 'DJ' && auth()->user()->can('view technical admin')) {
+            if ($list->status_aduan == 'DJ' && Auth::user()->hasPermissionTo('view technical admin')) {
 
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                         <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
@@ -530,7 +530,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if (auth()->user()->can('view technical admin')) {
+            if (Auth::user()->hasPermissionTo('view technical admin')) {
 
                 if ($list->status_aduan == 'BS') {
                     return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
@@ -611,7 +611,7 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if ($list->status_aduan == 'DJ' && auth()->user()->can('view technical admin')) {
+            if ($list->status_aduan == 'DJ' && Auth::user()->hasPermissionTo('view technical admin')) {
 
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                         <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
@@ -643,7 +643,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if (auth()->user()->can('view technical admin')) {
+            if (Auth::user()->hasPermissionTo('view technical admin')) {
 
                 if ($list->status_aduan == 'BS') {
                     return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
@@ -723,7 +723,7 @@ class AduanController extends Controller
         return datatables()::of($list)
         ->addColumn('action', function ($list) {
 
-            if ($list->status_aduan == 'DJ' && auth()->user()->can('view technical admin')) {
+            if ($list->status_aduan == 'DJ' && Auth::user()->hasPermissionTo('view technical admin')) {
 
                 return '<div class="btn-group"><a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info mr-2"><i class="fal fa-pencil"></i></a>
                         <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white mr-2" onclick="Print(this)"><i class="fal fa-file"></i></a></div>';
@@ -755,7 +755,7 @@ class AduanController extends Controller
 
         ->editColumn('status_aduan', function ($list) {
 
-            if (auth()->user()->can('view technical admin')) {
+            if (Auth::user()->hasPermissionTo('view technical admin')) {
 
                 if ($list->status_aduan == 'BS') {
                     return '<span class="badge badge-new">' . strtoupper($list->status->nama_status) . '</span>
@@ -832,7 +832,7 @@ class AduanController extends Controller
 
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
-        $stok = Stock::where('department_id', $staff->staff_code)->where('applicable_for_aduan','1')->get();
+        $stok = Stock::where('department_id', $staff->staff_code)->where('status','1')->where('applicable_for_aduan','1')->get();
 
         $staff_exists = [];
 

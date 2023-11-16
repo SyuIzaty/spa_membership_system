@@ -27,19 +27,19 @@
                     <div class="panel-content">
                         <div class="row">
 
-                            @if(auth()->user()->can('view technical admin'))
+                            @if(Auth::user()->hasPermissionTo('view technical admin'))
                                 @if(in_array($aduan->status_aduan, ['BS', 'DJ', 'TD']))
                                     <div class="col-md-7">
                                 @else
                                     <div class="col-md-12">
                                 @endif
-                            @elseif(auth()->user()->can('view technical staff'))
+                            @elseif(Auth::user()->hasPermissionTo('view technical staff'))
                                 @if($juru->jenis_juruteknik == 'K' && $aduan->status_aduan == 'DJ')
                                     <div class="col-md-7">
                                 @else
                                     <div class="col-md-12">
                                 @endif
-                            @elseif(auth()->user()->can('view complaint list - HEP'))
+                            @elseif(Auth::user()->hasPermissionTo('view complaint list - HEP'))
                                 <div class="col-md-12">
                             @endif
 
