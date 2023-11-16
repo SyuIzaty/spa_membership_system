@@ -96,7 +96,7 @@
                                                                         @endif
                                                                     ">
                                                                         <td class="text-center">{{ $loop->iteration }}</td>
-                                                                        <td class="text-left">{{ $ranks->juruteknik->name }}</td>
+                                                                        <td class="text-left">{{ $ranks->juruteknik->name ?? 'N/A' }}</td>
                                                                         <td class="text-center">{{ $ranks->total }}</td>
                                                                     </tr>
                                                                 @endforeach
