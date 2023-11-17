@@ -72,7 +72,7 @@
                                                                 class="fal fa-plus"></i>
                                                             Add File</a>
 
-                                                        <a href="/file-class/{{ $id }}"
+                                                        <a href="/file-classification/{{ $id }}"
                                                             class="btn btn-success ml-auto float-left mt-4 waves-effect waves-themed"><i
                                                                 class="fal fa-arrow-alt-left"></i> Back
                                                         </a>
@@ -203,7 +203,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

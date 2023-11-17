@@ -12,7 +12,7 @@ class FcsOwner extends Model
 
     public function staff()
     {
-        return $this->hasOne(Staff::class, 'staff_id', 'owner_id');
+        return $this->hasOne(Staff::class, 'staff_id', 'staff_id');
     }
 
     public function department()

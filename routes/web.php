@@ -108,18 +108,26 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/generate-finalized-PDF/{id}', 'SOPController@generateFinalizePDF');
 
     //File Classification
-    Route::resource('/file-class', 'FCSController');
+    Route::resource('/file-classification', 'FCSController');
     Route::post('/file-main-list', 'FCSController@fileMainList');
     Route::post('/file-main-lists', 'FCSController@fileMainLists');
-    Route::post('/store-new-file', 'FCSController@storeNewFile');
+    Route::post('/store-new-activity', 'FCSController@storeNewActivity');
+    Route::post('/update-activity', 'FCSController@updateActivity');
     Route::post('/sub-list/{id}', 'FCSController@subList');
     Route::post('/store-new-sub', 'FCSController@storeNewSub');
     Route::post('/update-sub', 'FCSController@updateSub');
-    Route::get('/file-class/{id}/{ids}', 'FCSController@showSubAct');
+    Route::get('/file-classification/{id}/{ids}', 'FCSController@showSubAct');
     Route::post('/sub-activity-list/{id}', 'FCSController@subActList');
     Route::post('/store-sub-act', 'FCSController@storeNewSubActivity');
     Route::post('/update-sub-act', 'FCSController@updateSubActivity');
     Route::get('/file-classification-note', 'FCSController@note');
+    Route::get('/owner', 'FCSController@owner');
+    Route::post('/owner-department', 'FCSController@getDepartment');
+    Route::get('/owner-list/{id}', 'FCSController@ownerList');
+    Route::post('/owner-store', 'FCSController@storeOwner');
+    Route::delete('/delete-owner/{id}', 'FCSController@destroy')->name('deleteOwner');
+    Route::get('/log-file-classification/{id}', 'FCSController@log');
+    Route::post('/log-list/{id}', 'FCSController@logList');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

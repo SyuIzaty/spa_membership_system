@@ -96,7 +96,7 @@
                                                                 class="fal fa-plus"></i>
                                                             Add Sub-Activity</a>
 
-                                                        <a href="/file-class"
+                                                        <a href="/file-classification"
                                                             class="btn btn-success ml-auto float-left mt-4 waves-effect waves-themed"><i
                                                                 class="fal fa-arrow-alt-left"></i> Back
                                                         </a>

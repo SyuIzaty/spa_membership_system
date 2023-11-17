@@ -28,7 +28,17 @@
                                     {{ session()->get('message') }}
                                 </div>
                             @endif
-
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <strong>Whoops!</strong> There were some problems with your
+                                    input.<br><br>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             @can('Manage File Classification')
                                 <div class="col-md-6" style="margin-bottom: 10px;">
                                     <label>Department</label>
@@ -85,7 +95,7 @@
                                 </div>
                                 <div class="modal-body">
                                     {!! Form::open([
-                                        'action' => 'FCSController@storeNewFile',
+                                        'action' => 'FCSController@storeNewActivity',
                                         'method' => 'POST',
                                         'enctype' => 'multipart/form-data',
                                     ]) !!}
@@ -127,7 +137,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label"><span class="text-danger">*</span> Department</label>
-                                        <select class="form-control department" name="dept" id="dept" required>
+                                        <select class="form-control department" name="department" id="dept"
+                                            required>
                                             <option disabled selected>Choose Department
                                             </option>
                                             @if (Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin']))
@@ -156,6 +167,62 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal fade" id="edit-modal-sub" aria-hidden="true" data-keyboard="false"
+                        data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT ACTIVITY
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    {!! Form::open([
+                                        'action' => 'FCSController@updateActivity',
+                                        'method' => 'POST',
+                                        'enctype' => 'multipart/form-data',
+                                    ]) !!}
+                                    <p><span class="text-danger">*</span> Required Fields</p>
+                                    <input type="hidden" name="id" id="id">
+                                    <div class="form-group">
+                                        <td width="10%"><label class="form-label" for="code"><span
+                                                    class="text-danger">*</span> Code :</label></td>
+                                        <td colspan="4">
+                                            <input class="form-control" id="code" name="code" required>
+                                            @error('code')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                        </td>
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="10%"><label class="form-label" for="fileName"><span
+                                                    class="text-danger">*</span> File Title :</label></td>
+                                        <td colspan="4">
+                                            <input class="form-control" id="fileName" name="fileName" required>
+                                            @error('fileName')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                        </td>
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="10%"><label class="form-label" for="remark">Remark :</label></td>
+                                        <td colspan="4">
+                                            <input class="form-control" id="remark" name="remark">
+                                            @error('remark')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                        </td>
+                                    </div>
+                                    <div class="footer">
+                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i
+                                                class="fal fa-save"></i> Update</button>
+                                        <button type="button" class="btn btn-success ml-auto float-right mr-2"
+                                            data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -175,6 +242,20 @@
             $('#new-file').click(function() {
                 $('#crud-modal-file').modal('show');
             });
+
+            $('#edit-modal-sub').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id')
+                var code = button.data('code')
+                var file = button.data('file')
+                var remark = button.data('remark')
+
+                $('.modal-body #id').val(id);
+                $('.modal-body #code').val(code);
+                $('.modal-body #fileName').val(file);
+                $('.modal-body #remark').val(remark);
+            });
+
 
             var table = $('#fileClass').DataTable({
                 processing: true,
