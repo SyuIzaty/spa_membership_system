@@ -79,9 +79,14 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <a href="javascript:;" data-toggle="modal" id="new-file"
-                                    class="btn btn-primary ml-auto float-right mt-4"><i class="fal fa-plus"></i>
-                                    Add Activity</a>
+
+                                @if (isset($owner))
+                                    <a href="javascript:;" data-toggle="modal" id="new-file"
+                                        class="btn btn-primary ml-auto float-right mt-4"><i class="fal fa-plus"></i>
+                                        Add Activity
+                                    </a>
+                                @endif
+
                             </div>
                         </div>
                     </div>
@@ -139,15 +144,8 @@
                                         <label class="form-label"><span class="text-danger">*</span> Department</label>
                                         <select class="form-control department" name="department" id="dept"
                                             required>
-                                            <option disabled selected>Choose Department
-                                            </option>
-                                            @if (Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin']))
-                                                @foreach ($department as $d)
-                                                    <option value="{{ $d->id }}">
-                                                        {{ $d->department_name }}
-                                                    </option>
-                                                @endforeach
-                                            @elseif (isset($owner))
+                                            <option disabled selected>Choose Department</option>
+                                            @if (isset($owner))
                                                 @foreach ($department->whereIn('id', $owner->dept_id) as $d)
                                                     <option value="{{ $d->id }}">
                                                         {{ $d->department_name }}

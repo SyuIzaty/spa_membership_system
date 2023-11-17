@@ -19,10 +19,8 @@ class FCSController extends Controller
     public function index(Request $request)
     {
         $selectedDepartment = $request->department;
-
         $department         = SopDepartment::where('active', 'Y')->get();
-
-        $owner = FcsOwner::where('staff_id', Auth::user()->id)->first();
+        $owner              = FcsOwner::where('staff_id', Auth::user()->id)->first();
 
         return view('file-classification.index', compact('department', 'selectedDepartment', 'owner'));
     }
@@ -51,11 +49,18 @@ class FCSController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
-                    data-id="' . $data->id . '" data-code="' . $data->code . '"
-                    data-file="' . $data->file . '" data-remark="' . $data->remark . '"
-                    class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+                $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->dept_id)->first();
+
+                if (isset($owner)) {
+                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                    <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
+                        data-id="' . $data->id . '" data-code="' . $data->code . '"
+                        data-file="' . $data->file . '" data-remark="' . $data->remark . '"
+                        class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+
+                } else {
+                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                }
             })
 
             ->addColumn('log', function ($data) {
@@ -97,7 +102,18 @@ class FCSController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->dept_id)->first();
+
+                if (isset($owner)) {
+                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                    <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
+                        data-id="' . $data->id . '" data-code="' . $data->code . '"
+                        data-file="' . $data->file . '" data-remark="' . $data->remark . '"
+                        class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+
+                } else {
+                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                }
             })
 
             ->addColumn('log', function ($data) {
@@ -165,9 +181,10 @@ class FCSController extends Controller
         $data          = FcsMain::where('id', $id)->first();
         $subActivities = FcsMainSub::where('code_id', $id)->get();
         $selectedSub   = $request->subActivities;
-        $act = FcsMainSubActivity::where('code_sub_id', $subActivities->pluck('id')->toArray())->exists();
+        $act           = FcsMainSubActivity::where('code_sub_id', $subActivities->pluck('id')->toArray())->exists();
+        $owner         = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->dept_id)->first();
 
-        return view('file-classification.sub-activity', compact('data', 'subActivities', 'id', 'selectedSub', 'act'));
+        return view('file-classification.sub-activity', compact('data', 'subActivities', 'id', 'selectedSub', 'act', 'owner'));
     }
 
     public function subList($id)
@@ -181,17 +198,23 @@ class FCSController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                if ($data->sub_activity === 'Y') {
+                $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->mainCode->dept_id)->first();
+
+                if ($data->sub_activity === 'Y' && isset($owner)) {
                     return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
                     class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
-                } else {
+                } elseif($data->sub_activity !== 'Y' && isset($owner)) {
                     return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
                     class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+                } elseif($data->sub_activity === 'Y' && !isset($owner)) {
+                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                } else {
+                    return'<span class="badge badge-dark">NOT AVAILABLE</span>';
                 }
             })
 
@@ -287,8 +310,9 @@ class FCSController extends Controller
         $mainSub       = FcsMainSub::where('id', $ids)->first();
         $data          = FcsMain::where('id', $id)->first();
         $subActivities = FcsMainSubActivity::where('code_sub_id', $ids)->get();
+        $owner         = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->dept_id)->first();
 
-        return view('file-classification.file-sub', compact('data', 'mainSub', 'subActivities', 'id', 'ids'));
+        return view('file-classification.file-sub', compact('data', 'mainSub', 'subActivities', 'id', 'ids', 'owner'));
     }
 
     public function subActList($id)
@@ -302,11 +326,16 @@ class FCSController extends Controller
             })
 
             ->addColumn('action', function ($data) {
+                $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->subCode->mainCode->dept_id)->first();
 
-                return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
+                if (isset($owner)) {
+                    return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '"
                     class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+                } else {
+                    return'<span class="badge badge-dark">NOT AVAILABLE</span>';
+                }
             })
 
             ->addIndexColumn()

@@ -91,10 +91,14 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                        <a href="javascript:;" data-toggle="modal" id="new-sub"
-                                                            class="btn btn-primary ml-auto float-right mt-4"><i
-                                                                class="fal fa-plus"></i>
-                                                            Add Sub-Activity</a>
+
+                                                        @if (isset($owner))
+                                                            <a href="javascript:;" data-toggle="modal" id="new-sub"
+                                                                class="btn btn-primary ml-auto float-right mt-4"><i
+                                                                    class="fal fa-plus"></i>
+                                                                Add Sub-Activity
+                                                            </a>
+                                                        @endif
 
                                                         <a href="/file-classification"
                                                             class="btn btn-success ml-auto float-left mt-4 waves-effect waves-themed"><i
