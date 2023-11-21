@@ -485,7 +485,69 @@
                         @endrole
 
                         <!-- End eKenderaan Management System -->
-                        \
+
+                        <!-- Start i-Stationery System -->
+
+                        @can('View Stationery')
+                            <li class="nav-title">I-Stationery</li>
+
+                            <li>
+                                <a href="/application-list" title="i-Stationery" data-filter-tags="vote-management">
+                                    <i class="fal fa-file"></i>
+                                    <span class="nav-link-text" data-i18n="nav.vote-management">Stationery Application</span>
+                                </a>
+                            </li>
+                            @canany(['Manage Stationery','Manage Approval'])
+                                <li>
+                                    <a href="#" title="i-Stationery" data-filter-tags="vote-management">
+                                        <i class="ni ni-calendar-fine"></i>
+                                        <span class="nav-link-text" data-i18n="nav.vote-management">Application Management</span>
+                                    </a>
+                                    <ul>
+                                        @inject('application', 'App\IsmApplication')
+                                        <li>
+                                            <a href="/stationery-manage/NA" title="parameter" data-filter-tags="parameter">
+                                                <span class="nav-link-text" data-i18n="nav.parameter">New Application ({{ $application->countNewApplication() }})</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/stationery-manage/RV" title="report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report">Rejected ({{ $application->countRejected() }})</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/stationery-manage/PA" title="report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report">Pending Approval ({{ $application->countPendingApproval() }})</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/stationery-manage/RC" title="report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report">Ready For Collection ({{ $application->countReadyCollection() }})</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/stationery-manage/AC" title="report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report">Awaiting Confirmation ({{ $application->countAwaitingConfirmation() }})</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/stationery-manage/CP" title="report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report">Complete ({{ $application->countComplete() }})</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="/stationery-report" title="i-Stationery" data-filter-tags="vote-management">
+                                        <i class="fal fa-clipboard-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.vote-management">Reporting</span>
+                                    </a>
+                                </li>
+                            @endcanany
+                        @endcan
+
+                        <!-- End i-Stationery System -->
+
                         <!-- Start eDocument Management System -->
                         @role('Staff')
                             <li class="nav-title">eDocument Management</li>

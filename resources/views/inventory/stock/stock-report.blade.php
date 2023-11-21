@@ -89,6 +89,7 @@
                     processing: true,
                     serverSide: true,
                     autowidth: false,
+                    searching: false,
                     ajax: {
                         url: "/data-stock-report",
                         type: 'POST',

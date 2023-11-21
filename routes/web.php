@@ -192,6 +192,24 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report-driver-pdf/{year}/{month}/{id}', 'EKenderaanController@DriverReportPDFYearMonth');
     Route::post('request-cancellation', 'EKenderaanController@operationCancelApplication');
 
+    //iStationery
+    Route::get('/application-list', 'Stationery\StationeryManagementController@index');
+    Route::post('data-application-form', 'Stationery\StationeryManagementController@data_application_form');
+    Route::delete('application-list/{id}', 'Stationery\StationeryManagementController@application_delete');
+    Route::get('/application-info/{id}', 'Stationery\StationeryManagementController@application_info');
+    Route::get('/stationery-application-form', 'Stationery\StationeryManagementController@application_form');
+    Route::post('application-store', 'Stationery\StationeryManagementController@application_store');
+    Route::get('/stationery-manage/{status}', 'Stationery\StationeryManagementController@application_manage');
+    Route::post('/data-stationery-manage/{status}', 'Stationery\StationeryManagementController@data_application_manage');
+    Route::post('application-verify', 'Stationery\StationeryManagementController@application_verify');
+    Route::post('application-approve', 'Stationery\StationeryManagementController@application_approve');
+    Route::post('application-reminder', 'Stationery\StationeryManagementController@application_reminder');
+    Route::post('application-confirm', 'Stationery\StationeryManagementController@application_confirm');
+    Route::get('/application-pdf/{id}', 'Stationery\StationeryManagementController@application_pdf');
+    Route::get('/stationery-report', 'Stationery\StationeryReportController@index');
+    Route::post('data-stationery-report', 'Stationery\StationeryReportController@data_stationery_report');
+    Route::get('/stationery-report-excel/{department}/{month}/{year}/{status}/{type}', 'Stationery\StationeryReportController@stationery_report');
+
     // Aduan
     Route::get('/borang-aduan', 'Aduan\AduanController@borangAduan')->name('borangAduan');
     Route::post('simpanAduan', 'Aduan\AduanController@simpanAduan');
