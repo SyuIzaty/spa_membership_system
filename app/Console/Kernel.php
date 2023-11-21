@@ -25,7 +25,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('stock_balance:reminder')
-                 ->mondays()
+                 ->monthly()
+                 ->lastOfMonth()
                  ->at('09:00');
 
         // $schedule->command('stock_balance:reminder')->everyMinute();
