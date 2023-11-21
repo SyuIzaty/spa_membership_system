@@ -184,8 +184,8 @@ class BookingController extends Controller
     {
         $booking = SpaceBookingVenue::find($id);
         $booking_item = SpaceBookingItem::MainId($booking->space_main_id)->get();
-        $venue = SpaceVenue::Active()->get();
-        $item = SpaceItem::Active()->get();
+        $venue = SpaceVenue::Active()->DepartmentId($booking->spaceVenue->department_id)->get();
+        $item = SpaceItem::Active()->DepartmentId($booking->spaceVenue->department_id)->get();
         $user = User::find(isset($booking->spaceBookingMain->staff_id) ? $booking->spaceBookingMain->staff_id : Auth::user()->id);
         if(isset($booking->spaceVenue)){
             if($booking->spaceVenue->department_id == 10){
