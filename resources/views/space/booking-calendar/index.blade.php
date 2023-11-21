@@ -31,7 +31,7 @@
                                                   <br><br>
                                                   <label class="low" style="margin-left: 14px !important; background-color: #E0D0F5"><label class="" style="margin-left: 30px;">IITU</label></label>
                                                   <label class="medium" style="margin-left: 70px !important; background-color: #FCE4BA"><label class="" style="margin-left: 30px;">LIBRARY</label></label>
-                                                  <label class="high" style="margin-left: 85px !important; background-color: #FDF1E6"><label class="" style="margin-left: 30px; width: 130px">FACILITY</label></label>
+                                                  <label class="high" style="margin-left: 85px !important; background-color: #F8BCBC"><label class="" style="margin-left: 30px; width: 130px">FACILITY</label></label>
                                               </td>
                                           </div>
                                       </tr>
