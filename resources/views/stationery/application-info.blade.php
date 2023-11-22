@@ -42,6 +42,11 @@
                                 @if (Session::has('message'))
                                     <div class="alert alert-success" style="color: #3b6324"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                                 @endif
+                                @php
+                                    $trackData = \App\IsmApplicationTrack::where('application_id', $application->id)
+                                        ->where('status_id', $application->current_status)
+                                        ->first();
+                                @endphp
                                 <div class="table-responsive">
                                     <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
                                         <li>
@@ -193,137 +198,132 @@
                                                 @endforeach
                                             </table>
                                         </div>
+
+                                        @if($application->applicant_id == Auth::user()->id)
+                                            <div class="table-responsive">
+                                                <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
+                                                    <li>
+                                                        <a href="#" disabled style="pointer-events: none">
+                                                            <i class="fal fa-check-square"></i>
+                                                            <span class=""> CONSENT VERIFICATION</span>
+                                                        </a>
+                                                    </li>
+                                                    <p></p>
+                                                </ol>
+                                                <table id="verification" class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <div class="form-group">
+                                                                <td colspan="4"><p class="form-label" for="applicant_verification">
+                                                                <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px" type="checkbox" @if($application->applicant_verification == 'Y') disabled checked @endif/>
+                                                                ALL INFORMATION PROVIDED ARE ACCURATE. I CONSENT TO BE CONTACTED FOR ANY FURTHER INQUIRIES RELATED TO THE SUBMITTED APPLICATION.
+                                                            </div>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            @if($application->current_status == 'CP')
+                                                <div class="table-responsive">
+                                                    <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
+                                                        <li>
+                                                            <a href="#" disabled style="pointer-events: none">
+                                                                <i class="fal fa-check-square"></i>
+                                                                <span class=""> CONFIRMATION</span>
+                                                            </a>
+                                                        </li>
+                                                        <p></p>
+                                                    </ol>
+                                                    <table id="verification" class="table table-bordered table-hover table-striped w-100">
+                                                        <thead>
+                                                            <tr>
+                                                                <div class="form-group">
+                                                                    <td colspan="4"><p class="form-label">
+                                                                    <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px" type="checkbox" disabled checked/>
+                                                                        THIS APPLICATION HAVE BEEN SUCCESSFULLY CONFIRMED ON
+                                                                        {{ isset($trackData->created_at) ? date('d-m-Y', strtotime($trackData->created_at)) . ' ( '. date('l', strtotime($trackData->created_at)) .' ) | ' . date('h:i A', strtotime($trackData->created_at)).'.' : 'N/A' }}
+                                                                </div>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            @endif
+                                            @if($application->current_status == 'RV' || $application->current_status == 'RA')
+                                                <div class="table-responsive">
+                                                    <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
+                                                        <li>
+                                                            <a href="#" disabled style="pointer-events: none">
+                                                                <i class="fal fa-eye"></i>
+                                                                <span class=""> REJECTION INFORMATION</span>
+                                                            </a>
+                                                        </li>
+                                                        <p></p>
+                                                    </ol>
+                                                    <table id="info" class="table table-bordered table-hover w-100">
+                                                        <tr>
+                                                            <th style="vertical-align: middle">Remark : </th>
+                                                            <td  style="vertical-align: middle">{{ ucwords($trackData->remark) ?? 'N/A' }}</td>
+                                                            <th  style="vertical-align: middle">Date : </th>
+                                                            <td  style="vertical-align: middle">{{ isset($trackData->created_at) ? date('d-m-Y', strtotime($trackData->created_at)) . ' | ' . date('h:i A', strtotime($trackData->created_at)) : 'N/A' }}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            @endif
+                                        @endif
+
                                         @if(Auth::user()->hasPermissionTo('Manage Stationery'))
                                             @if($application->current_status == 'NA')
                                                 <button type="submit" id="verifyBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-save"></i> Verify Application</button>
                                              @endif
                                         @endif
                                     {!! Form::close() !!}
-                                </div>
 
-                                @php
-                                    $trackData = \App\IsmApplicationTrack::where('application_id', $application->id)
-                                        ->where('status_id', $application->current_status)
-                                        ->first();
-                                @endphp
-
-                                @if($application->applicant_id == Auth::user()->id)
-                                    <div class="table-responsive">
-                                        <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
-                                            <li>
-                                                <a href="#" disabled style="pointer-events: none">
-                                                    <i class="fal fa-check-square"></i>
-                                                    <span class=""> CONSENT VERIFICATION</span>
-                                                </a>
-                                            </li>
-                                            <p></p>
-                                        </ol>
-                                        <table id="verification" class="table table-bordered table-hover table-striped w-100">
-                                            <thead>
-                                                <tr>
-                                                    <div class="form-group">
-                                                        <td colspan="4"><p class="form-label" for="applicant_verification">
-                                                        <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px" type="checkbox" @if($application->applicant_verification == 'Y') disabled checked @endif/>
-                                                        ALL INFORMATION PROVIDED ARE ACCURATE. I CONSENT TO BE CONTACTED FOR ANY FURTHER INQUIRIES RELATED TO THE SUBMITTED APPLICATION.
-                                                    </div>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    @if($application->current_status == 'CP')
-                                        <div class="table-responsive">
-                                            <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
-                                                <li>
-                                                    <a href="#" disabled style="pointer-events: none">
-                                                        <i class="fal fa-check-square"></i>
-                                                        <span class=""> CONFIRMATION</span>
-                                                    </a>
-                                                </li>
-                                                <p></p>
-                                            </ol>
-                                            <table id="verification" class="table table-bordered table-hover table-striped w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <div class="form-group">
-                                                            <td colspan="4"><p class="form-label">
-                                                            <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px" type="checkbox" disabled checked/>
-                                                                THIS APPLICATION HAVE BEEN SUCCESSFULLY CONFIRMED ON
-                                                                {{ isset($trackData->created_at) ? date('d-m-Y', strtotime($trackData->created_at)) . ' ( '. date('l', strtotime($trackData->created_at)) .' ) | ' . date('h:i A', strtotime($trackData->created_at)).'.' : 'N/A' }}
-                                                        </div>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    @endif
-                                    @if($application->current_status == 'RV' || $application->current_status == 'RA')
-                                        <div class="table-responsive">
-                                            <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
-                                                <li>
-                                                    <a href="#" disabled style="pointer-events: none">
-                                                        <i class="fal fa-eye"></i>
-                                                        <span class=""> REJECTION INFORMATION</span>
-                                                    </a>
-                                                </li>
-                                                <p></p>
-                                            </ol>
-                                            <table id="info" class="table table-bordered table-hover w-100">
-                                                <tr>
-                                                    <th style="vertical-align: middle">Remark : </th>
-                                                    <td  style="vertical-align: middle">{{ ucwords($trackData->remark) ?? 'N/A' }}</td>
-                                                    <th  style="vertical-align: middle">Date : </th>
-                                                    <td  style="vertical-align: middle">{{ isset($trackData->created_at) ? date('d-m-Y', strtotime($trackData->created_at)) . ' | ' . date('h:i A', strtotime($trackData->created_at)) : 'N/A' }}</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    @endif
-                                @endif
-
-                                @unless(Auth::user()->hasPermissionTo('Manage Stationery'))
-                                     @if(Auth::user()->hasPermissionTo('Manage Approval'))
-                                        @if($application->current_status == 'PA')
-                                            {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_approve'], 'method' => 'POST', 'id' => 'approveData', 'enctype' => 'multipart/form-data'])!!}
-                                            {{Form::hidden('id', $application->id)}}
-                                            {{Form::hidden('status', 'RC')}}
-                                                <button type="submit" id="approveBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-check-circle"></i> Approve Application</button>
-                                            {!! Form::close() !!}
-                                            <a href="#" class="btn btn-danger ml-2 float-right" id="rejectButton"><i class="fal fa-times-circle"></i> Reject Application</a>
-                                        @endif
-                                     @else
-                                        @if($application->current_status == 'AC')
-                                            {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_confirm'], 'method' => 'POST', 'id' => 'confirmData', 'enctype' => 'multipart/form-data'])!!}
-                                            {{Form::hidden('id', $application->id)}}
-                                                 <button type="submit" id="confirmBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-check-circle"></i> Confirm Application</button>
-                                            {!! Form::close() !!}
-                                        @endif
-                                     @endif
-                                @endunless
-
-                                @if(Auth::user()->hasPermissionTo('Manage Stationery'))
-                                    @if($application->current_status == 'RC' || $application->current_status == 'AC')
-                                        {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_reminder'], 'method' => 'POST', 'id' => 'reminderData', 'enctype' => 'multipart/form-data']) !!}
-                                        {{ Form::hidden('id', $application->id) }}
-                                        {{ Form::hidden('status', 'AC') }}
-                                            <button type="submit" id="reminderBtn" class="btn btn-danger ml-2 float-right"><i class="fal fa-location-arrow"></i> Send Reminder</button>
-                                        {!! Form::close() !!}
-                                    @endif
-                                @endif
-
-                                @if(Auth::user()->hasPermissionTo('Manage Approval') || Auth::user()->hasPermissionTo('Manage Stationery'))
-                                    <?php
-                                        $previousPageUrl = url()->previous();
-                                    ?>
-                                    @if (Str::contains($previousPageUrl, '/application-list'))
-                                        <a href="/application-list" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
-                                    @else
-                                        @if($application->current_status == 'RA' || $application->current_status == 'RV')
-                                            <a href="/stationery-manage/RV" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                    @unless(Auth::user()->hasPermissionTo('Manage Stationery'))
+                                        @if(Auth::user()->hasPermissionTo('Manage Approval'))
+                                            @if($application->current_status == 'PA')
+                                                {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_approve'], 'method' => 'POST', 'id' => 'approveData', 'enctype' => 'multipart/form-data'])!!}
+                                                {{Form::hidden('id', $application->id)}}
+                                                {{Form::hidden('status', 'RC')}}
+                                                    <button type="submit" id="approveBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-check-circle"></i> Approve Application</button>
+                                                {!! Form::close() !!}
+                                                <a href="#" class="btn btn-danger ml-2 float-right" id="rejectButton"><i class="fal fa-times-circle"></i> Reject Application</a>
+                                            @endif
                                         @else
-                                            <a href="/stationery-manage/{{ $application->current_status }}" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                            @if($application->current_status == 'AC')
+                                                {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_confirm'], 'method' => 'POST', 'id' => 'confirmData', 'enctype' => 'multipart/form-data'])!!}
+                                                {{Form::hidden('id', $application->id)}}
+                                                        <button type="submit" id="confirmBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-check-circle"></i> Confirm Application</button>
+                                                {!! Form::close() !!}
+                                            @endif
+                                        @endif
+                                    @endunless
+
+                                    @if(Auth::user()->hasPermissionTo('Manage Stationery'))
+                                        @if($application->current_status == 'RC' || $application->current_status == 'AC')
+                                            {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_reminder'], 'method' => 'POST', 'id' => 'reminderData', 'enctype' => 'multipart/form-data']) !!}
+                                            {{ Form::hidden('id', $application->id) }}
+                                            {{ Form::hidden('status', 'AC') }}
+                                                <button type="submit" id="reminderBtn" class="btn btn-danger ml-2 float-right"><i class="fal fa-location-arrow"></i> Send Reminder</button>
+                                            {!! Form::close() !!}
                                         @endif
                                     @endif
-                                @else
-                                    <a href="/application-list" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
-                                @endif
+
+                                    @if(Auth::user()->hasPermissionTo('Manage Approval') || Auth::user()->hasPermissionTo('Manage Stationery'))
+                                        <?php
+                                            $previousPageUrl = url()->previous();
+                                        ?>
+                                        @if (Str::contains($previousPageUrl, '/application-list'))
+                                            <a href="/application-list" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                        @else
+                                            @if($application->current_status == 'RA' || $application->current_status == 'RV')
+                                                <a href="/stationery-manage/RV" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                            @else
+                                                <a href="/stationery-manage/{{ $application->current_status }}" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                            @endif
+                                        @endif
+                                    @else
+                                        <a href="/application-list" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                    @endif
+                                </div>
 
                             </div>
                         </div>

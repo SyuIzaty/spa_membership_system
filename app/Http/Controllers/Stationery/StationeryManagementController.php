@@ -316,7 +316,7 @@ class StationeryManagementController extends Controller
 
         ->addColumn('duration', function ($data) {
 
-            $duration = Carbon::parse($data->created_at)->diffInDays(Carbon::now());
+            $duration = Carbon::parse($data->created_at)->diffInDays(Carbon::now()) + 1;
 
             return '<b style="color:red">'.$duration.' day(s)</b>';
 

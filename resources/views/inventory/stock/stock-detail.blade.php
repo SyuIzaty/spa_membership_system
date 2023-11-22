@@ -140,7 +140,7 @@
                                                                 <tr>
                                                                     <div class="form-group">
                                                                         <td colspan="4">
-                                                                            <label class="form-label mr-4" for="applicable_for_stationary"> Applicable for i-Stationary ?</label>
+                                                                            <label class="form-label mr-4" for="applicable_for_stationary"> Applicable for i-Stationery ?</label>
                                                                             <label style="vertical-align: middle;">
                                                                                 <input type="checkbox" name="applicable_for_stationary" value="1" id="applicable_for_stationary" {{ $stock->applicable_for_stationary == 1 ? 'checked' : '' }} style="vertical-align: middle">
                                                                             </label> Yes

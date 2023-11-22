@@ -15,7 +15,7 @@
                 <th style="background-color: #ffe1b7;">BRAND</th>
                 <th style="background-color: #ffe1b7;">STATUS</th>
                 <th style="background-color: #ffe1b7;">BALANCE STATUS</th>
-                <th style="background-color: #ffe1b7;">APPLICABLE FOR i-STATIONARY</th>
+                <th style="background-color: #ffe1b7;">APPLICABLE FOR i-STATIONERY</th>
                 <th style="background-color: #ffe1b7;">CURRENT OWNER</th>
                 <th style="background-color: #ffe1b7;">CREATED DATE</th>
             </tr>
