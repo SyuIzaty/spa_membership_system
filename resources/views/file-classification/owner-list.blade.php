@@ -43,7 +43,7 @@
                                 <div class="col-sm-12">
                                     <div class="card card-primary card-outline">
                                         <div class="card-header">
-                                            <p class="card-title w-100" style="font-weight: 500">Add Admin</p>
+                                            <p class="card-title w-100" style="font-weight: 500">Add Owner</p>
                                         </div>
 
                                         {!! Form::open(['action' => 'FCSController@storeOwner', 'method' => 'POST']) !!}
@@ -53,17 +53,17 @@
                                                 <tr>
                                                     <div class="form-group">
                                                         <td style="vertical-align: middle"><label
-                                                                class="float-right form-label" for="admin">Add
+                                                                class="float-right form-label" for="owner">Add
                                                                 Owner:</label></td>
                                                         <td colspan="4">
-                                                            <select class="form-control admin" name="admin[]" multiple>
+                                                            <select class="form-control owner" name="owner[]" multiple>
                                                                 @foreach ($staff as $s)
                                                                     <option value="{{ $s->staff_id }}">
                                                                         {{ $s->staff_name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
-                                                            @error('admin')
+                                                            @error('owner')
                                                                 <p style="color: red"><strong> * {{ $message }} </strong>
                                                                 </p>
                                                             @enderror
@@ -137,7 +137,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('.admin').select2();
+            $('.owner').select2();
             $('.staff').select2();
 
 

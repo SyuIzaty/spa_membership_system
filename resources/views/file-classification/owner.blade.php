@@ -64,6 +64,9 @@
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: function(d) {
+                        d.extra_param = 'total'; // Add any extra parameters needed for your query
                     }
                 },
                 columns: [{
@@ -74,7 +77,8 @@
                     {
                         className: 'text-center',
                         data: 'total',
-                        name: 'total'
+                        name: 'total',
+                        searchable: false
                     },
                     {
                         className: 'text-center',

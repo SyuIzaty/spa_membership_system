@@ -403,12 +403,12 @@ class FCSController extends Controller
 
     public function getDepartment()
     {
-        $department = SopDepartment::where('active', 'Y');
+        $department = SopDepartment::with('owners')->where('active', 'Y');
 
         return datatables()::of($department)
 
             ->editColumn('total', function ($department) {
-                return FcsOwner::where('dept_id', $department->id)->count();
+                return $department->owners->count();
             })
 
             ->addColumn('action', function ($department) {
@@ -431,13 +431,13 @@ class FCSController extends Controller
     public function storeOwner(Request $request)
     {
         $request->validate([
-            'admin'     => 'required',
+            'owner'     => 'required',
         ]);
 
         $error = [];
         $message = '';
 
-        foreach ($request->admin as $key => $value) {
+        foreach ($request->owner as $key => $value) {
             if (FcsOwner::where('dept_id', $request->id)->where('staff_id', $value)->count() > 0) {
                 $staff = Staff::where('staff_id', $value)->first();
                 $error[] = $staff->staff_name;

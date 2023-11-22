@@ -232,16 +232,15 @@
                                             @enderror
                                         </td>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" @if ($subActivities->where('sub_activity', 'Y')->isNotEmpty()) style="display:none" @endif>
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" name ="subAct"
+                                            <input type="checkbox" class="custom-control-input" name="subAct"
                                                 id="customSwitch2">
-                                            <label class="custom-control-label" for="customSwitch2">Have
-                                                file(s)?</label>
-                                            <span>If yes, you can add the file(s) after save this
-                                                details.</span>
+                                            <label class="custom-control-label" for="customSwitch2">Have file(s)?</label>
+                                            <span>If yes, you can add the file(s) after saving these details.</span>
                                         </div>
                                     </div>
+
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i
                                                 class="fal fa-save"></i> Update</button>

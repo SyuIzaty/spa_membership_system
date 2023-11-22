@@ -193,7 +193,7 @@
                                     </div>
                                     <div class="form-group">
                                         <td width="10%"><label class="form-label" for="fileName"><span
-                                                    class="text-danger">*</span> File Title :</label></td>
+                                                    class="text-danger">*</span> Activity :</label></td>
                                         <td colspan="4">
                                             <input class="form-control" id="fileName" name="fileName" required>
                                             @error('fileName')
