@@ -126,11 +126,11 @@
                                             </thead>
                                         </table>
                                     </div>
-                                    <button class="btn btn-danger float-right mb-4" type="button" id="submitBtn" disabled>
+                                    <button class="btn btn-success float-right mb-4" type="button" id="submitBtn" disabled>
                                         <i class="fal fa-check-circle"></i> Submit Application
                                     </button>
                                 {!! Form::close() !!}
-                                <a href="/application-list" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
+                                <a href="/application-list" class="btn btn-secondary ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                                     </table>
                                 </div>
                                 <div class="footer">
-                                    <button type="button" class="btn btn-sm btn-success ml-auto mt-4 float-right" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                    <button type="button" class="btn btn-sm btn-secondary ml-auto mt-4 float-right" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
                                 </div>
                             </div>
                         </div>

@@ -156,32 +156,33 @@
                                                             @else
                                                                 @if(Auth::user()->hasPermissionTo('Manage Stationery'))
                                                                     @if($application->current_status == 'NA')
-                                                                        <td class="appStationery" style="display: none;">
-                                                                            @php
-                                                                                $total_bal = 0;
-                                                                                $stockId = $stationery->stock_id;
-                                                                                $stockData = \App\Stock::where('id', $stockId)->first();
+                                                                    <td class="appStationery" style="display: none;">
+                                                                        @php
+                                                                            $total_bal = 0;
+                                                                            $stockId = $stationery->stock_id;
+                                                                            $stockData = \App\Stock::where('id', $stockId)->first();
 
-                                                                                if ($stockData) {
-                                                                                    foreach ($stockData->transaction as $list) {
-                                                                                        $total_bal += ($list->stock_in - $list->stock_out);
-                                                                                    }
-
-                                                                                    $numbers = $total_bal > 0 ? range(1, $total_bal) : [];
+                                                                            if ($stockData) {
+                                                                                foreach ($stockData->transaction as $list) {
+                                                                                    $total_bal += ($list->stock_in - $list->stock_out);
                                                                                 }
-                                                                            @endphp
-                                                                            <select class="form-control approve_quantity" name="approve_quantity[]" id="approve_quantity_{{ $loop->index }}">
-                                                                                <option value="" disabled selected>Please select</option>
-                                                                                @foreach ($numbers as $value)
-                                                                                    <option value="{{ $value }}" {{ old('approve_quantity') !== null && old('approve_quantity') == $value ? 'selected' : '' }}>
-                                                                                        {{ $value }}
-                                                                                    </option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </td>
-                                                                        <td class="appStationery" style="display: none;">
-                                                                            <input class="form-control" id="approve_remark" name="approve_remark[]" value="{{ old('approve_remark') }}">
-                                                                        </td>
+
+                                                                                $numbers = $total_bal > 0 ? range(1, $total_bal) : [];
+                                                                            }
+                                                                        @endphp
+                                                                        <select class="form-control approve_quantity" name="approve_quantity[{{$loop->index}}]" id="approve_quantity_{{ $loop->index }}">
+                                                                            <option value="" disabled selected>Please select</option>
+                                                                            @foreach ($numbers as $value)
+                                                                                <option value="{{ $value }}" {{ old("approve_quantity.$loop->index") !== null && old("approve_quantity.$loop->index") == $value ? 'selected' : '' }}>
+                                                                                    {{ $value }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </td>
+                                                                    <td class="appStationery" style="display: none;">
+                                                                        <input class="form-control" id="approve_remark" name="approve_remark[{{$loop->index}}]" value="{{ old("approve_remark.$loop->index") }}">
+                                                                    </td>
+
                                                                     @else
                                                                         <td>{{ $stationery->approve_quantity ?? 'N/A' }}</td>
                                                                         <td>{{ $stationery->approve_remark ?? 'N/A' }}</td>
@@ -272,7 +273,7 @@
 
                                         @if(Auth::user()->hasPermissionTo('Manage Stationery'))
                                             @if($application->current_status == 'NA')
-                                                <button type="submit" id="verifyBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-save"></i> Verify Application</button>
+                                                <button type="submit" id="verifyBtn" class="btn btn-success ml-2 float-right"><i class="fal fa-save"></i> Verify Application</button>
                                              @endif
                                         @endif
                                     {!! Form::close() !!}
@@ -283,7 +284,7 @@
                                                 {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_approve'], 'method' => 'POST', 'id' => 'approveData', 'enctype' => 'multipart/form-data'])!!}
                                                 {{Form::hidden('id', $application->id)}}
                                                 {{Form::hidden('status', 'RC')}}
-                                                    <button type="submit" id="approveBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-check-circle"></i> Accept Application</button>
+                                                    <button type="submit" id="approveBtn" class="btn btn-success ml-2 float-right"><i class="fal fa-check-circle"></i> Accept Application</button>
                                                 {!! Form::close() !!}
                                                 <a href="#" class="btn btn-danger ml-2 float-right" id="rejectButton"><i class="fal fa-times-circle"></i> Reject Application</a>
                                             @endif
@@ -291,7 +292,7 @@
                                             @if($application->current_status == 'AC')
                                                 {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_confirm'], 'method' => 'POST', 'id' => 'confirmData', 'enctype' => 'multipart/form-data'])!!}
                                                 {{Form::hidden('id', $application->id)}}
-                                                        <button type="submit" id="confirmBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-check-circle"></i> Confirm Application</button>
+                                                        <button type="submit" id="confirmBtn" class="btn btn-success ml-2 float-right"><i class="fal fa-check-circle"></i> Confirm Application</button>
                                                 {!! Form::close() !!}
                                             @endif
                                         @endif
@@ -302,7 +303,7 @@
                                             {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_reminder'], 'method' => 'POST', 'id' => 'reminderData', 'enctype' => 'multipart/form-data']) !!}
                                             {{ Form::hidden('id', $application->id) }}
                                             {{ Form::hidden('status', 'AC') }}
-                                                <button type="submit" id="reminderBtn" class="btn btn-danger ml-2 float-right"><i class="fal fa-location-arrow"></i> Send Reminder</button>
+                                                <button type="submit" id="reminderBtn" class="btn btn-success ml-2 float-right"><i class="fal fa-location-arrow"></i> Send Reminder</button>
                                             {!! Form::close() !!}
                                         @endif
                                     @endif
@@ -312,16 +313,16 @@
                                             $previousPageUrl = url()->previous();
                                         ?>
                                         @if (Str::contains($previousPageUrl, '/application-list'))
-                                            <a href="/application-list" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                            <a href="/application-list" class="btn btn-secondary ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
                                         @else
                                             @if($application->current_status == 'RA' || $application->current_status == 'RV')
-                                                <a href="/stationery-manage/RV" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                                <a href="/stationery-manage/RV" class="btn btn-secondary ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
                                             @else
-                                                <a href="/stationery-manage/{{ $application->current_status }}" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                                <a href="/stationery-manage/{{ $application->current_status }}" class="btn btn-secondary ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
                                             @endif
                                         @endif
                                     @else
-                                        <a href="/application-list" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                        <a href="/application-list" class="btn btn-secondary ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a><br>
                                     @endif
                                 </div>
 

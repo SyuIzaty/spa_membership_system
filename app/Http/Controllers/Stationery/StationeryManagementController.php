@@ -147,7 +147,7 @@ class StationeryManagementController extends Controller
         foreach ($admin as $admin_list) {
             $data = [
                 'app_recipient'     => $admin_list->name,
-                'app_description'   => 'For your information, you have just received a new application (APPLICATIONID #'.$application->id.') from '.$application->staff->staff_name.' on '
+                'app_description'   => 'For your information, you have received a new application (APPLICATIONID #'.$application->id.') from '.$application->staff->staff_name.' on '
                                         .date('d/m/Y', strtotime($application->created_at)).'. Please review the application at your earliest convenience.',
             ];
 

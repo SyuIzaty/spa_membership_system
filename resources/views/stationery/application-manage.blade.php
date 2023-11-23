@@ -124,14 +124,14 @@
                     { className: 'text-center', data: 'applicant_name', name: 'staff.staff_name' },
                     { className: 'text-center', data: 'created_at', name: 'created_at' },
                     @if($status == 'NA')
-                        { className: 'text-center', data: 'duration', name: 'duration', orderable: false, searchable: false},
+                        { className: 'text-center', data: 'duration', name: 'duration', orderable: false},
                     @endif
                     @if($status == 'RV')
                         { className: 'text-center', data: 'current_status', name: 'status.status_name' },
-                        { className: 'text-center', data: 'remark', name: 'remark', orderable: false, searchable: false},
+                        { className: 'text-center', data: 'remark', name: 'remark', orderable: false},
                     @endif
                     @if($status == 'AC')
-                        { className: 'text-center', data: 'reminder', name: 'reminder', orderable: false, searchable: false},
+                        { className: 'text-center', data: 'reminder', name: 'reminder', orderable: false},
                     @endif
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
