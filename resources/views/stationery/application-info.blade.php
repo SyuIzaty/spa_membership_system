@@ -91,7 +91,7 @@
                                                     <label class="form-label" for="status"><span class="text-danger">*</span> Application Status :</label>
                                                     <select class="form-control" id="status" name="status" required>
                                                         <option value="" disabled selected>Please select</option>
-                                                        <option value="1" {{ old('status') == '1' ? 'selected':''}}>Approve Application</option>
+                                                        <option value="1" {{ old('status') == '1' ? 'selected':''}}>Accept Application</option>
                                                         <option value="0" {{ old('status') == '0' ? 'selected':''}}>Reject Application</option>
                                                     </select>
                                                     @error('status')
@@ -283,7 +283,7 @@
                                                 {!! Form::open(['action' => ['Stationery\StationeryManagementController@application_approve'], 'method' => 'POST', 'id' => 'approveData', 'enctype' => 'multipart/form-data'])!!}
                                                 {{Form::hidden('id', $application->id)}}
                                                 {{Form::hidden('status', 'RC')}}
-                                                    <button type="submit" id="approveBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-check-circle"></i> Approve Application</button>
+                                                    <button type="submit" id="approveBtn" class="btn btn-primary ml-2 float-right"><i class="fal fa-check-circle"></i> Accept Application</button>
                                                 {!! Form::close() !!}
                                                 <a href="#" class="btn btn-danger ml-2 float-right" id="rejectButton"><i class="fal fa-times-circle"></i> Reject Application</a>
                                             @endif
