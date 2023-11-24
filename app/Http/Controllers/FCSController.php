@@ -201,18 +201,20 @@ class FCSController extends Controller
                 $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->mainCode->dept_id)->first();
 
                 if ($data->sub_activity === 'Y' && isset($owner)) {
-                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
-                    class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 } elseif($data->sub_activity !== 'Y' && isset($owner)) {
                     return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
-                    class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+                    <a href="#" data-target="#add-file" data-toggle="modal"
+                    data-id="' . $data->id . '" class="btn btn-sm btn-success"><i class="fal fa-plus"></i></a>';
                 } elseif($data->sub_activity === 'Y' && !isset($owner)) {
-                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>';
                 } else {
                     return'<span class="badge badge-dark">NOT AVAILABLE</span>';
                 }
@@ -268,42 +270,56 @@ class FCSController extends Controller
 
     public function updateSub(Request $request)
     {
+        $request->validate([
+            'code'     => 'required',
+            'fileName' => 'required',
+        ]);
+
         $update = FcsMainSub::where('id', $request->id)->first();
 
-        if ($request->subAct != null) {
-            $update->update([
-                'code'         => $request->code,
-                'file'         => $request->fileName,
-                'remark'       => $request->remark,
-                'sub_activity' => 'Y',
-                'updated_by'   => Auth::user()->id
-            ]);
+        $update->update([
+            'code'       => $request->code,
+            'file'       => $request->fileName,
+            'remark'     => $request->remark,
+            'updated_by' => Auth::user()->id
+        ]);
 
-            FcsLog::create([
-                'code_id'    => $update->code_id,
-                'log'        => "Update sub-activity: [" . $request->code . "]",
-                'created_by' => Auth::user()->id,
-            ]);
+        FcsLog::create([
+            'code_id'    => $update->code_id,
+            'log'        => "Update sub-activity: [" . $request->code . "]",
+            'created_by' => Auth::user()->id,
+        ]);
 
-            return redirect()->to('file-classification/' . $update->code_id . '/' . $request->id)->with('message', 'Successfully Created!');
-
-        } else {
-            $update->update([
-                'code'       => $request->code,
-                'file'       => $request->fileName,
-                'remark'     => $request->remark,
-                'updated_by' => Auth::user()->id
-            ]);
-
-            FcsLog::create([
-                'code_id'    => $update->code_id,
-                'log'        => "Update sub-activity: [" . $request->code . "]",
-                'created_by' => Auth::user()->id,
-            ]);
-
-            return redirect()->back()->with('message', 'Successfully Updated!');
-        }
+        return redirect()->back()->with('message', 'Successfully Updated!');
     }
+
+    public function addFile(Request $request)
+    {
+        $request->validate(
+            [
+            'subAct'     => 'required',
+        ],
+            [
+            'subAct.required' => 'The switch cannot be null!',
+        ]
+        );
+
+        $update = FcsMainSub::where('id', $request->id)->first();
+
+        $update->update([
+            'sub_activity' => 'Y',
+            'updated_by'   => Auth::user()->id
+        ]);
+
+        FcsLog::create([
+            'code_id'    => $update->code_id,
+            'log'        => "Create new file: [" . $update->code . "]",
+            'created_by' => Auth::user()->id,
+        ]);
+
+        return redirect()->to('file-classification/' . $update->code_id . '/' . $request->id)->with('message', 'Successfully Created!');
+    }
+
 
     public function showSubAct($id, $ids)
     {

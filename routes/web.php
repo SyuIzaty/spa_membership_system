@@ -128,6 +128,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/delete-owner/{id}', 'FCSController@destroy')->name('deleteOwner');
     Route::get('/log-file-classification/{id}', 'FCSController@log');
     Route::post('/log-list/{id}', 'FCSController@logList');
+    Route::post('/add-new-file', 'FCSController@addFile');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

@@ -232,7 +232,45 @@
                                             @enderror
                                         </td>
                                     </div>
-                                    <div class="form-group" @if ($subActivities->where('sub_activity', 'Y')->isNotEmpty()) style="display:none" @endif>
+                                    {{-- <div class="form-group" @if ($subActivities->where('sub_activity', 'Y')->isNotEmpty()) style="display:none" @endif>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" name="subAct"
+                                                id="customSwitch2">
+                                            <label class="custom-control-label" for="customSwitch2">Have file(s)?</label>
+                                            <span>If yes, you can add the file(s) after saving these details.</span>
+                                        </div>
+                                    </div> --}}
+
+                                    <div class="footer">
+                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i
+                                                class="fal fa-save"></i> Update</button>
+                                        <button type="button" class="btn btn-success ml-auto float-right mr-2"
+                                            data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="add-file" aria-hidden="true" data-keyboard="false"
+                        data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> ADD
+                                        FILE
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    {!! Form::open([
+                                        'action' => 'FCSController@addFile',
+                                        'method' => 'POST',
+                                        'enctype' => 'multipart/form-data',
+                                    ]) !!}
+                                    <p><span class="text-danger">*</span> Required Fields</p>
+                                    <input type="hidden" name="id" id="id">
+
+                                    <div class="form-group">
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input" name="subAct"
                                                 id="customSwitch2">
@@ -252,7 +290,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -279,6 +316,13 @@
                 $('.modal-body #code').val(code);
                 $('.modal-body #fileName').val(file);
                 $('.modal-body #remark').val(remark);
+            });
+
+            $('#add-file').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id')
+
+                $('.modal-body #id').val(id);
             });
 
             var id = @json($id);
