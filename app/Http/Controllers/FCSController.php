@@ -13,6 +13,8 @@ use App\FcsMainSubActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Rules\FileSubActivityCode;
+use App\Rules\FileFilesCode;
 
 class FCSController extends Controller
 {
@@ -128,7 +130,6 @@ class FCSController extends Controller
     public function storeNewActivity(Request $request)
     {
         $request->validate([
-            'code'       => 'required',
             'fileName'   => 'required',
             'department' => 'required',
         ]);
@@ -228,7 +229,10 @@ class FCSController extends Controller
     public function storeNewSub(Request $request)
     {
         $request->validate([
-            'code'     => 'required',
+            'code' => [
+                'required',
+                new FileSubActivityCode(),
+            ],
             'fileName' => 'required',
         ]);
 
@@ -271,7 +275,10 @@ class FCSController extends Controller
     public function updateSub(Request $request)
     {
         $request->validate([
-            'code'     => 'required',
+            'code' => [
+                'required',
+                new FileSubActivityCode(),
+            ],
             'fileName' => 'required',
         ]);
 
@@ -348,7 +355,7 @@ class FCSController extends Controller
                     return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '"
-                    class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 } else {
                     return'<span class="badge badge-dark">NOT AVAILABLE</span>';
                 }
@@ -362,7 +369,10 @@ class FCSController extends Controller
     public function storeNewSubActivity(Request $request)
     {
         $request->validate([
-            'code'     => 'required',
+            'code' => [
+                'required',
+                new FileFilesCode(),
+            ],
             'fileName' => 'required',
         ]);
 
@@ -387,6 +397,14 @@ class FCSController extends Controller
 
     public function updateSubActivity(Request $request)
     {
+        $request->validate([
+            'code' => [
+                'required',
+                new FileFilesCode(),
+            ],
+            'fileName' => 'required',
+        ]);
+
         $update = FcsMainSubActivity::where('id', $request->id)->first();
 
         $update->update([

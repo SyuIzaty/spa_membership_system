@@ -110,11 +110,11 @@
                                         <td width="10%"><label class="form-label" for="code"><span
                                                     class="text-danger">*</span> Code :</label></td>
                                         <td colspan="4">
-                                            <input value="{{ old('code') }}" class="form-control" id="code"
-                                                name="code"
-                                                placeholder="[INTEC] . [DEP] . [UNIT] . [FUNCTION NO] - [ACTIVITY NO] / [SUB-ACTIVITY NO] / [FILE NO]"
-                                                required>
-
+                                            <input value="{{ $mainSub->code }}/" class="form-control" id="code"
+                                                name="code" required>
+                                            <span style="color: red; font-size:11px">Format: [INTEC] . [DEP] . [UNIT] .
+                                                [FUNCTION NO] - [ACTIVITY NO] / [SUB-ACTIVITY NO] / [FILE NO]
+                                            </span>
                                             @error('code')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -144,7 +144,7 @@
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i
                                                 class="fal fa-save"></i> Save</button>
-                                        <button type="button" class="btn btn-success ml-auto float-right mr-2"
+                                        <button type="button" class="btn btn-secondary ml-auto float-right mr-2"
                                             data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
                                     </div>
                                     {!! Form::close() !!}
@@ -172,6 +172,9 @@
                                                     class="text-danger">*</span> Code :</label></td>
                                         <td colspan="4">
                                             <input class="form-control" id="code" name="code" required>
+                                            <span style="color: red; font-size:11px">Format: [INTEC] . [DEP] . [UNIT] .
+                                                [FUNCTION NO] - [ACTIVITY NO] / [SUB-ACTIVITY NO] / [FILE NO]
+                                            </span>
                                             @error('code')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -199,7 +202,7 @@
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i
                                                 class="fal fa-save"></i> Update</button>
-                                        <button type="button" class="btn btn-success ml-auto float-right mr-2"
+                                        <button type="button" class="btn btn-secondary ml-auto float-right mr-2"
                                             data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
                                     </div>
                                     {!! Form::close() !!}
