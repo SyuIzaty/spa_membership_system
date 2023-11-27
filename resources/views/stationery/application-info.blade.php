@@ -57,7 +57,7 @@
                                         </li>
                                         <p></p>
                                     </ol>
-                                    <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                    <table id="info" class="table table-bordered table-hover w-100">
                                         <tr>
                                             <th style="vertical-align: middle">Name : </th>
                                             <td  style="vertical-align: middle; text-transform: uppercase">{{ $application->staff->staff_name }} ({{ $application->applicant_id }})</td>
@@ -110,7 +110,7 @@
                                         @endcan
 
                                         <div class="form-group" id="stationery">
-                                            <table class="table table-bordered table-hover table-striped w-100 text-center">
+                                            <table class="table table-bordered table-hover w-100 text-center">
                                                 <tr class="bg-primary-50">
                                                     <th>No</th>
                                                     <th>Item/Description</th>
