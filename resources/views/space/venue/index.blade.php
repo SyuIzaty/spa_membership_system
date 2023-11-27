@@ -210,7 +210,19 @@
                 { data: 'name', name: 'name'},
                 { data: 'maximum', name: 'maximum'},
                 { data: 'open_to_student', name: 'openStudent.name'},
-                { data: 'venue_status', name: 'spaceStatus.name'},
+                {
+                data: 'venue_status',
+                name: 'spaceStatus.name',
+                  render: function (data) {
+                      badge = 'info';
+                      if (data == 'Inactive') {
+                          badge = 'danger';
+                      } else if(data == 'Active') {
+                          badge = 'success';
+                      }
+                      return '<span class="badge badge-' + badge + '">' + data + '</span>';
+                  }
+                },
                 { data: 'department_name', name: 'departmentList.name'},
                 { data: 'action'},
             ],

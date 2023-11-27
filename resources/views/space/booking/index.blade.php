@@ -100,7 +100,21 @@
               { data: 'start_dates', name: 'spaceBookingMain.start_date'},
               { data: 'end_dates', name: 'spaceBookingMain.end_date'},
               { data: 'venues', name: 'spaceVenue.name'},
-              { data: 'statuses', name: 'spaceStatus.name'},
+              {
+                data: 'statuses',
+                name: 'spaceStatus.name',
+                render: function (data) {
+                    badge = 'info';
+                    if (data == 'Rejected') {
+                        badge = 'danger';
+                    } else if(data == 'Pending') {
+                        badge = 'warning';
+                    } else if(data == 'Approve') {
+                        badge = 'success';
+                    }
+                    return '<span class="badge badge-' + badge + '">' + data + '</span>';
+                }
+              },
               { data: 'action'},
           ],
       order: [[ 0, "asc" ]],

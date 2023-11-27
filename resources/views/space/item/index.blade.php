@@ -189,7 +189,19 @@
                 { data: 'name', name: 'name'},
                 { data: 'department_name', name: 'departmentList.name'},
                 { data: 'quantity', name: 'quantity'},
-                { data: 'venue_status', name: 'spaceStatus.name'},
+                {
+                data: 'venue_status',
+                name: 'spaceStatus.name',
+                  render: function (data) {
+                      badge = 'info';
+                      if (data == 'Inactive') {
+                          badge = 'danger';
+                      } else if(data == 'Active') {
+                          badge = 'success';
+                      }
+                      return '<span class="badge badge-' + badge + '">' + data + '</span>';
+                  }
+                },
                 { data: 'action'},
             ],
         order: [[ 0, "asc" ]],

@@ -45,7 +45,7 @@ class BookingManagementController extends Controller
             ->select('space_booking_venues.*');
         }else{
             $booking = SpaceBookingVenue::with('spaceBookingMain')->get();
-            $venue = SpaceBookingVenue::with('spaceBookingMain.user','spaceVenue')
+            $venue = SpaceBookingVenue::with('spaceBookingMain.user','spaceVenue','spaceStatus')
             ->select('space_booking_venues.*');
         }
         
@@ -75,6 +75,9 @@ class BookingManagementController extends Controller
                 ->addColumn('venues', function($venue){
                     return isset($venue->spaceVenue->name) ? $venue->spaceVenue->name : '';
                 })
+                ->addColumn('status_name', function($venue){
+                    return isset($venue->spaceStatus->name) ? $venue->spaceStatus->name : '';
+                })
                 ->editColumn('created_at', function ($venue) {
                     return $venue->created_at;
                 })
@@ -88,7 +91,7 @@ class BookingManagementController extends Controller
                     </div>
                     ';
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action','status_name'])
                 ->make(true);
         }
 

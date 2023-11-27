@@ -72,23 +72,23 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>ID</th>
-                                        <th>STAFF / STUDENT ID</th>
                                         <th>NAME</th>
                                         <th>PURPOSE</th>
                                         <th>START DATE</th>
                                         <th>END DATE</th>
                                         <th>VENUE</th>
+                                        <th>STATUS</th>
                                         <th>APPLICATION</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr id="filterRow">
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Staff / Student ID"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Purpose"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Start Date"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search End Date"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Venue"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Status"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Application"></td>
                                       <th></th>
                                     </tr>
@@ -206,12 +206,26 @@
 
       columns: [
               { data: 'id', name: 'id'},
-              { data: 'user_ids', name: 'spaceBookingMain.staff_id'},
               { data: 'user_names', name: 'spaceBookingMain.user.name'},
               { data: 'purposes', name: 'spaceBookingMain.purpose'},
               { data: 'start_dates', name: 'spaceBookingMain.start_date'},
               { data: 'end_dates', name: 'spaceBookingMain.end_date'},
               { data: 'venues', name: 'spaceVenue.name'},
+              {
+                data: 'status_name',
+                name: 'spaceStatus.name',
+                render: function (data) {
+                    badge = 'info';
+                    if (data == 'Rejected') {
+                        badge = 'danger';
+                    } else if(data == 'Pending') {
+                        badge = 'warning';
+                    } else if(data == 'Approve') {
+                        badge = 'success';
+                    }
+                    return '<span class="badge badge-' + badge + '">' + data + '</span>';
+                }
+              },
               { data: 'created_at', name: 'created_at'},
               { data: 'action'},
           ],
