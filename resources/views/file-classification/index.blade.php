@@ -112,8 +112,8 @@
                                         <td colspan="4">
                                             <input value="{{ old('code') }}" class="form-control" id="code"
                                                 name="code" required>
-                                            <span style="color: red; font-size:11px">Format: [INTEC] . [DEP]
-                                                . [UNIT] . [FUNCTION NO] - [ACTIVITY NO]</span>
+                                            <span style="color: red; font-size:11px">Format: [FUNCTION NO] - [ACTIVITY
+                                                NO]</span>
                                             @error('code')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -186,8 +186,8 @@
                                                     class="text-danger">*</span> Code :</label></td>
                                         <td colspan="4">
                                             <input class="form-control" id="code" name="code" required>
-                                            <span style="color: red; font-size:11px">Format: [INTEC] . [DEP]
-                                                . [UNIT] . [FUNCTION NO] - [ACTIVITY NO]</span>
+                                            <span style="color: red; font-size:11px">Format: [FUNCTION NO] - [ACTIVITY
+                                                NO]</span>
                                             @error('code')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
