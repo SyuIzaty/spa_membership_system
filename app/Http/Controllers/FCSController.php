@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\FcsLog;
 use App\User;
 use App\Staff;
-use App\FcsMain;
+use App\FcsActivity;
 use App\FcsOwner;
-use App\FcsMainSub;
+use App\FcsSubActivity;
 use App\SopDepartment;
-use App\FcsMainSubActivity;
+use App\FcsFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -33,11 +33,11 @@ class FCSController extends Controller
 
         if (Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
 
-            $data = FcsMain::with('department');
+            $data = FcsActivity::with('department');
 
         } elseif (isset($owner)) {
 
-            $data = FcsMain::with('department')->where('dept_id', $owner->dept_id);
+            $data = FcsActivity::with('department')->where('dept_id', $owner->dept_id);
         }
 
         return datatables()::of($data)
@@ -53,15 +53,22 @@ class FCSController extends Controller
             ->addColumn('action', function ($data) {
                 $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->dept_id)->first();
 
-                if (isset($owner)) {
+                if (isset($owner) && Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
+                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                    <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
+                        data-id="' . $data->id . '" data-code="' . $data->code . '"
+                        data-file="' . $data->file . '" data-remark="' . $data->remark . '"
+                        class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>
+                        <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-activity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
+                } elseif (Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
+                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                        <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-activity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
+                } elseif (isset($owner)) {
                     return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                         data-id="' . $data->id . '" data-code="' . $data->code . '"
                         data-file="' . $data->file . '" data-remark="' . $data->remark . '"
                         class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
-
-                } else {
-                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
                 }
             })
 
@@ -86,11 +93,11 @@ class FCSController extends Controller
 
         if (Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
 
-            $data = FcsMain::with('department')->whereRaw($cond);
+            $data = FcsActivity::with('department')->whereRaw($cond);
 
         } elseif (isset($owner)) {
 
-            $data = FcsMain::with('department')->whereRaw($cond)->where('dept_id', $owner->dept_id);
+            $data = FcsActivity::with('department')->whereRaw($cond)->where('dept_id', $owner->dept_id);
         }
 
         return datatables()::of($data)
@@ -106,20 +113,27 @@ class FCSController extends Controller
             ->addColumn('action', function ($data) {
                 $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->dept_id)->first();
 
-                if (isset($owner)) {
+                if (isset($owner) && Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
+                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                    <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
+                        data-id="' . $data->id . '" data-code="' . $data->code . '"
+                        data-file="' . $data->file . '" data-remark="' . $data->remark . '"
+                        class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>
+                        <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-activity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
+                } elseif (Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
+                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                        <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-activity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
+                } elseif (isset($owner)) {
                     return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                         data-id="' . $data->id . '" data-code="' . $data->code . '"
                         data-file="' . $data->file . '" data-remark="' . $data->remark . '"
                         class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
-
-                } else {
-                    return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
                 }
             })
 
             ->addColumn('log', function ($data) {
-                return '<a href="/file-classification/' . $data->id . '/log" class="btn btn-sm btn-info"><i class="fal fa-list-alt"></i></a>';
+                return '<a href="/log-file-classification/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-list-alt"></i></a>';
             })
 
             ->addIndexColumn()
@@ -134,7 +148,7 @@ class FCSController extends Controller
             'department' => 'required',
         ]);
 
-        $data = FcsMain::create([
+        $data = FcsActivity::create([
              'dept_id'    => $request->department,
              'code'       => $request->code,
              'file'       => $request->fileName,
@@ -158,7 +172,7 @@ class FCSController extends Controller
             'fileName' => 'required',
         ]);
 
-        $update = FcsMain::where('id', $request->id)->first();
+        $update = FcsActivity::where('id', $request->id)->first();
 
         $update->update([
             'code'       => $request->code,
@@ -179,10 +193,10 @@ class FCSController extends Controller
 
     public function show(Request $request, $id)
     {
-        $data          = FcsMain::where('id', $id)->first();
-        $subActivities = FcsMainSub::where('code_id', $id)->get();
+        $data          = FcsActivity::where('id', $id)->first();
+        $subActivities = FcsSubActivity::where('code_id', $id)->get();
         $selectedSub   = $request->subActivities;
-        $act           = FcsMainSubActivity::where('code_sub_id', $subActivities->pluck('id')->toArray())->exists();
+        $act           = FcsFile::where('code_sub_id', $subActivities->pluck('id')->toArray())->exists();
         $owner         = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->dept_id)->first();
 
         return view('file-classification.sub-activity', compact('data', 'subActivities', 'id', 'selectedSub', 'act', 'owner'));
@@ -190,7 +204,7 @@ class FCSController extends Controller
 
     public function subList($id)
     {
-        $data = FcsMainSub::where('code_id', $id)->orderBy('code', 'ASC');
+        $data = FcsSubActivity::where('code_id', $id)->orderBy('code', 'ASC');
 
         return datatables()::of($data)
 
@@ -201,7 +215,22 @@ class FCSController extends Controller
             ->addColumn('action', function ($data) {
                 $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->mainCode->dept_id)->first();
 
-                if ($data->sub_activity === 'Y' && isset($owner)) {
+                if (isset($owner) && Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin']) && $data->sub_activity === 'Y') {
+                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
+                    <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
+                    data-id="' . $data->id . '" data-code="' . $data->code . '"
+                    data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
+                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+                    <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-subActivity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
+                } elseif (isset($owner) && Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin']) && $data->sub_activity !== 'Y') {
+                    return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
+                    data-id="' . $data->id . '" data-code="' . $data->code . '"
+                    data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
+                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+                    <a href="#" data-target="#add-file" data-toggle="modal"
+                    data-id="' . $data->id . '" class="btn btn-sm btn-success"><i class="fal fa-plus"></i></a>
+                    <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-subActivity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
+                } elseif ($data->sub_activity === 'Y' && isset($owner)) {
                     return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
@@ -215,9 +244,10 @@ class FCSController extends Controller
                     <a href="#" data-target="#add-file" data-toggle="modal"
                     data-id="' . $data->id . '" class="btn btn-sm btn-success"><i class="fal fa-plus"></i></a>';
                 } elseif($data->sub_activity === 'Y' && !isset($owner)) {
-                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>';
+                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
+                    <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-subActivity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 } else {
-                    return'<span class="badge badge-dark">NOT AVAILABLE</span>';
+                    return'<div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-subActivity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 }
             })
 
@@ -237,7 +267,7 @@ class FCSController extends Controller
         ]);
 
         if ($request->subAct != null) {
-            $data = FcsMainSub::create([
+            $data = FcsSubActivity::create([
                 'code_id'      => $request->id,
                 'code'         => $request->code,
                 'file'         => $request->fileName,
@@ -254,7 +284,7 @@ class FCSController extends Controller
 
             return redirect()->to('file-classification/' . $request->id . '/' . $data->id)->with('message', 'Successfully Created!');
         } else {
-            FcsMainSub::create([
+            FcsSubActivity::create([
             'code_id'      => $request->id,
             'code'         => $request->code,
             'file'         => $request->fileName,
@@ -282,7 +312,7 @@ class FCSController extends Controller
             'fileName' => 'required',
         ]);
 
-        $update = FcsMainSub::where('id', $request->id)->first();
+        $update = FcsSubActivity::where('id', $request->id)->first();
 
         $update->update([
             'code'       => $request->code,
@@ -311,7 +341,7 @@ class FCSController extends Controller
         ]
         );
 
-        $update = FcsMainSub::where('id', $request->id)->first();
+        $update = FcsSubActivity::where('id', $request->id)->first();
 
         $update->update([
             'sub_activity' => 'Y',
@@ -330,9 +360,9 @@ class FCSController extends Controller
 
     public function showSubAct($id, $ids)
     {
-        $mainSub       = FcsMainSub::where('id', $ids)->first();
-        $data          = FcsMain::where('id', $id)->first();
-        $subActivities = FcsMainSubActivity::where('code_sub_id', $ids)->get();
+        $mainSub       = FcsSubActivity::where('id', $ids)->first();
+        $data          = FcsActivity::where('id', $id)->first();
+        $subActivities = FcsFile::where('code_sub_id', $ids)->get();
         $owner         = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->dept_id)->first();
 
         return view('file-classification.file-sub', compact('data', 'mainSub', 'subActivities', 'id', 'ids', 'owner'));
@@ -340,7 +370,7 @@ class FCSController extends Controller
 
     public function subActList($id)
     {
-        $data = FcsMainSubActivity::where('code_sub_id', $id);
+        $data = FcsFile::where('code_sub_id', $id);
 
         return datatables()::of($data)
 
@@ -351,13 +381,19 @@ class FCSController extends Controller
             ->addColumn('action', function ($data) {
                 $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->subCode->mainCode->dept_id)->first();
 
-                if (isset($owner)) {
+                if (isset($owner) && Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
+                    return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
+                    data-id="' . $data->id . '" data-code="' . $data->code . '"
+                    data-file="' . $data->file . '" data-remark="' . $data->remark . '"
+                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+                    <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-files/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
+                } elseif (isset($owner)) {
                     return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '"
                     class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 } else {
-                    return'<span class="badge badge-dark">NOT AVAILABLE</span>';
+                    return'<div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-files/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 }
             })
 
@@ -366,7 +402,7 @@ class FCSController extends Controller
             ->make(true);
     }
 
-    public function storeNewSubActivity(Request $request)
+    public function storeNewFile(Request $request)
     {
         $request->validate([
             'code' => [
@@ -376,9 +412,9 @@ class FCSController extends Controller
             'fileName' => 'required',
         ]);
 
-        $data = FcsMainSub::where('id', $request->id)->first();
+        $data = FcsSubActivity::where('id', $request->id)->first();
 
-        FcsMainSubActivity::create([
+        FcsFile::create([
              'code_sub_id' => $request->id,
              'code'        => $request->code,
              'file'        => $request->fileName,
@@ -395,7 +431,7 @@ class FCSController extends Controller
         return redirect()->back()->with('message', 'Successfully Created!');
     }
 
-    public function updateSubActivity(Request $request)
+    public function updateFile(Request $request)
     {
         $request->validate([
             'code' => [
@@ -405,7 +441,7 @@ class FCSController extends Controller
             'fileName' => 'required',
         ]);
 
-        $update = FcsMainSubActivity::where('id', $request->id)->first();
+        $update = FcsFile::where('id', $request->id)->first();
 
         $update->update([
             'code'       => $request->code,
@@ -519,7 +555,7 @@ class FCSController extends Controller
 
     public function log($id)
     {
-        $data = FcsMain::where('id', $id)->first();
+        $data = FcsActivity::where('id', $id)->first();
         return view('file-classification.log', compact('id', 'data'));
     }
 
@@ -542,4 +578,79 @@ class FCSController extends Controller
         ->make(true);
     }
 
+    public function deleteActivity($id)
+    {
+        $activity = FcsActivity::where('id', $id)->first();
+        $subAct   = FcsSubActivity::where('code_id', $id);
+
+        if ($subAct->exists()) {
+            foreach($subAct->get() as $s) {
+                $file = FcsFile::where('code_sub_id', $s->id);
+
+                if ($file->exists()) {
+                    foreach($file->get() as $f) {
+                        $f->update(['deleted_by' => Auth::user()->id]);
+                        $f->delete();
+                    }
+                }
+
+                $s->update(['deleted_by' => Auth::user()->id]);
+                $s->delete();
+            }
+        }
+
+        FcsLog::create([
+            'code_id'    => $id,
+            'log'        => "Delete activity: [" . $activity->code . "]",
+            'created_by' => Auth::user()->id,
+        ]);
+
+        $exist = FcsActivity::find($id);
+        $exist->update(['deleted_by' => Auth::user()->id]);
+        $exist->delete();
+
+        return response()->json();
+    }
+
+    public function deleteSubActivity($id)
+    {
+        $subAct   = FcsSubActivity::where('id', $id)->first();
+        $file     = FcsFile::where('code_sub_id', $id);
+
+        if ($file->exists()) {
+            foreach($file->get() as $f) {
+                $f->update(['deleted_by' => Auth::user()->id]);
+                $f->delete();
+            }
+        }
+
+        FcsLog::create([
+            'code_id'    => $id,
+            'log'        => "Delete sub-activity: [" . $subAct->code . "]",
+            'created_by' => Auth::user()->id,
+        ]);
+
+        $exist = FcsSubActivity::find($id);
+        $exist->update(['deleted_by' => Auth::user()->id]);
+        $exist->delete();
+
+        return response()->json();
+    }
+
+    public function deleteFile($id)
+    {
+        $file = FcsFile::where('id', $id)->first();
+
+        FcsLog::create([
+            'code_id'    => $id,
+            'log'        => "Delete file: [" . $file->code . "]",
+            'created_by' => Auth::user()->id,
+        ]);
+
+        $exist = FcsFile::find($id);
+        $exist->update(['deleted_by' => Auth::user()->id]);
+        $exist->delete();
+
+        return response()->json();
+    }
 }

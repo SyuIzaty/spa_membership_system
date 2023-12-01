@@ -118,8 +118,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/update-sub', 'FCSController@updateSub');
     Route::get('/file-classification/{id}/{ids}', 'FCSController@showSubAct');
     Route::post('/sub-activity-list/{id}', 'FCSController@subActList');
-    Route::post('/store-sub-act', 'FCSController@storeNewSubActivity');
-    Route::post('/update-sub-act', 'FCSController@updateSubActivity');
+    Route::post('/store-new-file', 'FCSController@storeNewFile');
+    Route::post('/update-new-file', 'FCSController@updateFile');
     Route::get('/file-classification-note', 'FCSController@note');
     Route::get('/owner', 'FCSController@owner');
     Route::post('/owner-department', 'FCSController@getDepartment');
@@ -129,6 +129,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/log-file-classification/{id}', 'FCSController@log');
     Route::post('/log-list/{id}', 'FCSController@logList');
     Route::post('/add-new-file', 'FCSController@addFile');
+    Route::delete('/delete-activity/{id}', 'FCSController@deleteActivity');
+    Route::delete('/delete-subActivity/{id}', 'FCSController@deleteSubActivity');
+    Route::delete('/delete-files/{id}', 'FCSController@deleteFile');
 
     //eKenderaan
     Route::resource('/eKenderaan-form', 'EKenderaanController');

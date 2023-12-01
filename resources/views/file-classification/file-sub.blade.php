@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="modal-body">
                                     {!! Form::open([
-                                        'action' => 'FCSController@storeNewSubActivity',
+                                        'action' => 'FCSController@storeNewFile',
                                         'method' => 'POST',
                                         'enctype' => 'multipart/form-data',
                                     ]) !!}
@@ -161,7 +161,7 @@
                                 </div>
                                 <div class="modal-body">
                                     {!! Form::open([
-                                        'action' => 'FCSController@updateSubActivity',
+                                        'action' => 'FCSController@updateFile',
                                         'method' => 'POST',
                                         'enctype' => 'multipart/form-data',
                                     ]) !!}
@@ -275,6 +275,41 @@
                 ],
                 "initComplete": function(settings, json) {}
             });
+
+            $('#fileClass').on('click', '.btn-delete[data-remote]', function(e) {
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                var url = $(this).data('remote');
+                Swal.fire({
+                    title: 'Are you sure you want to delete this file?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            dataType: 'json',
+                            data: {
+                                method: '_DELETE',
+                                submit: true
+                            }
+                        }).always(function(data) {
+                            $('#fileClass').DataTable().draw(false);
+                        });
+                    }
+                })
+            });
+
         });
     </script>
 @endsection
