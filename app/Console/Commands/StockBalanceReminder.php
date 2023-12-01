@@ -24,7 +24,7 @@ class StockBalanceReminder extends Command
      *
      * @var string
      */
-    protected $description = 'Reminder for low stock balance, scheduled for every Monday at 9 a.m.';
+    protected $description = 'Reminder for low stock balance, scheduled for everyday at 9 a.m.';
 
     /**
      * Create a new command instance.

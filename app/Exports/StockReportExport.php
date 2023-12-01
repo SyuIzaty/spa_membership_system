@@ -24,7 +24,7 @@ class StockReportExport implements FromView, WithColumnFormatting
     public function __construct($department, $stock, $owner)
     {
         $this->department = $department;
-        $this->stock = $stock;
+        $this->stock = (array)$stock;
         $this->owner = $owner;
     }
 
@@ -32,7 +32,7 @@ class StockReportExport implements FromView, WithColumnFormatting
     {
         $department = $this->department;
 
-        $stock = $this->stock;
+        $stock = (array)$this->stock;
 
         $owner = $this->owner;
 
@@ -44,7 +44,9 @@ class StockReportExport implements FromView, WithColumnFormatting
 
         } elseif (!empty($department) && !empty($stock) && $owner == 'null') {
 
-            $data->where('department_id', $department)->where('id', $stock);
+            $stockArray = explode(',', $stock[0]);
+
+            $data->where('department_id', $department)->whereIn('id', $stockArray);
 
         } elseif (!empty($department) && $stock == 'null' && !empty($owner)) {
 
@@ -52,7 +54,9 @@ class StockReportExport implements FromView, WithColumnFormatting
 
         } elseif (!empty($department) && !empty($stock) && !empty($owner)) {
 
-            $data->where('department_id', $department)->where('id', $stock)->where('current_owner', $owner);
+            $stockArray = explode(',', $stock[0]);
+
+            $data->where('department_id', $department)->whereIn('id', $stockArray)->where('current_owner', $owner);
 
         } else {
 

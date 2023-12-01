@@ -565,7 +565,7 @@ class StockController extends Controller
     {
         $department = $request->input('department');
 
-        $stock = $request->input('stock');
+        $stock = (array) $request->input('stock');
 
         $owner = $request->input('owner');
 
@@ -577,7 +577,7 @@ class StockController extends Controller
 
         } elseif (!empty($department) && !empty($stock) && empty($owner)) {
 
-            $query->where('department_id', $department)->where('id', $stock);
+            $query->where('department_id', $department)->whereIn('id', $stock);
 
         } elseif (!empty($department) && empty($stock) && !empty($owner)) {
 
@@ -585,7 +585,7 @@ class StockController extends Controller
 
         } elseif (!empty($department) && !empty($stock) && !empty($owner)) {
 
-            $query->where('department_id', $department)->where('id', $stock)->where('current_owner', $owner);
+            $query->where('department_id', $department)->whereIn('id', $stock)->where('current_owner', $owner);
 
         } else {
 

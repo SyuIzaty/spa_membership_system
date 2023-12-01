@@ -147,7 +147,7 @@ class StationeryManagementController extends Controller
         foreach ($admin as $admin_list) {
             $data = [
                 'app_recipient'     => $admin_list->name,
-                'app_description'   => 'For your information, you have received a new application (APPLICATIONID #'.$application->id.') from '.$application->staff->staff_name.' on '
+                'app_description'   => 'For your information, you have received a new application (Application ID #'.$application->id.') from '.$application->staff->staff_name.' on '
                                         .date('d/m/Y', strtotime($application->created_at)).'. Please review the application at your earliest convenience.',
             ];
 
@@ -222,7 +222,7 @@ class StationeryManagementController extends Controller
             foreach ($admin as $admin_list) {
                 $data = [
                     'app_recipient'     => $admin_list->name,
-                    'app_description'   => 'Please be informed that you have received an application (APPLICATIONID #'.$application->id.') requiring approval from '.$application->staff->staff_name.' on '
+                    'app_description'   => 'Please be informed that you have received an application (Application ID #'.$application->id.') requiring approval from '.$application->staff->staff_name.' on '
                                             . date('d/m/Y', strtotime(Carbon::now())). '. Review and approve the application at your earliest convenience.',
                 ];
 
@@ -258,7 +258,7 @@ class StationeryManagementController extends Controller
 
             $data = [
                 'app_recipient'     => $application->applicant_email,
-                'app_description'   => 'Please be informed that your application (APPLICATIONID #'.$application->id.') has been rejected on ' . date('d/m/Y', strtotime($track->created_at))
+                'app_description'   => 'Please be informed that your application (Application ID #'.$application->id.') has been rejected on ' . date('d/m/Y', strtotime($track->created_at))
                                         . ' because: "' . ucwords($track->remark) . '".',
 
             ];
@@ -377,7 +377,7 @@ class StationeryManagementController extends Controller
             foreach ($admin as $admin_list) {
                 $data = [
                     'app_recipient'     => $admin_list->name,
-                    'app_description'   => 'Please be informed that application (APPLICATIONID #'.$application->id.') by ' . $application->staff->staff_name . ' on ' .
+                    'app_description'   => 'Please be informed that application (Application ID #'.$application->id.') by ' . $application->staff->staff_name . ' on ' .
                                             date('d/m/Y', strtotime($application->created_at)). ' have been approved. Review and make preparation for collection at your earliest convenience.',
                 ];
 
@@ -391,7 +391,7 @@ class StationeryManagementController extends Controller
 
             $data = [
                 'app_recipient'     => $application->applicant_email,
-                'app_description'   => 'Please be informed that your application (APPLICATIONID #'.$application->id.') on ' .
+                'app_description'   => 'Please be informed that your application (Application ID #'.$application->id.') on ' .
                                         date('d/m/Y', strtotime($application->created_at)). ' has been approved and is now ready for collection.
                                         For further inquiries regarding collection, please directly contact PUAN NORZALILATUL AKMA at 0386037085.',
             ];
@@ -426,7 +426,7 @@ class StationeryManagementController extends Controller
 
             $data = [
                 'app_recipient'     => $application->applicant_email,
-                'app_description'   => 'Please be informed that your application (APPLICATIONID #'.$application->id.') has been rejected on ' . date('d/m/Y', strtotime($track->created_at))
+                'app_description'   => 'Please be informed that your application (Application ID #'.$application->id.') has been rejected on ' . date('d/m/Y', strtotime($track->created_at))
                                         . ' because: "' . ucwords($track->remark) . '".',
 
             ];
@@ -495,7 +495,7 @@ class StationeryManagementController extends Controller
         $data = [
             'app_recipient'     => $application->applicant_email,
             'app_description'   => 'Please be advised that this email serves as a reminder. You have already picked up your stationery with designed staff.
-                                    Please confirm this action in respective application (APPLICATIONID #'.$application->id.') at your earliest convenience.',
+                                    Please confirm this action in respective application (Application ID #'.$application->id.') at your earliest convenience.',
 
         ];
 

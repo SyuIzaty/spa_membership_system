@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label>Stock : </label>
-                                    <select class="form-control stock selectStock" name="stock" id="stock">
+                                    <select class="form-control stock selectStock" name="stock[]" id="stock" multiple="multiple">
                                     </select>
                                 </div>
                                 <div class="col-md-12 mb-4">
@@ -140,7 +140,7 @@
                 // Enable the button only if any combination of department, stock, or owner is selected
                 if (department || stock || owner) {
                     $('#buttonfull').removeAttr('disabled');
-                    $('#buttonfull').attr('href', "/stock-report-excel/" + (department || 'null') + "/" + (stock || 'null') + "/" + (owner || 'null'));
+                    $('#buttonfull').attr('href', "/stock-report-excel/" + (department || 'null') + "/" + (stock.join(',') || 'null') + "/" + (owner || 'null'));
                 } else {
                     $('#buttonfull').attr('disabled', 'disabled');
                     $('#buttonfull').removeAttr('href');

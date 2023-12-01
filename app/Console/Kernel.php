@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\StockBalanceReminder::class,
+        \App\Console\Commands\StationeryConfirmationReminder::class,
     ];
 
     /**
@@ -25,11 +26,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('stock_balance:reminder')
-                 ->monthly()
-                 ->lastOfMonth()
+                 ->daily()
                  ->at('09:00');
 
-        // $schedule->command('stock_balance:reminder')->everyMinute();
+        $schedule->command('stationery_confirm:reminder')
+                 ->daily()
+                 ->at('09:00');
     }
 
     /**
