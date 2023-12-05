@@ -85,7 +85,8 @@
                         data: 'action',
                         name: 'action',
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        width: '15%'
                     },
                 ],
                 orderCellsTop: true,

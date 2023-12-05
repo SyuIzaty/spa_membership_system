@@ -58,7 +58,7 @@ class FCSController extends Controller
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                         data-id="' . $data->id . '" data-code="' . $data->code . '"
                         data-file="' . $data->file . '" data-remark="' . $data->remark . '"
-                        class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>
+                        class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
                         <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-activity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 } elseif (Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
                     return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
@@ -68,7 +68,7 @@ class FCSController extends Controller
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                         data-id="' . $data->id . '" data-code="' . $data->code . '"
                         data-file="' . $data->file . '" data-remark="' . $data->remark . '"
-                        class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+                        class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>';
                 }
             })
 
@@ -118,7 +118,7 @@ class FCSController extends Controller
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                         data-id="' . $data->id . '" data-code="' . $data->code . '"
                         data-file="' . $data->file . '" data-remark="' . $data->remark . '"
-                        class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>
+                        class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
                         <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-activity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 } elseif (Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
                     return '<a href="/file-classification/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
@@ -128,7 +128,7 @@ class FCSController extends Controller
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                         data-id="' . $data->id . '" data-code="' . $data->code . '"
                         data-file="' . $data->file . '" data-remark="' . $data->remark . '"
-                        class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+                        class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>';
                 }
             })
 
@@ -216,35 +216,35 @@ class FCSController extends Controller
                 $owner = FcsOwner::where('staff_id', Auth::user()->id)->where('dept_id', $data->mainCode->dept_id)->first();
 
                 if (isset($owner) && Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin']) && $data->sub_activity === 'Y') {
-                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
+                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
-                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+                    class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
                     <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-subActivity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 } elseif (isset($owner) && Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin']) && $data->sub_activity !== 'Y') {
                     return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
-                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+                    class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
                     <a href="#" data-target="#add-file" data-toggle="modal"
-                    data-id="' . $data->id . '" class="btn btn-sm btn-success"><i class="fal fa-plus"></i></a>
+                    data-id="' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-plus"></i></a>
                     <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-subActivity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 } elseif ($data->sub_activity === 'Y' && isset($owner)) {
-                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
+                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                     <a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
-                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                    class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>';
                 } elseif($data->sub_activity !== 'Y' && isset($owner)) {
                     return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '" data-subActs="' . $data->sub_activity . '"
-                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+                    class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
                     <a href="#" data-target="#add-file" data-toggle="modal"
-                    data-id="' . $data->id . '" class="btn btn-sm btn-success"><i class="fal fa-plus"></i></a>';
+                    data-id="' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-plus"></i></a>';
                 } elseif($data->sub_activity === 'Y' && !isset($owner)) {
-                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
+                    return '<a href="/file-classification/' . $data->code_id . '/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                     <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-subActivity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 } else {
                     return'<div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-subActivity/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
@@ -385,13 +385,13 @@ class FCSController extends Controller
                     return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '"
-                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+                    class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
                     <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-files/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 } elseif (isset($owner)) {
                     return '<a href="#" data-target="#edit-modal-sub" data-toggle="modal"
                     data-id="' . $data->id . '" data-code="' . $data->code . '"
                     data-file="' . $data->file . '" data-remark="' . $data->remark . '"
-                    class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                    class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>';
                 } else {
                     return'<div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-files/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
                 }
@@ -482,7 +482,7 @@ class FCSController extends Controller
             })
 
             ->addColumn('action', function ($department) {
-                return '<a href="/owner-list/' . $department->id . '" class="btn btn-sm btn-secondary"><i class="fal fa-pencil"></i></a>';
+                return '<a href="/owner-list/' . $department->id . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
             ->rawColumns(['action'])

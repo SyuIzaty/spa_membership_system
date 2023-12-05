@@ -349,14 +349,15 @@
                         name: 'file'
                     },
                     {
-                        className: 'text-center',
+                        className: 'text-left',
                         data: 'remark',
                         name: 'remark'
                     },
                     {
                         className: 'text-center',
                         data: 'action',
-                        name: 'action'
+                        name: 'action',
+                        width: '15%'
                     },
                 ],
                 orderCellsTop: true,
