@@ -15,6 +15,7 @@ use App\SpaceBookingItem;
 use App\DepartmentList;
 use App\SpaceVenue;
 use App\SpaceItem;
+use App\SpaceStaff;
 use App\User;
 use DataTables;
 use Validator;
@@ -143,16 +144,21 @@ class BookingController extends Controller
 
                     $main_venue = SpaceVenue::find($key);
 
-                    $data = [
-                        'receivers'   => isset($main_venue->departmentList->name) ? $main_venue->departmentList->name : '',
-                        'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
-                    ];
-        
-                    Mail::send('space.booking.application-email', $data, function ($message) use ($main_venue) {
-                        $message->subject(isset($main_venue->departmentList->name) ? $main_venue->departmentList->name : ''.': PERMOHONAN TEMPAHAN RUANG');
-                        $message->from(Auth::user()->email);
-                        $message->to(isset($main_venue->departmentList->email) ? $main_venue->departmentList->email : 'itadmin@intec.edu.my');
-                    });
+                    $staff = SpaceStaff::DepartmentId($main_venue->department_id)->get();
+                    foreach($staff as $staffs){
+                        $data = [
+                            'receivers'   => isset($staffs->user->name) ? $staffs->user->name : '',
+                            'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
+                        ];
+            
+                        $user_email = trim($staffs->email);
+                        Mail::send('space.booking.application-email', $data, function ($message) use ($main_venue, $user_email) {
+                            $message->subject('PERMOHONAN TEMPAHAN RUANG');
+                            $message->from(Auth::user()->email);
+                            $message->to($user_email);
+                        });
+                    }
+
         
                     $message = 'Application Sent';
                     $stat = 'success';
@@ -196,6 +202,9 @@ class BookingController extends Controller
             }
             if($booking->spaceVenue->department_id == 11){
                 $pdf = PDF::loadView('space.booking.facility', compact('booking','user','venue','item','booking_item'));
+            }
+            if($booking->spaceVenue->department_id == 7){
+                $pdf = PDF::loadView('space.booking.ce-office', compact('booking','user','venue','item','booking_item'));
             }
         }
         return $pdf->stream('Booking.pdf');

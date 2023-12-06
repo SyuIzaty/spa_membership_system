@@ -1244,6 +1244,12 @@
                                                     <span class="nav-link-text" data-i18n="nav.arkib">Facility</span>
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="/space/booking/create/7" title="CE Office"
+                                                    data-filter-tags="Arkib">
+                                                    <span class="nav-link-text" data-i18n="nav.arkib">Chief Executive Office</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li>

@@ -259,6 +259,9 @@
                                     @if($id == 11)
                                     <b>PERATURAN PENGGUNAAN RUANG FASILITI</b>
                                     @endif
+                                    @if($id == 7)
+                                    <b>PERATURAN PENGGUNAAN RUANG PEJABAT KETUA EKSEKUTIF</b>
+                                    @endif
                                   </h5>
                                   <ol>
                                     <li style="margin-bottom:10pt">
@@ -271,6 +274,9 @@
                                       @endif 
                                       @if($id == 1)
                                       <b>fasiliti</b>
+                                      @endif 
+                                      @if($id == 7)
+                                      <b>pejabat ketua eksekutif</b>
                                       @endif 
                                       hendaklah dibuat selewat - lewatnya 3 hari sebelum tarikh penggunaan. 
                                       (Sebarang tembahan tanpa borang tidak akan dilayan)
@@ -329,6 +335,9 @@
                                     @if($id == 1)
                                     <b>PINJAMAN PERALATAN DI BILIK DAN RUANG LAB KOMPUTER</b>
                                     @endif
+                                    @if($id == 7)
+                                    <b>PINJAMAN PERALATAN DI BILIK DAN RUANG PEJABAT KETUA EKSEKUTIF</b>
+                                    @endif
                                   </h5>
                                   Saya yang bernama <b>{{Auth::user()->name}}</b> Mengaku memohon pinjaman dan penggunaan peralatan di Bilik dan Ruang 
                                   @if($id == 10)
@@ -336,6 +345,9 @@
                                   @endif
                                   @if($id == 1)
                                   <b>lab komputer</b>
+                                  @endif 
+                                  @if($id == 7)
+                                  <b>pejabat ketua eksekutif</b>
                                   @endif 
                                   dan saya telah membaca
                                   serta memahami peraturan dan prosedur dibawah ini:

@@ -23,7 +23,7 @@
                         <div class="py-2 mt-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex">
                           <div class="row">
                             <div class="card-body">
-                              <table id="info" class="table table-bordered table-hover table-striped" style="width: 160%!important">
+                              <table id="info" class="table table-bordered table-hover table-striped" style="width: 200%!important">
                                   <thead>
                                       <tr>
                                           <div class="form-group">
@@ -32,6 +32,7 @@
                                                   <label class="low" style="margin-left: 14px !important; background-color: #E0D0F5"><label class="" style="margin-left: 30px;">IITU</label></label>
                                                   <label class="medium" style="margin-left: 70px !important; background-color: #FCE4BA"><label class="" style="margin-left: 30px;">LIBRARY</label></label>
                                                   <label class="high" style="margin-left: 85px !important; background-color: #F8BCBC"><label class="" style="margin-left: 30px; width: 130px">FACILITY</label></label>
+                                                  <label class="high" style="margin-left: 85px !important; background-color: #C4DEF2"><label class="" style="margin-left: 30px; width: 130px">CE OFFICE</label></label>
                                               </td>
                                           </div>
                                       </tr>

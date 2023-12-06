@@ -27,4 +27,9 @@ class SpaceStaff extends Model
         return $query->where('staff_id',$staff_id);
     }
 
+    public function scopeDepartmentId($query, $department_id)
+    {
+        return $query->where('department_id',$department_id);
+    }
+
 }
