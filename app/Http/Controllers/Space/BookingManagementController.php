@@ -43,11 +43,18 @@ class BookingManagementController extends Controller
                 $query->where('department_id',$check->department_id);
             })
             ->select('space_booking_venues.*');
+            $total = SpaceBookingVenue::with('spaceBookingMain.user','spaceVenue')
+            ->wherehas('spaceVenue',function($query) use ($check){
+                $query->where('department_id',$check->department_id);
+            })
+            ->get();
         }else{
             $booking = SpaceBookingVenue::with('spaceBookingMain')->get();
             $venue = SpaceBookingVenue::with('spaceBookingMain.user','spaceVenue','spaceStatus')
             ->select('space_booking_venues.*');
+            $total = SpaceBookingVenue::with('spaceBookingMain.user','spaceVenue','spaceStatus')->get();
         }
+        // dd($venue->where('application_status',3)->get()->count());
         
         if($request->ajax()) {
             return DataTables::of($venue)
@@ -95,7 +102,7 @@ class BookingManagementController extends Controller
                 ->make(true);
         }
 
-        return view('space.booking-management.index',compact('booking','status','venue'));
+        return view('space.booking-management.index',compact('booking','status','venue','total'));
     }
 
     /**

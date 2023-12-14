@@ -37,6 +37,41 @@
                           @endif
                         </div>
                         <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-sm-6 col-xl-4">
+                                    <div class="p-3 bg-warning-300 rounded overflow-hidden position-relative text-white mb-g">
+                                        <div class="">
+                                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                {{ $total->where('application_status',5)->count() }}
+                                                <small class="m-0 l-h-n">TOTAL PENDING <b style="font-weight: 900">{{ Carbon\Carbon::now()->year }}</b></small>
+                                            </h3>
+                                        </div>
+                                        <i class="fal fa-calendar-alt position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <div class="p-3 bg-success-400 rounded overflow-hidden position-relative text-white mb-g">
+                                        <div class="">
+                                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                {{ $total->where('application_status',3)->count() }}
+                                                <small class="m-0 l-h-n">TOTAL APPROVE <b style="font-weight: 900">{{ Carbon\Carbon::now()->year }}</b></small>
+                                            </h3>
+                                        </div>
+                                        <i class="fal fa-calendar-check position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <div class="p-3 bg-danger-400 rounded overflow-hidden position-relative text-white mb-g">
+                                        <div class="">
+                                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                {{ $total->where('application_status',4)->count() }}
+                                                <small class="m-0 l-h-n">TOTAL REJECTED  <b style="font-weight: 900">{{ Carbon\Carbon::now()->year }}</b></small>
+                                            </h3>
+                                        </div>
+                                        <i class="fal fa-calendar-minus position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4" style="font-size: 6rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
                           <ul class="nav nav-tabs nav-fill" role="tablist">
                               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#calendar_view" role="tab" aria-selected="true">Calendar View</a></li>
                               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#list_view" role="tab">List View</a></li>
