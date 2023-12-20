@@ -1,4 +1,3 @@
-{{-- @if (isset($sopReview)) --}}
 <div class="row">
     <div class="form-group col-md-12">
         <table class="table table-bordered">
@@ -15,18 +14,25 @@
                     <th>Section</th>
                     <th>Details</th>
                 </tr>
-                @php $i = 1 @endphp
-                @foreach ($sopReview as $sr)
+                @if (!$sopReview->isEmpty())
+                    @php $i = 1 @endphp
+                    @foreach ($sopReview as $sr)
+                        <tr>
+                            <td class="text-center">{{ $i }}</td>
+                            <td class="text-center">
+                                {{ isset($sr->created_at) ? date(' j F Y', strtotime($sr->created_at)) : '' }}</td>
+                            <td>{{ isset($sr->staff->staff_name) ? $sr->staff->staff_name : '' }}</td>
+                            <td class="text-center">{{ isset($sr->section) ? $sr->section : '' }}</td>
+                            <td class="text-center">{{ isset($sr->review_record) ? $sr->review_record : '' }}</td>
+                        </tr>
+                        @php $i++ @endphp
+                    @endforeach
+                @else
                     <tr>
-                        <td class="text-center">{{ $i }}</td>
-                        <td class="text-center">
-                            {{ isset($sr->created_at) ? date(' j F Y', strtotime($sr->created_at)) : '' }}</td>
-                        <td>{{ isset($sr->staff->staff_name) ? $sr->staff->staff_name : '' }}</td>
-                        <td class="text-center">{{ isset($sr->section) ? $sr->section : '' }}</td>
-                        <td class="text-center">{{ isset($sr->review_record) ? $sr->review_record : '' }}</td>
+                        <td colspan="5" class="text-center" style="background-color:#e6e1e1;">Review Record is not
+                            available</td>
                     </tr>
-                    @php $i++ @endphp
-                @endforeach
+                @endif
             </tbody>
         </table>
     </div>

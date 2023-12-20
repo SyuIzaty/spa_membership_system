@@ -29,21 +29,19 @@
                                 </div>
                             @endif
 
-                            @if (Auth::user()->hasRole('SOP Admin'))
-                                <div class="col-md-6" style="margin-bottom: 10px;">
-                                    <label>Department</label>
-                                    <select class="selectfilter form-control" name="department" id="department">
-                                        <option value="">Select Department</option>
-                                        @foreach ($department as $d)
-                                            <option value="{{ $d->id }}" <?php if ($selectedDepartment == $d->id) {
-                                                echo 'selected';
-                                            } ?>>
-                                                {{ $d->department_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
+                            <div class="col-md-6" style="margin-bottom: 10px;">
+                                <label>Department</label>
+                                <select class="selectfilter form-control" name="department" id="department">
+                                    <option value="">Select Department</option>
+                                    @foreach ($department as $d)
+                                        <option value="{{ $d->id }}" <?php if ($selectedDepartment == $d->id) {
+                                            echo 'selected';
+                                        } ?>>
+                                            {{ $d->department_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="table-responsive">
                                 <table id="sop" class="table table-bordered table-hover table-striped w-100">
                                     <thead>

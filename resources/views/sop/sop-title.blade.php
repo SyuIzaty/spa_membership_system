@@ -280,7 +280,7 @@
                     {
                         className: 'text-left',
                         data: 'department',
-                        name: 'department'
+                        name: 'department.department_name'
                     },
                     {
                         className: 'text-left',
@@ -338,7 +338,7 @@
                         {
                             className: 'text-left',
                             data: 'department',
-                            name: 'department'
+                            name: 'department.department_name'
                         },
                         {
                             className: 'text-left',

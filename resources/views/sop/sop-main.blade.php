@@ -249,7 +249,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, Cancel!',
+                    confirmButtonText: 'Submit!',
                     cancelButtonText: 'No'
                 }).then((result) => {
 
@@ -555,7 +555,6 @@
                     if (data.action == 'delete') {
                         $('#' + data.id).remove();
                         location.reload();
-
                     }
                 }
             });

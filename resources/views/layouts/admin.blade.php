@@ -152,11 +152,6 @@
 
                         <!-- Start SOP System -->
 
-                        @php
-                            $isAdmin = Auth::user()->hasRole('SOP Admin');
-                            $owner = App\SopOwner::where('owner_id', Auth::user()->id)->first();
-                        @endphp
-
                         @role('Staff')
                             <li class="nav-title">SOP Management</li>
                             <li>
@@ -166,7 +161,8 @@
                                     <span class="nav-link-text" data-i18n="nav.sop">SOP</span>
                                 </a>
                             </li>
-                            @if ($isAdmin || isset($owner))
+                            @can('View SOP')
+                                {{-- Role: SOP Admin, SOP Owner  --}}
                                 <li>
                                     <a href="/sop" style="text-decoration: none!important;" title="SOP Progress"
                                         data-filter-tags="list">
@@ -174,34 +170,33 @@
                                         <span class="nav-link-text" data-i18n="nav.sop">SOP Progress</span>
                                     </a>
                                 </li>
-                                @if ($isAdmin)
-                                    <li class="open">
-                                        <a href="#" title="SOP Admin" data-filter-tags="list">
-                                            <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.list">Admin</span>
+                            @endcan
+                            @can('Manage SOP')
+                                {{-- Role: SOP Admin --}}
+                                <li class="open">
+                                    <a href="#" title="SOP Admin" data-filter-tags="list">
+                                        <i class="fal fa-user"></i>
+                                        <span class="nav-link-text" data-i18n="nav.list">Admin</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/sop-title" title="SOP Title" data-filter-tags="sopTitle">
+                                                <span class="nav-link-text" data-i18n="nav.sopTitle">SOP Title</span>
+                                            </a>
+                                        </li>
+                                    {{-- <li>
+                                        <a href="/sop-department" title="Department List" data-filter-tags="department">
+                                            <span class="nav-link-text" data-i18n="nav.department">Department</span>
                                         </a>
-                                        <ul>
-                                            <li>
-                                                <a href="/sop-title" title="SOP Title" data-filter-tags="sopTitle">
-                                                    <span class="nav-link-text" data-i18n="nav.sopTitle">SOP Title</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/sop-department" title="Department List"
-                                                    data-filter-tags="department">
-                                                    <span class="nav-link-text"
-                                                        data-i18n="nav.department">Department</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
-                                                    <span class="nav-link-text" data-i18n="nav.owner">SOP Owner</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                @endif
-                            @endif
+                                    </li> --}}
+                                        <li>
+                                            <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
+                                                <span class="nav-link-text" data-i18n="nav.owner">SOP Owner</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endcan
                         @endrole
 
                         <!-- End SOP System -->
@@ -494,45 +489,53 @@
                             <li>
                                 <a href="/application-list" title="i-Stationery" data-filter-tags="vote-management">
                                     <i class="fal fa-file"></i>
-                                    <span class="nav-link-text" data-i18n="nav.vote-management">Stationery Application</span>
+                                    <span class="nav-link-text" data-i18n="nav.vote-management">Stationery
+                                        Application</span>
                                 </a>
                             </li>
-                            @canany(['Manage Stationery','Manage Approval'])
+                            @canany(['Manage Stationery', 'Manage Approval'])
                                 <li>
                                     <a href="#" title="i-Stationery" data-filter-tags="vote-management">
                                         <i class="ni ni-calendar-fine"></i>
-                                        <span class="nav-link-text" data-i18n="nav.vote-management">Application Management</span>
+                                        <span class="nav-link-text" data-i18n="nav.vote-management">Application
+                                            Management</span>
                                     </a>
                                     <ul>
                                         @inject('application', 'App\IsmApplication')
                                         <li>
                                             <a href="/stationery-manage/NA" title="parameter" data-filter-tags="parameter">
-                                                <span class="nav-link-text" data-i18n="nav.parameter">New Application ({{ $application->countNewApplication() }})</span>
+                                                <span class="nav-link-text" data-i18n="nav.parameter">New Application
+                                                    ({{ $application->countNewApplication() }})</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/stationery-manage/RV" title="report" data-filter-tags="report">
-                                                <span class="nav-link-text" data-i18n="nav.report">Rejected ({{ $application->countRejected() }})</span>
+                                                <span class="nav-link-text" data-i18n="nav.report">Rejected
+                                                    ({{ $application->countRejected() }})</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/stationery-manage/PA" title="report" data-filter-tags="report">
-                                                <span class="nav-link-text" data-i18n="nav.report">Pending Approval ({{ $application->countPendingApproval() }})</span>
+                                                <span class="nav-link-text" data-i18n="nav.report">Pending Approval
+                                                    ({{ $application->countPendingApproval() }})</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/stationery-manage/RC" title="report" data-filter-tags="report">
-                                                <span class="nav-link-text" data-i18n="nav.report">Ready For Collection ({{ $application->countReadyCollection() }})</span>
+                                                <span class="nav-link-text" data-i18n="nav.report">Ready For Collection
+                                                    ({{ $application->countReadyCollection() }})</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/stationery-manage/AC" title="report" data-filter-tags="report">
-                                                <span class="nav-link-text" data-i18n="nav.report">Awaiting Confirmation ({{ $application->countAwaitingConfirmation() }})</span>
+                                                <span class="nav-link-text" data-i18n="nav.report">Awaiting Confirmation
+                                                    ({{ $application->countAwaitingConfirmation() }})</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/stationery-manage/CP" title="report" data-filter-tags="report">
-                                                <span class="nav-link-text" data-i18n="nav.report">Complete ({{ $application->countComplete() }})</span>
+                                                <span class="nav-link-text" data-i18n="nav.report">Complete
+                                                    ({{ $application->countComplete() }})</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -1247,7 +1250,8 @@
                                             <li>
                                                 <a href="/space/booking/create/7" title="CE Office"
                                                     data-filter-tags="Arkib">
-                                                    <span class="nav-link-text" data-i18n="nav.arkib">Chief Executive Office</span>
+                                                    <span class="nav-link-text" data-i18n="nav.arkib">Chief Executive
+                                                        Office</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -1619,8 +1623,8 @@
                                     <img style="cursor:pointer;" src="{{ asset('img/demo/avatars/avatar-m.png') }}"
                                         class="profile-image rounded-circle" alt="">
                                     <!-- you can also add username next to the avatar with the codes below:
-                                                                                                <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
-                                                                                                <i class="ni ni-chevron-down hidden-xs-down"></i> -->
+                                                                                                            <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
+                                                                                                            <i class="ni ni-chevron-down hidden-xs-down"></i> -->
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
                                     <div class="flex-row py-4 dropdown-header bg-trans-gradient d-flex rounded-top">
@@ -1685,18 +1689,18 @@
         <!-- END Quick Menu -->
 
         <!-- base vendor bundle:
-                                                                   DOC: if you remove pace.js from core please note on Internet Explorer some CSS animations may execute before a page is fully loaded, resulting 'jump' animations
-                                                                      + pace.js (recommended)
-                                                                      + jquery.js (core)
-                                                                      + jquery-ui-cust.js (core)
-                                                                      + popper.js (core)
-                                                                      + bootstrap.js (core)
-                                                                      + slimscroll.js (extension)
-                                                                      + app.navigation.js (core)
-                                                                      + ba-throttle-debounce.js (core)
-                                                                      + waves.js (extension)
-                                                                      + smartpanels.js (extension)
-                                                                      + src/../jquery-snippets.js (core) -->
+                                                                               DOC: if you remove pace.js from core please note on Internet Explorer some CSS animations may execute before a page is fully loaded, resulting 'jump' animations
+                                                                                  + pace.js (recommended)
+                                                                                  + jquery.js (core)
+                                                                                  + jquery-ui-cust.js (core)
+                                                                                  + popper.js (core)
+                                                                                  + bootstrap.js (core)
+                                                                                  + slimscroll.js (extension)
+                                                                                  + app.navigation.js (core)
+                                                                                  + ba-throttle-debounce.js (core)
+                                                                                  + waves.js (extension)
+                                                                                  + smartpanels.js (extension)
+                                                                                  + src/../jquery-snippets.js (core) -->
 
 
 
@@ -1909,7 +1913,7 @@
         }
 
         /* Scale down all heading previews because they are way too big to be presented in the UI.
-                                                                Preserve the relative scale, though. */
+                                                                            Preserve the relative scale, though. */
         .document-editor .ck-heading-dropdown .ck-list .ck-button:not(.ck-heading_paragraph) .ck-button__label {
             transform: scale(0.8);
             transform-origin: left;

@@ -40,31 +40,24 @@
     </div>
 
     @if ($workFlow->count() > 0)
-        @if ($sop->prepared_by == Auth::user()->id)
-            @if ($data->status == '1' || $data->status == '2')
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <form method="post" action="{{ url('store-new-work-flow') }}" enctype="multipart/form-data"
-                            class="dropzone needsclick dz-clickable" id="dropzone">
-                            @csrf
-                            <input type="hidden" name="id" value="{{ $id }}">
-                            <div class="dz-message needsclick">
-                                <i class="fal fa-cloud-upload text-muted mb-3"></i>
-                                <br>
-                                <span class="text-uppercase">Drop files here or
-                                    click to
-                                    upload.</span>
-                                <br>
-                                <span class="fs-sm text-muted">This is a dropzone.
-                                    Selected
-                                    files
-                                    <strong>.jpeg,.jpg,.png</strong>
-                                    are actually uploaded.</span>
-                            </div>
-                        </form>
-                    </div>
+        @if ($sop->prepared_by == Auth::user()->id && ($data->status == '1' || $data->status == '2'))
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <form method="post" action="{{ url('store-new-work-flow') }}" enctype="multipart/form-data"
+                        class="dropzone needsclick dz-clickable" id="dropzone">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $id }}">
+                        <div class="dz-message needsclick">
+                            <i class="fal fa-cloud-upload text-muted mb-3"></i>
+                            <br>
+                            <span class="text-uppercase">Drop files here or click to upload.</span>
+                            <br>
+                            <span class="fs-sm text-muted">This is a dropzone. Selected files
+                                <strong>.jpeg,.jpg,.png</strong> are actually uploaded.</span>
+                        </div>
+                    </form>
                 </div>
-            @endif
+            </div>
         @endif
 
         @foreach ($workFlow as $wf)
@@ -73,20 +66,17 @@
                     <div style="position: relative; display: inline-block;">
                         <img src="/get-work-flow/{{ $wf->id }}" alt="" title=""
                             style="max-width: 100%;" />
-                        @if ($data->status == '1' || $data->status == '2')
-                            @if ($sop->prepared_by == Auth::user()->id)
-                                <a href="#" data-path="{{ $wf->id }}"
-                                    class="btn btn-danger btn-sm btn-delete"
-                                    style="position: absolute; top: 0; right: -10%;">
-                                    <i class="fal fa-trash"></i>
-                                </a>
-                            @endif
+                        @if ($sop->prepared_by == Auth::user()->id && ($data->status == '1' || $data->status == '2'))
+                            <a href="#" data-path="{{ $wf->id }}" class="btn btn-danger btn-sm btn-delete"
+                                style="position: absolute; top: 0; right: -10%;">
+                                <i class="fal fa-trash"></i>
+                            </a>
                         @endif
                     </div>
                 </div>
             </div>
         @endforeach
-    @else
+    @elseif ($workFlow->count() == 0 && $sop->prepared_by == Auth::user()->id && ($data->status == '1' || $data->status == '2'))
         <form method="post" action="{{ url('store-work-flow') }}" enctype="multipart/form-data"
             class="dropzone needsclick dz-clickable" id="dropzone2">
             @csrf
@@ -94,16 +84,12 @@
             <div class="dz-message needsclick">
                 <i class="fal fa-cloud-upload text-muted mb-3"></i>
                 <br>
-                <span class="text-uppercase">Drop files here or
-                    click to
-                    upload.</span>
+                <span class="text-uppercase">Drop files here or click to upload.</span>
                 <br>
-                <span class="fs-sm text-muted">This is a dropzone.
-                    Selected
-                    files
-                    <strong>.jpeg,.jpg,.png</strong>
-                    are actually uploaded.</span>
+                <span class="fs-sm text-muted">This is a dropzone. Selected files <strong>.jpeg,.jpg,.png</strong> are
+                    actually uploaded.</span>
             </div>
         </form>
     @endif
+
 @endif

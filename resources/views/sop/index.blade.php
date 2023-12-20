@@ -55,12 +55,10 @@
                                             <th class="text-center">Prepared By</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Action</th>
-                                            <th class="text-center">Activity Log</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -134,11 +132,6 @@
                         data: 'action',
                         name: 'action'
                     },
-                    {
-                        className: 'text-center',
-                        data: 'log',
-                        name: 'log'
-                    },
                 ],
                 orderCellsTop: true,
                 "order": [
@@ -202,11 +195,6 @@
                             data: 'action',
                             name: 'action'
                         },
-                        {
-                            className: 'text-center',
-                            data: 'log',
-                            name: 'log'
-                        },
                     ],
                     orderCellsTop: true,
                     "order": [
@@ -223,6 +211,40 @@
             $('.selectfilter').on('change', function() {
                 var department = $('#department').val();
                 createDatatable(department);
+            });
+
+            $('#sop').on('click', '.btn-delete[data-remote]', function(e) {
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                var url = $(this).data('remote');
+                Swal.fire({
+                    title: 'Are you sure you want to reset this SOP?',
+                    text: "All the details will be deleted. You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Reset!'
+                }).then((result) => {
+                    if (result.value) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            dataType: 'json',
+                            data: {
+                                method: '_DELETE',
+                                submit: true
+                            }
+                        }).always(function(data) {
+                            $('#sop').DataTable().draw(false);
+                        });
+                    }
+                })
             });
         });
     </script>

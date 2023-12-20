@@ -95,8 +95,7 @@
                                                                 <td>
                                                                     <b>{{ $o->staff->staff_name }}</b><br>
                                                                     Department :
-                                                                    {{ isset($o->staff->staff_dept) ? $o->staff->staff_dept : '--' }}<br>
-                                                                    Staff ID : {{ $o->staff->staff_id }}<br>
+                                                                    {{ isset($o->staff->staff_dept) ? $o->staff->staff_dept : '--' }}
                                                                 </td>
                                                                 <td style="vertical-align: middle" class="text-center">
                                                                     <a href="#" data-path="{{ $o->id }}"

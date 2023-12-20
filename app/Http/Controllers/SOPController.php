@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use File;
-use Response;
+use App\User;
 use App\Staff;
 use App\SopForm;
 use App\SopList;
@@ -61,7 +60,7 @@ class SOPController extends Controller
                 $check = SopCrossDepartment::where('sop_lists_id', $data->id);
 
                 if ($check->exists()) {
-                    $crossDepartments = $data->getCD;
+                    $crossDepartments = $data->crossDepartment;
 
                     if (count($crossDepartments) >= 2) {
                         $all = '<ul>';
@@ -100,15 +99,22 @@ class SOPController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                return '<a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
-            })
-
-            ->addColumn('log', function ($data) {
-                return '<a href="/sop/' . $data->id . '/log" class="btn btn-sm btn-info"><i class="fal fa-list-alt"></i></a>';
+                $detail = SopDetail::where('sop_lists_id', $data->id)->first();
+                $user = Auth::user()->id;
+                if (($data->status == '1' || $data->status == '2') && isset($detail->prepared_by)) {
+                    if ($detail->prepared_by == $user) {
+                        return '<div class="btn-group"><a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                            <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-sop-details/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
+                    } else {
+                        return '<a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                    }
+                } else {
+                    return '<a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                }
             })
 
             ->addIndexColumn()
-            ->rawColumns(['status','action','log','cross_department'])
+            ->rawColumns(['status','action','cross_department'])
             ->make(true);
     }
 
@@ -138,7 +144,7 @@ class SOPController extends Controller
             $check = SopCrossDepartment::where('sop_lists_id', $data->id);
 
             if ($check->exists()) {
-                $crossDepartments = $data->getCD;
+                $crossDepartments = $data->crossDepartment;
 
                 if (count($crossDepartments) >= 2) {
                     $all = '<ul>';
@@ -176,15 +182,22 @@ class SOPController extends Controller
         })
 
         ->addColumn('action', function ($data) {
-            return '<a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
-        })
-
-        ->addColumn('log', function ($data) {
-            return '<a href="/sop/' . $data->id . '/log" class="btn btn-sm btn-info"><i class="fal fa-list-alt"></i></a>';
+            $detail = SopDetail::where('sop_lists_id', $data->id)->first();
+            $user = Auth::user()->id;
+            if (($data->status == '1' || $data->status == '2') && isset($detail->prepared_by)) {
+                if ($detail->prepared_by == $user) {
+                    return '<div class="btn-group"><a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-sop-details/' . $data->id . '"><i class="fal fa-trash"></i></button></div>';
+                } else {
+                    return '<a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                }
+            } else {
+                return '<a href="/sop/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            }
         })
 
         ->addIndexColumn()
-        ->rawColumns(['status','action','log','cross_department'])
+        ->rawColumns(['status','action','cross_department'])
         ->make(true);
     }
 
@@ -198,7 +211,7 @@ class SOPController extends Controller
 
     public function getSOPTitle()
     {
-        $data = SopList::all();
+        $data = SopList::with(['department','crossDepartment']);
 
         return datatables()::of($data)
             ->addColumn('sop', function ($data) {
@@ -212,10 +225,10 @@ class SOPController extends Controller
             ->addColumn('cross_department', function ($data) {
                 $all = '';
 
-                $check = SopCrossDepartment::where('sop_lists_id', $data->id);
+                $check = SopCrossDepartment::with(['department','crossDepartment'])->where('sop_lists_id', $data->id);
 
                 if ($check->exists()) {
-                    foreach ($data->getCD as $c) {
+                    foreach ($data->crossDepartment as $c) {
                         $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>' . $c->crossDepartment->department_name . '</div>' : 'N/A';
                     }
                     return $all;
@@ -255,7 +268,7 @@ class SOPController extends Controller
             $cond .= " AND (department_id = '" . $request->department . "')";
         }
 
-        $data = SopList::whereRaw($cond);
+        $data = SopList::with(['department','crossDepartment'])->whereRaw($cond);
 
         return datatables()::of($data)
         ->addColumn('sop', function ($data) {
@@ -272,7 +285,7 @@ class SOPController extends Controller
             $check = SopCrossDepartment::where('sop_lists_id', $data->id);
 
             if ($check->exists()) {
-                foreach ($data->getCD as $c) {
+                foreach ($data->crossDepartment as $c) {
                     $all .= isset($c->crossDepartment->department_name) ? '<div word-break: break-all;>' . $c->crossDepartment->department_name . '</div>' : 'N/A';
                 }
                 return $all;
@@ -583,6 +596,12 @@ class SOPController extends Controller
                     'department_id' => $request->id,
                     'created_by'    => Auth::user()->id
                 ]);
+
+                $user = User::find($value);
+
+                if (!$user->hasRole('SOP Owner')) {
+                    $user->assignRole('SOP Owner');
+                }
             }
         }
 
@@ -599,8 +618,15 @@ class SOPController extends Controller
 
     public function deleteSOPOwner($id)
     {
-        $findOwner = SopOwner::find($id);
-        $findOwner->delete();
+        $owner = SopOwner::where('id', $id)->first();
+
+        $user  = User::find($owner->owner_id);
+
+        $user->removeRole('SOP Owner');
+
+        $exist = SopOwner::find($id);
+        $exist->update(['deleted_by' => Auth::user()->id]);
+        $exist->delete();
 
         return response()->json(['success' => 'Deleted!']);
     }
@@ -632,6 +658,7 @@ class SOPController extends Controller
             'approved_by' => 'required',
             'purpose'     => 'required',
             'scope'       => 'required',
+            'definition'  => 'required',
             'procedure'   => 'required',
         ]);
 
@@ -663,6 +690,23 @@ class SOPController extends Controller
 
     public function updateDetails(Request $request)
     {
+
+        $validated = $request->validate([
+            'code' => [
+                'required',
+                new CodeFormatRule(),
+            ],
+            'prepared_by' => 'required',
+            'reviewed_by' => 'required',
+            'approved_by' => 'required',
+            'purpose'     => 'required',
+            'scope'       => 'required',
+            'definition'  => 'required',
+            'procedure'   => 'required',
+        ]);
+
+        // dd($request->all(), $validated);
+
         $update = SopDetail::where('sop_lists_id', $request->id)->first();
 
         // $originalApprovedBy = $update->approved_by;
@@ -810,12 +854,6 @@ class SOPController extends Controller
         return Storage::disk('minio')->response('sop/reference/' . $filename);
     }
 
-    public function getReviewRecord($id)
-    {
-        $sopReview  = SopReviewRecord::where('id', $id)->first();
-        return view('sop.sop-review-record', compact('sopReview'));
-    }
-
     public function storeFormRecord(Request $request)
     {
         $request->validate([
@@ -844,6 +882,15 @@ class SOPController extends Controller
 
         if ($request->ajax()) {
             if ($request->action == 'edit') {
+
+                $request->validate([
+                    'code' => [
+                        'required',
+                        new FormFormatRule(),
+                    ],
+                    'details' => 'required',
+                ]);
+
                 $update = SopForm::where('id', $request->id)->first();
                 $update->update([
                     'sop_code'   => $request->code,
@@ -1055,6 +1102,36 @@ class SOPController extends Controller
             ->make(true);
     }
 
+    public function fetchSOPLists(Request $request)
+    {
+        $cond = "1";
+
+        if ($request->department && $request->department != "All") {
+            $cond .= " AND (department_id = '" . $request->department . "')";
+        }
+
+        $data = SopList::whereRaw($cond)->where('status', '4')->where('active', 'Y');
+
+        return datatables()::of($data)
+        ->addColumn('sop', function ($data) {
+            return isset($data->sop) ? ($data->sop) : 'N/A';
+        })
+
+        ->addColumn('department', function ($data) {
+            return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
+        })
+
+        ->addColumn('action', function ($data) {
+            return '<a style="color: white" data-page="/generate-finalized-PDF/' . $data->id . '" class="btn btn-info"
+            onclick="Print(this)"><i class="fal fa-download"></i> PDF</a>';
+        })
+
+        ->addIndexColumn()
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+
+
     public function generateFinalizePDF($id)
     {
         $data       = SopList::where('id', $id)->first();
@@ -1069,4 +1146,95 @@ class SOPController extends Controller
 
         return view('sop.sop-pdf-finalized', compact('data', 'dateNow', 'date', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
     }
+
+    public function deleteSOPDetails($id)
+    {
+        $detail = SopDetail::where('sop_lists_id', $id);
+
+        if ($detail->exists()) {
+            $details = $detail->first();
+
+            $details->update([
+                'deleted_by' => Auth::user()->id,
+            ]);
+
+            $details->delete();
+        }
+
+        $form = SopForm::where('sop_lists_id', $id);
+
+        if ($form->exists()) {
+
+            $forms = SopForm::where('sop_lists_id', $id)->get();
+
+            foreach ($forms as $f) {
+                $f->update([
+                    'deleted_by' => Auth::user()->id,
+                ]);
+
+                $f->delete();
+            }
+        }
+
+        $workFlow = SopFlowChart::where('sop_lists_id', $id);
+
+        if ($workFlow->exists()) {
+
+            $workFlows = SopFlowChart::where('sop_lists_id', $id)->get();
+
+            foreach ($workFlows as $w) {
+
+                if (Storage::disk('minio')->exists($w->web_path) == 'true') {
+                    Storage::disk('minio')->delete($w->web_path);
+                }
+
+                $w->update([
+                    'deleted_by' => Auth::user()->id,
+                ]);
+
+                $w->delete();
+            }
+        }
+
+        $record = SopReviewRecord::where('sop_lists_id', $id);
+
+        if ($record->exists()) {
+
+            $records = SopReviewRecord::where('sop_lists_id', $id)->get();
+
+            foreach ($records as $r) {
+                $r->update([
+                    'deleted_by' => Auth::user()->id,
+                ]);
+
+                $r->delete();
+            }
+        }
+
+        $comment = SopComment::where('sop_lists_id', $id);
+
+        if ($comment->exists()) {
+
+            $comments = SopComment::where('sop_lists_id', $id)->get();
+
+            foreach ($comments as $c) {
+                $c->update([
+                    'deleted_by' => Auth::user()->id,
+                ]);
+
+                $c->delete();
+            }
+        }
+
+        $sop = SopList::where('id', $id)->first();
+
+        //reset SOP
+        $sop->update([
+            'status'     => '1',
+            'updated_by' => Auth::user()->id
+            ]);
+
+        return response()->json();
+    }
+
 }

@@ -86,7 +86,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-work-flow/{id}', 'SOPController@workFlowFile');
     Route::post('/store-new-work-flow', 'SOPController@storeNewWorkFlow');
     Route::delete('/delete-work-flow/{id}', 'SOPController@deleteWorkFlow');
-    Route::get('/sop/review-record/{id}', 'SOPController@getReviewRecord');
     Route::get('/generate-PDF/{id}', 'SOPController@generatePDF');
     Route::get('/sop-department', 'SOPController@SOPDepartment');
     Route::post('/get-sop-department', 'SOPController@getSOPDepartment');
@@ -106,6 +105,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/fetch-sop-list', 'SOPController@fetchSOPList');
     Route::post('/fetch-sop-lists', 'SOPController@fetchSOPLists');
     Route::get('/generate-finalized-PDF/{id}', 'SOPController@generateFinalizePDF');
+    Route::delete('/delete-sop-details/{id}', 'SOPController@deleteSOPDetails');
 
     //File Classification
     Route::resource('/file-classification', 'FCSController');
