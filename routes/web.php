@@ -73,6 +73,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/sop-title', 'SOPController@SOPTitle');
     Route::post('/get-sop-title', 'SOPController@getSOPTitle');
     Route::post('/get-sop-titles', 'SOPController@getSOPTitles');
+    Route::get('/get-sop-title-id/{id}', 'SOPController@getSOPTitleID');
+    Route::get('/get-sop-title-dept/{id}', 'SOPController@getSOPTitleDept');
     Route::get('/sop/{id}/log', 'SOPController@getLog');
     Route::post('/store-sop-title', 'SOPController@addSOPTitle');
     Route::post('/edit-sop-title', 'SOPController@editSOPTitle');

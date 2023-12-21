@@ -247,17 +247,35 @@ class SOPController extends Controller
 
             ->addColumn('action', function ($data) {
 
-                $crossDept = SopCrossDepartment::where('sop_lists_id', $data->id)->get();
+                // $crossDept = SopCrossDepartment::where('sop_lists_id', $data->id)->get();
 
-                return '<a href="#" data-target="#edit" data-toggle="modal"
-                data-id="' . $data->id . '" data-department="' . $data->department_id . '"
-                data-title="' . $data->sop . '" data-status="' . $data->active . '" data-crossDept="' . $crossDept . '"
-                class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                // return '<a href="#" data-target="#edit" data-toggle="modal"
+                // data-id="' . $data->id . '" data-department="' . $data->department_id . '"
+                // data-title="' . $data->sop . '" data-status="' . $data->active . '" data-crossDept="' . $crossDept . '"
+                // class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+
+                return '<button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="' . $data->id . '" id="edit" name="edit"><i class="fal fa-pencil"></i></button>';
             })
 
             ->addIndexColumn()
             ->rawColumns(['action','status','cross_department'])
             ->make(true);
+    }
+
+    public function getSOPTitleID($id)
+    {
+        $sopList = SopList::find($id);
+        echo json_encode($sopList);
+    }
+
+    public function getSOPTitleDept($id)
+    {
+        $crossDept = SopCrossDepartment::where('sop_lists_id', $id)->get();
+        $cd = $crossDept->pluck('cross_dept_id')->toArray();
+        $department = SopDepartment::where('active', 'Y')->get();
+        $dept = SopList::where('id', $id)->pluck('department_id')->toArray();
+
+        return response()->json(compact('cd', 'department', 'dept'));
     }
 
     public function getSOPTitles(Request $request)
@@ -303,10 +321,7 @@ class SOPController extends Controller
         })
 
         ->addColumn('action', function ($data) {
-            return '<a href="#" data-target="#edit" data-toggle="modal"
-            data-id="' . $data->id . '" data-department="' . $data->department_id . '"
-            data-title="' . $data->sop . '" data-status="' . $data->active . '"
-            class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            return '<button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="' . $data->id . '" id="edit" name="edit"><i class="fal fa-pencil"></i></button>';
         })
 
         ->addIndexColumn()
@@ -328,9 +343,7 @@ class SOPController extends Controller
             foreach($request->crossdept as $key => $value) {
                 SopCrossDepartment::create([
                     'sop_lists_id'  => $sop->id,
-                    'dept_id'       => $request->department,
                     'cross_dept_id' => $value,
-                    'department_id' => $request->id,
                     'created_by'    => Auth::user()->id,
                     'updated_by'    => Auth::user()->id
                 ]);
@@ -342,6 +355,20 @@ class SOPController extends Controller
 
     public function editSOPTitle(Request $request)
     {
+        if (isset($request->crossdept)) {
+            SopCrossDepartment::where('sop_lists_id', $request->id)
+            ->whereNotIn('cross_dept_id', $request->crossdept)->delete();
+
+            foreach($request->crossdept as $crossdepts) {
+                SopCrossDepartment::firstOrCreate([
+                    'sop_lists_id'  => $request->id,
+                    'cross_dept_id' => $crossdepts,
+                ]);
+            }
+        } else {
+            SopCrossDepartment::where('sop_lists_id', $request->id)->delete();
+        }
+
         $update = SopList::where('id', $request->id)->first();
         $update->update([
             'sop'           => $request->title,
@@ -350,34 +377,6 @@ class SOPController extends Controller
             'updated_by'    => Auth::user()->id
         ]);
 
-        if ($request->crossdept) {
-
-            $crossDept = SopCrossDepartment::where('sop_lists_id', $request->id)->get();
-
-            foreach($request->crossdept as $key => $value) {
-                if (SopCrossDepartment::where('sop_lists_id', $request->id)->where('cross_dept_id', $value)->exists()) {
-                    $data = SopCrossDepartment::where('sop_lists_id', $request->id)->where('cross_dept_id', $value)->first();
-                    $data->update([
-                        'updated_by'    => Auth::user()->id
-                    ]);
-                } else {
-                    SopCrossDepartment::create([
-                        'sop_lists_id'  => $request->id,
-                        'dept_id'       => $request->department,
-                        'cross_dept_id' => $value,
-                        'department_id' => $request->id,
-                        'created_by'    => Auth::user()->id,
-                    ]);
-                }
-
-                foreach ($crossDept as $cd) {
-                    if ($cd->cross_dept_id !=  $value) {
-                        $cd->delete();
-                    }
-                }
-            }
-
-        }
         return redirect()->back()->with('message', 'Successfully Updated!');
     }
 

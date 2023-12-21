@@ -158,7 +158,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="edit" aria-hidden="true">
+        <div class="modal fade editModal" id="editModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="card-header">
@@ -169,12 +169,8 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label class="form-label">Department</label>
-                            <select class="form-control department" name="department" id="department">
-                                <option selected disabled value="">Select Department</option>
-                                @foreach ($department as $d)
-                                    <option value="{{ $d->id }}">{{ $d->department_name }}
-                                    </option>
-                                @endforeach
+                            <select class="form-control department" name="department" id="department_edit">
+
                             </select>
                         </div>
 
@@ -189,12 +185,8 @@
 
                         <div class="form-group">
                             <label class="form-label">Cross Department (if any)</label>
-                            <select class="form-control departments" id="crossDept" name="crossdept[]" multiple>
-                                @foreach ($department as $d)
-                                    <option value="{{ $d->id }}">
-                                        {{ $d->department_name }}
-                                    </option>
-                                @endforeach
+                            <select class="form-control departments" id="crossDept_edit" name="crossdept[]" multiple>
+
                             </select>
                         </div>
 
@@ -233,27 +225,68 @@
                 });
             });
 
-            $('#edit').on('shown.bs.modal', function() {
-                $('.departments').select2({
-                    dropdownParent: $('#edit')
-                });
+            $('#department_edit').select2({
+                dropdownParent: $('.editModal')
             });
+
+
+            $('#crossDept_edit').select2({
+                dropdownParent: $('.editModal')
+            });
+
 
             // $('#department').select2();
 
-            $('#edit').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget)
-                var id = button.data('id') // data-id
-                var department = button.data('department') // data-department
-                var title = button.data('title') // data-title
-                var status = button.data('status') // data-status
+            // $('#edit').on('show.bs.modal', function(event) {
+            //     var button = $(event.relatedTarget)
+            //     var id = button.data('id') // data-id
+            //     var department = button.data('department') // data-department
+            //     var title = button.data('title') // data-title
+            //     var status = button.data('status') // data-status
 
-                $('.modal-body #id').val(id);
-                $('.modal-body #department').val(department);
-                $('.modal-body #title').val(title);
-                $('.modal-body #crossDept').val(crossDept);
-                $('.modal-body #status').val(status);
+            //     $('.modal-body #id').val(id);
+            //     $('.modal-body #department').val(department);
+            //     $('.modal-body #title').val(title);
+            //     $('.modal-body #crossDept').val(crossDept);
+            //     $('.modal-body #status').val(status);
+            // });
+
+            $(document).on('click', '.edit_data', function() {
+                var id = $(this).attr("data-id");
+                $.ajax({
+                    url: '/get-sop-title-id/' + id,
+                    method: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('#id').val(data.id);
+                        $('#department').val(data.department_id);
+                        $('#title').val(data.sop);
+                        $('#status').val(data.active);
+                        $('.editModal').modal('show');
+                    }
+                });
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ url('/get-sop-title-dept') }}/" + id,
+                    success: function(respond) {
+                        $('#crossDept_edit').empty();
+                        $('#department_edit').empty();
+                        respond.department.forEach(function(ele) {
+                            $('#crossDept_edit').append(
+                                `<option value="${ele.id}">${ele.department_name}</option>`
+                            );
+                        });
+                        $('#crossDept_edit').val(respond.cd);
+                        respond.department.forEach(function(ele) {
+                            $('#department_edit').append(
+                                `<option value="${ele.id}">${ele.department_name}</option>`
+                            );
+                        });
+                        $('#department_edit').val(respond.dept);
+                    }
+                });
             });
+
 
             var table = $('#sop').DataTable({
                 processing: true,

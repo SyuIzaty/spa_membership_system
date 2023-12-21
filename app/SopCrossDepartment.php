@@ -8,12 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SopCrossDepartment extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['sop_lists_id','dept_id','cross_dept_id','created_by','updated_by','deleted_by'];
-
-    public function department()
-    {
-        return $this->hasOne(SopDepartment::class, 'id', 'dept_id');
-    }
+    protected $fillable = ['sop_lists_id','cross_dept_id','created_by','updated_by','deleted_by'];
 
     public function crossDepartment()
     {
