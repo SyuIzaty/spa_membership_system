@@ -1092,7 +1092,7 @@ class SOPController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                return '<a style="color: white" data-page="/generate-finalized-PDF/' . $data->id . '" class="btn btn-info"
+                return '<a style="color: white" data-page="/generate-PDF/' . $data->id . '" class="btn btn-info"
                 onclick="Print(this)"><i class="fal fa-download"></i> PDF</a>';
             })
 
@@ -1121,7 +1121,7 @@ class SOPController extends Controller
         })
 
         ->addColumn('action', function ($data) {
-            return '<a style="color: white" data-page="/generate-finalized-PDF/' . $data->id . '" class="btn btn-info"
+            return '<a style="color: white" data-page="/generate-PDF/' . $data->id . '" class="btn btn-info"
             onclick="Print(this)"><i class="fal fa-download"></i> PDF</a>';
         })
 

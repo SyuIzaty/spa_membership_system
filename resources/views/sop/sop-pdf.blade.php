@@ -35,6 +35,13 @@
         .page-break {
             page-break-after: always;
         }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
     </style>
     <main id="js-page-content" role="main" class="page-content">
         <div class="row">
@@ -66,9 +73,11 @@
                                     vertical-align: middle;">
                                         PREPARED BY</th>
                                 </tr>
-                                <tr height="100">
-                                    <td></td>
-                                </tr>
+                                @if ($sop->sopList->status == '1' || $sop->sopList->status == '2')
+                                    <tr height="100">
+                                        <td></td>
+                                    </tr>
+                                @endif
                                 <tr>
                                     <td>Name:
                                         {{ isset($sop->prepare->staff_name) ? strtoupper($sop->prepare->staff_name) : 'NOT AVAILABLE' }}
@@ -96,9 +105,11 @@
                                     vertical-align: middle;">
                                         REVIEWED BY</th>
                                 </tr>
-                                <tr height="100">
-                                    <td></td>
-                                </tr>
+                                @if ($sop->sopList->status == '1' || $sop->sopList->status == '2')
+                                    <tr height="100">
+                                        <td></td>
+                                    </tr>
+                                @endif
                                 <tr>
                                     <td>Name:
                                         {{ isset($sop->review->staff_name) ? strtoupper($sop->review->staff_name) : 'NOT AVAILABLE' }}
@@ -126,9 +137,11 @@
                                     vertical-align: middle;">
                                         APPROVED BY</th>
                                 </tr>
-                                <tr height="100">
-                                    <td></td>
-                                </tr>
+                                @if ($sop->sopList->status == '1' || $sop->sopList->status == '2')
+                                    <tr height="100">
+                                        <td></td>
+                                    </tr>
+                                @endif
                                 <tr>
                                     <td>Name:
                                         {{ isset($sop->approve->staff_name) ? strtoupper($sop->approve->staff_name) : 'NOT AVAILABLE' }}
@@ -305,16 +318,15 @@
                         </thead>
                     </table>
                 </div>
-                <div class="table-responsive" style="border: none; margin-top: 10px;">
-                    <table class=" w-100">
+                <div class="table-responsive" style="margin-top: 10px;">
+                    <table class=" w-100" style="border: none;">
                         <tr>
                             <td style="font-weight: bold">1.0</td>
                             <td style="font-weight: bold"> Purpose</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td> {{ isset($sop->purpose) ? html_entity_decode($sop->purpose) : 'PURPOSE IS NOT AVAILABLE' }}
-                            </td>
+                            <td> {!! isset($sop->purpose) ? nl2br($sop->purpose) : 'N/A' !!}</td>
                         </tr>
                     </table>
 
@@ -325,8 +337,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td> {{ isset($sop->scope) ? html_entity_decode($sop->scope) : 'SCOPE IS NOT AVAILABLE' }}
-                            </td>
+                            <td>{!! isset($sop->scope) ? nl2br($sop->scope) : 'N/A' !!}</td>
                         </tr>
                     </table>
 
@@ -337,8 +348,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td> {{ isset($sop->reference) ? html_entity_decode($sop->reference) : 'REFERENCE IS NOT AVAILABLE' }}
-                            </td>
+                            <td>{!! isset($sop->reference) ? nl2br($sop->reference) : 'N/A' !!}</td>
                         </tr>
                     </table>
 
@@ -349,8 +359,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td> {{ isset($sop->definition) ? html_entity_decode($sop->definition) : 'DEFINITION IS NOT AVAILABLE' }}
-                            </td>
+                            <td>{!! isset($sop->definition) ? nl2br($sop->definition) : 'N/A' !!}</td>
                         </tr>
                     </table>
                 </div>
@@ -399,8 +408,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td> {{ isset($sop->procedure) ? html_entity_decode($sop->procedure) : 'PROCEDURE IS NOT AVAILABLE' }}
-                            </td>
+                            <td> {!! isset($sop->procedure) ? nl2br($sop->procedure) : 'N/A' !!}</td>
                         </tr>
                     </table>
                 </div>

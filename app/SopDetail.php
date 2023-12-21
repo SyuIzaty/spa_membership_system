@@ -27,4 +27,9 @@ class SopDetail extends Model
     {
         return $this->hasOne(Staff::class, 'staff_id', 'approved_by');
     }
+
+    public function sopList()
+    {
+        return $this->hasOne(SopList::class, 'id', 'sop_lists_id');
+    }
 }
