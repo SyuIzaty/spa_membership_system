@@ -548,16 +548,41 @@
                         [3, 'details']
                     ]
                 },
-
                 restoreButton: false,
-
                 onSuccess: function(data, textStatus, jqXHR) {
                     if (data.action == 'delete') {
                         $('#' + data.id).remove();
                         location.reload();
+                    } else {
+                        if (data.errors) {
+                            var errorMessages = Object.values(data.errors).flat().join('<br>');
+                            // Display the custom error message if available
+                            var errorMessage = data.message || 'Validation Error';
+
+                            // Ensure that SweetAlert is available and properly included
+                            if (typeof Swal === 'function') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: errorMessage,
+                                    html: errorMessages
+                                });
+                            } else {
+                                // Fallback to alert if Swal is not available
+                                alert(errorMessage + '\n' + errorMessages + '\n');
+                            }
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Saved!'
+                            });
+                        }
                     }
                 }
             });
+
+
+
 
             $('.tabledit-edit-button').on('click', function() {
                 $('input[data-type="changed"]').each(function() {

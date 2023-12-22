@@ -881,8 +881,7 @@ class SOPController extends Controller
 
         if ($request->ajax()) {
             if ($request->action == 'edit') {
-
-                $request->validate([
+                $validator = Validator::make($request->all(), [
                     'code' => [
                         'required',
                         new FormFormatRule(),
@@ -890,19 +889,26 @@ class SOPController extends Controller
                     'details' => 'required',
                 ]);
 
-                $update = SopForm::where('id', $request->id)->first();
-                $update->update([
-                    'sop_code'   => $request->code,
-                    'details'    => $request->details,
-                    'updated_by' => Auth::user()->id
-                ]);
+                if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    return response()->json(['errors' => $errors]);
+                } else {
+                    $update = SopForm::where('id', $request->id)->first();
+                    $update->update([
+                        'sop_code'   => $request->code,
+                        'details'    => $request->details,
+                        'updated_by' => Auth::user()->id
+                    ]);
 
-                SopReviewRecord::create([
-                    'sop_lists_id'  => $update->sop_lists_id,
-                    'review_record' => $reviewRecord,
-                    'section'       => 'Form',
-                    'created_by'    => Auth::user()->id
-                ]);
+                    SopReviewRecord::create([
+                        'sop_lists_id'  => $update->sop_lists_id,
+                        'review_record' => $reviewRecord,
+                        'section'       => 'Form',
+                        'created_by'    => Auth::user()->id
+                    ]);
+
+                    return response()->json($request);
+                }
             }
 
             if ($request->action == 'delete') {
@@ -917,9 +923,9 @@ class SOPController extends Controller
                 ]);
 
                 SopForm::find($request->id)->delete();
-            }
 
-            return response()->json($request);
+                return response()->json($request);
+            }
         }
     }
 
