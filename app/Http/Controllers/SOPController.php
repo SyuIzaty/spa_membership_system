@@ -205,8 +205,9 @@ class SOPController extends Controller
     {
         $selectedDepartment = $request->department;
         $department         = SopDepartment::where('active', 'Y')->get();
+        $staff              = Staff::all();
 
-        return view('sop.sop-title', compact('department', 'selectedDepartment'));
+        return view('sop.sop-title', compact('department', 'selectedDepartment', 'staff'));
     }
 
     public function getSOPTitle()
@@ -237,6 +238,11 @@ class SOPController extends Controller
                 }
             })
 
+            ->addColumn('owner', function ($data) {
+                $owner = SopDetail::where('sop_lists_id', $data->id)->first();
+                return isset($owner->prepare->staff_name) ? ($owner->prepare->staff_name) : 'N/A';
+            })
+
             ->addColumn('status', function ($data) {
                 if ($data->active == 'Y') {
                     return '<div style="color: green;"><b>Active</b></div>';
@@ -246,36 +252,19 @@ class SOPController extends Controller
             })
 
             ->addColumn('action', function ($data) {
+                $person = SopDetail::where('sop_lists_id', $data->id)->first();
 
-                // $crossDept = SopCrossDepartment::where('sop_lists_id', $data->id)->get();
-
-                // return '<a href="#" data-target="#edit" data-toggle="modal"
-                // data-id="' . $data->id . '" data-department="' . $data->department_id . '"
-                // data-title="' . $data->sop . '" data-status="' . $data->active . '" data-crossDept="' . $crossDept . '"
-                // class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
-
-                return '<button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="' . $data->id . '" id="edit" name="edit"><i class="fal fa-pencil"></i></button>';
+                if (isset($person->prepared_by)) {
+                    return '<button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="' . $data->id . '" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                    <a href="#" data-target="#editPrepare" data-toggle="modal" data-id="' . $person->id . '" data-prepared="' . $person->prepared_by . '" class="btn btn-sm btn-warning"><i class="fal fa-user"></i></a>';
+                } else {
+                    return '<button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="' . $data->id . '" id="edit" name="edit"><i class="fal fa-pencil"></i></button>';
+                }
             })
 
             ->addIndexColumn()
             ->rawColumns(['action','status','cross_department'])
             ->make(true);
-    }
-
-    public function getSOPTitleID($id)
-    {
-        $sopList = SopList::find($id);
-        echo json_encode($sopList);
-    }
-
-    public function getSOPTitleDept($id)
-    {
-        $crossDept = SopCrossDepartment::where('sop_lists_id', $id)->get();
-        $cd = $crossDept->pluck('cross_dept_id')->toArray();
-        $department = SopDepartment::where('active', 'Y')->get();
-        $dept = SopList::where('id', $id)->pluck('department_id')->toArray();
-
-        return response()->json(compact('cd', 'department', 'dept'));
     }
 
     public function getSOPTitles(Request $request)
@@ -312,6 +301,12 @@ class SOPController extends Controller
             }
         })
 
+        ->addColumn('owner', function ($data) {
+            $owner = SopDetail::where('sop_lists_id', $data->id)->first();
+
+            return isset($owner->prepare->staff_name) ? ($owner->prepare->staff_name) : 'N/A';
+        })
+
         ->addColumn('status', function ($data) {
             if ($data->active == 'Y') {
                 return '<div style="color: green;"><b>Active</b></div>';
@@ -321,7 +316,14 @@ class SOPController extends Controller
         })
 
         ->addColumn('action', function ($data) {
-            return '<button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="' . $data->id . '" id="edit" name="edit"><i class="fal fa-pencil"></i></button>';
+            $person = SopDetail::where('sop_lists_id', $data->id)->first();
+
+            if (isset($person->prepared_by)) {
+                return '<button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="' . $data->id . '" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                <a href="#" data-target="#editPrepare" data-toggle="modal" data-id="' . $person->id . '" data-prepared="' . $person->prepared_by . '" class="btn btn-sm btn-warning"><i class="fal fa-user"></i></a>';
+            } else {
+                return '<button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="' . $data->id . '" id="edit" name="edit"><i class="fal fa-pencil"></i></button>';
+            }
         })
 
         ->addIndexColumn()
@@ -353,6 +355,22 @@ class SOPController extends Controller
         return redirect()->back()->with('message', 'Successfully Added!');
     }
 
+    public function getSOPTitleID($id)
+    {
+        $sopList = SopList::find($id);
+        echo json_encode($sopList);
+    }
+
+    public function getSOPTitleDept($id)
+    {
+        $crossDept  = SopCrossDepartment::where('sop_lists_id', $id)->get();
+        $cd         = $crossDept->pluck('cross_dept_id')->toArray();
+        $department = SopDepartment::where('active', 'Y')->get();
+        $dept       = SopList::where('id', $id)->pluck('department_id')->toArray();
+
+        return response()->json(compact('cd', 'department', 'dept'));
+    }
+
     public function editSOPTitle(Request $request)
     {
         if (isset($request->crossdept)) {
@@ -379,6 +397,18 @@ class SOPController extends Controller
 
         return redirect()->back()->with('message', 'Successfully Updated!');
     }
+
+    public function editPreparedBy(Request $request)
+    {
+        $update = SopDetail::where('id', $request->id)->first();
+        $update->update([
+            'prepared_by' => $request->prepared,
+            'updated_by'  => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message', 'Successfully Updated!');
+    }
+
 
     public function SOPDepartment(Request $request)
     {

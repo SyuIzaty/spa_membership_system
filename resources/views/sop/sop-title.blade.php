@@ -48,12 +48,14 @@
                                             <th class="text-center">SOP Title</th>
                                             <th class="text-center">Department</th>
                                             <th class="text-center">Cross Department</th>
+                                            <th class="text-center">Prepared By</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -69,26 +71,6 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div
-                        class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                        <a href="#" data-target="#add" data-toggle="modal"
-                            class="btn btn-primary waves-effect waves-themed float-right" style="margin-right:7px;"><i
-                                class="fal fa-plus-square"></i> Add SOP Title</a>
-                    </div> --}}
-                    {{-- {!! Form::open([
-                        'action' => 'SOPController@add',
-                        'method' => 'POST',
-                        'enctype' => 'multipart/form-data',
-                    ]) !!}
-                    <div
-                        class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                        <input type="file" name="import_file" accept=".xlsx" class="form-control mb-3">
-                    </div>
-
-                    <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i
-                            class="fal fa-check"></i>
-                        Submit</button>
-                    {!! Form::close() !!} --}}
                 </div>
             </div>
         </div>
@@ -169,9 +151,7 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label class="form-label">Department</label>
-                            <select class="form-control department" name="department" id="department_edit">
-
-                            </select>
+                            <select class="form-control department" name="department" id="department_edit"></select>
                         </div>
 
                         <div class="form-group">
@@ -185,9 +165,8 @@
 
                         <div class="form-group">
                             <label class="form-label">Cross Department (if any)</label>
-                            <select class="form-control departments" id="crossDept_edit" name="crossdept[]" multiple>
-
-                            </select>
+                            <select class="form-control departments" id="crossDept_edit" name="crossdept[]"
+                                multiple></select>
                         </div>
 
                         <div class="form-group">
@@ -211,7 +190,39 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade editPrepare" id="editPrepare" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="card-header">
+                        <h5 class="card-title w-100">Edit Prepared By</h5>
+                    </div>
+                    <div class="modal-body">
+                        {!! Form::open(['action' => 'SOPController@editPreparedBy', 'method' => 'POST']) !!}
+                        <input type="hidden" name="id" id="id">
 
+                        <div class="form-group">
+                            <label class="form-label">Prepared By</label>
+                            <select class="form-control preparedBy" name="prepared" id ="prepared">
+                                @foreach ($staff as $s)
+                                    <option value="{{ $s->staff_id }}">{{ $s->staff_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="footer">
+                            <button type="submit" id="btn_search"
+                                class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i
+                                    class="fal fa-save"></i> Update</button>
+                            <button type="button"
+                                class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 @endsection
 @section('script')
@@ -229,27 +240,16 @@
                 dropdownParent: $('.editModal')
             });
 
-
             $('#crossDept_edit').select2({
                 dropdownParent: $('.editModal')
             });
 
+            $('#editPrepare').on('shown.bs.modal', function() {
+                $('.preparedBy').select2({
+                    dropdownParent: $('#editPrepare')
+                });
+            });
 
-            // $('#department').select2();
-
-            // $('#edit').on('show.bs.modal', function(event) {
-            //     var button = $(event.relatedTarget)
-            //     var id = button.data('id') // data-id
-            //     var department = button.data('department') // data-department
-            //     var title = button.data('title') // data-title
-            //     var status = button.data('status') // data-status
-
-            //     $('.modal-body #id').val(id);
-            //     $('.modal-body #department').val(department);
-            //     $('.modal-body #title').val(title);
-            //     $('.modal-body #crossDept').val(crossDept);
-            //     $('.modal-body #status').val(status);
-            // });
 
             $(document).on('click', '.edit_data', function() {
                 var id = $(this).attr("data-id");
@@ -287,6 +287,14 @@
                 });
             });
 
+            $('#editPrepare').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id')
+                var prepared = button.data('prepared')
+
+                $('.modal-body #id').val(id);
+                $('.modal-body #prepared').val(prepared);
+            });
 
             var table = $('#sop').DataTable({
                 processing: true,
@@ -319,6 +327,11 @@
                         className: 'text-left',
                         data: 'cross_department',
                         name: 'cross_department'
+                    },
+                    {
+                        className: 'text-left',
+                        data: 'owner',
+                        name: 'owner'
                     },
                     {
                         className: 'text-center',
@@ -377,6 +390,11 @@
                             className: 'text-left',
                             data: 'cross_department',
                             name: 'cross_department'
+                        },
+                        {
+                            className: 'text-left',
+                            data: 'owner',
+                            name: 'owner'
                         },
                         {
                             className: 'text-center',

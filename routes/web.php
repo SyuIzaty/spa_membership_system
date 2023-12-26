@@ -108,6 +108,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/fetch-sop-lists', 'SOPController@fetchSOPLists');
     Route::get('/generate-finalized-PDF/{id}', 'SOPController@generateFinalizePDF');
     Route::delete('/delete-sop-details/{id}', 'SOPController@deleteSOPDetails');
+    Route::post('/edit-prepared-by', 'SOPController@editPreparedBy');
 
     //File Classification
     Route::resource('/file-classification', 'FCSController');
