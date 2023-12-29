@@ -222,7 +222,7 @@
                                         <td style="text-align: center; vertical-align: middle;">
                                             {{ $i }}</td>
                                         <td style="text-align: center; vertical-align: middle;">
-                                            {{ isset($sr->created_at) ? date(' j F Y', strtotime($sr->created_at)) : '' }}
+                                            {{ isset($sr->created_at) ? date(' j F Y h:i:s A', strtotime($sr->created_at)) : '' }}
                                         </td>
                                         <td>{{ isset($sr->staff->staff_name) ? $sr->staff->staff_name : '' }}</td>
                                         <td style="text-align: center; vertical-align: middle;">

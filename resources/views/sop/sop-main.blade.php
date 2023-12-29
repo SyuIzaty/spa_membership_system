@@ -55,16 +55,16 @@
                                     <a data-toggle="tab" style="background-color:#B99FC9;" class="nav-link" href="#four"
                                         role="tab">Review Record</a>
                                 </li>
+                                <li class="nav-item mr-2" style="background-color:#9fc6c9;">
+                                    <a data-toggle="tab" style="background-color:#9fc6c9;" class="nav-link" href="#five"
+                                        role="tab">Generate SOP</a>
+                                </li>
                                 <li class="nav-item mr-2" style="background-color:#9fc9b2;">
-                                    <a data-toggle="tab" style="background-color:#9fc9b2;" class="nav-link" href="#five"
+                                    <a data-toggle="tab" style="background-color:#9fc9b2;" class="nav-link" href="#six"
                                         role="tab">Comment</a>
                                 </li>
                                 @can('Manage SOP')
                                     @if ($data->status != '1')
-                                        <li class="nav-item mr-2" style="background-color:#9fc6c9;">
-                                            <a data-toggle="tab" style="background-color:#9fc6c9;" class="nav-link"
-                                                href="#six" role="tab">Generate SOP</a>
-                                        </li>
                                         <li class="nav-item mr-2" style="background-color:#c99f9f;">
                                             <a data-toggle="tab" style="background-color:#c99f9f;" class="nav-link"
                                                 href="#seven" role="tab">Verify SOP</a>
@@ -176,6 +176,19 @@
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="card">
+                                                    <div class="card-header">Generate SOP</div>
+                                                    <div class="card-body">
+                                                        @include('sop.sop-generate')
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="six" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="card">
                                                     <div class="card-header">Comment</div>
                                                     <div class="card-body">
                                                         @include('sop.sop-comment')
@@ -185,19 +198,6 @@
                                         </div>
                                     </div>
                                     @can('Manage SOP')
-                                        <div class="tab-pane" id="six" role="tabpanel">
-                                            <hr class="mt-2 mb-3">
-                                            <div class="row">
-                                                <div class="col-md-12 grid-margin stretch-card">
-                                                    <div class="card">
-                                                        <div class="card-header">Generate SOP</div>
-                                                        <div class="card-body">
-                                                            @include('sop.sop-generate')
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="tab-pane" id="seven" role="tabpanel">
                                             <hr class="mt-2 mb-3">
                                             <div class="row">

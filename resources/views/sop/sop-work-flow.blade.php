@@ -28,9 +28,9 @@
                                     when you have <b style="color:red">multiple files</b>.
                                     For example, you can name them 'Flowchart 1,' 'Flowchart 2,' and so on.
                                 </li>
-                                <li>Drag a new file with the <b style="color:red">same name</b> to replace the uploaded
+                                {{-- <li>Drag a new file with the <b style="color:red">same name</b> to replace the uploaded
                                     file.
-                                </li>
+                                </li> --}}
                             </ol>
                         </th>
                     </tr>

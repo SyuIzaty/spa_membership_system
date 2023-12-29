@@ -47,7 +47,7 @@
                         <tr class="card-header" style="text-align: justify">
                             <th style="background-color:#c7d1ee; vertical-align: middle;" rowspan="2">
                                 Once the SOP has received approval from the Chief Executive (CE),
-                                kindly proceed to upload the finalized SOP and click the "Approve SOP" button.
+                                kindly proceed to click the "Approve SOP" button.
                                 The finalized SOP will then be made accessible to all INTEC Staff members.
                             </th>
                         </tr>

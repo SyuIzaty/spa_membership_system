@@ -30,7 +30,7 @@
                             @endif
                             <div class="col-md-6" style="margin-bottom: 10px;">
                                 <label>Department</label>
-                                <select class="selectfilter form-control chooseDept" name="department" id="department">
+                                <select class="selectfilter form-control chooseDept" name="department" id="chooseDept">
                                     <option value="">Select Department</option>
                                     @foreach ($department as $d)
                                         <option value="{{ $d->id }}"
@@ -82,21 +82,16 @@
                     </div>
                     <div class="modal-body">
                         {!! Form::open(['action' => 'SOPController@addSOPTitle', 'method' => 'POST']) !!}
-
                         <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Department</span>
-                                </div>
-                                <select class="form-control department" name="department" id="department">
-                                    <option selected disabled value="">Select Department</option>
-                                    @foreach ($department as $d)
-                                        <option value="{{ $d->id }}">
-                                            {{ $d->department_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <label class="form-label">Department</label>
+                            <select class="form-control department" name="department" id="department">
+                                <option selected disabled value="">Select Department</option>
+                                @foreach ($department as $d)
+                                    <option value="{{ $d->id }}">
+                                        {{ $d->department_name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -228,9 +223,12 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('.chooseDept').select2();
+            $('#chooseDept').select2();
 
             $('#add').on('shown.bs.modal', function() {
+                $('.department').select2({
+                    dropdownParent: $('#add')
+                });
                 $('.departments').select2({
                     dropdownParent: $('#add')
                 });
@@ -249,7 +247,6 @@
                     dropdownParent: $('#editPrepare')
                 });
             });
-
 
             $(document).on('click', '.edit_data', function() {
                 var id = $(this).attr("data-id");
@@ -420,7 +417,7 @@
             }
 
             $('.selectfilter').on('change', function() {
-                var department = $('#department').val();
+                var department = $('#chooseDept').val();
                 createDatatable(department);
             });
         });
