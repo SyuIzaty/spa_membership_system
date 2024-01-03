@@ -10,7 +10,9 @@ use Carbon\Carbon;
 use App\DepartmentList;
 use App\ArkibMain;
 use App\ArkibStatus;
+use App\ArkibStudent;
 use App\ArkibAttachment;
+use App\Student;
 use Response;
 
 class ArkibMainController extends Controller
@@ -163,7 +165,27 @@ class ArkibMainController extends Controller
      */
     public function create()
     {
-        //
+        $department = DepartmentList::all();
+        $status = ArkibStatus::all();
+
+        return view('library.arkib-main.create',compact('department','status'));
+    }
+
+    public function selectSearch(Request $request)
+    {
+        $formatted_tags = [];
+
+        if(isset($request->student)){
+            $student = Student::where(function($query) use ($request){
+                $query->where('students_name', 'LIKE', "%{$request->student}%")->orwhere('students_id', 'LIKE', "%{$request->student}%")->orwhere('students_ic', 'LIKE', "%{$request->student}%");
+            })->get();
+    
+            foreach ($student as $students) {
+                $formatted_tags[] = ['id' => $students->students_id, 'text' => $students->students_name.' ('.$students->students_id.')'];
+            }
+        }
+
+        return Response::json($formatted_tags);
     }
 
     /**
@@ -184,6 +206,7 @@ class ArkibMainController extends Controller
         ]);
 
         $group_id = ArkibMain::insertGetId([
+            'category_id' => $request->category_id,
             'department_code' => $request->department_code,
             'file_classification_no' => $request->file_classification_no,
             'title' => $request->title,
@@ -191,6 +214,10 @@ class ArkibMainController extends Controller
             'status' => $request->status,
             'created_at' => Carbon::now(),
         ]);
+
+        if(isset($request->student)){
+            $this->arkibStudent($request, $group_id);
+        }
 
         if(isset($request->arkib_attachment)){
             $arkib_attach = $request->arkib_attachment;
@@ -201,6 +228,14 @@ class ArkibMainController extends Controller
         return redirect()->back()->with('message','Data Added');
     }
 
+    public function arkibStudent(Request $request, $group_id)
+    {
+        ArkibStudent::create([
+            'arkib_id' => $group_id,
+            'student_id' => $request->student,
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -209,7 +244,8 @@ class ArkibMainController extends Controller
      */
     public function show($id)
     {
-
+        $all = Student::where('students_id',$id)->with('programmes')->first();
+        return response()->json($all);
     }
 
     /**
@@ -301,6 +337,8 @@ class ArkibMainController extends Controller
 
             $attaches->delete();
         }
+
+        ArkibStudent::ArkibId($id)->delete();
 
         $paper->delete();
     }

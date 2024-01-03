@@ -9,7 +9,7 @@ class ArkibMain extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['department_code','file_classification_no','title','description','status','created_at'];
+    protected $fillable = ['category_id','department_code','file_classification_no','title','description','status','created_at'];
 
     public function arkibStatus()
     {
@@ -29,6 +29,16 @@ class ArkibMain extends Model
     public function department()
     {
         return $this->hasOne('App\DepartmentList','id','department_code');
+    }
+
+    public function arkibCategory()
+    {
+        return $tis->hasOne('App\ArkibCategory','id','category_id');
+    }
+
+    public function arkibStudent()
+    {
+        return $this->hasOne('App\ArkibStudent','arkib_id','id');
     }
 
     public function scopeUnpublished($query)

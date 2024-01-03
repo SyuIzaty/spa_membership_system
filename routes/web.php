@@ -943,6 +943,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-arkib', 'Library\Arkib\ArkibController@getArkib');
     Route::resource('/library/arkib-main', 'Library\Arkib\ArkibMainController');
     Route::post('/data_publishedarkib', 'Library\Arkib\ArkibMainController@data_publishedarkib');
+    Route::get('/autocomplete', 'Library\Arkib\ArkibMainController@selectSearch');
     Route::post('/data_draftarkib', 'Library\Arkib\ArkibMainController@data_draftarkib');
     Route::get('/library/report/arkib', 'Library\Arkib\ArkibMainController@reportArkib');
     Route::post('/data_exportarkib', 'Library\Arkib\ArkibMainController@data_exportarkib');

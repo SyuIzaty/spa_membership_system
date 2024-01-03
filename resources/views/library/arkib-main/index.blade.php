@@ -92,6 +92,7 @@
                                             <table class="table table-bordered" id="paper" style="width:100%">
                                               <thead>
                                                   <tr class="bg-primary-50 text-center">
+                                                      <th>ID</th>
                                                       <th>TITLE</th>
                                                       <th>FILE CLASSIFICATION NO</th>
                                                       <th>DEPARTMENT</th>
@@ -100,6 +101,7 @@
                                                       <th>ACTION</th>
                                                   </tr>
                                                   <tr>
+                                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Title"></td>
                                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search File Classification No"></td>
                                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
@@ -118,6 +120,7 @@
                                             <table class="table table-bordered" id="draft_paper" style="width:100%">
                                               <thead>
                                                 <tr class="bg-primary-50 text-center">
+                                                    <th>ID</th>
                                                     <th>TITLE</th>
                                                     <th>FILE CLASSIFICATION NO</th>
                                                     <th>DEPARTMENT</th>
@@ -126,6 +129,7 @@
                                                     <th>ACTION</th>
                                                 </tr>
                                                 <tr>
+                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Title"></td>
                                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search File Classification No"></td>
                                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
@@ -142,66 +146,8 @@
                                 </div>
                             </div>
                             <div class="py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex float-right">
-                                <a class="btn btn-primary float-right btn-sm" href="javascript:;" data-toggle="modal" id="new">New Archive</a>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="crud-modal" aria-hidden="true" >
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title"> New Arkib</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        {!! Form::open(['action' => 'Library\Arkib\ArkibMainController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                        <table class="table table-bordered">
-                                            <tr>
-                                                <td>Department <span class="text-danger">*</span></td>
-                                                <td>
-                                                    <select class="form-control" name="department_code" id="department_code">
-                                                        <option disabled selected>Please Select</option>
-                                                        @foreach($department as $departments)
-                                                        <option value="{{ $departments->id }}" {{ old('department_code') ? 'selected' : '' }}>
-                                                            {{ $departments->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>File Classification No <span class="text-danger">*</span></td>
-                                                <td><input type="text" class="form-control" name="file_classification_no" value="{{ old('file_classification_no') }}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Title <span class="text-danger">*</span></td>
-                                                <td><input type="text" class="form-control" name="title" value="{{ old('title') }}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Description <span class="text-danger">*</span></td>
-                                                <td><input type="text" class="form-control" name="description" value="{{ old('description') }}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Status <span class="text-danger">*</span></td>
-                                                <td>
-                                                    <select class="form-control" name="status" id="status">
-                                                        <option disabled selected>Please Select</option>
-                                                        @foreach($status as $statuses)
-                                                        <option value="{{ $statuses->arkib_status }}" {{ old('status') ? 'selected' : '' }}>
-                                                            {{ $statuses->arkib_description }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Attachment(s) <span class="text-danger">*</span></td>
-                                                <td>
-                                                    <input type="file" name="arkib_attachment[]" multiple required>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <button class="btn btn-success btn-sm float-right mb-2">Submit</button>
-                                        <button type="button" class="btn btn-secondary btn-sm float-right mr-2 text-white" data-dismiss="modal">Close</button>
-                                        {!! Form::close() !!}
-                                    </div>
-                                </div>
+                                {{-- <a class="btn btn-primary float-right btn-sm" href="javascript:;" data-toggle="modal" id="new">New Archive</a> --}}
+                                <a href="/library/arkib-main/create" class="btn btn-primary float-right btn-sm">New Archive</a>
                             </div>
                         </div>
                     </div>
@@ -246,6 +192,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
+                    { data: 'id', name: 'id'},
                     { data: 'title', name: 'title'},
                     { data: 'file_classification_no', name: 'file_classification_no'},
                     { data: 'dept', name: 'department.name'},
@@ -254,7 +201,7 @@
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 1, "asc" ]],
+                "order": [[ 0, "asc" ]],
                 "initComplete": function(settings, json) {
     
     
@@ -285,6 +232,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
+                    { data: 'id', name: 'id'},
                     { data: 'title', name: 'title'},
                     { data: 'file_classification_no', name: 'file_classification_no'},
                     { data: 'dept', name: 'department.name'},
@@ -293,7 +241,7 @@
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 1, "asc" ]],
+                "order": [[ 0, "asc" ]],
                 "initComplete": function(settings, json) {
     
     

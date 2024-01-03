@@ -36,6 +36,44 @@
                                 {{ session()->get('message') }}
                             </div>
                         @endif
+                        @if($arkib->category_id == 1)
+                        <table class="table table-bordered">
+                            <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
+                                <li>
+                                    <a href="#" disabled style="pointer-events: none">
+                                        <i class="fal fa-caret-right"></i>
+                                        <span class="">Student Detail</span>
+                                    </a>
+                                </li>
+                                <p></p>
+                            </ol>
+                            <tr>
+                                <td style="width: 15%">Student Name</td>
+                                <td colspan="3" style="width: 85%">
+                                    {{ isset($arkib->arkibStudent->student->students_name) ? $arkib->arkibStudent->student->students_name : '' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%">Student ID</td>
+                                <td style="width: 35%">{{ isset($arkib->arkibStudent->student_id) ? $arkib->arkibStudent->student_id : '' }}</td>
+                                <td style="width: 15%">Student IC</td>
+                                <td style="width: 35%">{{ isset($arkib->arkibStudent->student->students_ic) ? $arkib->arkibStudent->student->students_ic : '' }}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%">Intake Code</td>
+                                <td style="width: 35%">{{ isset($arkib->arkibStudent->student->intake_code) ? $arkib->arkibStudent->student->intake_code : '' }}</td>
+                                <td style="width: 15%">Batch Code</td>
+                                <td style="width: 35%">{{ isset($arkib->arkibStudent->student->batch_code) ? $arkib->arkibStudent->student->batch_code : '' }}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%">Programme</td>
+                                <td style="width: 85%" colspan="3">
+                                    {{ isset($arkib->arkibStudent->student->programmes->programme_name) ? $arkib->arkibStudent->student->programmes->programme_name : '' }}
+                                    ({{ isset($arkib->arkibStudent->student->students_programme) ? $arkib->arkibStudent->student->students_programme : '' }})
+                                </td>
+                            </tr>
+                        </table>
+                        @endif
                         {!! Form::open(['action' => ['Library\Arkib\ArkibMainController@update', $arkib['id']], 'method' => 'PATCH', 'enctype' => 'multipart/form-data']) !!}
                         <table class="table table-bordered">
                             <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
@@ -48,8 +86,8 @@
                                 <p></p>
                             </ol>
                             <tr>
-                                <td>Department <span class="text-danger">*</span></td>
-                                <td>
+                                <td style="width: 15%">Department <span class="text-danger">*</span></td>
+                                <td style="width: 35%">
                                     <select class="form-control" name="department_code" id="department_code">
                                         <option disabled selected>Please Select</option>
                                         @foreach($department as $departments)
@@ -58,22 +96,20 @@
                                         @endforeach
                                     </select>
                                 </td>
+                                <td style="width: 15%">File Classification No <span class="text-danger">*</span></td>
+                                <td style="width: 35%"><input type="text" class="form-control" name="file_classification_no" value="{{ $arkib->file_classification_no }}"></td>
                             </tr>
                             <tr>
-                                <td>File Classification No <span class="text-danger">*</span></td>
-                                <td><input type="text" class="form-control" name="file_classification_no" value="{{ $arkib->file_classification_no }}"></td>
+                                <td style="width: 15%">Title <span class="text-danger">*</span></td>
+                                <td style="width: 85%" colspan="3"><input type="text" class="form-control" name="title" value="{{ $arkib->title }}"></td>
                             </tr>
                             <tr>
-                                <td>Title <span class="text-danger">*</span></td>
-                                <td><input type="text" class="form-control" name="title" value="{{ $arkib->title }}"></td>
+                                <td style="width: 15%">Description <span class="text-danger">*</span></td>
+                                <td style="width: 85%" colspan="3"><input type="text" class="form-control" name="description" value="{{ $arkib->description }}"></td>
                             </tr>
                             <tr>
-                                <td>Description <span class="text-danger">*</span></td>
-                                <td><input type="text" class="form-control" name="description" value="{{ $arkib->description }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Status <span class="text-danger">*</span></td>
-                                <td>
+                                <td style="width: 15%">Status <span class="text-danger">*</span></td>
+                                <td style="width: 35%">
                                     <select class="form-control" name="status" id="status">
                                         @foreach($status as $statuses)
                                         <option value="{{ $statuses->arkib_status }}" {{ $arkib->status == $statuses->arkib_status ? 'selected="selected"' : ''}}>
@@ -81,10 +117,8 @@
                                         @endforeach
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>Attachment(s)</td>
-                                <td>
+                                <td style="width: 15%">Attachment(s)</td>
+                                <td style="width: 35%">
                                     <input type="file" name="arkib_attachment[]" multiple>
                                 </td>
                             </tr>
