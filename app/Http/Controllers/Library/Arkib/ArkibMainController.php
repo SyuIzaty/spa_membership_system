@@ -265,12 +265,12 @@ class ArkibMainController extends Controller
         $attach = ArkibAttachment::ArkibMainId($id)->get();
         if($arkib->category_id == 1){
             $arkib_student = ArkibStudent::ArkibId($id)->first();
-            $student = Student::where('students_id',$arkib_student->student_id)->first();
+            $stud = Student::where('students_id',$arkib_student->student_id)->first();
         }else{
-            $arkib_student = $student = [];
+            $arkib_student = $stud = [];
         }
 
-        return view('library.arkib.edit',compact('department','status','arkib','attach','arkib_student','student'));
+        return view('library.arkib.edit',compact('department','status','arkib','attach','arkib_student','stud'));
     }
 
     /**
