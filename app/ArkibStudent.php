@@ -25,4 +25,9 @@ class ArkibStudent extends Model
     {
         return $query->where('arkib_id',$arkib_id);
     }
+
+    public function scopeStudentId($query, $student_id)
+    {
+        return $query->where('student_id',$student_id);
+    }
 }

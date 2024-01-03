@@ -50,26 +50,26 @@
                             <tr>
                                 <td style="width: 15%">Student Name</td>
                                 <td colspan="3" style="width: 85%">
-                                    {{ isset($arkib->arkibStudent->student->students_name) ? $arkib->arkibStudent->student->students_name : '' }}
+                                    {{ isset($student->students_name) ? $student->students_name : '' }}
                                 </td>
                             </tr>
                             <tr>
                                 <td style="width: 15%">Student ID</td>
-                                <td style="width: 35%">{{ isset($arkib->arkibStudent->student_id) ? $arkib->arkibStudent->student_id : '' }}</td>
+                                <td style="width: 35%">{{ isset($student->students_id) ? $student->students_id : '' }}</td>
                                 <td style="width: 15%">Student IC</td>
-                                <td style="width: 35%">{{ isset($arkib->arkibStudent->student->students_ic) ? $arkib->arkibStudent->student->students_ic : '' }}</td>
+                                <td style="width: 35%">{{ isset($student->students_ic) ? $student->students_ic : '' }}</td>
                             </tr>
                             <tr>
                                 <td style="width: 15%">Intake Code</td>
-                                <td style="width: 35%">{{ isset($arkib->arkibStudent->student->intake_code) ? $arkib->arkibStudent->student->intake_code : '' }}</td>
+                                <td style="width: 35%">{{ isset($student->intake_code) ? $student->intake_code : '' }}</td>
                                 <td style="width: 15%">Batch Code</td>
-                                <td style="width: 35%">{{ isset($arkib->arkibStudent->student->batch_code) ? $arkib->arkibStudent->student->batch_code : '' }}</td>
+                                <td style="width: 35%">{{ isset($student->batch_code) ? $student->batch_code : '' }}</td>
                             </tr>
                             <tr>
                                 <td style="width: 15%">Programme</td>
                                 <td style="width: 85%" colspan="3">
-                                    {{ isset($arkib->arkibStudent->student->programmes->programme_name) ? $arkib->arkibStudent->student->programmes->programme_name : '' }}
-                                    ({{ isset($arkib->arkibStudent->student->students_programme) ? $arkib->arkibStudent->student->students_programme : '' }})
+                                    {{ isset($student->programmes->programme_name) ? $student->programmes->programme_name : '' }}
+                                    ({{ isset($student->students_programme) ? $student->students_programme : '' }})
                                 </td>
                             </tr>
                         </table>
