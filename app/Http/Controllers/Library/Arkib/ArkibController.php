@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\ArkibMain;
 use App\ArkibView;
+use App\ArkibStudent;
+use App\Student;
 use App\ArkibAttachment;
 use App\ArkibStatus;
 use App\DepartmentList;
@@ -32,7 +34,8 @@ class ArkibController extends Controller
 
     public function index()
     {
-        return view('library.arkib.search');
+        // return view('library.arkib.search');
+        return view('library.arkib.index');
     }
 
     public function data_userarkib()
@@ -51,9 +54,11 @@ class ArkibController extends Controller
         })
         ->addColumn('action', function ($paper) {
             
-            return '<button class="btn btn-primary btn-sm edit_data float-right mb-2" data-toggle="modal" data-id='.$paper->id.' id="edit" name="edit">
-            <i class="fal fa-file-pdf"></i> View
-          </button>';
+          return '
+            <div class="btn-group">
+            <a href="/library/arkib/'.$paper->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
+            </div>'
+            ;
 
         })
         ->rawColumns(['action','dept'])
@@ -115,7 +120,17 @@ class ArkibController extends Controller
      */
     public function edit($id)
     {
-        //
+        $arkib = ArkibMain::find($id);
+
+        $attach = ArkibAttachment::ArkibMainId($id)->get();
+        if($arkib->category_id == 1){
+            $arkib_student = ArkibStudent::ArkibId($id)->first();
+            $stud = Student::where('students_id',$arkib_student->student_id)->whereNull('deleted_at')->first();
+        }else{
+            $arkib_student = $stud = [];
+        }
+
+        return view('library.arkib.show',compact('arkib','attach','arkib_student','stud'));
     }
 
     public function getArkib(Request $request)

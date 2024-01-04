@@ -265,7 +265,7 @@ class ArkibMainController extends Controller
         $attach = ArkibAttachment::ArkibMainId($id)->get();
         if($arkib->category_id == 1){
             $arkib_student = ArkibStudent::ArkibId($id)->first();
-            $stud = Student::where('students_id',$arkib_student->student_id)->first();
+            $stud = Student::where('students_id',$arkib_student->student_id)->whereNull('deleted_at')->first();
         }else{
             $arkib_student = $stud = [];
         }
