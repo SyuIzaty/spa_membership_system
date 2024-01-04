@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Space;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreBookingRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Rules\SpaceBookingRule;
@@ -12,6 +13,7 @@ use App\Rules\UpdateSpaceBookingRule;
 use App\SpaceBookingVenue;
 use App\SpaceBookingMain;
 use App\SpaceBookingItem;
+use App\SpaceAttachment;
 use App\DepartmentList;
 use App\SpaceVenue;
 use App\SpaceItem;
@@ -133,6 +135,19 @@ class BookingController extends Controller
                 'end_time' => $request->end_time,
                 'remark' => $request->remark,
             ]);
+
+            if(isset($request->attachment_booked)){
+                $attach_booked = $request->attachment_booked;
+                $file_save = date('dmyhis').$attach_booked->getClientOriginalName();
+                $file_size = $attach_booked->getSize();
+                Storage::disk('minio')->put("/booking-attachment/".$file_save, file_get_contents($attach_booked));
+                SpaceAttachment::create([
+                    'space_main_id' => $booking,
+                    'file_name' => $file_save,
+                    'file_size' => $file_size,
+                    'web_path' => "booking-attachment/".$file_save,
+                ]);
+            }
     
             if(isset($request->venue)){
                 foreach($request->venue as $key => $value){

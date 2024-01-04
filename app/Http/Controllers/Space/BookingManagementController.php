@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreBookingManagementRequest;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use App\Rules\SpaceBookingRule;
+use App\SpaceAttachment;
 use App\SpaceBookingMain;
 use App\SpaceBookingItem;
 use App\SpaceBookingVenue;
@@ -200,7 +202,8 @@ class BookingManagementController extends Controller
      */
     public function show($id)
     {
-        //
+        $attachment = SpaceAttachment::MainId($id)->first();
+        return Storage::disk('minio')->response('booking-attachment/'.$attachment->file_name);
     }
 
     /**
@@ -216,7 +219,8 @@ class BookingManagementController extends Controller
         $venue = SpaceVenue::DepartmentId($venue_department->department_id)->get();
         $user = User::find(isset($main->spaceBookingMain->staff_id) ? $main->spaceBookingMain->staff_id : '');
         $status = SpaceStatus::where('category','Application')->get();
-        return view('space.booking-management.edit',compact('main','status','user','venue'));
+        $attachment = SpaceAttachment::MainId($main->space_main_id)->first();
+        return view('space.booking-management.edit',compact('main','status','user','venue','venue_department','attachment'));
     }
 
     /**

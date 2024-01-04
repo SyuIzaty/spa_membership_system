@@ -179,6 +179,14 @@
                                                         <td colspan="5">{{ isset($main->spaceBookingMain->remark) ? $main->spaceBookingMain->remark : '' }}</td>
                                                     </div>
                                                 </tr>
+                                                @if($venue_department->department_id == 11 && isset($attachment))
+                                                <tr>
+                                                    <div class="form-group">
+                                                        <td width="20%" style="vertical-align: middle"><label class="form-label">Attachment :</label></td>
+                                                        <td colspan="5"><a href="/space/booking-management/{{ $main->space_main_id }}" target="_blank">View</a></td>
+                                                    </div>
+                                                </tr>
+                                                @endif
                                                 <tr>
                                                   <div class="form-group">
                                                       <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Status :</label></td>

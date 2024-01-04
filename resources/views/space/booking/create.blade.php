@@ -61,7 +61,7 @@
                                 <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                               </div>
                               
-                              {!! Form::open(['action' => 'Space\BookingController@store', 'method' => 'POST']) !!}
+                              {!! Form::open(['action' => 'Space\BookingController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                               <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                                   <div>
@@ -241,6 +241,16 @@
                                                         </td>
                                                     </div>
                                                 </tr>
+                                                @if($id == 11)
+                                                <tr>
+                                                  <div class="form-group">
+                                                    <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Attachment :</label></td>
+                                                    <td colspan="5">
+                                                      <input type="file" name="attachment_booked" class="form-control" accept="image/png, image/jpeg, application/pdf" required>
+                                                    </td>
+                                                  </div>
+                                                </tr>
+                                                @endif
                                             </thead>
                                         </table>                          
                                       </div>
