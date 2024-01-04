@@ -46,9 +46,6 @@ class SOPController extends Controller
         }
 
         return datatables()::of($data)
-            ->addColumn('sop', function ($data) {
-                return isset($data->sop) ? ($data->sop) : 'N/A';
-            })
 
             ->addColumn('department', function ($data) {
                 return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
@@ -129,10 +126,6 @@ class SOPController extends Controller
         $data = SopList::whereRaw($cond)->where('active', 'Y');
 
         return datatables()::of($data)
-
-        ->addColumn('sop', function ($data) {
-            return isset($data->sop) ? ($data->sop) : 'N/A';
-        })
 
         ->addColumn('department', function ($data) {
             return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
@@ -215,9 +208,6 @@ class SOPController extends Controller
         $data = SopList::with(['department','crossDepartment']);
 
         return datatables()::of($data)
-            ->addColumn('sop', function ($data) {
-                return isset($data->sop) ? ($data->sop) : 'N/A';
-            })
 
             ->addColumn('department', function ($data) {
                 return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
@@ -278,9 +268,6 @@ class SOPController extends Controller
         $data = SopList::with(['department','crossDepartment'])->whereRaw($cond);
 
         return datatables()::of($data)
-        ->addColumn('sop', function ($data) {
-            return isset($data->sop) ? ($data->sop) : 'N/A';
-        })
 
         ->addColumn('department', function ($data) {
             return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
@@ -1119,9 +1106,6 @@ class SOPController extends Controller
         $data = SopList::where('status', '4')->where('active', 'Y');
 
         return datatables()::of($data)
-            ->addColumn('sop', function ($data) {
-                return isset($data->sop) ? ($data->sop) : 'N/A';
-            })
 
             ->addColumn('department', function ($data) {
                 return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
@@ -1148,9 +1132,6 @@ class SOPController extends Controller
         $data = SopList::whereRaw($cond)->where('status', '4')->where('active', 'Y');
 
         return datatables()::of($data)
-        ->addColumn('sop', function ($data) {
-            return isset($data->sop) ? ($data->sop) : 'N/A';
-        })
 
         ->addColumn('department', function ($data) {
             return isset($data->department->department_name) ? ($data->department->department_name) : 'N/A';
