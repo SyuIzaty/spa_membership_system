@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AssetStatus extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_asset_status';
+    protected $table = 'inv_asset_statuses';
     protected $primaryKey = 'id';
     protected $fillable = [
         'status_name'

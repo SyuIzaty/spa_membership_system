@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Custodian extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_custodian';
+    protected $table = 'inv_asset_custodians';
     protected $primaryKey = 'id';
     protected $fillable = [
         'asset_id', 'custodian_id', 'reason_remark', 'assigned_by', 'verification', 'status', 'verification_date', 'location'

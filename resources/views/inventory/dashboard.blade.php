@@ -38,9 +38,9 @@
                         <div id="ast" class="collapse show" data-parent="#ast">
                             <div class="card-body">
                                 <ul class="nav nav-tabs nav-tabs-clean" role="tablist">
-                                    @foreach($id as $count => $ids)
+                                    @foreach($assetCustodian as $count => $assetCustodians)
                                         <?php
-                                            $department = \App\AssetDepartment::where('id', $ids)->first();
+                                            $department = \App\AssetDepartment::where('id', $assetCustodians)->first();
                                         ?>
                                         <li class="nav-item {{ $loop->first ? 'active' : '' }}">
                                             <a class="nav-link mb-2" id="nav-home-tab-{{$department->id}}" data-toggle="tab" href="#nav-home-{{$department->id}}" role="tab" aria-controls="{{$department->id}}">
@@ -50,35 +50,35 @@
                                     @endforeach
                                 </ul>
                                 <div class="tab-content border border-top-0 p-3">
-                                    @foreach($id as $count => $ids)
+                                    @foreach($assetCustodian as $count => $assetCustodians)
                                         <?php
                                             // Status
-                                            $assetCountActive = \App\Asset::where('status', '1')->whereHas('type', function($query) use ($ids){
-                                                                $query->whereHas('department', function($query) use ($ids){
-                                                                    $query->where('id', $ids );
+                                            $assetCountActive = \App\Asset::where('status', '1')->whereHas('type', function($query) use ($assetCustodians){
+                                                                $query->whereHas('department', function($query) use ($assetCustodians){
+                                                                    $query->where('id', $assetCustodians );
                                                                 });
                                                             })->count();
 
-                                            $assetCountInactive = \App\Asset::where('status', '0')->whereHas('type', function($query) use ($ids){
-                                                                $query->whereHas('department', function($query) use ($ids){
-                                                                    $query->where('id', $ids );
+                                            $assetCountInactive = \App\Asset::where('status', '0')->whereHas('type', function($query) use ($assetCustodians){
+                                                                $query->whereHas('department', function($query) use ($assetCustodians){
+                                                                    $query->where('id', $assetCustodians );
                                                                 });
                                                             })->count();
 
-                                            $assetAll = \App\Asset::whereHas('type', function($query) use ($ids){
-                                                                $query->whereHas('department', function($query) use ($ids){
-                                                                    $query->where('id', $ids );
+                                            $assetAll = \App\Asset::whereHas('type', function($query) use ($assetCustodians){
+                                                                $query->whereHas('department', function($query) use ($assetCustodians){
+                                                                    $query->where('id', $assetCustodians );
                                                                 });
                                                             })->count();
 
                                             $percentActive = $assetAll == 0 ? 0 : ($assetCountActive / $assetAll * 100);
                                             $percentInactive = $assetAll == 0 ? 0 : ($assetCountInactive / $assetAll * 100);
-                                            $department = \App\AssetDepartment::where('id', $ids)->first();
-                                            $assetNo = \App\AssetType::where('department_id', $ids)->count();
+                                            $department = \App\AssetDepartment::where('id', $assetCustodians)->first();
+                                            $assetNo = \App\AssetType::where('department_id', $assetCustodians)->count();
 
-                                            $assetValue = \App\Asset::where('status', '1')->whereHas('type', function($query) use ($ids){
-                                                                $query->whereHas('department', function($query) use ($ids){
-                                                                    $query->where('id', $ids );
+                                            $assetValue = \App\Asset::where('status', '1')->whereHas('type', function($query) use ($assetCustodians){
+                                                                $query->whereHas('department', function($query) use ($assetCustodians){
+                                                                    $query->where('id', $assetCustodians );
                                                                 });
                                                             })->sum('total_price');
                                         ?>
@@ -176,9 +176,9 @@
                                                             @foreach($assetStatus as $stats)
                                                             <?php
                                                                 // Reason
-                                                                $data2 = \App\Asset::where('inactive_reason', $stats->id)->whereHas('type', function($query) use ($ids){
-                                                                        $query->whereHas('department', function($query) use ($ids){
-                                                                            $query->where('id', $ids );
+                                                                $data2 = \App\Asset::where('inactive_reason', $stats->id)->whereHas('type', function($query) use ($assetCustodians){
+                                                                        $query->whereHas('department', function($query) use ($assetCustodians){
+                                                                            $query->where('id', $assetCustodians );
                                                                         });
                                                                     })->get()->count();
 
@@ -189,7 +189,7 @@
                                                                     <div class="panel-content">
                                                                         <div class="js-easy-pie-chart color-warning-900 position-relative  " data-percent="{{ $percentReason }}" data-piesize="145" data-linewidth="20" data-trackcolor="#ccbfdf" data-scalelength="8" style="margin-left: -170px">
                                                                             <div class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-xl">
-                                                                                <span class="d-block text-dark" style="margin-left: 75px">{{ $data2 }}</span>
+                                                                                <span class="d-block text-dark" style="margin-left: 70px">{{ $data2 }}</span>
                                                                                 <div class="d-block fs-xs text-dark opacity-70" style="margin-left: 75px">
                                                                                     <small>{{ $stats->status_name }}</small>
                                                                                 </div>
@@ -216,30 +216,30 @@
                                                         <br>
                                                         <a class="d-flex flex-row align-items-center">
                                                             @foreach($assetAcquisition as $acq)
-                                                            <?php
-                                                                // Acquisition
-                                                                $acqs2 = \App\Asset::where('acquisition_type', $acq->id)->whereHas('type', function($query) use ($ids){
-                                                                        $query->whereHas('department', function($query) use ($ids){
-                                                                            $query->where('id', $ids );
-                                                                        });
-                                                                    })->get()->count();
+                                                                <?php
+                                                                    // Acquisition
+                                                                    $acqs2 = \App\Asset::where('acquisition_type', $acq->id)->whereHas('type', function($query) use ($assetCustodians){
+                                                                            $query->whereHas('department', function($query) use ($assetCustodians){
+                                                                                $query->where('id', $assetCustodians );
+                                                                            });
+                                                                        })->get()->count();
 
-                                                                $percentAcquisition = $assetAll == 0 ? 0 : ($acqs2 / $assetAll * 100);
-                                                            ?>
-                                                            <div class="col-md-6 align-items-center" style="margin-right: -60px">
-                                                                <div class="panel-container show">
-                                                                    <div class="panel-content">
-                                                                        <div class="js-easy-pie-chart color-info-900 position-relative  " data-percent="{{ $percentAcquisition }}" data-piesize="145" data-linewidth="20" data-trackcolor="#ccbfdf" data-scalelength="8" style="margin-left: -170px">
-                                                                            <div class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-xl">
-                                                                                <span class="d-block text-dark" style="margin-left: 75px">{{ $acqs2 }}</span>
-                                                                                <div class="d-block fs-xs text-dark opacity-70" style="margin-left: 75px">
-                                                                                    <small>{{ $acq->acquisition_type }}</small>
+                                                                    $percentAcquisition = $assetAll == 0 ? 0 : ($acqs2 / $assetAll * 100);
+                                                                ?>
+                                                                <div class="col-md-6 align-items-center" style="margin-right: -60px">
+                                                                    <div class="panel-container show">
+                                                                        <div class="panel-content">
+                                                                            <div class="js-easy-pie-chart color-info-900 position-relative  " data-percent="{{ $percentAcquisition }}" data-piesize="145" data-linewidth="20" data-trackcolor="#ccbfdf" data-scalelength="8" style="margin-left: -170px">
+                                                                                <div class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-xl">
+                                                                                    <span class="d-block text-dark" style="margin-left: 75px">{{ $acqs2 }}</span>
+                                                                                    <div class="d-block fs-xs text-dark opacity-70" style="margin-left: 75px">
+                                                                                        <small>{{ $acq->acquisition_type }}</small>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        <canvas height="195" width="195" style="height: 145px; width: 145px;"></canvas></div>
+                                                                            <canvas height="195" width="195" style="height: 145px; width: 145px;"></canvas></div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
                                                             @endforeach
 
                                                         </a>
@@ -248,10 +248,10 @@
                                                 {{-- End Reason --}}
                                             </div>
                                             <div class="row col-md-12" >
-                                                @foreach($assetType->where('department_id', $ids) as $type)
+                                                @foreach($assetType->where('department_id', $assetCustodians) as $type)
                                                     <?php
-                                                        $types = \App\Asset::where('asset_type', $type->id)->whereHas('type', function($query) use ($ids){
-                                                                    $query->where('department_id', $ids );
+                                                        $types = \App\Asset::where('asset_type', $type->id)->whereHas('type', function($query) use ($assetCustodians){
+                                                                    $query->where('department_id', $assetCustodians );
                                                                 })->count();
                                                     ?>
                                                     <div class="col-sm-6 col-xl-2 mb-2">
@@ -304,9 +304,9 @@
                         <div id="stk" class="show" data-parent="#stk">
                             <div class="card-body">
                                 <ul class="nav nav-tabs nav-tabs-clean" role="tablist">
-                                    @foreach($id as $item => $ids)
+                                    @foreach($assetCustodian as $item => $assetCustodians)
                                         <?php
-                                            $dprt = \App\AssetDepartment::where('id', $ids)->first();
+                                            $dprt = \App\AssetDepartment::where('id', $assetCustodians)->first();
                                         ?>
                                         <li class="nav-item {{ $loop->first ? 'active' : '' }}">
                                             <a class="nav-link mb-2" id="nav-home2-tab-{{$dprt->id}}" data-toggle="tab" href="#nav-home2-{{$dprt->id}}" role="tab" aria-controls="{{$dprt->id}}">
@@ -316,24 +316,24 @@
                                     @endforeach
                                 </ul>
                                 <div class="tab-content border border-top-0 p-3">
-                                    @foreach($id as $item => $ids)
+                                    @foreach($assetCustodian as $item => $assetCustodians)
                                         <?php
                                             // Status
-                                            $stockCountActive = \App\Stock::where('status', '1')->whereHas('departments', function($query) use ($ids){
-                                                                    $query->where('id', $ids );
+                                            $stockCountActive = \App\Stock::where('status', '1')->whereHas('departments', function($query) use ($assetCustodians){
+                                                                    $query->where('id', $assetCustodians );
                                                             })->get()->count();
 
-                                            $stockCountInactive = \App\Stock::where('status', '0')->whereHas('departments', function($query) use ($ids){
-                                                                    $query->where('id', $ids );
+                                            $stockCountInactive = \App\Stock::where('status', '0')->whereHas('departments', function($query) use ($assetCustodians){
+                                                                    $query->where('id', $assetCustodians );
                                                             })->get()->count();
 
-                                            $stockAll = \App\Stock::whereHas('departments', function($query) use ($ids){
-                                                                    $query->where('id', $ids );
+                                            $stockAll = \App\Stock::whereHas('departments', function($query) use ($assetCustodians){
+                                                                    $query->where('id', $assetCustodians );
                                                             })->get()->count();
 
                                             $stockActive = $stockAll == 0 ? 0 : ($stockCountActive / $stockAll * 100);
                                             $stockInactive = $stockAll == 0 ? 0 : ($stockCountInactive / $stockAll * 100);
-                                            $dprt = \App\AssetDepartment::where('id', $ids)->first();
+                                            $dprt = \App\AssetDepartment::where('id', $assetCustodians)->first();
                                         ?>
                                         <div class="tab-pane {{ $loop->first ? 'active in' : '' }}" id="nav-home2-{{$dprt->id}}" role="tabpanel">
                                             <div class="row">
@@ -381,12 +381,12 @@
                                                 <div class="mb-4 col-sm-12 col-xl-10">
                                                     <?php
 
-                                                        $stock = \App\Stock::select('id', 'stock_name')->groupBy('id', 'stock_name')->whereHas('departments', function($query) use($ids) {
-                                                                $query->where('id', $ids );
+                                                        $stock = \App\Stock::select('id', 'stock_name')->groupBy('id', 'stock_name')->whereHas('departments', function($query) use($assetCustodians) {
+                                                                $query->where('id', $assetCustodians );
                                                         })->pluck('id', 'stock_name')->toArray();
 
-                                                        $stocks = \App\Stock::select('id', 'stock_name')->groupBy('id', 'stock_name')->whereHas('departments', function($query) use($ids) {
-                                                                $query->where('id', $ids );
+                                                        $stocks = \App\Stock::select('id', 'stock_name')->groupBy('id', 'stock_name')->whereHas('departments', function($query) use($assetCustodians) {
+                                                                $query->where('id', $assetCustodians );
                                                         })->get();
 
                                                         $listBal = [];
@@ -407,10 +407,10 @@
                                                         $chart->labels = (array_keys($stock));
                                                         $chart->dataset = (array_values($listBal));
                                                     ?>
-                                                    <canvas id="charts{{$ids}}" class="rounded shadow"></canvas>
+                                                    <canvas id="charts{{$assetCustodians}}" class="rounded shadow"></canvas>
                                                     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
                                                     <script>
-                                                        var ctx = document.getElementById('charts{{$ids}}').getContext('2d');
+                                                        var ctx = document.getElementById('charts{{$assetCustodians}}').getContext('2d');
                                                         var chart = new Chart(ctx, {
                                                             type: 'bar',
                                                             data: {

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AssetType extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_asset_type';
+    protected $table = 'inv_asset_types';
     protected $primaryKey = 'id';
     protected $fillable = [
         'department_id', 'asset_type'

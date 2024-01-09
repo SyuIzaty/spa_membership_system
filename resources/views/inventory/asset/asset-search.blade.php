@@ -1,368 +1,166 @@
 @extends('layouts.public')
 
 @section('content')
-<script src="{{asset('js/instascan.js')}}"></script>
-{{-- <script src="{{asset('js/instascan.min.js')}}"></script> --}}
-<main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
+<script src="{{ asset('js/instascan.js') }}"></script>
+<main id="js-page-content" role="main" class="page-content" style="background-image: url({{ asset('img/bg-form.jpg') }}); background-size: cover">
     <div class="row">
         <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header" style="background-image: url({{asset('img/inventory.png')}}); background-size: cover; background-blend-mode: difference">
-                    <div class="d-flex justify-content-center" style="color: black">
-                        <div class="p-2">
-                            <center><img src="{{ asset('img/intec_logo_new.png') }}" height="120" width="320" class="responsive"/></center><br>
-                            <h4 style="text-align: center">
-                                <b>ASSET TRACKING</b>
-                            </h4>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-center" style="color: black">
+                            <div class="p-2">
+                                <center><img src="{{ asset('img/intec_logo_new.png') }}" height="120" width="320" class="responsive"/></center><br>
+                                <h4 style="text-align: center">
+                                    <b>ASSET TRACKING</b>
+                                </h4>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="panel-container show">
-                        <div class="panel-content">
-                            <div class="row">
-                                <div class="table-responsive">
-                                    <table class="table w-100">
-                                        <tr align="center">
-                                            <td>
-                                                <div class="col-sm-12 col-md-6">
-                                                    <div class="card card-primary card-outline">
-                                                        <div class="card-body">
-                                                            <form action="{{ route('assetSearch') }}" method="GET" id="form_find">
-                                                                <div>
-                                                                    <div class="table-responsive">
-                                                                        <table class="table table-striped w-100">
-                                                                            <tr align="center">
-                                                                                <td colspan="2" style="vertical-align: middle"><label class="form-label" for="asset_code"><span class="text-danger">**</span> SCAN HERE</label></td>
-                                                                            <tr>
-                                                                        </table>
-                                                                        <table class="table w-100">
-                                                                            <tr align="center">
-                                                                                <td><video id="preview" width="500"></video></td>
-                                                                            </tr>
-                                                                        </table>
-                                                                        <table class="table w-100">
-                                                                            <tr align="center">
-                                                                                <td style="vertical-align: middle"><input class="form-control" id="asset_code" name="asset_code" placeholder="Example : INTEC/CH/ICT/2021000000"></td>
-                                                                                <td style="vertical-align: middle"><button type="submit" id="btn-search" class="btn btn-sm btn-danger "><i class="fal fa-location-arrow"></i></button></td>
-                                                                            <tr>
-                                                                        </table>
-                                                                        <i><span class="text-danger">**</span> Please key in asset code or scan the qrcode to view details</i>
+                    <div class="card-body">
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div class="row">
+                                    <div class="table-responsive">
+                                        <table class="table w-100">
+                                            <tr align="center">
+                                                <td>
+                                                    <div class="col-sm-12 col-md-6">
+                                                        <div class="card card-primary card-outline">
+                                                            <div class="card-body">
+                                                                <form action="{{ route('asset_search') }}" method="GET" id="form_find">
+                                                                    <div>
+                                                                        <div class="table-responsive">
+                                                                            <table class="table table-striped w-100">
+                                                                                <tr align="center">
+                                                                                    <td colspan="2" style="vertical-align: middle"><label class="form-label" for="asset_code"><span class="text-danger">**</span> SCAN HERE</label></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <table class="table w-100">
+                                                                                <tr align="center">
+                                                                                    <td><video id="preview" width="500"></video></td>
+                                                                                    <td><select id="cam-list"></select></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <table class="table w-100">
+                                                                                <tr align="center">
+                                                                                    <td style="vertical-align: middle"><input class="form-control" id="asset_code" name="asset_code" placeholder=""></td>
+                                                                                    <td style="vertical-align: middle"><button type="button" id="btn-search" class="btn btn-sm btn-danger"><i class="fal fa-location-arrow"></i></button></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <span class="text-danger">**</span> Please key in the asset code or scan the QR code to view details
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </form>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div id="asset-details-container">
+                                    @if($request->asset_code != '' && isset($data))
+                                        @include('inventory.asset.asset-search-detail')
+                                    @else
+                                        <div align="center">No Details Available</div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="panel-container show">
-                        <div class="panel-content">
-                            @if($request->asset_code != '' && isset($data))
-                                <div class="panel-container show">
-                                    <div class="panel-content">
-                                            
-                                        <div class="row">
-                                            <div class="col-sm-12 mb-4">
-                                                <div class="col-sm-12 mb-4">
-                                                    <div class="card card-primary card-outline">
-                                                        <div class="card-header bg-primary-50">
-                                                            <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>ASSET PROFILE</h5>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="table-responsive">
-                                                                <table id="asset" class="table table-bordered table-hover table-striped w-100 mb-1">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="department_id"> Department : </label></td>
-                                                                                <td colspan="3">{{ $data->type->department->department_name ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="asset_type"> Asset Type : </label></td>
-                                                                                <td colspan="3">{{ $data->type->asset_type ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="asset_code">Code Type : </label></td>
-                                                                                <td colspan="3">{{ $data->codeType->code_name ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="asset_code">Asset Code : </label></td>
-                                                                                <td colspan="3">{{ $data->asset_code ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="finance_code">Finance Code :</label></td>
-                                                                                <td colspan="3">{{ $data->finance_code ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="serial_no">Serial No. : </label></td>
-                                                                                <td colspan="3">{{ $data->serial_no ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="asset_name">Asset Class :</label></td>
-                                                                                <td colspan="3">{{ $data->assetClass->class_name ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="asset_name">Asset Name :</label></td>
-                                                                                <td colspan="3">{{ $data->asset_name ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="model">Model :</label></td>
-                                                                                <td colspan="3">{{ $data->model ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="brand"> Brand : </label></td>
-                                                                                <td colspan="3">{{ $data->brand ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="created_by"> Created By : </label></td>
-                                                                                <td colspan="3">{{ $data->user->name ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="custodian_id"> Current Custodian : </label></td>
-                                                                                <td colspan="3">{{ $data->custodians->name ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="status"> Status :</label></td>
-                                                                                <td colspan="3">
-                                                                                    @if ($data->status == '0')
-                                                                                        INACTIVE
-                                                                                    @else
-                                                                                        ACTIVE
-                                                                                    @endif
-                                                                                    <br><br>
-                                                                                    @if($data->status == '0')
-                                                                                        Date : {{ date('d-m-Y', strtotime($data->inactive_date)) ?? '--' }}
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td width="15%"><label class="form-label" for="status"> Availability :</label></td>
-                                                                                <td colspan="3">
-                                                                                    {{ isset($data->availabilities->name) ? strtoupper($data->availabilities->name) : '--' }}
-                                                                                    @if($data->availability == '1')
-                                                                                        @if(isset($data->assetBorrower))
-                                                                                            <br><br>
-                                                                                            <p> Current Borrower : {{$data->assetBorrower->borrower->staff_name}} ({{$data->assetBorrower->borrower->staff_id}})</p>
-                                                                                        @endif
-                                                                                    @endif
-                                                                                </td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        @if($data->status == '0')
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="inactive_reason"> Reason : </label></td>
-                                                                                <td colspan="3">{{ $data->assetStatus->status_name ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="inactive_remark"> Remark : </label></td>
-                                                                                <td colspan="3">{{ $data->inactive_remark ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        @endif
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="storage_location"> Location :</label></td>
-                                                                                <td colspan="3">{{ $data->storage_location ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="custodian_id"> Set Package : </label></td>
-                                                                                <td colspan="3">
-                                                                                    @if($data->set_package == 'Y') 
-                                                                                        YES 
-                                                                                    @else 
-                                                                                        NO 
-                                                                                    @endif
-                                                                                </td>
-                                                                            </div>
-                                                                        </tr>
-                                                                    </thead>
-                                                                </table>
-                                                            </div>
-                                                            @if($data->set_package == 'Y')
-                                                            <div class="table-responsive">
-                                                                <table id="assets" class="table table-bordered table-hover w-100 mb-1">
-                                                                    <thead style="background-color: #f7f7f7" class="text-center">
-                                                                        <tr style="white-space: nowrap">
-                                                                            <td>No.</td>
-                                                                            <td>Package Asset Type</td>
-                                                                            <td>Package Serial No.</td>
-                                                                            <td>Package Model</td>
-                                                                            <td>Package Brand</td>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        @if(!empty($data->assetSet) && $data->assetSet->count() > 0)
-                                                                            @foreach ($data->assetSet as $sets)
-                                                                                <tr align="center">
-                                                                                    <td>{{ $num++ }}</td>
-                                                                                    <td>{{ $sets->type->asset_type }}</td>
-                                                                                    <td>{{ $sets->serial_no }}</td>
-                                                                                    <td>{{ $sets->model }}</td>
-                                                                                    <td>{{ $sets->brand }}</td>
-                                                                                </tr>
-                                                                            @endforeach
-                                                                        @else
-                                                                            <tr align="center" class="data-row">
-                                                                                <td valign="top" colspan="6">-- NO SET AVAILABLE --</td>
-                                                                            </tr>
-                                                                        @endif
-                                                                    </tbody>
-                                                                </table>
-                                                            <div class="table-responsive">
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-sm-12 mb-4">
-                                                    <div class="card card-primary card-outline">
-                                                        <div class="card-header bg-primary-50">
-                                                            <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>PURCHASE DETAILS</h5>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="table-responsive">
-                                                                <table id="asset" class="table table-bordered table-hover table-striped w-100 mb-1">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="purchase_date"> Purchase Date : </label></td>
-                                                                                <td colspan="3">{{ date('d-m-Y', strtotime($data->purchase_date)) ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="vendor_name"> Vendor :</label></td>
-                                                                                <td colspan="3">{{ $data->vendor_name ??'--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="lo_no"> L.O. Number : </label></td>
-                                                                                <td colspan="3">{{ $data->lo_no ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="do_no"> D.O. Number :</label></td>
-                                                                                <td colspan="3">{{ $data->do_no ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="io_no"> Invoice Number : </label></td>
-                                                                                <td colspan="3">{{ $data->io_no ?? '--'}}</td>
-                                                                                <td width="15%"><label class="form-label" for="total_price"> Price (RM) :</label></td>
-                                                                                <td colspan="3">{{ $data->total_price ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="remark"> Acquisition Type : </label></td>
-                                                                                <td colspan="3">{{ $data->acquisitionType->acquisition_type ?? '--' }}</td>
-                                                                                <td width="15%"><label class="form-label" for="remark"> Remark : </label></td>
-                                                                                <td colspan="3">{{ $data->remark ?? '--' }}</td>
-                                                                            </div>
-                                                                        </tr>
-                                                                    </thead>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="col-md-12">
-                                                    <div class="accordion accordion-outline" id="js_demo_accordion-3">
-                                                        <div class="card">
-                                                            <div class="card-header">
-                                                                <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#image" aria-expanded="false">
-                                                                    <i class="fal fa-camera width-2 fs-xl"></i>
-                                                                    ASSET IMAGE
-                                                                    <span class="ml-auto">
-                                                                        <span class="collapsed-reveal">
-                                                                            <i class="fal fa-minus fs-xl"></i>
-                                                                        </span>
-                                                                        <span class="collapsed-hidden">
-                                                                            <i class="fal fa-plus fs-xl"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div id="image" class="collapse" data-parent="#image">
-                                                                <div class="card-body">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12">
-                                                                            <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1" style="table-layout: fixed">
-                                                                                <thead>
-                                                                                    <tr align="center">
-                                                                                        @if(isset($data->assetImage->first()->upload_image))
-                                                                                            @foreach($data->assetImage as $images)
-                                                                                            <td colspan="5">
-                                                                                                <a data-fancybox="gallery" href="/get-file-image/{{ $images->upload_image }}"><img src="/get-file-image/{{ $images->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2"></a><br><br>
-                                                                                            </td>
-                                                                                            @endforeach
-                                                                                        @else
-                                                                                            <span>No Image Uploaded</span>
-                                                                                        @endif
-                                                                                    </tr>
-                                                                                </thead>
-                                                                            </table>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                
-                                            </div>
-                                        </div>
-                
-                                    </div>
-                                </div>
-                            @else
-                                <div align="center">No Details Available</div>
-                            @endif
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
     </div>
 </main>
 @endsection
+
 @section('script')
     <script type="text/javascript">
-    
-        let scanner = new Instascan.Scanner({video: document.getElementById('preview')});
-        scanner.addListener('scan', function(content) {
-            $("#asset_code").val(content);
-        });
-        Instascan.Camera.getCameras().then(function (cameras) {
-            if (cameras.length > 0) {
-            scanner.start(cameras[0]);
-            } else {
-            console.error('No cameras found.');
-            }
-            // if (cameras.length > 0) {
-            //     var selectedCam = cameras[0];
-            //     $.each(cameras, (i, c) => {
-            //         if (c.name.indexOf('back') != -1) {
-            //             selectedCam = c;
-            //             return false;
-            //         }
-            //     });
-
-            //     scanner.start(selectedCam);
-            // } else {
-            //     console.error('No cameras found.');
-            // }
-        }).catch(function (e) {
-            console.error(e);
-        });
-
         $(document).ready(function() {
-            $('#inversion-mode-select, #cam-list').select2();
+            // Load Instascan library
+            let scanner;
+            let selectedCameraIndex = 0;
+
+            function startScanner() {
+                scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+                scanner.addListener('scan', function(content) {
+                    $("#asset_code").val(content);
+                    fetchAssetDetails(content);
+                });
+
+                Instascan.Camera.getCameras().then(function(cameras) {
+                    if (cameras.length > 0) {
+                        updateCameraList(cameras);
+                        selectCamera(selectedCameraIndex);
+                    } else {
+                        console.error('No cameras found.');
+                    }
+                }).catch(function(e) {
+                    console.error(e);
+                });
+            }
+
+            function updateCameraList(cameras) {
+                // Update the camera selection dropdown
+                var camList = document.getElementById('cam-list');
+                camList.innerHTML = '';
+
+                for (var i = 0; i < cameras.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = i;
+                    option.text = cameras[i].name || 'Camera ' + (i + 1);
+                    camList.add(option);
+                }
+
+                // Listen for changes in the camera selection dropdown
+                camList.addEventListener('change', function() {
+                    selectedCameraIndex = parseInt(camList.value, 10);
+                    selectCamera(selectedCameraIndex);
+                });
+            }
+
+            function selectCamera(index) {
+                Instascan.Camera.getCameras().then(function(cameras) {
+                    var selectedCamera = cameras[index];
+                    if (selectedCamera) {
+                        scanner.start(selectedCamera);
+                    } else {
+                        console.error('Selected camera not found.');
+                    }
+                }).catch(function(e) {
+                    console.error(e);
+                });
+            }
+
+            startScanner();
 
             $('#asset_code').on('click', '#btn-search', function(e) {
                 e.preventDefault();
-                $("#form_find").submit();
+                fetchAssetDetails($("#asset_code").val());
             });
+
+            function fetchAssetDetails(assetCode) {
+                $.ajax({
+                    url: "{{ route('asset_search') }}",
+                    type: 'GET',
+                    data: { asset_code: assetCode },
+                    success: function(response) {
+                        // Update the asset details container with the fetched details
+                        $('#asset-details-container').html(response);
+                    },
+                    error: function(error) {
+                        console.error(error);
+                        // Handle the error as needed
+                    }
+                });
+            }
         });
     </script>
-     
 @endsection

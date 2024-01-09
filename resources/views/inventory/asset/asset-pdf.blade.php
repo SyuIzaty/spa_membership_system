@@ -1,21 +1,21 @@
 @extends('layouts.applicant')
-    
+
 @section('content')
 <main id="js-page-content" role="main" class="page-content">
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
-                
+
                 <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC"></center><br><br>
 
                 <div align="center">
-                    <h4 style="margin-top: -25px; margin-bottom: -15px"><b> ASSET {{ $asset->asset_code}} - {{ $asset->asset_name}} INFO</b></h4>
+                    <h4 style="margin-top: -25px; margin-bottom: -15px"><b> ASSET {{ $asset->asset_code}} - {{ $asset->asset_name}}</b></h4>
                 </div>
                 <br>
                 <table id="asset" class="table table-bordered table-hover table-striped w-100 mb-1">
                     <thead>
                         <tr>
                             <div class="form-group">
-                                <td colspan="6"><label class="form-label"> Asset Profile</label></td>
+                                <td colspan="6"><label class="form-label"> Asset Detail</label></td>
                             </div>
                         </tr>
                         <tr>
@@ -74,13 +74,7 @@
                                 </td>
                                 <td width="15%"><label class="form-label" for="status"> Availability:</label></td>
                                 <td colspan="3">
-                                    {{ isset($asset->availabilities->name) ? strtoupper($asset->availabilities->name) : '--' }}
-                                    @if($asset->availability == '1')
-                                        @if(isset($borrow))
-                                            <br><br>
-                                            <p> Current Borrower : {{$borrow->borrower->staff_name}} ({{$borrow->borrower->staff_id}})</p>
-                                        @endif
-                                    @endif
+                                    {{ isset($asset->assetAvailability->name) ? strtoupper($asset->assetAvailability->name) : '--' }}
                                 </td>
                             </div>
                         </tr>
@@ -97,7 +91,7 @@
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="custodian_id"> Current Custodian : </label></td>
-                                <td colspan="3">{{ $asset->custodians->name ?? '--' }}</td>
+                                <td colspan="3">{{ $asset->custodian->name ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="created_by"> Created By : </label></td>
                                 <td colspan="3">{{ $asset->user->name ?? '--' }}</td>
                             </div>
@@ -108,10 +102,10 @@
                                 <td colspan="3">{{ $asset->storage_location ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="custodian_id"> Set Package : </label></td>
                                 <td colspan="3">
-                                    @if($asset->set_package == 'Y') 
-                                        YES 
-                                    @else 
-                                        NO 
+                                    @if($asset->set_package == 'Y')
+                                        YES
+                                    @else
+                                        NO
                                     @endif
                                 </td>
                             </div>
@@ -131,17 +125,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if(!empty($set) && $set->count() > 0)
-                                @foreach ($set as $sets)
+                            @if(!empty($asset->assetSets) && $asset->assetSets->count() > 0)
+                                @foreach ($asset->assetSets as $sets)
                                     <tr align="center">
-                                        <td>{{ $num++ }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $sets->type->asset_type }}</td>
                                         <td>{{ $sets->serial_no }}</td>
                                         <td>{{ $sets->model }}</td>
                                         <td>{{ $sets->brand }}</td>
                                     </tr>
                                 @endforeach
-                            @else 
+                            @else
                                 <tr align="center" class="data-row">
                                     <td valign="top" colspan="6">-- NO SET AVAILABLE --</td>
                                 </tr>
@@ -201,12 +195,13 @@
                             </div>
                         </tr>
                         <tr>
-                            <?php 
-                                $get_type = $asset->codeType->code_name ?? '--';
-                                $get_class = $asset->assetClass->class_code ?? '--';
-                                $get_department = $asset->type->department->department_name ?? '--';
-                                $get_asset = $asset->asset_code ?? '--';
-                                $get_code = $get_type.'/'.$get_class.'/'.$get_department.'/'.$get_asset;
+                            <?php
+                                // $get_type = $asset->codeType->code_name ?? '--';
+                                // $get_class = $asset->assetClass->class_code ?? '--';
+                                // $get_department = $asset->type->department->department_name ?? '--';
+                                // $get_asset = $asset->asset_code ?? '--';
+                                // $get_code = $get_type.'/'.$get_class.'/'.$get_department.'/'.$get_asset;
+                                $get_code = $asset->finance_code ?? '--';
                             ?>
                             <div class="form-group">
                                 <td colspan="4" align="center" style="vertical-align: middle">
@@ -223,9 +218,9 @@
                 </table>
 
                 <br>
-                <div style="font-style: italic; font-size: 10px">
+                <div style="font-size: 10px">
                     <p style="float: left">@ Copyright INTEC Education College</p>
-                    <p style="float: right">Review Date : {{ date(' j F Y | h:i:s A', strtotime($asset->updated_at) )}}</p><br>
+                    <p style="float: right">Printed Date : {{ date(' j F Y | h:i:s A', strtotime($asset->updated_at) )}}</p><br>
                 </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-cogs'></i> ASSET TRAIL DETAILS
+            <i class='subheader-icon fal fa-cogs'></i> ASSET TRAIL DETAIL
         </h1>
     </div>
 
@@ -13,7 +13,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2 style="font-size: 20px;">
-                        ASSET ID : #{{ $asset->id}}
+                        {{-- ASSET ID : #{{ $asset->id}} --}}
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -24,7 +24,7 @@
 
                 <div class="panel-container show">
                     <div class="panel-content">
-                            
+
                         <div class="row">
                             <div class="col-sm-12 mb-4">
                                 <div class="col-sm-12 mb-4">
@@ -91,7 +91,7 @@
                                                             </td>
                                                             <td width="15%"><label class="form-label" for="status"> Availability:</label></td>
                                                             <td colspan="3">
-                                                                {{ isset($asset->availabilities->name) ? strtoupper($asset->availabilities->name) : '--' }}
+                                                                {{ isset($asset->assetAvailability->name) ? strtoupper($asset->assetAvailability->name) : '--' }}
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -111,19 +111,19 @@
                                                             <td colspan="3">{{ $asset->storage_location ?? '--' }}</td>
                                                             <td width="15%"><label class="form-label" for="custodian_id"> Set Package : </label></td>
                                                             <td colspan="3">
-                                                                @if($asset->set_package == 'Y') 
-                                                                    YES 
-                                                                @else 
-                                                                    NO 
+                                                                @if($asset->set_package == 'Y')
+                                                                    YES
+                                                                @else
+                                                                    NO
                                                                 @endif
                                                             </td>
                                                         </div>
                                                     </tr>
                                                 </thead>
                                             </table>
-                                            @if($asset->set_package == 'Y')
+                                            {{-- @if($asset->set_package == 'Y')
                                                 <table id="assets" class="table table-bordered table-hover w-100 mb-1">
-                                                    <thead style="background-color: #f7f7f7" class="text-center">
+                                                    <thead class="text-center">
                                                         <tr style="white-space: nowrap">
                                                             <td>No.</td>
                                                             <td>Package Asset Type</td>
@@ -133,10 +133,10 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @if(!empty($set) && $set->count() > 0)
-                                                            @foreach ($set as $sets)
+                                                        @if(!empty($asset->assetSets) && $asset->assetSets->count() > 0)
+                                                            @foreach ($asset->assetSets as $sets)
                                                                 <tr align="center">
-                                                                    <td>{{ $num++ }}</td>
+                                                                    <td>{{ $loop->iteration }}</td>
                                                                     <td>{{ $sets->type->asset_type }}</td>
                                                                     <td>{{ $sets->serial_no }}</td>
                                                                     <td>{{ $sets->model }}</td>
@@ -150,7 +150,7 @@
                                                         @endif
                                                     </tbody>
                                                 </table>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                     </div>
                                 </div>
@@ -200,14 +200,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <a style="margin-right: 10px" href="{{ url()->previous() }}" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>

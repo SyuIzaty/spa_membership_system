@@ -124,7 +124,7 @@ class AssetController extends Controller
 
         if($request->status == '0') {
             $request->validate([
-                'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
+                'finance_code'      => 'nullable|unique:inv_assets,finance_code,' .$request->id,
                 'department_id'     => 'required',
                 'asset_type'        => 'required',
                 'asset_name'        => 'required',
@@ -140,7 +140,7 @@ class AssetController extends Controller
 
         } else {
             $request->validate([
-                'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
+                'finance_code'      => 'nullable|unique:inv_assets,finance_code,' .$request->id,
                 'department_id'     => 'required',
                 'asset_type'        => 'required',
                 'asset_name'        => 'required',
@@ -248,7 +248,7 @@ class AssetController extends Controller
             if(isset($value) && !empty($value))
             {
                 AssetSetTrail::create([
-                    'asset_trail_id'    => $trail->id,
+                    'asset_set_id'      => $trail->id,
                     'asset_type'        => $value,
                     'serial_no'         => strtoupper($request->serial_nos[$key]),
                     'model'             => strtoupper($request->models[$key]),
@@ -332,14 +332,14 @@ class AssetController extends Controller
                 });
             }else if($key == "custodian_id" && $val) {
                 $filter = $filter->filter(function($item) use ($val){
-                    if( stripos($item->custodians->name,$val) !== false ){
+                    if( stripos($item->custodian->name,$val) !== false ){
                         return $item;
                     }
                 });
             }
             else if($key == "availability" && $val) {
                 $filter = $filter->filter(function($item) use ($val){
-                    if( stripos($item->availabilities->name,$val) !== false ){
+                    if( stripos($item->assetAvailability->name,$val) !== false ){
                         return $item;
                     }
                 });
@@ -460,7 +460,7 @@ class AssetController extends Controller
 
         ->editColumn('custodian_id', function ($asset) {
 
-            return $asset->custodians->name ?? '<div style="color:red;" >--</div>';
+            return $asset->custodian->name ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('asset_type', function ($asset) {
@@ -505,12 +505,12 @@ class AssetController extends Controller
             if($asset->availability=='1')
             {
                 $color = '#CC0000';
-                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->availabilities->name.'</b></div>';
+                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->assetAvailability->name.'</b></div>';
             }
             elseif($asset->availability=='2')
             {
                 $color = '#3CBC3C';
-                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->availabilities->name.'</b></div>';
+                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->assetAvailability->name.'</b></div>';
             }
             else
             {
@@ -594,8 +594,8 @@ class AssetController extends Controller
                 if($asset->status == '1') {
                 // check former status 1 or not
                     $request->validate([
-                        'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
-                        'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
+                        'asset_code'        => 'required|unique:inv_assets,asset_code,' .$request->id,
+                        'finance_code'      => 'nullable|unique:inv_assets,finance_code,' .$request->id,
                         'asset_name'        => 'required',
                         'serial_no'         => 'required',
                         'set_package'       => 'required',
@@ -626,8 +626,8 @@ class AssetController extends Controller
                 } else {
                   // former status 0
                     $request->validate([
-                        'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
-                        'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
+                        'asset_code'        => 'required|unique:inv_assets,asset_code,' .$request->id,
+                        'finance_code'      => 'nullable|unique:inv_assets,finance_code,' .$request->id,
                         'asset_name'        => 'required',
                         'serial_no'         => 'required',
                         'set_package'       => 'required',
@@ -656,8 +656,8 @@ class AssetController extends Controller
             } else {
               // request status == 1
                 $request->validate([
-                    'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
-                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
+                    'asset_code'        => 'required|unique:inv_assets,asset_code,' .$request->id,
+                    'finance_code'      => 'nullable|unique:inv_assets,finance_code,' .$request->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
                     'set_package'       => 'required',
@@ -689,8 +689,8 @@ class AssetController extends Controller
              if($request->status == '0') {
               // request status == 0
                 $request->validate([
-                    'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
-                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
+                    'asset_code'        => 'required|unique:inv_assets,asset_code,' .$request->id,
+                    'finance_code'      => 'nullable|unique:inv_assets,finance_code,' .$request->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
                     'set_package'       => 'required',
@@ -722,8 +722,8 @@ class AssetController extends Controller
              } else {
                 // request status == 1
                 $request->validate([
-                    'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
-                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
+                    'asset_code'        => 'required|unique:inv_assets,asset_code,' .$request->id,
+                    'finance_code'      => 'nullable|unique:inv_assets,finance_code,' .$request->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
                     'set_package'       => 'required',
@@ -980,7 +980,7 @@ class AssetController extends Controller
     public function assetTrail($id)
     {
         $asset = AssetTrail::where('id', $id)->first();
-        $set = AssetSetTrail::where('asset_trail_id', $id)->get();
+        $set = AssetSetTrail::where('asset_set_id', $id)->get();
 
         return view('inventory.asset.asset-trail', compact('asset', 'set'))->with('num', 1);
     }
@@ -1356,7 +1356,7 @@ class AssetController extends Controller
 
         ->editColumn('custodian_id', function ($asset) {
 
-            return $asset->custodians->name ?? '<div style="color:red;" > -- </div>';
+            return $asset->custodian->name ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('created_by', function ($asset) {
@@ -1371,7 +1371,7 @@ class AssetController extends Controller
 
         ->editColumn('availability', function ($asset) {
 
-            return isset($asset->availabilities->name) ? strtoupper($asset->availabilities->name) : '<div style="color:red;" > -- </div>';
+            return isset($asset->assetAvailability->name) ? strtoupper($asset->assetAvailability->name) : '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('status', function ($asset) {

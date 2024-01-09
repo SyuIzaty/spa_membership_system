@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Asset extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_asset';
+    protected $table = 'inv_assets';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'asset_code', 'asset_code_type', 'finance_code', 'asset_name', 'asset_type', 'serial_no', 'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'vendor_name', 
+        'asset_code', 'asset_code_type', 'finance_code', 'asset_name', 'asset_type', 'serial_no', 'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'vendor_name',
         'custodian_id', 'created_by', 'remark', 'status', 'inactive_reason', 'inactive_remark', 'inactive_date', 'availability', 'storage_location', 'set_package', 'acquisition_type', 'asset_class'
     ];
 
-    public function assetTrail()
+    public function assetTrails()
     {
-        return $this->hasMany('App\AssetTrail','asset_id')->orderBy('created_at', 'desc');  
+        return $this->hasMany('App\AssetTrail','asset_id')->orderBy('created_at', 'desc');
     }
 
     public function codeType()
@@ -45,14 +45,14 @@ class Asset extends Model
         return $this->hasOne('App\AssetClass', 'class_code', 'asset_class');
     }
 
-    public function custodians()
+    public function custodian()
     {
         return $this->hasOne('App\User', 'id', 'custodian_id');
     }
 
-    public function assetCustodian()
+    public function assetCustodians()
     {
-        return $this->hasMany('App\Custodian','asset_id');  
+        return $this->hasMany('App\Custodian', 'asset_id')->orderBy('created_at', 'desc');
     }
 
     public function user()
@@ -60,25 +60,19 @@ class Asset extends Model
         return $this->hasOne('App\User', 'id', 'created_by');
     }
 
-    public function availabilities()
+    public function assetAvailability()
     {
         return $this->hasOne('App\AssetAvailability', 'id', 'availability');
     }
 
-    public function assetSet()
+    public function assetSets()
     {
-        return $this->hasMany('App\AssetSet','asset_id');  
+        return $this->hasMany('App\AssetSet','asset_id');
     }
 
-    public function assetImage()
+    public function assetImages()
     {
-        return $this->hasMany('App\AssetImage','asset_id');  
+        return $this->hasMany('App\AssetImage','asset_id');
     }
-
-    public function assetBorrower()
-    {
-        return $this->hasOne('App\Borrow','asset_id', 'id')->whereNull('actual_return_date')->where('status','1');  
-    }
-
 
 }

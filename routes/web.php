@@ -304,63 +304,63 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('tambahAlat', 'Aduan\AlatGantiController@tambahAlat');
     Route::post('kemaskiniALat', 'Aduan\AlatGantiController@kemaskiniALat');
 
-    // AssetType
-    Route::resource('asset-type', 'AssetTypeController');
-    Route::post('assetType', 'AssetTypeController@data_asset');
-    Route::post('addType', 'AssetTypeController@addType');
-    Route::post('updateType', 'AssetTypeController@updateType');
+    // Asset Management
+    Route::get('/asset-type', 'Inventory\AssetParameterController@asset_type');
+    Route::post('data-asset-type', 'Inventory\AssetParameterController@data_asset_type');
+    Route::post('store-asset-type', 'Inventory\AssetParameterController@store_asset_type');
+    Route::post('update-asset-type', 'Inventory\AssetParameterController@update_asset_type');
+    Route::delete('delete-asset-type/{id}', 'Inventory\AssetParameterController@delete_asset_type');
+    Route::get('/asset-department', 'Inventory\AssetParameterController@asset_department');
+    Route::post('data-asset-department', 'Inventory\AssetParameterController@data_asset_department');
+    Route::post('store-asset-department', 'Inventory\AssetParameterController@store_asset_department');
+    Route::post('update-asset-department', 'Inventory\AssetParameterController@update_asset_department');
+    Route::delete('delete-asset-department/{id}', 'Inventory\AssetParameterController@delete_asset_department');
+    Route::get('/department-custodian/{id}', 'Inventory\AssetParameterController@department_custodian');
+    Route::post('/data-department-custodian/{id}', 'Inventory\AssetParameterController@data_department_custodian');
+    Route::post('store-department-custodian', 'Inventory\AssetParameterController@store_department_custodian');
+    Route::delete('delete-department-custodian/{id}', 'Inventory\AssetParameterController@delete_department_custodian');
+    Route::get('/asset-class', 'Inventory\AssetParameterController@asset_class');
+    Route::post('data-asset-class', 'Inventory\AssetParameterController@data_asset_class');
+    Route::post('store-asset-class', 'Inventory\AssetParameterController@store_asset_class');
+    Route::post('update-asset-class', 'Inventory\AssetParameterController@update_asset_class');
+    Route::delete('delete-asset-class/{id}', 'Inventory\AssetParameterController@delete_asset_class');
 
-    // AssetClass
-    Route::resource('asset-class', 'AssetClassController');
-    Route::post('assetClass', 'AssetClassController@data_asset_class');
-    Route::post('addClass', 'AssetClassController@addClass');
-    Route::post('updateClass', 'AssetClassController@updateCLass');
+    Route::get('/asset-list', 'Inventory\AssetManagementController@asset_list');
+    Route::post('data-asset-list', 'Inventory\AssetManagementController@data_asset_list');
+    Route::delete('asset-list/{id}', 'Inventory\AssetManagementController@delete_asset_list');
+    Route::get('/asset-detail', 'Inventory\AssetManagementController@asset_form');
+    Route::post('store-asset-detail', 'Inventory\AssetManagementController@store_asset_detail');
+    Route::get('/find-asset-type', 'Inventory\AssetManagementController@find_asset_type');
+    Route::get('/find-custodian', 'Inventory\AssetManagementController@find_custodian');
+    Route::post('print-barcode', 'Inventory\AssetManagementController@print_barcode');
+    Route::get('/asset-detail/{id}', 'Inventory\AssetManagementController@asset_detail');
+    Route::post('update-asset-detail', 'Inventory\AssetManagementController@update_asset_detail');
+    Route::post('update-asset-purchase', 'Inventory\AssetManagementController@update_asset_purchase');
+    Route::post('store-custodian', 'Inventory\AssetManagementController@store_custodian');
+    Route::post('update-custodian', 'Inventory\AssetManagementController@update_custodian');
+    Route::post('store-asset-set', 'Inventory\AssetManagementController@store_asset_set');
+    Route::post('update-asset-set', 'Inventory\AssetManagementController@update_asset_set');
+    Route::delete('delete-asset-set/{id}', 'Inventory\AssetManagementController@delete_asset_set');
+    Route::get('get-asset-image/{filename}', 'Inventory\AssetManagementController@get_asset_image');
+    Route::post('upload-asset-image', 'Inventory\AssetManagementController@upload_asset_image');
+    Route::delete('delete-asset-image/{id}', 'Inventory\AssetManagementController@delete_asset_image');
+    Route::get('/asset-trail-detail/{id}', 'Inventory\AssetManagementController@asset_trail_detail');
+    Route::get('/asset-detail-pdf/{id}', 'Inventory\AssetManagementController@asset_detail_pdf');
 
-    // Custodian-Department
-    Route::resource('asset-custodian', 'AssetCustodianController');
-    Route::post('addDepartment', 'AssetCustodianController@addDepartment');
-    Route::get('/custodian-list/{id}', 'AssetCustodianController@custodianList');
-    Route::post('/storeDepartCust', 'AssetCustodianController@storeDepartCust');
-    Route::delete('deleteCustodian/{id}', 'AssetCustodianController@deleteCustodian')->name('deleteCustodian');
-    Route::delete('deleteDepartment/{id}', 'AssetCustodianController@deleteDepartment')->name('deleteDepartment');
+    Route::get('/asset-report', 'Inventory\AssetReportingController@asset_report');
+    Route::get('/get-asset-by-department', 'Inventory\AssetReportingController@get_asset');
+    Route::get('/get-type-by-department', 'Inventory\AssetReportingController@get_type');
+    Route::get('/get-custodian-by-department', 'Inventory\AssetReportingController@get_custodian');
+    Route::post('data-asset-report', 'Inventory\AssetReportingController@data_excel_report');
+    Route::get('/asset-report-excel/{department}/{asset}/{type}/{custodian}', 'Inventory\AssetReportingController@asset_report_excel');
 
-    // Asset
-    Route::get('/asset-index', 'AssetController@assetIndex');
-    Route::get('/asset-new', 'AssetController@assetNew');
-    Route::post('newAssetStore', 'AssetController@newAssetStore')->name('newAsset');
-    Route::get('/findAssetType', 'AssetController@findAssetType');
-    Route::get('/findCustodian', 'AssetController@findCustodian');
-    Route::post('assetList', 'AssetController@data_assetList');
-    Route::delete('asset-index/{id}', 'AssetController@assetDelete');
-    Route::get('/asset-detail/{id}', 'AssetController@assetDetail');
-    Route::post('assetUpdate', 'AssetController@assetUpdate');
-    Route::post('assetPurchaseUpdate', 'AssetController@assetPurchaseUpdate');
-    Route::post('createCustodian', 'AssetController@createCustodian');
-    Route::post('updateCustodian', 'AssetController@updateCustodian');
-    Route::get('/assetPdf/{id}', 'AssetController@assetPdf')->name('assetPdf');
-    Route::get('/export_asset', 'AssetController@asset_all')->name('assetreport');
-    Route::post('/data_assetexport', 'AssetController@data_assetexport');
-    Route::get('/assetExport', 'AssetController@exports');
-    Route::post('/assetExport', 'AssetController@exports');
-    Route::get('exportasset/{availability?}/{type?}/{status?}/{classs?}', 'AssetController@exports');
-    Route::get('deleteImage/{id}/{asset_id}', 'AssetController@deleteImage')->name('deleteImage');
-    Route::get('deleteSet/{id}/{asset_id}', 'AssetController@deleteSet')->name('deleteSet');
-    Route::post('updateSet', 'AssetController@updateSet');
-    Route::get('/trailPdf/{id}', 'AssetController@trailPdf')->name('trailPdf');
-    Route::get('/custodianPdf/{id}', 'AssetController@custodianPdf')->name('custodianPdf');
-    Route::get('/verify-list', 'AssetController@verifyList');
-    Route::post('verifyList', 'AssetController@data_verifyList');
-    Route::post('verification/{id}', 'AssetController@updateVerification');
-    Route::get('/individual-list', 'AssetController@individualList');
-    Route::post('individualList', 'AssetController@data_individualList');
-    Route::get('/export-individual-asset', 'AssetController@exportIndividualAsset');
-    Route::get('/asset-info/{id}', 'AssetController@assetInfo');
-    Route::get('/asset-upload', 'AssetController@bulkUpload');
-    Route::post('import-asset', 'AssetController@importAsset');
-    Route::get('/assetTemplates', 'AssetController@assetTemplate');
-    Route::get('/asset-trail/{id}', 'AssetController@assetTrail');
-    Route::get('/asset-dashboard', 'AssetController@dashboard');
-    Route::post('printBarcode', 'AssetController@printBarcode');
+    Route::get('/asset-bulk-upload', 'Inventory\AssetUploadController@asset_bulk_upload');
+    Route::post('import-asset-list', 'Inventory\AssetUploadController@import_asset_list');
+    Route::get('/asset-template', 'Inventory\AssetUploadController@asset_template');
+
+    Route::get('/inventory-dashboard', 'Inventory\InventoryDashboardController@index');
+
+    Route::get('/asset-track', 'Inventory\AssetSearchController@asset_search')->name('asset_search');
 
     // Stock Management
     Route::get('/stock-index', 'Inventory\StockController@stockIndex');
@@ -995,10 +995,6 @@ Route::get('/covid', 'CovidController@openForm')->name('openForm');
 Route::get('/findUser', 'CovidController@findUser');
 Route::post('openFormStore', 'CovidController@storeOpenForm');
 Route::get('/covid-result', 'CovidController@addForm');
-
-// Asset Public
-Route::get('/asset-search', 'AssetController@assetSearch')->name('assetSearch');
-Route::get('get-file-image/{filename}', 'AssetController@getImage');
 
 // Training : Open Attendance - Public
 Route::get('/training-open-attendance/{id}', 'TrainingController@openAttendance')->name('openAttendance');

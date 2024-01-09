@@ -24,7 +24,7 @@
 
                 <div class="panel-container show">
                     <div class="panel-content">
-                            
+
                         <div class="row">
                             <div class="col-sm-12 mb-4">
                                 <div class="col-sm-12 mb-4">
@@ -91,7 +91,7 @@
                                                             </td>
                                                             <td width="15%"><label class="form-label" for="status"> Availability:</label></td>
                                                             <td colspan="3">
-                                                                {{ isset($asset->availabilities->name) ? strtoupper($asset->availabilities->name) : '--' }}
+                                                                {{ isset($asset->assetAvailability->name) ? strtoupper($asset->assetAvailability->name) : '--' }}
                                                                 @if($asset->availability == '1')
                                                                     @if(isset($borrow))
                                                                         <br><br>
@@ -117,10 +117,10 @@
                                                             <td colspan="3">{{ $asset->storage_location ?? '--' }}</td>
                                                             <td width="15%"><label class="form-label" for="custodian_id"> Set Package : </label></td>
                                                             <td colspan="3">
-                                                                @if($asset->set_package == 'Y') 
-                                                                    YES 
-                                                                @else 
-                                                                    NO 
+                                                                @if($asset->set_package == 'Y')
+                                                                    YES
+                                                                @else
+                                                                    NO
                                                                 @endif
                                                             </td>
                                                         </div>
@@ -206,7 +206,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-12">
                                     <div class="accordion accordion-outline" id="js_demo_accordion-3">
                                         <div class="card">
@@ -282,7 +282,7 @@
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
-                                                                        <?php 
+                                                                        <?php
                                                                             $get_type = $asset->codeType->code_name ?? '--';
                                                                             $get_class = $asset->assetClass->class_code ?? '--';
                                                                             $get_department = $asset->type->department->department_name ?? '--';
@@ -315,7 +315,7 @@
 
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>

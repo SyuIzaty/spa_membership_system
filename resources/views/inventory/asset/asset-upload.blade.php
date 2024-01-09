@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-upload'></i>Bulk Upload
+        <i class='subheader-icon fal fa-upload'></i> Asset Bulk Upload
         </h1>
     </div>
     <div class="row">
@@ -33,10 +33,10 @@
                         @endif
 
                         @if (Session::has('success'))
-                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('success') }}</div>
+                            <div class="alert alert-success" style="color: #3b6324"> <i class="icon fal fa-check-circle"></i> {{ Session::get('success') }}</div>
                         @endif
 
-                        <form action={{ url('import-asset') }} method="post" name="importform" enctype="multipart/form-data">
+                        <form action={{ url('import-asset-list') }} method="post" name="importform" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-12">
                                 <div class="panel-content">
@@ -47,14 +47,14 @@
                                                 <tr>
                                                     <div class="form-group">
                                                         <td width="20%"><label class="form-label" for="import_file"><span class="text-danger">*</span> File :</label></td>
-                                                        <td colspan="5"><input type="file" name="import_file" class="form-control mb-3"></td>
+                                                        <td colspan="5"><input type="file" name="import_file" class="form-control mb-3" required></td>
                                                     </div>
                                                 </tr>
                                             </thead>
                                         </table>
                                     </div>
                                     <button class="btn btn-success btn-sm float-right mb-3"><i class="fal fa-upload"></i> Upload File</button>
-                                    <a href="/assetTemplates" class="btn btn-primary btn-sm float-right mr-2"><i class="fal fa-download"></i> Download Template</a>
+                                    <a href="/asset-template" class="btn btn-primary btn-sm float-right mr-2"><i class="fal fa-download"></i> Download Template</a>
                                 </div>
                             </div>
                         </form>
@@ -91,8 +91,8 @@
                                                     <tbody>
                                                         @foreach ($code as $codes)
                                                             <tr align="center">
-                                                                <td>{{ $codes->id ?? '--' }}</td>
-                                                                <td>{{ $codes->code_name ?? '--' }}</td>
+                                                                <td>{{ $codes->id ?? '-' }}</td>
+                                                                <td>{{ $codes->code_name ?? '-' }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -131,9 +131,9 @@
                                                     <tbody>
                                                         @foreach ($type as $types)
                                                             <tr align="center">
-                                                                <td>{{ $types->department->department_name ?? '--' }}</td>
-                                                                <td>{{ $types->id ?? '--' }}</td>
-                                                                <td>{{ $types->asset_type ?? '--' }}</td>
+                                                                <td>{{ $types->department->department_name ?? '-' }}</td>
+                                                                <td>{{ $types->id ?? '-' }}</td>
+                                                                <td>{{ $types->asset_type ?? '-' }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -171,8 +171,8 @@
                                                     <tbody>
                                                         @foreach ($class as $classes)
                                                             <tr align="center">
-                                                                <td>{{ $classes->class_code ?? '--' }}</td>
-                                                                <td>{{ $classes->class_name ?? '--' }}</td>
+                                                                <td>{{ $classes->class_code ?? '-' }}</td>
+                                                                <td>{{ $classes->class_name ?? '-' }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -251,8 +251,8 @@
                                                     <tbody>
                                                         @foreach ($acquisition as $acq)
                                                             <tr align="center">
-                                                                <td>{{ $acq->id ?? '--' }}</td>
-                                                                <td>{{ $acq->acquisition_type ?? '--' }}</td>
+                                                                <td>{{ $acq->id ?? '-' }}</td>
+                                                                <td>{{ $acq->acquisition_type ?? '-' }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -290,8 +290,8 @@
                                                     <tbody>
                                                         @foreach ($availability as $availabilitys)
                                                             <tr align="center">
-                                                                <td>{{ $availabilitys->id ?? '--' }}</td>
-                                                                <td>{{ $availabilitys->name ?? '--' }}</td>
+                                                                <td>{{ $availabilitys->id ?? '-' }}</td>
+                                                                <td>{{ $availabilitys->name ?? '-' }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -328,11 +328,11 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($staff as $staffs)
+                                                        @foreach ($custodian as $custodians)
                                                             <tr align="center">
-                                                                <td>{{ $staffs->staff_id ?? '--' }}</td>
-                                                                <td>{{ $staffs->staff_name ?? '--' }}</td>
-                                                                <td>{{ $staffs->staff_dept ?? '--' }}</td>
+                                                                <td>{{ $custodians->custodian_id ?? '-' }}</td>
+                                                                <td>{{ $custodians->custodian->name ?? '-' }}</td>
+                                                                <td>{{ $custodians->department->department_name ?? '-' }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -356,77 +356,10 @@
 @section('script')
 
 <script>
+
     $(document).ready(function()
     {
-        $('#data_department').select2();
-
-        var table = $('#code_list').DataTable({
-            columnDefs: [],
-                orderCellsTop: true,
-                "order": [[ 0, "asc" ]],
-                "initComplete": function(settings, json) {
-                }
-        });
-    });
-
-    $(document).ready(function() {
-
-        var table = $('#type_list').DataTable({
-            columnDefs: [],
-                orderCellsTop: true,
-                "order": [[ 0, "asc" ]],
-                "initComplete": function(settings, json) {
-                }
-        });
-    });
-
-    $(document).ready(function() {
-
-        var table = $('#class_list').DataTable({
-            columnDefs: [],
-                orderCellsTop: true,
-                "order": [[ 0, "asc" ]],
-                "initComplete": function(settings, json) {
-                }
-        });
-    });
-
-    $(document).ready(function() {
-
-        var table = $('#status_list').DataTable({
-            columnDefs: [],
-                orderCellsTop: true,
-                "order": [[ 0, "asc" ]],
-                "initComplete": function(settings, json) {
-                }
-        });
-    });
-
-    $(document).ready(function() {
-
-        var table = $('#acquisition_list').DataTable({
-            columnDefs: [],
-                orderCellsTop: true,
-                "order": [[ 0, "asc" ]],
-                "initComplete": function(settings, json) {
-                }
-        });
-    });
-
-    $(document).ready(function() {
-
-        var table = $('#availability_list').DataTable({
-            columnDefs: [],
-                orderCellsTop: true,
-                "order": [[ 0, "asc" ]],
-                "initComplete": function(settings, json) {
-                }
-        });
-    });
-
-    $(document).ready(function() {
-
-        var table = $('#custodian_list').DataTable({
+        var table = $('#code_list, #type_list, #class_list, #status_list, #acquisition_list, #availability_list, #custodian_list').DataTable({
             columnDefs: [],
                 orderCellsTop: true,
                 "order": [[ 0, "asc" ]],

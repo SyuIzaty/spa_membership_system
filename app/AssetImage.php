@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AssetImage extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_asset_image';
+    protected $table = 'inv_asset_images';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'asset_id', 'upload_image', 'web_path'
+        'asset_id', 'img_name','img_size','img_path'
     ];
 }

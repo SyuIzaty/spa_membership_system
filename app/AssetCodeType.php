@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AssetCodeType extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_code_type';
+    protected $table = 'inv_asset_code_types';
     protected $fillable = ['id', 'code_name'];
     protected $primaryKey = 'id';
 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AssetTrail extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_asset_trail';
+    protected $table = 'inv_asset_trails';
     protected $primaryKey = 'id';
     protected $fillable = [
         'asset_code', 'asset_code_type', 'finance_code', 'asset_name', 'asset_type', 'serial_no', 'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'acquisition_type', 'asset_class',
@@ -40,14 +40,14 @@ class AssetTrail extends Model
         return $this->hasOne('App\AssetClass', 'class_code', 'asset_class');
     }
 
-    public function custodians()
+    public function custodian()
     {
         return $this->hasOne('App\User', 'id', 'custodian_id');
     }
 
-    public function assetCustodian()
+    public function assetCustodians()
     {
-        return $this->hasMany('App\Custodian','asset_id');  
+        return $this->hasMany('App\Custodian','asset_id');
     }
 
     public function user()
@@ -60,7 +60,7 @@ class AssetTrail extends Model
         return $this->hasOne('App\User', 'id', 'updated_by');
     }
 
-    public function availabilities()
+    public function assetAvailability()
     {
         return $this->hasOne('App\AssetAvailability', 'id', 'availability');
     }
