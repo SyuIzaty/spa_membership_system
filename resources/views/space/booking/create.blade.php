@@ -244,9 +244,9 @@
                                                 @if($id == 11)
                                                 <tr>
                                                   <div class="form-group">
-                                                    <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Attachment :</label></td>
+                                                    <td width="20%" style="vertical-align: middle"><label class="form-label"></label>Attachment <b>(Floor Plan for Dewan Besar INTEC, Old Library & etc)</b> :</label></td>
                                                     <td colspan="5">
-                                                      <input type="file" name="attachment_booked" class="form-control" accept="image/png, image/jpeg, application/pdf" required>
+                                                      <input type="file" name="attachment_booked" class="form-control" accept="image/png, image/jpeg, application/pdf">
                                                     </td>
                                                   </div>
                                                 </tr>
