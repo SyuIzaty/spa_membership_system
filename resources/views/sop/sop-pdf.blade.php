@@ -177,8 +177,8 @@
                                 <td style="text-align: center;
                                 vertical-align: middle;">
                                     {{ isset($sop->sop_code) ? $sop->sop_code : 'SOP CODE IS NOT AVAILABLE' }}</td>
-                                <td>REVIEW NO. :
-                                    @php
+                                <td>REVIEW NO. : 1
+                                    {{-- @php
                                         $c = '';
                                         if ($sopReview->count() < 0) {
                                             $c = 0;
@@ -186,7 +186,7 @@
                                             $c = $sopReview->count();
                                         }
                                     @endphp
-                                    {{ $c }}
+                                    {{ $c }} --}}
                                 </td>
                             </tr>
                             <tr style="text-align: center;
@@ -197,7 +197,7 @@
                     </table>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered w-100">
+                    {{-- <table class="table table-bordered w-100">
                         <thead>
                             <tr>
                                 <th style="text-align: center;
@@ -237,9 +237,8 @@
                                     <td colspan="5">REVIEW RECORD IS NOT AVAILABLE</td>
                                 </tr>
                             @endif
-
                         </tbody>
-                    </table>
+                    </table> --}}
                     <table class="table table-bordered w-100">
                         <thead>
                             <tr>
@@ -299,8 +298,8 @@
                                 <td style="text-align: center;
                                 vertical-align: middle;">
                                     {{ isset($sop->sop_code) ? $sop->sop_code : 'SOP CODE NOT AVAILABLE' }}</td>
-                                <td>REVIEW NO. :
-                                    @php
+                                <td>REVIEW NO. : 1
+                                    {{-- @php
                                         $c = '';
                                         if ($sopReview->count() < 0) {
                                             $c = 0;
@@ -308,7 +307,7 @@
                                             $c = $sopReview->count();
                                         }
                                     @endphp
-                                    {{ $c }}
+                                    {{ $c }} --}}
                                 </td>
                             </tr>
                             <tr style="text-align: center;
@@ -381,8 +380,8 @@
                                 <td style="text-align: center;
                                 vertical-align: middle;">
                                     {{ isset($sop->sop_code) ? $sop->sop_code : 'SOP CODE IS NOT AVAILABLE' }}</td>
-                                <td>REVIEW NO. :
-                                    @php
+                                <td>REVIEW NO. : 1
+                                    {{-- @php
                                         $c = '';
                                         if ($sopReview->count() < 0) {
                                             $c = 0;
@@ -390,7 +389,7 @@
                                             $c = $sopReview->count();
                                         }
                                     @endphp
-                                    {{ $c }}
+                                    {{ $c }} --}}
                                 </td>
                             </tr>
                             <tr style="text-align: center;
@@ -430,8 +429,8 @@
                                 <td style="text-align: center;
                                 vertical-align: middle;">
                                     {{ isset($sop->sop_code) ? $sop->sop_code : 'SOP CODE IS NOT AVAILABLE' }}</td>
-                                <td>REVIEW NO. :
-                                    @php
+                                <td>REVIEW NO. : 1
+                                    {{-- @php
                                         $c = '';
                                         if ($sopReview->count() < 0) {
                                             $c = 0;
@@ -439,7 +438,7 @@
                                             $c = $sopReview->count();
                                         }
                                     @endphp
-                                    {{ $c }}
+                                    {{ $c }} --}}
                                 </td>
                             </tr>
                             <tr style="text-align: center;

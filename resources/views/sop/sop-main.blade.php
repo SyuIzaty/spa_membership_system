@@ -340,7 +340,7 @@
             });
             $('.summernoteDef').summernote({
                 spellCheck: true,
-                placeholder: 'Please key-in the definition (if any)',
+                placeholder: 'Please key-in the definition',
                 toolbar: [
                     // [groupName, [list of button]]
                     ['style', ['bold', 'italic', 'underline', 'clear']],

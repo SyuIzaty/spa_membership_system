@@ -1066,6 +1066,15 @@ class SOPController extends Controller
             'created_by'   => Auth::user()->id
         ]);
 
+        $update = SopList::where('id', $request->id)->first();
+
+        if ($update->status == '3') {
+            $update->update([
+                'status'     => '2',
+                'updated_by' => Auth::user()->id
+            ]);
+        }
+
         return response()->json(['success' => 'Submitted!']);
     }
 

@@ -6,7 +6,7 @@
                     <td colspan="3">Comment By AQA</td>
                 </tr>
 
-                @if ($data->status == '2')
+                @if ($data->status == '2' || $data->status == '3')
                     @can('Manage SOP')
                         <tr class="card-header text-center">
                             <th style="background-color:#f0e6ca; vertical-align: middle; text-align: justify" rowspan="2">
