@@ -15,4 +15,9 @@ class FacilityRoomType extends Model
     {
         return $this->hasOne('App\FacilityStatus','id','status_id');
     }
+
+    public function facilityRooms()
+    {
+        return $this->hasMany('App\FacilityRoom','room_id','id');
+    }
 }

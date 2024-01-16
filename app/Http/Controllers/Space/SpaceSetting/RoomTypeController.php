@@ -23,11 +23,18 @@ class RoomTypeController extends Controller
                 return isset($type->facilityStatus->name) ? $type->facilityStatus->name : '';
             })
             ->addColumn('action', function($type){
-                return
-                '
-                <a href="javascript:;" data-toggle="modal" class="btn btn-primary btn-sm new"><i class="fal fa-pencil"></i></a>
-                <button class="btn btn-danger btn-sm"><i class="fal fa-trash"></i></button>
-                ';
+                if($type->facilityRooms->count() >= 1){
+                    return
+                    '
+                    <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$type->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                    ';
+                }else{
+                    return
+                    '
+                    <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$type->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                    <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/room-type/' . $type->id . '"> <i class="fal fa-trash"></i></button>
+                    ';
+                }
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -53,7 +60,19 @@ class RoomTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'room_name' => 'required',
+            'room_description' => 'required',
+        ]);
+
+        FacilityRoomType::create([
+            'name' => $request->room_name,
+            'description' => $request->room_description,
+            'enable_generate' => isset($request->room_enable) ? 3 : 4,
+            'status_id' => isset($request->room_status) ? 1 : 2,
+        ]);
+
+        return redirect()->back()->with('message','Data Added');
     }
 
     /**
@@ -73,9 +92,10 @@ class RoomTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        $type = FacilityRoomType::find($request->id);
+        echo json_encode($type);
     }
 
     /**
@@ -87,7 +107,18 @@ class RoomTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'room_name' => 'required',
+            'room_description' => 'required',
+        ]);
+
+        FacilityRoomType::where('id',$request->type_id)->update([
+            'name' => $request->room_name,
+            'description' => $request->room_description,
+            'status_id' => isset($request->status) ? 1 : 2,
+        ]);
+
+        return redirect()->back()->with('message','Updated');
     }
 
     /**
@@ -98,6 +129,6 @@ class RoomTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        FacilityRoomType::where('id',$id)->delete();
     }
 }

@@ -35,7 +35,7 @@
                                     {{ session()->get('message') }}
                                 </div>
                             @endif
-                            <table class="table table-bordered" id="year_table">
+                            <table class="table table-bordered" id="block_table">
                               <thead>
                                   <tr class="bg-primary-50 text-center">
                                       <th>ID</th>
@@ -65,22 +65,24 @@
                                       <h4 class="modal-title"> Add Block</h4>
                                   </div>
                                   <div class="modal-body">
+                                      {!! Form::open(['action' => 'Space\SpaceSetting\BlockController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                       <table class="table table-bordered">
                                         <tr>
                                           <td>Block <span class="text-danger">*</span></td>
-                                          <td><input type="text" class="form-control" name="name"></td>
+                                          <td><input type="text" class="form-control" name="block_name"></td>
                                         </tr>
                                         <tr>
                                           <td>Open / Closed <span class="text-danger">*</span></td>
                                           <td>
                                             <div class="custom-control custom-switch">
-                                              <input type="checkbox" class="custom-control-input" name="status" id="store_status">
+                                              <input type="checkbox" class="custom-control-input" name="block_status" id="store_status">
                                               <label class="custom-control-label" for="store_status"></label>
                                             </div>
                                           </td>
                                         </tr>
                                       </table>
                                       <button class="btn btn-success btn-sm float-right">Submit</button>
+                                      {!! Form::close() !!}
                                   </div>
                               </div>
                           </div>
@@ -99,7 +101,7 @@
   });
 
   $(document).ready(function() {
-      var table = $('#year_table').DataTable({
+      var table = $('#block_table').DataTable({
         processing: true,
         serverSide: true,
         stateSave: false,
@@ -110,7 +112,19 @@
         columns: [
                 { data: 'id', name: 'id'},
                 { data: 'name', name: 'name'},
-                { data: 'block_status', name: 'facilityStatus.name'},
+                { 
+                  data: 'block_status',
+                  name: 'facilityStatus.name',
+                  render: function(data) {
+                    if(data == 'Open') {
+                      badge = 'success';
+                    } else if (data == 'Closed') {
+                      badge = 'danger';
+                    }
+
+                    return '<span class="badge badge-'+ badge +'">'+ data +'</span>';
+                  }
+                },
                 { data: 'created_at', name: 'created_at'},
                 { data: 'action'},
             ],
@@ -118,7 +132,7 @@
         orderCellsTop: true,
         dom:"tpr",
         initComplete: function () {
-          $("#year_table thead #filterRow .hasInputFilter").each( function ( i ) {
+          $("#block_table thead #filterRow .hasInputFilter").each( function ( i ) {
               var colIdx = $(this).index();
               var input = $('<input class="form-control" type="text">')
                   .appendTo( $(this).empty() )
@@ -138,6 +152,37 @@
         }
       });
 
+  });
+
+  $('#block_table').on('click', '.btn-delete[data-remote]', function (e) {
+    e.preventDefault();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var url = $(this).data('remote');
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+            url: url,
+            type: 'DELETE',
+            dataType: 'json',
+            data: {method: '_DELETE', submit: true}
+            }).always(function (data) {
+                $('#block_table').DataTable().draw(false);
+            });
+        }
+    })
   });
 </script>
 @endsection

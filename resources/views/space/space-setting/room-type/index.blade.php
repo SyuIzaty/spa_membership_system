@@ -35,7 +35,7 @@
                                     {{ session()->get('message') }}
                                 </div>
                             @endif
-                            <table class="table table-bordered" id="year_table">
+                            <table class="table table-bordered" id="type_table">
                               <thead>
                                   <tr class="bg-primary-50 text-center">
                                       <th>ID</th>
@@ -46,12 +46,12 @@
                                       <th>ACTION</th>
                                   </tr>
                                   <tr id="filterRow">
-                                    <th><input type="text" class="form-control"></th>
-                                    <th><input type="text" class="form-control"></th>
-                                    <th><input type="text" class="form-control"></th>
-                                    <th><input type="text" class="form-control"></th>
-                                    <th><input type="text" class="form-control"></th>
-                                    <th><button id="resetFilter" class="btn btn-block btn-outline-danger"><i class="bx bx-block font-size-16 align-middle me-2"></i>Clear All Filter</button></th>
+                                    <th class="hasInputFilter"></th>
+                                    <th class="hasInputFilter"></th>
+                                    <th class="hasInputFilter"></th>
+                                    <th class="hasInputFilter"></th>
+                                    <th class="hasInputFilter"></th>
+                                    <th></th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -68,31 +68,80 @@
                                       <h4 class="modal-title"> Add Room Type</h4>
                                   </div>
                                   <div class="modal-body">
+                                      {!! Form::open(['action' => 'Space\SpaceSetting\RoomTypeController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                       <table class="table table-bordered">
                                         <tr>
                                           <td>Room Type <span class="text-danger">*</span></td>
-                                          <td><input type="text" class="form-control" name="name"></td>
+                                          <td><input type="text" class="form-control" name="room_name"></td>
                                         </tr>
                                         <tr>
                                           <td>Description <span class="text-danger">*</span></td>
-                                          <td><input type="text" class="form-control" name="name"></td>
+                                          <td><input type="text" class="form-control" name="room_description"></td>
                                         </tr>
                                         <tr>
-                                          <td>Status <span class="text-danger">*</span></td>
+                                          <td>Enable Generate</td>
                                           <td>
                                             <div class="custom-control custom-switch">
-                                              <input type="checkbox" class="custom-control-input" name="status" id="store_status">
+                                              <input type="checkbox" class="custom-control-input" name="room_enable" id="store_enable">
+                                              <label class="custom-control-label" for="store_enable"></label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Status</td>
+                                          <td>
+                                            <div class="custom-control custom-switch">
+                                              <input type="checkbox" class="custom-control-input" name="room_status" id="store_status">
                                               <label class="custom-control-label" for="store_status"></label>
                                             </div>
                                           </td>
                                         </tr>
                                       </table>
                                       <button class="btn btn-success btn-sm float-right">Submit</button>
+                                      {!! Form::close() !!}
                                   </div>
                               </div>
                           </div>
                         </div>
 
+                        <div class="modal fade editModal" id="editModal" aria-hidden="true" >
+                          <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title">Update Room Type</h4>
+                                </div>
+                                {!! Form::open(['action' => ['Space\SpaceSetting\RoomTypeController@update', '1'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                <input type="hidden" name="type_id" id="type_id">
+                                <div class="modal-body">
+                                  <table class="table table-bordered">
+                                    <tr>
+                                      <td>Room Type <span class="text-danger">*</span></td>
+                                      <td><input type="text" class="form-control" name="room_name" id="room_name"></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Description <span class="text-danger">*</span></td>
+                                      <td><input type="text" class="form-control" name="room_description" id="room_description"></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Status <span class="text-danger">*</span></td>
+                                      <td>
+                                        <div class="custom-control custom-switch">
+                                          <input type="checkbox" class="custom-control-input" name="status" id="status">
+                                          <label class="custom-control-label" for="status"></label>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <div class="modal-footer">
+                                  <button class="btn btn-success btn-sm float-right">Update</button>
+                                  <button type="button" class="btn btn-secondary btn-sm text-white" data-dismiss="modal">Close</button>
+                                </div>
+                                {{Form::hidden('_method', 'PUT')}}
+                                {!! Form::close() !!}
+                              </div>
+                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,46 +155,111 @@
   });
 
   $(document).ready(function() {
-      var table = $('#year_table').DataTable({
-        processing: true,
-        serverSide: true,
-        stateSave: false,
-        ajax: {
-            url: window.location.href,
-        },
+    var table = $('#type_table').DataTable({
+      processing: true,
+      serverSide: true,
+      stateSave: false,
+      ajax: {
+          url: window.location.href,
+      },
 
-        columns: [
-                { data: 'id', name: 'id'},
-                { data: 'name', name: 'name'},
-                { data: 'description', name: 'description'},
-                { data: 'type_status', name: 'facilityStatus.name'},
-                { data: 'created_at', name: 'created_at'},
-                { data: 'action'},
-            ],
-        order: [[ 0, "asc" ]],
-        orderCellsTop: true,
-        dom:"tpr",
-        initComplete: function () {
-          $("#year_table thead #filterRow .hasInputFilter").each( function ( i ) {
-              var colIdx = $(this).index();
-              var input = $('<input class="form-control" type="text">')
-                  .appendTo( $(this).empty() )
-                  .on( 'keyup', function () {
-                      table.column(colIdx)
-                          .search( $(this).val() )
-                          .draw();
-                  } );
+      columns: [
+              { data: 'id', name: 'id'},
+              { data: 'name', name: 'name'},
+              { data: 'description', name: 'description'},
+              { 
+                data: 'type_status', 
+                name: 'facilityStatus.name',
+                render: function(data) {
+                  if (data == 'Open'){
+                    badge = 'success';
+                  } else if (data == 'Closed'){
+                    badge = 'danger';
+                  }
 
-          } );
-        }
+                  return '<span class="badge badge-'+ badge +'">'+ data +'</span>';
+                }
+              },
+              { data: 'created_at', name: 'created_at'},
+              { data: 'action'},
+          ],
+      order: [[ 0, "asc" ]],
+      orderCellsTop: true,
+      dom:"tpr",
+      initComplete: function () {
+        $("#type_table thead #filterRow .hasInputFilter").each( function ( i ) {
+            var colIdx = $(this).index();
+            var input = $('<input class="form-control" type="text">')
+                .appendTo( $(this).empty() )
+                .on( 'keyup', function () {
+                    table.column(colIdx)
+                        .search( $(this).val() )
+                        .draw();
+                } );
+
+        } );
+      }
+    });
+
+    $.ajaxSetup({
+      headers:{
+      'X-CSRF-Token' : $("input[name=_token]").val()
+      }
+    });
+
+    $(document).on('click', '.edit_data', function(){
+      var id = $(this).attr("data-id");
+      $.ajax({
+          url: '/space/space-setting/room-type/1/edit',
+          method:"GET",
+          data:{id:id},
+          dataType:"json",
+          success:function(data){
+              $('#type_id').val(data.id);
+              $('#room_name').val(data.name);
+              $('#room_description').val(data.description);
+
+              if(data.status_id == 1){
+                $('#status').prop('checked', true);
+              } if(data.status_id != 1) {
+                $('#status').prop('checked', false);
+              }
+              $('.editModal').modal('show');
+          }
       });
+    });
 
-      $.ajaxSetup({
-        headers:{
-        'X-CSRF-Token' : $("input[name=_token]").val()
+  });
+
+  $('#type_table').on('click', '.btn-delete[data-remote]', function (e) {
+    e.preventDefault();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-      });
-
+    });
+    var url = $(this).data('remote');
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+            url: url,
+            type: 'DELETE',
+            dataType: 'json',
+            data: {method: '_DELETE', submit: true}
+            }).always(function (data) {
+                $('#type_table').DataTable().draw(false);
+            });
+        }
+    })
   });
 </script>
 @endsection

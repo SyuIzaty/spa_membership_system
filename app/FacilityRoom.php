@@ -16,6 +16,7 @@ class FacilityRoom extends Model
         'description',
         'capacity',
         'status_id',
+        'enable_generate',
         'remark'
     ];
 

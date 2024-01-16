@@ -24,11 +24,18 @@ class BlockController extends Controller
                 return isset($block->facilityStatus->name) ? $block->facilityStatus->name : '';
             })
             ->addColumn('action', function($block){
-                return
-                '
-                <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
-                <button class="btn btn-danger btn-sm"><i class="fal fa-trash"></i></button>
-                ';
+                if($block->facilityRooms->count() >= 1){
+                    return
+                    '
+                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
+                    ';
+                }else{
+                    return
+                    '
+                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
+                    <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/block/' . $block->id . '"> <i class="fal fa-trash"></i></button>
+                    ';
+                }
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -55,7 +62,16 @@ class BlockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'block_name' => 'required',
+        ]);
+
+        FacilityBlock::create([
+            'name' => $request->block_name,
+            'status_id' => isset($request->block_status) ? 1 : 2,
+        ]);
+
+        return redirect()->back()->with('message','Data Created');
     }
 
     /**
@@ -124,6 +140,6 @@ class BlockController extends Controller
      */
     public function destroy($id)
     {
-        //
+        FacilityBlock::where('id',$id)->delete();
     }
 }
