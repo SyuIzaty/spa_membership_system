@@ -1029,3 +1029,20 @@ Route::get('imej-aduan/{filename}/{type}', 'Aduan\AduanUmumController@imejAduan'
 Route::get('resit-aduan/{filename}/{type}', 'Aduan\AduanUmumController@resitAduan');
 Route::post('pengesahan-aduan', 'Aduan\AduanUmumController@simpanPengesahan');
 Route::get('/manual-aduan-umum', 'Aduan\AduanUmumController@manualAduan');
+
+Route::group([
+    'prefix' => 'space',
+    'as' => 'space.',
+    'middleware' => ['auth']
+],function() {
+    Route::resource('/space-setting/room-type', 'Space\SpaceSetting\RoomTypeController');
+    Route::resource('/space-setting/room', 'Space\SpaceSetting\RoomController');
+    Route::resource('/space-setting/block', 'Space\SpaceSetting\BlockController');
+    Route::resource('/space-setting/report', 'Space\SpaceSetting\ReportController');
+    Route::post('/data_spacereport', 'Space\SpaceSetting\ReportController@data_spacereport');
+    Route::resource('/space-setting/dashboard', 'Space\SpaceSetting\DashboardController');
+    Route::get('/getChartData', 'Space\SpaceSetting\DashboardController@getChartData');
+    Route::get('/getGroupChartData', 'Space\SpaceSetting\DashboardController@getGroupChartData');
+    Route::get('/getStackChartData', 'Space\SpaceSetting\DashboardController@getStackChartData');
+    Route::get('/getTableData', 'Space\SpaceSetting\DashboardController@getTableData');
+});

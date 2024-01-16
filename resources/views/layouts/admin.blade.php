@@ -1433,6 +1433,40 @@
                         @endrole
                         {{-- End Computer Grant Management --}}
 
+                        @role('Super Admin')
+                            <li class="nav-title">SPACE MANAGEMENT</li>
+                            <li class="open">
+                                <a href="/space/space-setting/dashboard" title="Training" data-filter-tags="training">
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Dashboard Analysis</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="#" title="List" data-filter-tags="list">
+                                    <i class="fal fa-cogs"></i>
+                                    <span class="nav-link-text" data-i18n="nav.list">Space Management</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/space/space-setting/room-type" title="Pending" data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Room Type</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/space/space-setting/block" title="Pending" data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Block</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="open">
+                                <a href="/space/space-setting/report" title="Training" data-filter-tags="training">
+                                    <i class="fal fa-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Report</span>
+                                </a>
+                            </li>
+                        @endrole
+
                         {{-- Start Covid --}}
                         {{-- @can('view admin')
                                 <li class="nav-title">COVID19 MANAGEMENT</li>
