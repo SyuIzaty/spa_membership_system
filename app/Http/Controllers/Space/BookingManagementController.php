@@ -242,14 +242,14 @@ class BookingManagementController extends Controller
             'application_status' => $request->application_status,
             'verify_by' => Auth::user()->id,
         ]);
-
         
+        $booking_venue = SpaceBookingVenue::find($request->booking_id);
+        $main = SpaceBookingMain::find($booking_venue->space_main_id);
+        $user = User::find($main->staff_id);
+        $user_email = $user->email;
+        $venue_main = SpaceVenue::find($booking_venue->venue_id);
+
         if($request->application_status == 3){
-            $booking_venue = SpaceBookingVenue::find($request->booking_id);
-            $main = SpaceBookingMain::find($booking_venue->space_main_id);
-            $user = User::find($main->staff_id);
-            $user_email = $user->email;
-            $venue_main = SpaceVenue::find($booking_venue->venue_id);
 
             $data = [
                 'receivers'   => $user->name,
@@ -265,6 +265,22 @@ class BookingManagementController extends Controller
             ];
 
             Mail::send('space.booking-management.email', $data, function ($message) use ($user_email,$venue_main) {
+                $message->subject(isset($venue_main->departmentList->name) ? $venue_main->departmentList->name : ''.': TEMPAHAN RUANG');
+                $message->from(isset($venue_main->departmentList->email) ? $venue_main->departmentList->email : '');
+                $message->to($user_email);
+            });
+        }
+        if($request->application_status == 4){
+
+            $data = [
+                'receivers'   => $user->name,
+                'departDate'  => date(' d/m/Y ', strtotime($main->start_date)),
+                'destination' => isset($booking_venue->spaceVenue->name) ? $booking_venue->spaceVenue->name : '',
+                'purpose'     => $main->purpose,
+                'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
+            ];
+
+            Mail::send('space.booking-management.rejected-email', $data, function ($message) use ($user_email,$venue_main) {
                 $message->subject(isset($venue_main->departmentList->name) ? $venue_main->departmentList->name : ''.': TEMPAHAN RUANG');
                 $message->from(isset($venue_main->departmentList->email) ? $venue_main->departmentList->email : '');
                 $message->to($user_email);
