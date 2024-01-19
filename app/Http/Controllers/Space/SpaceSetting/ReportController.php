@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Space\SpaceSetting;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\FacilityRoomType;
-use App\FacilityBlock;
-use App\FacilityRoom;
+use App\SpaceRoomType;
+use App\SpaceBlock;
+use App\SpaceRoom;
 
 class ReportController extends Controller
 {
@@ -17,8 +17,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $block = FacilityBlock::all();
-        $type = FacilityRoomType::all();
+        $block = SpaceBlock::all();
+        $type = SpaceRoomType::all();
         return view('space.space-setting.report.index',compact('block','type'));
     }
 
@@ -39,20 +39,20 @@ class ReportController extends Controller
             $cond .= " AND (room_id = '".$request->room_type."')";
         }
 
-        $room = FacilityRoom::whereRaw($cond)->with('facilityBlock','facilityRoomType','facilityStatus')->select('facility_rooms.*');
+        $room = SpaceRoom::whereRaw($cond)->with('spaceBlock','spaceRoomType','spaceStatus')->select('space_rooms.*');
 
         return datatables()::of($room)
             ->addColumn('block_name',function($room)
             {
-                return isset($room->facilityBlock->name) ? $room->facilityBlock->name : '';
+                return isset($room->spaceBlock->name) ? $room->spaceBlock->name : '';
             })
             ->addColumn('type_name',function($room)
             {
-                return isset($room->facilityRoomType->name) ? $room->facilityRoomType->name : '';
+                return isset($room->spaceRoomType->name) ? $room->spaceRoomType->name : '';
             })
             ->addColumn('status_name',function($room)
             {
-                return isset($room->facilityStatus->name) ? $room->facilityStatus->name : '';
+                return isset($room->spaceStatus->name) ? $room->spaceStatus->name : '';
             })
         //    ->rawColumns(['prog_name','prog_name_2','prog_name_3','address','college'])
            ->make(true);

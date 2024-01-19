@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Space\SpaceSetting;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\FacilityRoomType;
-use App\FacilityRoom;
-use App\FacilityBlock;
+use App\SpaceRoomType;
+use App\SpaceRoom;
+use App\SpaceBlock;
 
 class DashboardController extends Controller
 {
@@ -18,10 +18,10 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
 
-        $all_block = FacilityBlock::get();
-        $all_type = FacilityRoomType::get();
-        $open = FacilityRoom::StatusId(1)->get();
-        $closed = FacilityRoom::StatusId(2)->get();
+        $all_block = SpaceBlock::get();
+        $all_type = SpaceRoomType::get();
+        $open = SpaceRoom::StatusId(9)->get();
+        $closed = SpaceRoom::StatusId(10)->get();
         if(isset($request->block_id) || isset($request->status_id)){
             $selected_block = $request->block_id;
             $selected_status = $request->status_id;
@@ -35,12 +35,12 @@ class DashboardController extends Controller
 
     public function getChartData()
     {
-        $type = FacilityRoomType::get();
+        $type = SpaceRoomType::get();
         $all_room = $total_room = [];
         foreach ($type as $types) {
             $all_room[] = $types->name;
             $all_color[] = $types->color;
-            $total_room[] = FacilityRoom::RoomId($types->id)->count();
+            $total_room[] = SpaceRoom::RoomId($types->id)->count();
         }
 
         $data = [
@@ -54,12 +54,12 @@ class DashboardController extends Controller
 
     public function getStackChartData()
     {
-        $all_blocks = FacilityBlock::get();
+        $all_blocks = SpaceBlock::get();
         $data = [];
 
         foreach ($all_blocks as $block) {
-        $openCount = FacilityRoom::where('status_id', 1)->where('block_id', $block->id)->count();
-        $closedCount = FacilityRoom::where('status_id', 2)->where('block_id', $block->id)->count();
+        $openCount = SpaceRoom::where('status_id', 9)->where('block_id', $block->id)->count();
+        $closedCount = SpaceRoom::where('status_id', 10)->where('block_id', $block->id)->count();
 
             $data[] = [
                 'name' => $block->name,
@@ -74,14 +74,14 @@ class DashboardController extends Controller
 
     public function getGroupChartData()
     {
-        $types = FacilityRoomType::get();
-        $all_blocks = FacilityBlock::get();
+        $types = SpaceRoomType::get();
+        $all_blocks = SpaceBlock::get();
         $labels = $all_blocks->pluck('name')->toArray();
         $datasets = [];
 
         foreach ($types as $type) {
             $label = $type->name;
-            $data = FacilityRoom::where('room_id', $type->id)
+            $data = SpaceRoom::where('room_id', $type->id)
                 ->selectRaw('block_id, count(*) as count')
                 ->groupBy('block_id')
                 ->get();
@@ -126,9 +126,9 @@ class DashboardController extends Controller
             'room_id' => $request->room_id ?? null,
         ];
     
-        $all_block = FacilityBlock::get();
-        $open = FacilityRoom::StatusId(1)->get();
-        $closed = FacilityRoom::StatusId(2)->get();
+        $all_block = SpaceBlock::get();
+        $open = SpaceRoom::StatusId(9)->get();
+        $closed = SpaceRoom::StatusId(10)->get();
     
         if ($filters['block_id'] == 'All') {
             $filters['block_id'] = null;
@@ -142,8 +142,8 @@ class DashboardController extends Controller
             $filters['room_id'] = null;
         }
     
-        $facility_room = $filters['status_id'] ? FacilityRoom::StatusId($filters['status_id'])->pluck('id')->toArray() : FacilityRoom::pluck('id')->toArray();
-        $facility_room_id = $filters['room_id'] ? FacilityRoom::RoomId($filters['room_id'])->pluck('id')->toArray() : FacilityRoom::pluck('id')->toArray();
+        $facility_room = $filters['status_id'] ? SpaceRoom::StatusId($filters['status_id'])->pluck('id')->toArray() : SpaceRoom::pluck('id')->toArray();
+        $facility_room_id = $filters['room_id'] ? SpaceRoom::RoomId($filters['room_id'])->pluck('id')->toArray() : SpaceRoom::pluck('id')->toArray();
     
         $combine = array_intersect($facility_room, $facility_room_id);
         $cond = "1";
@@ -151,13 +151,13 @@ class DashboardController extends Controller
             $cond .= " AND (id = '" . $filters['block_id'] . "')";
         }
     
-        $block = FacilityBlock::whereRaw($cond)
+        $block = SpaceBlock::whereRaw($cond)
             ->when($filters['status_id'], function ($query) use ($combine) {
-                return $query->whereHas('facilityRooms', function ($query) use ($combine) {
+                return $query->whereHas('spaceRooms', function ($query) use ($combine) {
                     $query->whereIn('id', $combine);
                 });
             })
-            ->with(['facilityRooms' => function ($query) use ($combine) {
+            ->with(['spaceRooms' => function ($query) use ($combine) {
                 $query->whereIn('id', $combine);
             }])
             ->get();

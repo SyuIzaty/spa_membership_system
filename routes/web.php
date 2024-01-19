@@ -1039,6 +1039,7 @@ Route::group([
     Route::resource('/space-setting/room', 'Space\SpaceSetting\RoomController');
     Route::resource('/space-setting/block', 'Space\SpaceSetting\BlockController');
     Route::resource('/space-setting/report', 'Space\SpaceSetting\ReportController');
+    Route::resource('/space-setting/item', 'Space\SpaceSetting\SpaceItemController');
     Route::post('/data_spacereport', 'Space\SpaceSetting\ReportController@data_spacereport');
     Route::resource('/space-setting/dashboard', 'Space\SpaceSetting\DashboardController');
     Route::get('/getChartData', 'Space\SpaceSetting\DashboardController@getChartData');

@@ -4,9 +4,15 @@ namespace App\Http\Controllers\Space\SpaceSetting;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\FacilityRoom;
-use App\FacilityRoomType;
+use App\Asset;
+use App\Stock;
+use App\SpaceRoom;
+use App\SpaceBlock;
+use App\SpaceItem;
+use App\SpaceRoomType;
+use App\DepartmentList;
 use DataTables;
+use Carbon\Carbon;
 
 class RoomController extends Controller
 {
@@ -27,7 +33,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        return view('space.space-setting.room.create');
+        //
     }
 
     /**
@@ -38,7 +44,41 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $block = SpaceBlock::find($request->block_id);
+        $type = SpaceRoomType::find($request->room_type);
+        $room = SpaceRoom::BlockId($request->block_id)->RoomId($request->room_type)
+        ->FloorId($request->room_floor)->count()+1;
+        if($type->enable_generate == 11){
+            $name = substr($type->name, 0, 2).''.substr($block->name, -1).''.$request->room_floor.''.str_pad($room, 2, '0', STR_PAD_LEFT);
+        }else{
+            $name = $request->room_name;
+        }
+        
+        $room_id = SpaceRoom::insertGetId([
+            'block_id' => $request->block_id,
+            'room_id' => $request->room_type,
+            'floor' => $request->room_floor,
+            'name' => $name,
+            'description' => $request->room_description,
+            'capacity' => $request->room_capacity,
+            'status_id' => isset($request->room_status) ? 9 : 10,
+            'remark' => $request->room_remark,
+            'created_at' => Carbon::now(),
+        ]);
+
+        foreach($request->item_id as $key => $value){
+            $item_category = explode('-',$value);
+            SpaceItem::create([
+                'room_id' => $room_id,
+                'item_category' => $item_category[1],
+                'item_id' => $item_category[0],
+                'asset_id' => $value,
+                'quantity' => $request->item_quantity[$key],
+                'description' => $request->item_remark[$key],
+            ]);
+        }
+
+        return redirect()->back()->with('message','Created');
     }
 
     /**
@@ -49,7 +89,11 @@ class RoomController extends Controller
      */
     public function show($id)
     {
-        //
+        $type = SpaceRoomType::StatusId(9)->get();
+        $asset = Asset::all();
+        $stock = Stock::all();
+
+        return view('space.space-setting.room.create',compact('id','type','asset','stock'));
     }
 
     /**
@@ -60,10 +104,14 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        $room = FacilityRoom::find($id);
-        $type = FacilityRoomType::all();
+        $room = SpaceRoom::find($id);
+        $type = SpaceRoomType::all();
+        $item = SpaceItem::RoomId($id)->get();
+        $asset = Asset::all();
+        $stock = Stock::all();
+        $department = DepartmentList::all();
 
-        return view('space.space-setting.room.edit',compact('room','type'));
+        return view('space.space-setting.room.edit',compact('room','type','item','asset','stock','department'));
     }
 
     /**
@@ -75,7 +123,27 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        SpaceRoom::where('id',$id)->update([
+            'room_id' => $request->room_type,
+            'floor' => $request->room_floor,
+            'name' => $request->room_name,
+            'description' => $request->room_description,
+            'capacity' => $request->room_capacity,
+            'status_id' => isset($request->status) ? 9 : 10,
+            'remark' => $request->remark,
+        ]);
+
+        foreach($request->asset_id as $key => $value){
+            $item_category = explode('-',$value);
+            SpaceItem::where('id',$key)->update([
+                'item_category' => $item_category[1],
+                'item_id' => $item_category[0],
+                'description' => $request->item_description[$key],
+                'quantity' => $request->item_quantity[$key],
+            ]);
+        }
+
+        return redirect()->back()->with('message','Updated');
     }
 
     /**
@@ -86,6 +154,6 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        SpaceItem::where('id',$id)->delete();
     }
 }

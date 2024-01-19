@@ -88,6 +88,41 @@
                           </div>
                         </div>
 
+                        <div class="modal fade editModal" id="editModal" aria-hidden="true" >
+                          <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title">Update Block</h4>
+                                </div>
+                                {!! Form::open(['action' => ['Space\SpaceSetting\BlockController@update', '1'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                <input type="hidden" name="block_id" id="block_id">
+                                <div class="modal-body">
+                                  <table class="table table-bordered">
+                                    <tr>
+                                      <td>Block <span class="text-danger">*</span></td>
+                                      <td><input type="text" class="form-control" name="block_name" id="block_name"></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Status</td>
+                                      <td>
+                                        <div class="custom-control custom-switch">
+                                          <input type="checkbox" class="custom-control-input" name="status" id="status">
+                                          <label class="custom-control-label" for="status"></label>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <div class="modal-footer">
+                                  <button class="btn btn-success btn-sm float-right">Update</button>
+                                  <button type="button" class="btn btn-secondary btn-sm text-white" data-dismiss="modal">Close</button>
+                                </div>
+                                {{Form::hidden('_method', 'PUT')}}
+                                {!! Form::close() !!}
+                              </div>
+                          </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -114,7 +149,7 @@
                 { data: 'name', name: 'name'},
                 { 
                   data: 'block_status',
-                  name: 'facilityStatus.name',
+                  name: 'space-setting.name',
                   render: function(data) {
                     if(data == 'Open') {
                       badge = 'success';
@@ -150,6 +185,27 @@
         headers:{
         'X-CSRF-Token' : $("input[name=_token]").val()
         }
+      });
+
+      $(document).on('click', '.edit_data', function(){
+        var id = $(this).attr("data-id");
+        $.ajax({
+            url: '/space/space-setting/block/1',
+            method:"GET",
+            data:{id:id},
+            dataType:"json",
+            success:function(data){
+                $('#block_id').val(data.id);
+                $('#block_name').val(data.name);
+
+                if(data.status_id == 9){
+                  $('#status').prop('checked', true);
+                } if(data.status_id != 9) {
+                  $('#status').prop('checked', false);
+                }
+                $('.editModal').modal('show');
+            }
+        });
       });
 
   });

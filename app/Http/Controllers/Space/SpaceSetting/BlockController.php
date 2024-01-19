@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Space\SpaceSetting;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\FacilityBlock;
-use App\FacilityRoom;
+use App\SpaceBlock;
+use App\SpaceRoom;
 use DataTables;
 
 class BlockController extends Controller
@@ -17,22 +17,24 @@ class BlockController extends Controller
      */
     public function index(Request $request)
     {
-        $block = FacilityBlock::with('facilityStatus')->select('facility_blocks.*');
+        $block = SpaceBlock::with('spaceStatus')->select('space_blocks.*');
         if($request->ajax()) {
         return DataTables::of($block)
             ->addColumn('block_status', function($block){
-                return isset($block->facilityStatus->name) ? $block->facilityStatus->name : '';
+                return isset($block->spaceStatus->name) ? $block->spaceStatus->name : '';
             })
             ->addColumn('action', function($block){
-                if($block->facilityRooms->count() >= 1){
+                if($block->spaceRooms->count() >= 1){
                     return
                     '
-                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
+                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-info btn-sm"><i class="fal fa-search"></i></a>
+                    <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$block->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
                     ';
                 }else{
                     return
                     '
-                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
+                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-info btn-sm"><i class="fal fa-search"></i></a>
+                    <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$block->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
                     <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/block/' . $block->id . '"> <i class="fal fa-trash"></i></button>
                     ';
                 }
@@ -66,9 +68,9 @@ class BlockController extends Controller
             'block_name' => 'required',
         ]);
 
-        FacilityBlock::create([
+        SpaceBlock::create([
             'name' => $request->block_name,
-            'status_id' => isset($request->block_status) ? 1 : 2,
+            'status_id' => isset($request->block_status) ? 9 : 10,
         ]);
 
         return redirect()->back()->with('message','Data Created');
@@ -80,9 +82,10 @@ class BlockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        $block = SpaceBlock::find($request->id);
+        echo json_encode($block);
     }
 
     /**
@@ -93,19 +96,19 @@ class BlockController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $open = FacilityRoom::StatusId(1)->BlockId($id)->count();
-        $closed = FacilityRoom::StatusId(2)->BlockId($id)->count();
-        $room = FacilityRoom::BlockId($id)->with('facilityRoomType','facilityStatus','facilityBlock')->select('facility_rooms.*');
+        $open = SpaceRoom::StatusId(9)->BlockId($id)->count();
+        $closed = SpaceRoom::StatusId(10)->BlockId($id)->count();
+        $room = SpaceRoom::BlockId($id)->with('spaceRoomType','spaceStatus','spaceBlock')->select('space_rooms.*');
         if($request->ajax()) {
         return DataTables::of($room)
             ->addColumn('room_block', function($room){
-                return isset($room->facilityBlock->name) ? $room->facilityBlock->name : '';
+                return isset($room->spaceBlock->name) ? $room->spaceBlock->name : '';
             })
             ->addColumn('room_name', function($room){
-                return isset($room->facilityRoomType->name) ? $room->facilityRoomType->name : '';
+                return isset($room->spaceRoomType->name) ? $room->spaceRoomType->name : '';
             })
             ->addColumn('room_status', function($room){
-                return isset($room->facilityStatus->name) ? $room->facilityStatus->name : '';
+                return isset($room->spaceStatus->name) ? $room->spaceStatus->name : '';
             })
             ->addColumn('action', function($room){
                 return
@@ -117,7 +120,7 @@ class BlockController extends Controller
             ->rawColumns(['action'])
             ->make(true);
         }
-        return view('space.space-setting.room.index',compact('open','closed'));
+        return view('space.space-setting.room.index',compact('open','closed','id'));
     }
 
     /**
@@ -129,7 +132,16 @@ class BlockController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'block_name' => 'required',
+        ]);
+
+        SpaceBlock::where('id',$request->block_id)->update([
+            'name' => $request->block_name,
+            'status_id' => isset($request->status) ? 9 : 10,
+        ]);
+
+        return redirect()->back()->with('message','Updated');
     }
 
     /**
@@ -140,6 +152,6 @@ class BlockController extends Controller
      */
     public function destroy($id)
     {
-        FacilityBlock::where('id',$id)->delete();
+        SpaceBlock::where('id',$id)->delete();
     }
 }

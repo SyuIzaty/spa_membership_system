@@ -26,7 +26,7 @@
                                       <div class="">
                                           <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                               {{ $open }}
-                                              <small class="m-0 l-h-n">OPEN <b style="font-weight: 900">{{ Carbon\Carbon::now()->year }}</b></small>
+                                              <small class="m-0 l-h-n">OPEN <b style="font-weight: 900">ROOM</b></small>
                                           </h3>
                                       </div>
                                       <i class="fal fa-table position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
@@ -37,7 +37,7 @@
                                       <div class="">
                                           <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                             {{ $closed }}
-                                              <small class="m-0 l-h-n">CLOSED <b style="font-weight: 900">{{ Carbon\Carbon::now()->year }}</b></small>
+                                              <small class="m-0 l-h-n">CLOSED <b style="font-weight: 900">ROOM</b></small>
                                           </h3>
                                       </div>
                                       <i class="fal fa-table position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
@@ -84,34 +84,7 @@
                               </thead>
                               <tbody></tbody>
                             </table>
-                            <a class="btn btn-success btn-sm float-right mb-2 mt-2" href="/space/space-setting/room/create">Add Room</a>
-                          </div>
-                          <div class="modal fade" id="crud-modal" aria-hidden="true" >
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title"> Add Room</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <table class="table table-bordered">
-                                          <tr>
-                                            <td>Block <span class="text-danger">*</span></td>
-                                            <td><input type="text" class="form-control" name="name"></td>
-                                          </tr>
-                                          <tr>
-                                            <td>Open / Closed <span class="text-danger">*</span></td>
-                                            <td>
-                                              <div class="custom-control custom-switch">
-                                                <input type="checkbox" class="custom-control-input" name="status" id="store_status">
-                                                <label class="custom-control-label" for="store_status"></label>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        </table>
-                                        <button class="btn btn-success btn-sm float-right">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
+                            <a class="btn btn-success btn-sm float-right mb-2 mt-2" href="/space/space-setting/room/{{ $id }}">Add Room</a>
                           </div>
                         </div>
 
@@ -135,12 +108,12 @@
 
         columns: [
                 { data: 'id', name: 'id'},
-                { data: 'room_block', name: 'facilityBlock.name'},
-                { data: 'room_name', name: 'facilityRoomType.name'},
+                { data: 'room_block', name: 'spaceBlock.name'},
+                { data: 'room_name', name: 'spaceRoomType.name'},
                 { data: 'floor', name: 'floor'},
                 { data: 'name', name: 'name'},
                 { data: 'capacity', name: 'capacity'},
-                { data: 'room_status', name: 'facilityStatus.name'},
+                { data: 'room_status', name: 'spaceStatus.name'},
                 { data: 'action'},
             ],
         order: [[ 0, "asc" ]],

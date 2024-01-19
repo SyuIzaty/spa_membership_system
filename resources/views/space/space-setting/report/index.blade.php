@@ -33,8 +33,8 @@
                               <p>Open / Closed</p>
                               <select class="form-control selectfilter" id="status_id">
                                 <option disabled selected>Please Select</option>
-                                <option value="1">Open</option>
-                                <option value="2">Closed</option>
+                                <option value="9">Open</option>
+                                <option value="10">Closed</option>
                               </select>
                             </div>
                             <div class="col-md-4">
@@ -99,12 +99,12 @@
         iDisplayLength: -1,
         columns: [
                 { data: 'id', name: 'id' },
-                { data: 'block_name', name: 'facilityBlock.name' },
-                { data: 'type_name', name: 'facilityRoomType.name' },
+                { data: 'block_name', name: 'spaceBlock.name' },
+                { data: 'type_name', name: 'spaceRoomType.name' },
                 { data: 'floor', name: 'floor' },
                 { data: 'name', name: 'name' },
                 { data: 'capacity', name: 'capacity' },
-                { data: 'status_name', name: 'facilityStatus.name' },
+                { data: 'status_name', name: 'spaceStatus.name' },
             ],
             orderCellsTop: true,
             "order": [[ 0, "asc" ]],

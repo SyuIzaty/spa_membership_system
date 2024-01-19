@@ -88,8 +88,8 @@
                         <select class="form-control select" name="status_id" id="status-select">
                           <option value="">Select Status</option>
                           <option value="All" {{ 'All' == $selected_status ? 'selected' : '' }}>All</option>
-                          <option value="1" {{ 1 == $selected_status ? 'selected' : '' }}>Opened</option>
-                          <option value="2" {{ 2 == $selected_status ? 'selected' : '' }}>Closed</option>
+                          <option value="9" {{ 9 == $selected_status ? 'selected' : '' }}>Opened</option>
+                          <option value="10" {{ 10 == $selected_status ? 'selected' : '' }}>Closed</option>
                         </select>
                       </div>
                     </div>

@@ -5,34 +5,35 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class FacilityRoom extends Model
+class SpaceRoom extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
         'block_id',
         'room_id',
+        'floor',
         'name',
         'description',
         'capacity',
         'status_id',
-        'enable_generate',
-        'remark'
+        'remark',
+        'created_at'
     ];
 
-    public function facilityBlock()
+    public function spaceBlock()
     {
-        return $this->hasOne('App\FacilityBlock','id','block_id');
+        return $this->hasOne('App\SpaceBlock','id','block_id');
     }
 
-    public function facilityRoomType()
+    public function spaceRoomType()
     {
-        return $this->hasOne('App\FacilityRoomType','id','room_id');
+        return $this->hasOne('App\SpaceRoomType','id','room_id');
     }
 
-    public function facilityStatus()
+    public function spaceStatus()
     {
-        return $this->hasOne('App\FacilityStatus','id','status_id');
+        return $this->hasOne('App\SpaceStatus','id','status_id');
     }
 
     public function scopeBlockId($query, $block_id)
@@ -48,5 +49,10 @@ class FacilityRoom extends Model
     public function scopeStatusId($query, $status_id)
     {
         return $query->where('status_id',$status_id);
+    }
+
+    public function scopeFloorId($query, $floor)
+    {
+        return $query->where('floor',$floor);
     }
 }

@@ -79,7 +79,7 @@
                                           <td><input type="text" class="form-control" name="room_description"></td>
                                         </tr>
                                         <tr>
-                                          <td>Enable Generate</td>
+                                          <td>Auto Generate Room Name</td>
                                           <td>
                                             <div class="custom-control custom-switch">
                                               <input type="checkbox" class="custom-control-input" name="room_enable" id="store_enable">
@@ -123,11 +123,20 @@
                                       <td><input type="text" class="form-control" name="room_description" id="room_description"></td>
                                     </tr>
                                     <tr>
-                                      <td>Status <span class="text-danger">*</span></td>
+                                      <td>Status</td>
                                       <td>
                                         <div class="custom-control custom-switch">
                                           <input type="checkbox" class="custom-control-input" name="status" id="status">
                                           <label class="custom-control-label" for="status"></label>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>Auto Generate Room Name</td>
+                                      <td>
+                                        <div class="custom-control custom-switch">
+                                          <input type="checkbox" class="custom-control-input" name="enable" id="enable">
+                                          <label class="custom-control-label" for="enable"></label>
                                         </div>
                                       </td>
                                     </tr>
@@ -169,7 +178,7 @@
               { data: 'description', name: 'description'},
               { 
                 data: 'type_status', 
-                name: 'facilityStatus.name',
+                name: 'spaceStatus.name',
                 render: function(data) {
                   if (data == 'Open'){
                     badge = 'success';
@@ -219,10 +228,15 @@
               $('#room_name').val(data.name);
               $('#room_description').val(data.description);
 
-              if(data.status_id == 1){
+              if(data.status_id == 9){
                 $('#status').prop('checked', true);
-              } if(data.status_id != 1) {
+              } if(data.status_id != 9) {
                 $('#status').prop('checked', false);
+              }
+              if(data.enable_generate == 11){
+                $('#enable').prop('checked', true);
+              } if(data.enable_generate != 11) {
+                $('#enable').prop('checked', false);
               }
               $('.editModal').modal('show');
           }
