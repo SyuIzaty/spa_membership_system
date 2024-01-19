@@ -687,11 +687,11 @@ class SOPController extends Controller
             'prepared_by'  => $request->prepared_by,
             'reviewed_by'  => $request->reviewed_by,
             'approved_by'  => $request->approved_by,
-            'purpose'      => $request->purpose,
-            'scope'        => $request->scope,
-            'reference'    => $request->reference,
-            'definition'   => $request->definition,
-            'procedure'    => $request->procedure,
+            'purpose'      => preg_replace('/^<p>|<\/p>$/', '', $request->purpose),
+            'scope'        => preg_replace('/^<p>|<\/p>$/', '', $request->scope),
+            'reference'    => preg_replace('/^<p>|<\/p>$/', '', $request->reference),
+            'definition'   => preg_replace('/^<p>|<\/p>$/', '', $request->definition),
+            'procedure'    => preg_replace('/^<p>|<\/p>$/', '', $request->procedure),
             'created_by'   => Auth::user()->id
         ]);
 
@@ -740,11 +740,11 @@ class SOPController extends Controller
             'prepared_by'  => $request->prepared_by,
             'reviewed_by'  => $request->reviewed_by,
             'approved_by'  => $request->approved_by,
-            'purpose'      => $request->purpose,
-            'scope'        => $request->scope,
-            'reference'    => $request->reference,
-            'definition'   => $request->definition,
-            'procedure'    => $request->procedure,
+            'purpose'      => preg_replace('/^<p>|<\/p>$/', '', $request->purpose),
+            'scope'        => preg_replace('/^<p>|<\/p>$/', '', $request->scope),
+            'reference'    => preg_replace('/^<p>|<\/p>$/', '', $request->reference),
+            'definition'   => preg_replace('/^<p>|<\/p>$/', '', $request->definition),
+            'procedure'    => preg_replace('/^<p>|<\/p>$/', '', $request->procedure),
             'updated_by'   => Auth::user()->id
         ]);
 
