@@ -310,20 +310,35 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('store-asset-type', 'Inventory\AssetParameterController@store_asset_type');
     Route::post('update-asset-type', 'Inventory\AssetParameterController@update_asset_type');
     Route::delete('delete-asset-type/{id}', 'Inventory\AssetParameterController@delete_asset_type');
+
     Route::get('/asset-department', 'Inventory\AssetParameterController@asset_department');
     Route::post('data-asset-department', 'Inventory\AssetParameterController@data_asset_department');
     Route::post('store-asset-department', 'Inventory\AssetParameterController@store_asset_department');
     Route::post('update-asset-department', 'Inventory\AssetParameterController@update_asset_department');
     Route::delete('delete-asset-department/{id}', 'Inventory\AssetParameterController@delete_asset_department');
+
     Route::get('/department-custodian/{id}', 'Inventory\AssetParameterController@department_custodian');
     Route::post('/data-department-custodian/{id}', 'Inventory\AssetParameterController@data_department_custodian');
     Route::post('store-department-custodian', 'Inventory\AssetParameterController@store_department_custodian');
     Route::delete('delete-department-custodian/{id}', 'Inventory\AssetParameterController@delete_department_custodian');
+
     Route::get('/asset-class', 'Inventory\AssetParameterController@asset_class');
     Route::post('data-asset-class', 'Inventory\AssetParameterController@data_asset_class');
     Route::post('store-asset-class', 'Inventory\AssetParameterController@store_asset_class');
     Route::post('update-asset-class', 'Inventory\AssetParameterController@update_asset_class');
     Route::delete('delete-asset-class/{id}', 'Inventory\AssetParameterController@delete_asset_class');
+
+    Route::get('/asset-code', 'Inventory\AssetParameterController@asset_code');
+    Route::post('data-asset-code', 'Inventory\AssetParameterController@data_asset_code');
+    Route::post('store-asset-code', 'Inventory\AssetParameterController@store_asset_code');
+    Route::post('update-asset-code', 'Inventory\AssetParameterController@update_asset_code');
+    Route::delete('delete-asset-code/{id}', 'Inventory\AssetParameterController@delete_asset_code');
+
+    Route::get('/asset-acquisition', 'Inventory\AssetParameterController@asset_acquisition');
+    Route::post('data-asset-acquisition', 'Inventory\AssetParameterController@data_asset_acquisition');
+    Route::post('store-asset-acquisition', 'Inventory\AssetParameterController@store_asset_acquisition');
+    Route::post('update-asset-acquisition', 'Inventory\AssetParameterController@update_asset_acquisition');
+    Route::delete('delete-asset-acquisition/{id}', 'Inventory\AssetParameterController@delete_asset_acquisition');
 
     Route::get('/asset-list', 'Inventory\AssetManagementController@asset_list');
     Route::post('data-asset-list', 'Inventory\AssetManagementController@data_asset_list');
@@ -389,24 +404,24 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('store-bulk-transaction', 'Inventory\StockController@bulkTransactionStore');
     Route::post('changeOwner', 'Inventory\StockController@changeOwner');
 
-    // Borrow
-    Route::get('/borrow-index', 'BorrowController@borrowIndex');
-    Route::get('/borrow-new', 'BorrowController@borrowNew');
-    Route::post('newBorrowStore', 'BorrowController@newBorrowStore')->name('newBorrow');
-    Route::post('borrowList', 'BorrowController@data_borrowList');
-    Route::delete('borrow-index/{id}', 'BorrowController@borrowDelete');
-    Route::get('/borrow-detail/{id}', 'BorrowController@borrowDetail');
-    Route::post('borrowUpdate', 'BorrowController@borrowUpdate');
-    Route::get('/findUsers', 'BorrowController@findUsers');
-    Route::get('/findAsset', 'BorrowController@findAsset');
-    Route::get('/findAssets', 'BorrowController@findAssets');
-    Route::get('/monitor-list', 'BorrowController@monitorList');
-    Route::post('monitorList', 'BorrowController@data_monitorList');
-    Route::get('/export-borrow', 'BorrowController@borrow_all')->name('borrowreport');
-    Route::post('/data_borrowexport', 'BorrowController@data_borrowexport');
-    Route::get('/borrowExport', 'BorrowController@exports');
-    Route::post('/borrowExport', 'BorrowController@exports');
-    Route::get('exportborrow/{asset?}/{borrower?}/{status?}', 'BorrowController@exports');
+    // Rental
+    Route::get('/rental-list', 'Inventory\RentalManagementController@index');
+    Route::post('data-rental-list', 'Inventory\RentalManagementController@data_rental_list');
+    Route::delete('rental-list/{id}', 'Inventory\RentalManagementController@delete_rental_list');
+    Route::get('/rental-form', 'Inventory\RentalManagementController@rental_form');
+    Route::get('/rental-detail/{id}', 'Inventory\RentalManagementController@rental_form_detail');
+    Route::post('store-rental-detail', 'Inventory\RentalManagementController@store_rental_detail');
+    Route::post('update-rental-detail', 'Inventory\RentalManagementController@update_rental_detail');
+    Route::get('/find-renter-info', 'Inventory\RentalManagementController@find_renter_info');
+    Route::get('/find-asset-type', 'Inventory\RentalManagementController@find_asset_type');
+    Route::get('/find-asset-info', 'Inventory\RentalManagementController@find_asset_info');
+    Route::post('rental-reminder', 'Inventory\RentalManagementController@rental_reminder');
+    Route::get('/renter-list', 'Inventory\RentalManagementController@renter_list');
+    Route::post('data-renter-list', 'Inventory\RentalManagementController@data_renter_list');
+    Route::get('/renter-detail/{id}', 'Inventory\RentalManagementController@renter_form_detail');
+    Route::get('/rental-report', 'Inventory\RentalReportingController@index');
+    Route::post('data-rental-report', 'Inventory\RentalReportingController@data_excel_report');
+    Route::get('/rental-report-excel/{department}/{asset}/{renter}', 'Inventory\RentalReportingController@rental_report_excel');
 
     // Covid19
     Route::get('/declarationForm', 'CovidController@form')->name('form');

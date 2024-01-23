@@ -173,9 +173,12 @@
                                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                 @enderror
                                                                             </td>
+                                                                            @php
+                                                                                $exist = App\Rental::where('asset_id', $asset->id)->where('status', '0')->first();
+                                                                            @endphp
                                                                             <td width="15%"><label class="form-label" for="availability"> Availability:</label></td>
                                                                             <td colspan="3">
-                                                                                <select class="form-control availability" name="availability" id="availability">
+                                                                                <select class="form-control availability" name="availability" id="availability" @if(isset($exist)) readonly @endif>
                                                                                     <option value="">Please Select</option>
                                                                                     @foreach ($availability as $available)
                                                                                         <option value="{{ $available->id }}" {{ old('availability', ($asset->availability ? $asset->assetAvailability->id : '')) == $available->id ? 'selected' : '' }}>{{ $available->name }}</option>
@@ -184,6 +187,9 @@
                                                                                 @error('availability')
                                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                 @enderror
+                                                                                @if(isset($exist))
+                                                                                    <p class="mt-4">Renter : <b>{{ $exist->staff->staff_name }}</b></p>
+                                                                                @endif
                                                                             </td>
                                                                         </div>
                                                                     </tr>

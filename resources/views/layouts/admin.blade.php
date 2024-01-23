@@ -1107,7 +1107,7 @@
                                     <li class="open">
                                         <a href="#" title="Parameter" data-filter-tags="parameter">
                                             <i class="fal fa-cog"></i>
-                                            <span class="nav-link-text" data-i18n="nav.parameter">Parameter Settings</span>
+                                            <span class="nav-link-text" data-i18n="nav.parameter">Asset Settings</span>
                                         </a>
                                         <ul>
                                             <li>
@@ -1125,6 +1125,36 @@
                                                     <span class="nav-link-text" data-i18n="nav.manager">Asset Department</span>
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="/asset-code" title="Asset" data-filter-tags="asset">
+                                                    <span class="nav-link-text" data-i18n="nav.asset">Asset Code Type</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/asset-acquisition" title="Asset" data-filter-tags="asset">
+                                                    <span class="nav-link-text" data-i18n="nav.asset">Asset Acquisition</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endcan
+                                @can('manager management')
+                                    <li class="open">
+                                        <a href="#" title="Borrow" data-filter-tags="rental">
+                                            <i class="fal fa-address-book"></i>
+                                            <span class="nav-link-text" data-i18n="nav.borrow">Rental Management</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="/rental-list" title="Detail" data-filter-tags="detail">
+                                                    <span class="nav-link-text" data-i18n="nav.detail"> Rental Detail</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/rental-report" title="Report" data-filter-tags="report">
+                                                    <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 @endcan
@@ -1134,30 +1164,13 @@
                                             <span class="nav-link-text" data-i18n="nav.assetSearch">Asset Search</span>
                                         </a>
                                     </li> --}}
-                                {{-- <li class="open">
-                                        <a href="#" title="Borrow" data-filter-tags="borrow">
-                                            <i class="fal fa-address-book"></i>
-                                            <span class="nav-link-text" data-i18n="nav.borrow">Borrower Management</span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="/borrow-index" title="Detail" data-filter-tags="detail">
-                                                    <span class="nav-link-text" data-i18n="nav.detail"> Borrower Detail</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/monitor-list" title="Monitoring" data-filter-tags="delay">
-                                                    <span class="nav-link-text" data-i18n="nav.delay"> Monitoring</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/export-borrow" title="Report" data-filter-tags="report">
-                                                    <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li> --}}
                             @endcanany
+                            <li class="open">
+                                <a href="/renter-list" title="Asset Individual" data-filter-tags="assetIndividual">
+                                    <i class="fal fa-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.assetIndividual">Rental List</span>
+                                </a>
+                            </li>
                             @can('manage stock')
                                 <li class="open">
                                     <a href="#" title="Stock" data-filter-tags="stock">

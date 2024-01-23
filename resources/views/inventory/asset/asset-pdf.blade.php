@@ -74,7 +74,13 @@
                                 </td>
                                 <td width="15%"><label class="form-label" for="status"> Availability:</label></td>
                                 <td colspan="3">
+                                    @php
+                                        $exist = App\Rental::where('asset_id', $asset->id)->where('status', '0')->first();
+                                    @endphp
                                     {{ isset($asset->assetAvailability->name) ? strtoupper($asset->assetAvailability->name) : '--' }}
+                                    @if(isset($exist))
+                                        <p class="mt-4">Renter : <b>{{ $exist->staff->staff_name }}</b></p>
+                                    @endif
                                 </td>
                             </div>
                         </tr>

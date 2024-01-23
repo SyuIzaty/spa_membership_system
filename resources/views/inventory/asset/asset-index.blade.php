@@ -29,7 +29,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-1 pl-1">
                                     <i class="fal fa-exclamation-circle mr-2"></i>
-                                    Please tick at least <b>ONE</b> checkbox of asset when generating Qrcode.
+                                    Please ensure that you select a minimum of <b>ONE</b> checkbox for the asset when generating a QR code, and generate QR codes only for assets with a <b>FINANCE CODE</b>.
                                 </div>
                             </div>
                         </div>
@@ -52,56 +52,6 @@
                                         <th>AVAILABILITY</th>
                                         <th>ACTION</th>
                                     </tr>
-                                    {{-- <tr>
-                                        <td><input type="hidden" id="uncheck_mem_1" value="0" class="searchfilter form-control"></td>
-                                        <td class="hasinput"></td>
-                                        <td class="hasinput">
-                                            <select id="department_id" name="department_id" class="memfilter form-control">
-                                                <option value="">All</option>
-                                                @foreach($department as $departments)
-                                                    <option value="{{$departments->department_name}}">{{ $departments->department_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="hasinput">
-                                            <select id="asset_code_type" name="asset_code_type" class="memfilter form-control">
-                                                <option value="">All</option>
-                                                @foreach($code_type as $code_types)
-                                                    <option value="{{$code_types->code_name}}">{{ $code_types->code_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="hasinput"><input id="finance_code" type="text" class="memfilter form-control" placeholder="Search Finance Code"></td>
-                                        <td class="hasinput"><input id="asset_code" type="text" class="memfilter form-control" placeholder="Search Asset Code"></td>
-                                        <td class="hasinput"><input id="asset_name" type="text" class="memfilter form-control" placeholder="Search Asset Name"></td>
-                                        <td class="hasinput">
-                                            <select id="asset_type" name="asset_type" class="memfilter form-control">
-                                                <option value="">All</option>
-                                                @foreach($type as $types)
-                                                    <option value="{{$types->asset_type}}">{{ $types->asset_type }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="hasinput">
-                                            <select id="asset_class" name="asset_class" class="memfilter form-control">
-                                                <option value="">All</option>
-                                                @foreach($class as $classes)
-                                                    <option value="{{$classes->class_code}}">{{ $classes->class_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="hasinput"><input id="custodian_id" type="text" class="memfilter form-control" placeholder="Search Custodian"></td>
-                                        <td class="hasinput"><input id="status" type="text" class="memfilter form-control" placeholder="Search Status"></td>
-                                        <td class="hasinput">
-                                            <select id="availability" name="availability" class="memfilter form-control">
-                                                <option value="">All</option>
-                                                @foreach($availability as $availabilities)
-                                                    <option value="{{$availabilities->name}}">{{ $availabilities->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="hasinput"></td>
-                                    </tr> --}}
                                 </thead>
                             </table>
                         </div>

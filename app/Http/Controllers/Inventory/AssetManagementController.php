@@ -372,7 +372,7 @@ class AssetManagementController extends Controller
 
         ->editColumn('asset_class', function ($asset) {
 
-            return $asset->asset_class ?? '<div style="color:red;" >--</div>';
+            return $asset->assetClass->class_name ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('asset_code_type', function ($asset) {

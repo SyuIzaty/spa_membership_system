@@ -13,6 +13,8 @@ use App\Departments;
 use App\AssetCustodian;
 use App\AssetDepartment;
 use App\InventoryLog;
+use App\AssetCodeType;
+use App\AssetAcquisition;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -139,7 +141,9 @@ class AssetParameterController extends Controller
 
     public function asset_department()
     {
-        $department = Departments::all();
+        $exist = AssetDepartment::select('department_id')->pluck('department_id')->toArray();
+
+        $department = Departments::whereNotIn('id', $exist)->get();
 
         return view('inventory.asset-department.index', compact('department'));
     }
@@ -497,6 +501,214 @@ class AssetParameterController extends Controller
         ]);
 
         return response()->json(['success'=>'Asset Class Deleted Successfully.']);
+    }
+
+    // Asset Code Type
+
+    public function asset_code()
+    {
+        return view('inventory.asset-code.index');
+    }
+
+    public function data_asset_code()
+    {
+        $assetCode = AssetCodeType::select('inv_asset_code_types.*');
+
+        return datatables()::of($assetCode)
+
+        ->addColumn('action', function ($assetCode) {
+
+            $exist = Asset::where('asset_code_type', $assetCode->id)->first();
+
+            if(isset($exist)) {
+
+                return '<div class="btn-group"><a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$assetCode->id.'" data-name="'.$assetCode->code_name.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a></div>';
+
+            } else {
+
+                return '<div class="btn-group"><a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$assetCode->id.'" data-name="'.$assetCode->code_name.'" class="btn btn-sm btn-warning mr-1"><i class="fal fa-pencil"></i></a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-asset-code/' . $assetCode->id . '"><i class="fal fa-trash"></i></button></div>';
+            }
+        })
+
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+
+    public function store_asset_code(Request $request)
+    {
+        $request->validate([
+            'id'          => 'required',
+            'code_name'   => 'required',
+        ]);
+
+        $assetCode = AssetCodeType::create([
+            'id'            => $request->id,
+            'code_name'     => $request->code_name,
+        ]);
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Create Asset Code Type',
+            'subject_id'        => $assetCode->id,
+            'subject_type'      => 'App\AssetCodeType',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
+        Session::flash('message', 'Asset Code Type Added Successfully.');
+
+        return redirect()->back();
+    }
+
+    public function update_asset_code(Request $request)
+    {
+        $request->validate([
+            'code_names'   => 'required',
+        ]);
+
+        $assetCode = AssetCodeType::where('id', $request->code_id)->first();
+
+        $assetCode->update([
+            'code_name'     => $request->code_names,
+        ]);
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Update Asset Code Type',
+            'subject_id'        => $assetCode->id,
+            'subject_type'      => 'App\AssetCodeType',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
+        Session::flash('message', 'Asset Code Type Updated Succesfuly.');
+
+        return redirect()->back();
+    }
+
+    public function delete_asset_code($id)
+    {
+        $exist = AssetCodeType::find($id);
+
+        $exist->delete();
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Delete Asset Code Type',
+            'subject_id'        => $exist->id,
+            'subject_type'      => 'App\AssetCodeType',
+            'properties'        => json_encode($exist),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
+        return response()->json(['success'=>'Asset Code Type Deleted Successfully.']);
+    }
+
+    // Asset Acquisition
+
+    public function asset_acquisition()
+    {
+        return view('inventory.asset-acquisition.index');
+    }
+
+    public function data_asset_acquisition()
+    {
+        $assetAcquisition = AssetAcquisition::select('inv_asset_acquisitions.*');
+
+        return datatables()::of($assetAcquisition)
+
+        ->addColumn('action', function ($assetAcquisition) {
+
+            $exist = Asset::where('acquisition_type', $assetAcquisition->id)->first();
+
+            if(isset($exist)) {
+
+                return '<div class="btn-group"><a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$assetAcquisition->id.'" data-acquisition="'.$assetAcquisition->acquisition_type.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a></div>';
+
+            } else {
+
+                return '<div class="btn-group"><a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$assetAcquisition->id.'" data-acquisition="'.$assetAcquisition->acquisition_type.'" class="btn btn-sm btn-warning mr-1"><i class="fal fa-pencil"></i></a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-asset-acquisition/' . $assetAcquisition->id . '"><i class="fal fa-trash"></i></button></div>';
+            }
+        })
+
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+
+    public function store_asset_acquisition(Request $request)
+    {
+        $request->validate([
+            'acquisition_type'   => 'required',
+        ]);
+
+        $assetAcquisition = AssetAcquisition::create([
+            'acquisition_type'     => $request->acquisition_type,
+        ]);
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Create Asset Acquisition',
+            'subject_id'        => $assetAcquisition->id,
+            'subject_type'      => 'App\AssetAcquisition',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
+        Session::flash('message', 'Asset Acquisition Added Successfully.');
+
+        return redirect()->back();
+    }
+
+    public function update_asset_acquisition(Request $request)
+    {
+        $request->validate([
+            'acquisition_types'   => 'required',
+        ]);
+
+        $assetAcquisition = AssetAcquisition::where('id', $request->acquisition_id)->first();
+
+        $assetAcquisition->update([
+            'acquisition_type'     => $request->acquisition_types,
+        ]);
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Update Asset Acquisition',
+            'subject_id'        => $assetAcquisition->id,
+            'subject_type'      => 'App\AssetAcquisition',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
+        Session::flash('message', 'Asset Acquisition Updated Succesfuly.');
+
+        return redirect()->back();
+    }
+
+    public function delete_asset_acquisition($id)
+    {
+        $exist = AssetAcquisition::find($id);
+
+        $exist->delete();
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Delete Asset Acquisition',
+            'subject_id'        => $exist->id,
+            'subject_type'      => 'App\AssetAcquisition',
+            'properties'        => json_encode($exist),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
+        return response()->json(['success'=>'Asset Acquisition Deleted Successfully.']);
     }
 
     /**

@@ -339,7 +339,7 @@
                                             </div><br>
 
                                             <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                                            <a style="margin-right:5px" href="/asset-list" class="btn btn-success ml-auto float-right"><i class="fal fa-trash-alt"></i> Back</a><br><br>
+                                            <a style="margin-right:5px" href="/asset-list" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br><br>
 
                                         </div>
                                     </div>
