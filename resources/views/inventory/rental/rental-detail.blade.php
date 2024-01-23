@@ -164,10 +164,21 @@
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
-                                                                <td width="15%"><label class="form-label" for="storage_location"><span class="text-danger">*</span> Location : </label></td>
+                                                                <td width="15%"><label class="form-label" for="space_room_id"><span class="text-danger">*</span> Location : </label></td>
                                                                 <td colspan="3">
-                                                                    <input class="form-control" id="storage_location" name="storage_location" value="{{ $rental->asset->storage_location ?? 'N/A' }}" required>
-                                                                    @error('storage_location')
+                                                                    <select class="form-control space_room_id" name="space_room_id" id="space_room_id" required>
+                                                                        <option value="">Please Select</option>
+                                                                        @foreach ($space as $spaces)
+                                                                            <option value="{{ $spaces->id }}" {{ old('space_room_id', ($rental->asset->space_room_id ? $rental->asset->spaceRoom->id : '')) ==  $spaces->id  ? 'selected' : '' }}>
+                                                                                {{ $spaces->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('asset_class')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+
+                                                                    <input class="form-control" id="space_room_id" name="space_room_id" value="{{ $rental->asset->space_room_id ?? 'N/A' }}" required>
+                                                                    @error('space_room_id')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
@@ -188,9 +199,9 @@
                                                         </tr>
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td width="15%"><label class="form-label" for="storage_location"> Location : </label></td>
+                                                                <td width="15%"><label class="form-label" for="space_room_id"> Location : </label></td>
                                                                 <td colspan="6">
-                                                                    {{ $rental->asset->storage_location ?? 'N/A' }}
+                                                                    {{ $rental->asset->spaceRoom->name ?? 'N/A' }}
                                                                 </td>
                                                             </div>
                                                         </tr>

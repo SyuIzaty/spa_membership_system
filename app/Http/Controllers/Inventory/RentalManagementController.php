@@ -8,6 +8,7 @@ use App\User;
 use App\Rental;
 use App\Staff;
 use App\Asset;
+use App\SpaceRoom;
 use App\AssetType;
 use App\AssetCustodian;
 use App\Jobs\SendEmail;
@@ -107,7 +108,9 @@ class RentalManagementController extends Controller
 
         $assetType = AssetType::whereIn('department_id', $department)->get();
 
-        return view('inventory.rental.rental-form', compact('user', 'assetType'));
+        $space = SpaceRoom::all();
+
+        return view('inventory.rental.rental-form', compact('user', 'assetType','space'));
     }
 
     public function find_renter_info(Request $request)
@@ -145,7 +148,7 @@ class RentalManagementController extends Controller
             'asset_type'        => 'required',
             'asset_name'        => 'required',
             'checkout_date'     => 'required',
-            'storage_location'  => 'required',
+            'space_room_id'  => 'required',
             'reason'            => 'required',
         ]);
 
@@ -163,7 +166,7 @@ class RentalManagementController extends Controller
 
         $asset->update([
             'availability'      => '2',
-            'storage_location'  => $request->storage_location,
+            'space_room_id'  => $request->space_room_id,
         ]);
 
         Session::flash('message', 'Rental Detail Have Been Successfully Recorded.');
@@ -177,7 +180,7 @@ class RentalManagementController extends Controller
 
         Asset::where('id', $exist->asset_id)->update([
             'availability'      => '1',
-            'storage_location'  => '',
+            'space_room_id'  => '',
         ]);
 
         $exist->delete();
@@ -189,14 +192,16 @@ class RentalManagementController extends Controller
     {
         $rental = Rental::where('id', $id)->first();
 
-        return view('inventory.rental.rental-detail', compact('rental'));
+        $space = SpaceRoom::all();
+
+        return view('inventory.rental.rental-detail', compact('rental','space'));
     }
 
     public function update_rental_detail(Request $request)
     {
         $request->validate([
             'return_date'        => 'required',
-            'storage_location'   => 'required',
+            'space_room_id'   => 'required',
         ]);
 
         $rental = Rental::where('id', $request->id)->first();
@@ -214,7 +219,7 @@ class RentalManagementController extends Controller
 
             $asset->update([
                 'availability'      => '1',
-                'storage_location'  => $request->storage_location,
+                'space_room_id'  => $request->space_room_id,
             ]);
 
         } else {

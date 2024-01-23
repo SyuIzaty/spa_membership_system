@@ -71,7 +71,7 @@
                 <td style="width: 200px; text-align: center; border: 1px solid black" rowspan="{{ $count }}">{{ $datas->acquisitionType->acquisition_type ?? '-' }}</td>
                 <td style="width: 200px; text-align: center; border: 1px solid black" rowspan="{{ $count }}">{{ $datas->remark ?? '-' }}</td>
                 <td style="width: 200px; text-align: center; border: 1px solid black" rowspan="{{ $count }}">{{ $datas->custodian->name ?? '-' }}</td>
-                <td style="width: 200px; text-align: center; border: 1px solid black" rowspan="{{ $count }}">{{ $datas->storage_location ?? '-' }}</td>
+                <td style="width: 200px; text-align: center; border: 1px solid black" rowspan="{{ $count }}">{{ $datas->spaceRoom->name ?? '-' }}</td>
                 <td style="width: 200px; text-align: center; border: 1px solid black" rowspan="{{ $count }}">{{ $datas->user->name ?? '-' }}</td>
                 <td style="width: 200px; text-align: center; border: 1px solid black" rowspan="{{ $count }}">
                     @if($datas->status == 1)

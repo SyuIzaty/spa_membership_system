@@ -146,10 +146,15 @@
                                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                 @enderror
                                                                             </td>
-                                                                            <td width="15%"><label class="form-label" for="storage_location"> Location:</label></td>
+                                                                            <td width="15%"><label class="form-label" for="space_room_id"> Location:</label></td>
                                                                             <td colspan="3">
-                                                                                <input class="form-control" id="storage_location" name="storage_location" value="{{ $asset->storage_location ?? old('storage_location') }}">
-                                                                                @error('storage_location')
+                                                                                <select class="form-control space_room_id" name="space_room_id" id="space_room_id" required>
+                                                                                    <option value="">Please Select</option>
+                                                                                    @foreach ($space as $spaces)
+                                                                                        <option value="{{ $spaces->id }}" {{ old('space_room_id', ($asset->space_room_id ? $asset->spaceRoom->id : '' )) == $spaces->id ? 'selected' : '' }}>{{ $spaces->name }}</option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                                @error('space_room_id')
                                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                 @enderror
                                                                             </td>
@@ -687,7 +692,6 @@
                                                                     <th style="width: 50px;">No.</th>
                                                                     <th>Custodian</th>
                                                                     <th>Change Reason</th>
-                                                                    <th>Location</th>
                                                                     <th>Assign Date</th>
                                                                     <th>Assign By</th>
                                                                     <th>Status</th>
@@ -700,12 +704,11 @@
                                                                     <td>{{ $loop->iteration }}</td>
                                                                     <td>{{ isset($list->custodian->name) ? $list->custodian->name : '-'}}</td>
                                                                     <td>{{ isset($list->reason_remark) ? $list->reason_remark : '-'}}</td>
-                                                                    <td>{{ isset($list->location) ? $list->location : '-'}}</td>
                                                                     <td>{{ isset($list->created_at) ? date('d-m-Y | h:i A', strtotime($list->created_at)) : '-' }}</td>
                                                                     <td>{{ isset($list->user->name) ? $list->user->name : '-' }}</td>
                                                                     <td style="color:green">{{ isset($list->status) ? $list->custodianStatus->status_name : '-' }}</td>
                                                                     <td>
-                                                                        <a href="" data-target="#crud-modal-custodian" data-toggle="modal" data-id="{{$list->id}}" data-custodian="{{$list->custodian->name}}" data-reason="{{$list->reason_remark}}" data-location="{{$list->location}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+                                                                        <a href="" data-target="#crud-modal-custodian" data-toggle="modal" data-id="{{$list->id}}" data-custodian="{{$list->custodian->name}}" data-reason="{{$list->reason_remark}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
                                                                         <meta name="csrf-token" content="{{ csrf_token() }}">
                                                                     </td>
                                                                 </tr>
@@ -772,16 +775,6 @@
                                             @enderror
                                         </td>
                                     </div>
-                                    <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="location"> Location :</label></td>
-                                        <td colspan="7">
-                                            <input class="form-control" id="location" name="location" value="{{ old('location') }}">
-                                            @error('location')
-                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                            @enderror
-                                        </td>
-                                    </div>
-
                                 <div class="footer">
                                     <button type="submit" class="btn btn-success ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                                     <button type="button" class="btn btn-secondary ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -836,17 +829,6 @@
                                         </td>
                                         </td>
                                     </div>
-                                    <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="location"> Location :</label></td>
-                                        <td colspan="7">
-                                            <input rows="5" class="location form-control" id="locations" name="location">
-                                            @error('location')
-                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                            @enderror
-                                        </td>
-                                        </td>
-                                    </div>
-
                                 <div class="footer">
                                     <button type="submit" class="btn btn-success ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                                     <button type="button" class="btn btn-secondary ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -929,7 +911,7 @@
 
     $(document).ready(function()
     {
-        $('#status, #availability, #asset_types, #asset_code_type, #acquisition_type, #inactive_reason, #asset_class').select2();
+        $('#status, #availability, #asset_types, #asset_code_type, #acquisition_type, #inactive_reason, #asset_class, #space_room_id').select2();
 
         // Modal function
 
@@ -957,12 +939,10 @@
             var id = button.data('id')
             var custodian = button.data('custodian')
             var reason = button.data('reason')
-            var location = button.data('location')
 
             $('.modal-body #ids').val(id);
             $('.modal-body #custodian').val(custodian);
             $('.modal-body #reason').val(reason);
-            $('.modal-body #locations').val(location);
         });
 
         $('#crud-modal-set').on('show.bs.modal', function(event) {

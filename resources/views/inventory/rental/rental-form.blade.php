@@ -162,10 +162,16 @@
                                                         <tr>
                                                             <div class="form-group">
                                                                 <div class="form-group">
-                                                                    <td width="10%"><label class="form-label" for="storage_location"><span class="text-danger">*</span> Location :</label></td>
+                                                                    <td width="10%"><label class="form-label" for="space_room_id"><span class="text-danger">*</span> Location :</label></td>
                                                                     <td colspan="3">
-                                                                        <input value="{{ old('storage_location') }}" class="form-control storage_location" id="storage_location" name="storage_location" required>
-                                                                        @error('storage_location')
+                                                                        <select class="form-control space_room_id" name="space_room_id" id="space_room_id">
+                                                                            <option value="">Please Select</option>
+                                                                            @foreach ($space as $spaces)
+                                                                                <option value="{{ $spaces->id }}" {{ old('space_room_id') ==  $spaces->id  ? 'selected' : '' }}>
+                                                                                    {{ $spaces->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('space_room_id')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
                                                                     </td>
@@ -202,7 +208,7 @@
 <script>
 
     $(document).ready(function() {
-        $('#staff_name, #asset_type, #asset_name').select2();
+        $('#staff_name, #asset_type, #asset_name, #space_room_id').select2();
 
         if($('.staff_name').val()!=''){
             updateFd($('.staff_name'));
@@ -293,7 +299,7 @@
                     $('#serial_no').val(data.serial_no);
                     $('#model').val(data.model);
                     $('#brand').val(data.brand);
-                    $('#storage_location').val(data.storage_location);
+                    $('#space_room_id').val(data.space_room_id);
                 }
             });
         }

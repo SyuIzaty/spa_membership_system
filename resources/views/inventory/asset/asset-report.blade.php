@@ -116,7 +116,7 @@
                     },
                     columns: [
                         { className: 'text-center', data: 'id', name: 'id' },
-                        { className: 'text-center', data: 'department_id', name: 'department_id' }, //
+                        { className: 'text-center', data: 'department_id', name: 'department_id' },
                         { className: 'text-center', data: 'asset_code_type', name: 'asset_code_type' },
                         { className: 'text-center', data: 'finance_code', name: 'finance_code' },
                         { className: 'text-center', data: 'asset_code', name: 'asset_code' },

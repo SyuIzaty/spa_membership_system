@@ -326,9 +326,16 @@
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
-                                                                <td width="10%"><label class="form-label" for="storage_location"> Location :</label></td>
-                                                                <td colspan="3"><input value="{{ old('storage_location') }}" class="form-control" id="storage_location" name="storage_location">
-                                                                    @error('storage_location')
+                                                                <td width="10%"><label class="form-label" for="space_room_id"> Location :</label></td>
+                                                                <td colspan="3">
+                                                                    <select class="form-control space_room_id" name="space_room_id" id="space_room_id">
+                                                                        <option value="">Please Select</option>
+                                                                        @foreach ($space as $spaces)
+                                                                            <option value="{{ $spaces->id }}" {{ old('space_room_id') ==  $spaces->id  ? 'selected' : '' }}>
+                                                                                {{ $spaces->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('space_room_id')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
@@ -362,7 +369,7 @@
 <script>
     $(document).ready( function() {
 
-        $('#department_id, #asset_type, #custodian_id, #status, #availability, #asset_code_type, #acquisition_type, #inactive_reason, #asset_class').select2();
+        $('#department_id, #asset_type, #custodian_id, #status, #availability, #asset_code_type, #acquisition_type, #inactive_reason, #asset_class, #space_room_id').select2();
 
         // Dependent Dropdown Function
 

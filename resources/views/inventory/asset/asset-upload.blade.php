@@ -123,6 +123,7 @@
                                                 <table class="table table-bordered" id="type_list" style="width: 100%">
                                                     <thead>
                                                         <tr class="bg-primary-50 text-center">
+                                                            <td>ID</td>
                                                             <td>DEPARTMENT</td>
                                                             <td>TYPE CODE</td>
                                                             <td>ASSET TYPE NAME</td>
@@ -131,6 +132,7 @@
                                                     <tbody>
                                                         @foreach ($type as $types)
                                                             <tr align="center">
+                                                                <td>{{ $types->id ?? '-' }}</td>
                                                                 <td>{{ $types->department->department_name ?? '-' }}</td>
                                                                 <td>{{ $types->id ?? '-' }}</td>
                                                                 <td>{{ $types->asset_type ?? '-' }}</td>
@@ -341,6 +343,45 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#space" aria-expanded="false">
+                                                <i class="fal fa-house width-2 fs-xl"></i>
+                                                Location
+                                                <span class="ml-auto">
+                                                    <span class="collapsed-reveal">
+                                                        <i class="fal fa-minus fs-xl"></i>
+                                                    </span>
+                                                    <span class="collapsed-hidden">
+                                                        <i class="fal fa-plus fs-xl"></i>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div id="space" class="collapse" data-parent="#space">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                <table class="table table-bordered" style="width: 100%" id="space_list">
+                                                    <thead>
+                                                        <tr class="bg-primary-50 text-center">
+                                                            <td> ID</td>
+                                                            <td> NAME</td> 
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($space as $spaces)
+                                                            <tr align="center">
+                                                                <td>{{ $spaces->id ?? '-' }}</td>
+                                                                <td>{{ $spaces->name ?? '-' }}</td> 
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -359,7 +400,7 @@
 
     $(document).ready(function()
     {
-        var table = $('#code_list, #type_list, #class_list, #status_list, #acquisition_list, #availability_list, #custodian_list').DataTable({
+        var table = $('#code_list, #type_list, #class_list, #status_list, #acquisition_list, #availability_list, #custodian_list, #space_list').DataTable({
             columnDefs: [],
                 orderCellsTop: true,
                 "order": [[ 0, "asc" ]],

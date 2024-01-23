@@ -113,9 +113,9 @@
                                                     </tr>
                                                     <tr>
                                                         <div class="form-group">
-                                                            <td width="15%"><label class="form-label" for="storage_location"> Location : </label></td>
+                                                            <td width="15%"><label class="form-label" for="space_room_id"> Location : </label></td>
                                                             <td colspan="6">
-                                                                {{ $rental->asset->storage_location ?? 'N/A' }}
+                                                                {{ $rental->asset->spaceRoom->name ?? 'N/A' }}
                                                             </td>
                                                         </div>
                                                     </tr>

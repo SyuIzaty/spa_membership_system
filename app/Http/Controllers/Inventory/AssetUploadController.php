@@ -7,6 +7,7 @@ use App\AssetType;
 use App\AssetClass;
 use App\AssetCustodian;
 use App\AssetCodeType;
+use App\SpaceRoom;
 use App\AssetAcquisition;
 use App\AssetAvailability;
 use App\Imports\AssetImport;
@@ -40,7 +41,9 @@ class AssetUploadController extends Controller
 
         $custodian = AssetCustodian::all();
 
-        return view('inventory.asset.asset-upload', compact('code','type','acquisition','availability','custodian','class'));
+        $space = SpaceRoom::all();
+
+        return view('inventory.asset.asset-upload', compact('code','type','acquisition','availability','custodian','class', 'space'));
     }
 
     public function asset_template()

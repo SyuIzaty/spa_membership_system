@@ -11,7 +11,7 @@ class Custodian extends Model
     protected $table = 'inv_asset_custodians';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'asset_id', 'custodian_id', 'reason_remark', 'assigned_by', 'verification', 'status', 'verification_date', 'location'
+        'asset_id', 'custodian_id', 'reason_remark', 'assigned_by', 'verification', 'status', 'verification_date'
     ];
 
     public function assets()

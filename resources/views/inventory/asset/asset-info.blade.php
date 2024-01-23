@@ -113,8 +113,8 @@
                                                     @endif
                                                     <tr>
                                                         <div class="form-group">
-                                                            <td width="15%"><label class="form-label" for="storage_location"> Location:</label></td>
-                                                            <td colspan="3">{{ $asset->storage_location ?? '--' }}</td>
+                                                            <td width="15%"><label class="form-label" for="space_room_id"> Location:</label></td>
+                                                            <td colspan="3">{{ $asset->spaceRoom->name ?? '--' }}</td>
                                                             <td width="15%"><label class="form-label" for="custodian_id"> Set Package : </label></td>
                                                             <td colspan="3">
                                                                 @if($asset->set_package == 'Y')

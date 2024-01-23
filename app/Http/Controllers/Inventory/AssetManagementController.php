@@ -18,6 +18,7 @@ use App\AssetCodeType;
 use App\AssetStatus;
 use App\AssetTrail;
 use App\AssetClass;
+use App\SpaceRoom;
 use App\AssetSetTrail;
 use App\AssetAvailability;
 use App\AssetCustodian;
@@ -65,6 +66,8 @@ class AssetManagementController extends Controller
             'acquisition' => AssetAcquisition::all(),
 
             'class' => AssetClass::all(),
+
+            'space' => SpaceRoom::all(),
         ];
 
         return view('inventory.asset.asset-new', $data);
@@ -142,7 +145,7 @@ class AssetManagementController extends Controller
             'remark'                => $request->remark,
             'acquisition_type'      => $request->acquisition_type,
             'set_package'           => $request->set_package,
-            'storage_location'      => $request->storage_location,
+            'space_room_id'         => $request->space_room_id,
             'custodian_id'          => $request->custodian_id,
             'created_by'            => $user->id,
         ]);
@@ -176,7 +179,6 @@ class AssetManagementController extends Controller
         Custodian::create([
             'asset_id'         => $asset->id,
             'custodian_id'     => $asset->custodian_id,
-            'location'         => $asset->storage_location,
             'assigned_by'      => $user->id,
             'verification'     => '1',
             'verification_date'=> Carbon::now(),
@@ -440,8 +442,10 @@ class AssetManagementController extends Controller
 
         $class = AssetClass::all();
 
+        $space = SpaceRoom::all();
+
         return view('inventory.asset.asset-detail', compact('class', 'asset', 'department', 'availability',
-        'setType', 'custodian', 'codeType', 'status', 'acquisition'));
+        'setType', 'custodian', 'codeType', 'status', 'acquisition', 'space'));
     }
 
     public function delete_asset_image($id)
@@ -651,7 +655,7 @@ class AssetManagementController extends Controller
             'set_package'           => $request->set_package,
             'asset_code_type'       => $request->asset_code_type,
             'asset_class'           => $request->asset_class,
-            'storage_location'      => $request->storage_location,
+            'space_room_id'         => $request->space_room_id,
             'inactive_date'         => $request->status == '0' ? $request->inactive_date : null,
             'inactive_reason'       => $request->status == '0' ? $request->inactive_reason : null,
             'inactive_remark'       => $request->status == '0' ? $request->inactive_remark : null,
@@ -720,7 +724,7 @@ class AssetManagementController extends Controller
                 'remark'                => $asset->remark,
                 'acquisition_type'      => $asset->acquisition_type,
                 'set_package'           => $asset->set_package,
-                'storage_location'      => $asset->storage_location,
+                'space_room_id'      => $asset->space_room_id,
                 'custodian_id'          => $asset->custodian_id,
                 'created_by'            => $asset->created_by,
                 'updated_by'            => Auth::user()->id,
@@ -761,7 +765,6 @@ class AssetManagementController extends Controller
             'asset_id'              => $request->id,
             'custodian_id'          => $request->custodian_id,
             'reason_remark'         => $request->reason_remark,
-            'location'              => $request->location,
             'assigned_by'           => Auth::user()->id,
             'verification'          => '1',
             'verification_date'     => Carbon::now(),
@@ -769,8 +772,7 @@ class AssetManagementController extends Controller
         ]);
 
         $asset->update([
-            'custodian_id'            => $request->custodian_id,
-            'storage_location'        => $request->location,
+            'custodian_id'          => $request->custodian_id,
         ]);
 
         InventoryLog::create([
@@ -798,7 +800,6 @@ class AssetManagementController extends Controller
 
         $custodian->update([
             'reason_remark'         => $request->reason_remark,
-            'location'              => $request->location,
         ]);
 
         InventoryLog::create([
