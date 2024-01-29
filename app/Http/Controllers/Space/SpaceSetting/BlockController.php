@@ -4,8 +4,14 @@ namespace App\Http\Controllers\Space\SpaceSetting;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\Space\SpaceItemImport;
+use App\SpaceRoomType;
+use App\SpaceCategory;
 use App\SpaceBlock;
 use App\SpaceRoom;
+use App\AssetType;
 use DataTables;
 
 class BlockController extends Controller
@@ -17,23 +23,26 @@ class BlockController extends Controller
      */
     public function index(Request $request)
     {
-        $block = SpaceBlock::with('spaceStatus')->select('space_blocks.*');
+        $block = SpaceBlock::with('spaceStatus','spaceRooms')->select('space_blocks.*');
         if($request->ajax()) {
         return DataTables::of($block)
             ->addColumn('block_status', function($block){
                 return isset($block->spaceStatus->name) ? $block->spaceStatus->name : '';
             })
+            ->addColumn('room_total', function($block){
+                return $block->spaceRooms->count();
+            })
             ->addColumn('action', function($block){
                 if($block->spaceRooms->count() >= 1){
                     return
                     '
-                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-info btn-sm"><i class="fal fa-search"></i></a>
+                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-info btn-sm"><i class="fal fa-list"></i></a>
                     <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$block->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
                     ';
                 }else{
                     return
                     '
-                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-info btn-sm"><i class="fal fa-search"></i></a>
+                    <a href="/space/space-setting/block/'.$block->id.'/edit" class="btn btn-info btn-sm"><i class="fal fa-list"></i></a>
                     <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$block->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
                     <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/block/' . $block->id . '"> <i class="fal fa-trash"></i></button>
                     ';
@@ -53,7 +62,10 @@ class BlockController extends Controller
      */
     public function create()
     {
-        //
+        $room_type = SpaceRoomType::all();
+        $asset = AssetType::all();
+        $category = SpaceCategory::all();
+        return view('space.space-setting.block.create',compact('room_type','asset','category'));
     }
 
     /**
@@ -114,7 +126,7 @@ class BlockController extends Controller
                 return
                 '
                 <a href="/space/space-setting/room/'.$room->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
-                <button class="btn btn-danger btn-sm"><i class="fal fa-trash"></i></button>
+                <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/room/' . $room->id . '"> <i class="fal fa-trash"></i></button>
                 ';
             })
             ->rawColumns(['action'])
@@ -153,5 +165,21 @@ class BlockController extends Controller
     public function destroy($id)
     {
         SpaceBlock::where('id',$id)->delete();
+    }
+
+    public function blockTemplate()
+    {
+        return Storage::disk('minio')->response('space/BLOCK & ITEM.xlsx');
+    }
+
+    public function uploadBlock(Request $request)
+    {
+        $this->validate($request, [
+            'upload_block' => 'required|mimes:xlsx, csv, xls',
+        ]);
+
+        Excel::import(new SpaceItemImport(), request()->file('upload_block'));
+
+        return back()->with('success','Space & Item Imported');
     }
 }

@@ -36,6 +36,11 @@ class SpaceRoom extends Model
         return $this->hasOne('App\SpaceStatus','id','status_id');
     }
 
+    public function spaceItems()
+    {
+        return $this->hasMany('App\SpaceItem','room_id','id');
+    }
+
     public function scopeBlockId($query, $block_id)
     {
         return $query->where('block_id',$block_id);

@@ -9,7 +9,7 @@ class SpaceItem extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['room_id','item_category','item_id','name','description','quantity','department_id','status'];
+    protected $fillable = ['room_id','item_category','item_id','serial_no','name','description','quantity','department_id','status'];
 
     public function spaceStatus()
     {

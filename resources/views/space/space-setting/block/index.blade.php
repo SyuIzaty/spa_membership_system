@@ -41,10 +41,12 @@
                                       <th>ID</th>
                                       <th>BLOCK</th>
                                       <th>STATUS</th>
+                                      <th>TOTAL</th>
                                       <th>CREATED AT</th>
                                       <th>ACTION</th>
                                   </tr>
                                   <tr id="filterRow">
+                                    <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
@@ -54,6 +56,7 @@
                               </thead>
                               <tbody></tbody>
                             </table>
+                            <a class="btn btn-success btn-sm float-right mb-2 mt-2 ml-2" href="/space/space-setting/block/create">Upload Block</a>
                             <a class="btn btn-success btn-sm float-right mb-2 mt-2" href="javascript:;" data-toggle="modal" id="new">Add Block</a>
                           </div>
                         </div>
@@ -160,6 +163,7 @@
                     return '<span class="badge badge-'+ badge +'">'+ data +'</span>';
                   }
                 },
+                { data: 'room_total', name: 'room_total'},
                 { data: 'created_at', name: 'created_at'},
                 { data: 'action'},
             ],

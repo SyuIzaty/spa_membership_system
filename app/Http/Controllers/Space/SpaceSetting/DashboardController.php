@@ -75,7 +75,7 @@ class DashboardController extends Controller
     public function getGroupChartData()
     {
         $types = SpaceRoomType::get();
-        $all_blocks = SpaceBlock::get();
+        $all_blocks = SpaceBlock::orderby('name')->get();
         $labels = $all_blocks->pluck('name')->toArray();
         $datasets = [];
 

@@ -79,36 +79,46 @@
                             <table class="table table-bordered" id="item_table">
                               <thead>
                                 <tr class="bg-primary-50 text-center">
-                                  <th>ID</th>
                                   <th>Item</th>
                                   <th>Quantity</th>
+                                  <th>Name</th>
+                                  <th>Serial No</th>
                                   <th>Remark</th>
+                                  <th>Status</th>
                                   <th>Action</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 @foreach($item as $items)
                                 <tr>
-                                  <td style="width: 10%">{{ $items->id }} </td>
-                                  <td style="width: 30%">
+                                  <td style="width: 10%">
                                     <select class="form-control select" name="asset_id[{{$items->id}}]">
                                       <option value disabled selected>Please Select</option>
                                       @foreach($asset as $assets)
                                       <option value="{{ $assets->id }}-1" {{ ($items->item_category == 1) ? ($assets->id == $items->item_id ? 'selected' : '') : '' }}>
-                                        {{ $assets->asset_name }} [{{ $assets->serial_no }}]
+                                        {{ $assets->asset_type }}
                                       </option>
                                       @endforeach
-                                      @foreach($stock as $stocks)
-                                      <option value="{{ $stocks->id }}-2" {{ ($items->item_category == 2) ? ($stocks->id == $items->item_id ? 'selected' : '') : '' }}>
-                                        {{ $stocks->stock_name }} [{{ $stocks->model }}]
+                                      @foreach($category as $categories)
+                                      <option value="{{ $categories->id }}-3" {{ ($items->item_category == 3) ? ($categories->id == $items->item_id ? 'selected' : '') : '' }}>
+                                        {{ $categories->name }}
                                       </option>
                                       @endforeach
                                     </select>
                                   </td>
-                                  <td style="width: 20%"><input type="number" class="form-control" name="item_quantity[{{$items->id}}]" value="{{ $items->quantity }}"></td>
-                                  <td style="width: 30%"><input type="text" class="form-control" name="item_description[{{$items->id}}]" value="{{ $items->description }}"></td>
+                                  <td style="width: 10%"><input type="number" class="form-control" name="item_quantity[{{$items->id}}]" value="{{ $items->quantity }}"></td>
+                                  <td style="width: 10%"><input type="text" class="form-control" name="item_name[{{$items->id}}]" value="{{ $items->name }}"></td>
+                                  <td style="width: 10%"><input type="text" class="form-control" name="item_serial[{{$items->id}}]" value="{{ $items->serial_no }}"></td>
+                                  <td style="width: 10%"><input type="text" class="form-control" name="item_description[{{$items->id}}]" value="{{ $items->description }}"></td>
                                   <td style="width: 10%">
-                                    <button type="button" class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/room/{{ $items->id }}"> <i class="fal fa-trash"></i></button>
+                                    <select class="form-control select" name="item_status[{{$items->id}}]">
+                                      <option value disabled selected>Please Select</option>
+                                      <option value="1" {{ $items->status == 1 ? 'selected' : '' }}>Active</option>
+                                      <option value="2" {{ $items->status == 2 ? 'selected' : '' }}>Inactive</option>
+                                    </select>
+                                  </td>
+                                  <td style="width: 10%">
+                                    <button type="button" class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/item/{{ $items->id }}"> <i class="fal fa-trash"></i></button>
                                   </td>
                                 </tr>
                                 @endforeach
@@ -117,7 +127,7 @@
                             @endif
                         
                             <button class="btn btn-success btn-sm float-right mb-2">Update</button>
-                            <a href="/space/space-setting/block/1/edit" class="btn btn-secondary btn-sm float-right mr-2">Back</a>
+                            <a href="/space/space-setting/block/{{ $room->spaceBlock->id }}/edit" class="btn btn-secondary btn-sm float-right mr-2">Back</a>
                             <a class="btn btn-info btn-sm mb-2 mr-2" href="javascript:;" data-toggle="modal" id="new">Add Item</a>
                             {{Form::hidden('_method', 'PUT')}}
                             {!! Form::close() !!}
@@ -140,17 +150,25 @@
                                             <select class="form-control" name="item_id" id="item_id">
                                               <option disabled selected>Please Select</option>
                                               @foreach($asset as $assets)
-                                                <option value="{{ $assets->id }}-1">{{ $assets->asset_name }} [{{ $assets->serial_no }}]</option>
+                                              <option value="{{ $assets->id }}-1">
+                                                {{ $assets->asset_type }}
+                                              </option>
                                               @endforeach
-                                              @foreach($stock as $stocks)
-                                                <option value="{{ $stocks->id }}-2">{{ $stocks->stock_name }} [{{ $stocks->model }}]</option>
+                                              @foreach($category as $categories)
+                                              <option value="{{ $categories->id }}-3">
+                                                {{ $categories->name }}
+                                              </option>
                                               @endforeach
                                             </select>
                                           </td>
                                         </tr>
                                         <tr>
-                                          <td>Description</td>
-                                          <td><input type="text" class="form-control" name="item_description"></td>
+                                          <td>Serial No</td>
+                                          <td><input type="text" class="form-control" name="item_serial"></td>
+                                        </tr>
+                                        <tr>
+                                          <td>Name</td>
+                                          <td><input type="text" class="form-control" name="item_name"></td>
                                         </tr>
                                         <tr>
                                           <td>Quantity</td>
@@ -159,23 +177,18 @@
                                           </td>
                                         </tr>
                                         <tr>
-                                          <td>Department <span class="text-danger">*</span></td>
+                                          <td>Remark</td>
                                           <td>
-                                            <select class="form-control" name="department_id" id="department_id">
-                                              <option disabled selected>Please Select</option>
-                                              @foreach($department as $departments)
-                                              <option value="{{ $departments->id }}">{{ $departments->name }}</option>
-                                              @endforeach
-                                            </select>
+                                            <input type="text" class="form-control" name="item_description">
                                           </td>
                                         </tr>
                                         <tr>
-                                          <td>Active</td>
+                                          <td>Status</td>
                                           <td>
-                                            <div class="custom-control custom-switch">
-                                              <input type="checkbox" class="custom-control-input" name="item_status" id="item_status">
-                                              <label class="custom-control-label" for="item_status"></label>
-                                            </div>
+                                            <select class="form-control" name="item_status" required>
+                                              <option value="1">Active</option>
+                                              <option value="2">Inactive</option>
+                                            </select>
                                           </td>
                                         </tr>
                                       </table>

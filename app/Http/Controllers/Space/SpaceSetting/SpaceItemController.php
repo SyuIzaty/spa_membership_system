@@ -46,6 +46,8 @@ class SpaceItemController extends Controller
             'room_id' => $request->room_id,
             'item_id' => $item_id[0],
             'item_category' => $item_id[1],
+            'item_serial' => isset($request->item_serial) ? $request->item_serial: '',
+            'name' => isset($request->item_name) ? $request->item_name : '',
             'description' => $request->item_description,
             'quantity' => $request->item_quantity,
             'department_id' => $request->department_id,
@@ -97,6 +99,6 @@ class SpaceItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        SpaceItem::where('id',$id)->delete();
     }
 }

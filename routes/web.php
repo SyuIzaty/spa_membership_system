@@ -1061,4 +1061,6 @@ Route::group([
     Route::get('/getGroupChartData', 'Space\SpaceSetting\DashboardController@getGroupChartData');
     Route::get('/getStackChartData', 'Space\SpaceSetting\DashboardController@getStackChartData');
     Route::get('/getTableData', 'Space\SpaceSetting\DashboardController@getTableData');
+    Route::post('/upload-block', 'Space\SpaceSetting\BlockController@uploadBlock');
+    Route::get('/block-template', 'Space\SpaceSetting\BlockController@blockTemplate');
 });

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Space\SpaceSetting;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\Space\SpaceEquipmentExport;
 use App\SpaceRoomType;
 use App\SpaceBlock;
 use App\SpaceRoom;
@@ -76,7 +78,11 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $block_id = $request->block_id;
+        $status_id = $request->status_id;
+        $room_type = $request->room_type;
+
+        return Excel::download(new SpaceEquipmentExport($block_id, $status_id, $room_type), 'Space Equipment.xlsx');
     }
 
     /**
