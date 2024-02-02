@@ -162,8 +162,8 @@
 
                 <div class="page-break"></div>
 
-                <div class="table-responsive" style="margin-top: 10px;">
-                    <table class="table table-bordered w-100">
+                <div class="table-responsive">
+                    <table class="table table-bordered w-100" style="margin-bottom: 20px;">
                         <thead>
                             <tr style="text-align: center;
                             vertical-align: middle;">
@@ -177,17 +177,7 @@
                                 <td style="text-align: center;
                                 vertical-align: middle;">
                                     {{ isset($sop->sop_code) ? $sop->sop_code : 'SOP CODE IS NOT AVAILABLE' }}</td>
-                                <td>REVIEW NO. : 1
-                                    {{-- @php
-                                        $c = '';
-                                        if ($sopReview->count() < 0) {
-                                            $c = 0;
-                                        } else {
-                                            $c = $sopReview->count();
-                                        }
-                                    @endphp
-                                    {{ $c }} --}}
-                                </td>
+                                <td>REVIEW NO. : 1</td>
                             </tr>
                             <tr style="text-align: center;
                             vertical-align: middle;">
@@ -197,48 +187,6 @@
                     </table>
                 </div>
                 <div class="table-responsive">
-                    {{-- <table class="table table-bordered w-100">
-                        <thead>
-                            <tr>
-                                <th style="text-align: center;
-                                vertical-align: middle;"
-                                    colspan="5">
-                                    REVIEW RECORD</th>
-                            </tr>
-                            <tr style="text-align: center;
-                            vertical-align: middle;">
-                                <td>No.</td>
-                                <td>Date</td>
-                                <td>Updated By</td>
-                                <td>Section</td>
-                                <td>Details</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $i = 1 @endphp
-                            @if (isset($sopReview))
-                                @foreach ($sopReview as $sr)
-                                    <tr>
-                                        <td style="text-align: center; vertical-align: middle;">
-                                            {{ $i }}</td>
-                                        <td style="text-align: center; vertical-align: middle;">
-                                            {{ isset($sr->created_at) ? date(' j F Y h:i:s A', strtotime($sr->created_at)) : '' }}
-                                        </td>
-                                        <td>{{ isset($sr->staff->staff_name) ? $sr->staff->staff_name : '' }}</td>
-                                        <td style="text-align: center; vertical-align: middle;">
-                                            {{ isset($sr->section) ? $sr->section : '' }}</td>
-                                        <td>
-                                            {{ isset($sr->review_record) ? $sr->review_record : '' }}</td>
-                                    </tr>
-                                    @php $i++ @endphp
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="5">REVIEW RECORD IS NOT AVAILABLE</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table> --}}
                     <table class="table table-bordered w-100">
                         <thead>
                             <tr>
@@ -298,17 +246,7 @@
                                 <td style="text-align: center;
                                 vertical-align: middle;">
                                     {{ isset($sop->sop_code) ? $sop->sop_code : 'SOP CODE NOT AVAILABLE' }}</td>
-                                <td>REVIEW NO. : 1
-                                    {{-- @php
-                                        $c = '';
-                                        if ($sopReview->count() < 0) {
-                                            $c = 0;
-                                        } else {
-                                            $c = $sopReview->count();
-                                        }
-                                    @endphp
-                                    {{ $c }} --}}
-                                </td>
+                                <td>REVIEW NO. : 1</td>
                             </tr>
                             <tr style="text-align: center;
                             vertical-align: middle;">
@@ -380,17 +318,7 @@
                                 <td style="text-align: center;
                                 vertical-align: middle;">
                                     {{ isset($sop->sop_code) ? $sop->sop_code : 'SOP CODE IS NOT AVAILABLE' }}</td>
-                                <td>REVIEW NO. : 1
-                                    {{-- @php
-                                        $c = '';
-                                        if ($sopReview->count() < 0) {
-                                            $c = 0;
-                                        } else {
-                                            $c = $sopReview->count();
-                                        }
-                                    @endphp
-                                    {{ $c }} --}}
-                                </td>
+                                <td>REVIEW NO. : 1</td>
                             </tr>
                             <tr style="text-align: center;
                             vertical-align: middle;">
@@ -429,17 +357,7 @@
                                 <td style="text-align: center;
                                 vertical-align: middle;">
                                     {{ isset($sop->sop_code) ? $sop->sop_code : 'SOP CODE IS NOT AVAILABLE' }}</td>
-                                <td>REVIEW NO. : 1
-                                    {{-- @php
-                                        $c = '';
-                                        if ($sopReview->count() < 0) {
-                                            $c = 0;
-                                        } else {
-                                            $c = $sopReview->count();
-                                        }
-                                    @endphp
-                                    {{ $c }} --}}
-                                </td>
+                                <td>REVIEW NO. : 1</td>
                             </tr>
                             <tr style="text-align: center;
                             vertical-align: middle;">
@@ -465,7 +383,6 @@
                         <p>FLOWCHART IS NOT AVAILABLE</p>
                     @endif
                 </div>
-
                 {{-- <div id="footer" class="text-center">
                     <p>UiTM Private Education Sdn Bhd, 947874-D, INTEC Education College, Jalan Senangin Satu 17/2A, Seksyen
                         17, 40200 Shah Alam, Selangor Darul Ehsan, MALAYSIA

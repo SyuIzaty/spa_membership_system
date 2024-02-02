@@ -106,7 +106,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/sop-list', 'SOPController@sopList');
     Route::post('/fetch-sop-list', 'SOPController@fetchSOPList');
     Route::post('/fetch-sop-lists', 'SOPController@fetchSOPLists');
-    Route::get('/generate-finalized-PDF/{id}', 'SOPController@generateFinalizePDF');
     Route::delete('/delete-sop-details/{id}', 'SOPController@deleteSOPDetails');
     Route::post('/edit-prepared-by', 'SOPController@editPreparedBy');
 
@@ -1049,7 +1048,7 @@ Route::group([
     'prefix' => 'space',
     'as' => 'space.',
     'middleware' => ['auth']
-],function() {
+], function () {
     Route::resource('/space-setting/room-type', 'Space\SpaceSetting\RoomTypeController');
     Route::resource('/space-setting/room', 'Space\SpaceSetting\RoomController');
     Route::resource('/space-setting/block', 'Space\SpaceSetting\BlockController');

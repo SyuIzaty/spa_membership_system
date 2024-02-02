@@ -396,7 +396,6 @@ class SOPController extends Controller
         return redirect()->back()->with('message', 'Successfully Updated!');
     }
 
-
     public function SOPDepartment(Request $request)
     {
         $selectedDepartment = $request->department;
@@ -599,12 +598,12 @@ class SOPController extends Controller
 
     public function storeSOPOwner(Request $request)
     {
-        $error = [];
+        $error   = [];
         $message = '';
 
         foreach($request->owner as $key => $value) {
             if (SopOwner::where('department_id', $request->id)->where('owner_id', $value)->count() > 0) {
-                $staff = Staff::where('staff_id', $value)->first();
+                $staff   = Staff::where('staff_id', $value)->first();
                 $error[] = $staff->staff_name;
             } else {
                 SopOwner::create([
@@ -976,9 +975,6 @@ class SOPController extends Controller
 
     public function storeNewWorkFlow(Request $request)
     {
-        // $exist = SopFlowChart::where('sop_lists_id', $request->id)->whereNull('deleted_at')->first();
-        // $exist->delete();
-
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
 
         $reviewRecord = 'Flowchart changed by ' . $staff->staff_name;
@@ -1156,22 +1152,6 @@ class SOPController extends Controller
         ->make(true);
     }
 
-
-    public function generateFinalizePDF($id)
-    {
-        $data       = SopList::where('id', $id)->first();
-        $dateNow    = date(' j F Y ', strtotime(Carbon::now()->toDateTimeString()));
-        $date       = Carbon::now();
-        $staff      = Staff::get();
-        $department = SopDepartment::get();
-        $sop        = SopDetail::where('sop_lists_id', $id)->first();
-        $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
-        $sopForm    = SopForm::where('sop_lists_id', $id)->get();
-        $workFlow   = SopFlowChart::where('sop_lists_id', $id)->orderBy('web_path', 'ASC')->get();
-
-        return view('sop.sop-pdf-finalized', compact('data', 'dateNow', 'date', 'staff', 'id', 'department', 'sop', 'sopReview', 'sopForm', 'workFlow'));
-    }
-
     public function deleteSOPDetails($id)
     {
         $detail = SopDetail::where('sop_lists_id', $id);
@@ -1261,5 +1241,4 @@ class SOPController extends Controller
 
         return response()->json();
     }
-
 }
