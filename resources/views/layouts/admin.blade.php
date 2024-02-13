@@ -152,59 +152,59 @@
 
                         <!-- Start SOP System -->
 
-                        @role('Super Admin')
-                            <li class="nav-title">Quality Management</li>
-                            <li class="open">
-                                <a href="#" title="Standard Operating Procedure" data-filter-tags="SOPMain">
-                                    <i class="fal fa-list-alt"></i>
-                                    <span class="nav-link-text" data-i18n="nav.SOPMain">Standard Operating
-                                        Procedure (SOP)</span>
-                                </a>
-                                <ul>
+                        {{-- @role('Super Admin') --}}
+                        <li class="nav-title">Quality Management</li>
+                        <li class="open">
+                            <a href="#" title="Standard Operating Procedure" data-filter-tags="SOPMain">
+                                <i class="fal fa-list-alt"></i>
+                                <span class="nav-link-text" data-i18n="nav.SOPMain">Standard Operating
+                                    Procedure (SOP)</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/sop-list" style="text-decoration: none!important;" title="SOP List"
+                                        data-filter-tags="list">
+                                        <span class="nav-link-text" data-i18n="nav.sop">SOP List</span>
+                                    </a>
+                                </li>
+                                @can('View SOP')
+                                    {{-- Role: SOP Admin, SOP Owner  --}}
                                     <li>
-                                        <a href="/sop-list" style="text-decoration: none!important;" title="SOP List"
+                                        <a href="/sop" style="text-decoration: none!important;" title="SOP Progress"
                                             data-filter-tags="list">
-                                            <span class="nav-link-text" data-i18n="nav.sop">SOP List</span>
+                                            <span class="nav-link-text" data-i18n="nav.sop">SOP Progress</span>
                                         </a>
                                     </li>
-                                    @can('View SOP')
-                                        {{-- Role: SOP Admin, SOP Owner  --}}
-                                        <li>
-                                            <a href="/sop" style="text-decoration: none!important;" title="SOP Progress"
-                                                data-filter-tags="list">
-                                                <span class="nav-link-text" data-i18n="nav.sop">SOP Progress</span>
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('Manage SOP')
-                                        {{-- Role: SOP Admin --}}
-                                        <li class="open">
-                                            <a href="#" title="SOP Admin" data-filter-tags="list">
-                                                <span class="nav-link-text" data-i18n="nav.list">Admin</span>
-                                            </a>
-                                            <ul>
-                                                <li>
-                                                    <a href="/sop-title" title="SOP Title" data-filter-tags="sopTitle">
-                                                        <span class="nav-link-text" data-i18n="nav.sopTitle">SOP Title</span>
-                                                    </a>
-                                                </li>
-                                                {{-- <li>
+                                @endcan
+                                @can('Manage SOP')
+                                    {{-- Role: SOP Admin --}}
+                                    <li class="open">
+                                        <a href="#" title="SOP Admin" data-filter-tags="list">
+                                            <span class="nav-link-text" data-i18n="nav.list">Admin</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="/sop-title" title="SOP Title" data-filter-tags="sopTitle">
+                                                    <span class="nav-link-text" data-i18n="nav.sopTitle">SOP Title</span>
+                                                </a>
+                                            </li>
+                                            {{-- <li>
                                             <a href="/sop-department" title="Department List" data-filter-tags="department">
                                                 <span class="nav-link-text" data-i18n="nav.department">Department</span>
                                             </a>
                                         </li> --}}
-                                                <li>
-                                                    <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
-                                                        <span class="nav-link-text" data-i18n="nav.owner">SOP Owner</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    @endcan
+                                            <li>
+                                                <a href="/sop-owner" title="SOP Owner List" data-filter-tags="owner">
+                                                    <span class="nav-link-text" data-i18n="nav.owner">SOP Owner</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endcan
 
-                                </ul>
-                            </li>
-                        @endrole
+                            </ul>
+                        </li>
+                        {{-- @endrole --}}
 
 
                         <!-- End SOP System -->
