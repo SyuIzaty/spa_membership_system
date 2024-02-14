@@ -121,11 +121,11 @@ class EKenderaanController extends Controller
         })
 
         ->addColumn('action', function ($data) {
-            return '<a href="/eKenderaan-application/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            return '<a href="/eKenderaan-application/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
         })
 
         ->addColumn('log', function ($data) {
-            return '<a href="/log-eKenderaan/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
+            return '<a href="/log-eKenderaan/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
         })
 
         ->addIndexColumn()
@@ -199,11 +199,11 @@ class EKenderaanController extends Controller
         })
 
         ->addColumn('action', function ($data) {
-            return '<a href="/eKenderaan-application/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            return '<a href="/eKenderaan-application/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
         })
 
         ->addColumn('log', function ($data) {
-            return '<a href="/log-eKenderaan/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
+            return '<a href="/log-eKenderaan/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
         })
 
         ->addIndexColumn()
@@ -281,7 +281,7 @@ class EKenderaanController extends Controller
         // ]);
 
         eKenderaanLog::create([
-            'ekn_details_id'=> $application->id,
+            'ekn_details_id' => $application->id,
             'name'          => Auth::user()->name,
             'activity'      => 'Apply new application',
             'created_by'    => Auth::user()->id
@@ -413,12 +413,12 @@ class EKenderaanController extends Controller
 
         $user = Auth::user();
 
-        $admin = User::where('id', '17020362')->first();
+        $admin = User::where('id', '22020503')->first();
         $admin_email = $admin->email;
 
         $data = [
             'receivers' => $admin->name,
-            'emel'      => 'Anda telah menerima permohonan e-Kenderaan baharu daripada '.$user->name.' pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+            'emel'      => 'Anda telah menerima permohonan e-Kenderaan baharu daripada ' . $user->name . ' pada ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
             'footer'    => 'Sila log masuk ke sistem IDS untuk tindakan selanjutnya.',
         ];
 
@@ -428,7 +428,7 @@ class EKenderaanController extends Controller
             $message->to($admin_email);
         });
 
-        return redirect('eKenderaan-application/'.$application->id)->with('message', 'Application Sent!');
+        return redirect('eKenderaan-application/' . $application->id)->with('message', 'Application Sent!');
     }
 
     public function show($id)
@@ -492,7 +492,7 @@ class EKenderaanController extends Controller
     {
         $file = eKenderaanAttachments::where('id', $id)->first();
         $filename = $file->upload;
-        return Storage::response('eKenderaan/'.$filename);
+        return Storage::response('eKenderaan/' . $filename);
     }
 
     public function passenger($id)
@@ -549,14 +549,14 @@ class EKenderaanController extends Controller
 
         foreach ($request->vehicle as $key => $value) {
             eKenderaanAssignVehicle::create([
-                'ekn_details_id'=> $request->id,
+                'ekn_details_id' => $request->id,
                 'vehicle_id'    => $value,
                 'created_by'    => Auth::user()->id
             ]);
         }
 
         eKenderaanLog::create([
-            'ekn_details_id'=> $request->id,
+            'ekn_details_id' => $request->id,
             'name'          => Auth::user()->name,
             'activity'      => 'Operation verify application',
             'created_by'    => Auth::user()->id
@@ -680,7 +680,7 @@ class EKenderaanController extends Controller
         ]);
 
         eKenderaanLog::create([
-            'ekn_details_id'=> $request->id,
+            'ekn_details_id' => $request->id,
             'name'          => Auth::user()->name,
             'activity'      => 'Operation reject application',
             'created_by'    => Auth::user()->id
@@ -742,7 +742,7 @@ class EKenderaanController extends Controller
         }
 
         eKenderaanLog::create([
-            'ekn_details_id'=> $request->id,
+            'ekn_details_id' => $request->id,
             'name'          => Auth::user()->name,
             'activity'      => 'Submit feedback',
             'created_by'    => Auth::user()->id
@@ -750,12 +750,12 @@ class EKenderaanController extends Controller
 
         $user = Auth::user();
 
-        $admin = User::where('id', '17020362')->first();
+        $admin = User::where('id', '22020503')->first();
         $admin_email = $admin->email;
 
         $data = [
             'receivers' => $admin->name,
-            'emel'      => $user->name.' telah menghantar maklum balas pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+            'emel'      => $user->name . ' telah menghantar maklum balas pada ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
             'footer'    => 'Sila log masuk ke sistem IDS untuk melihat maklum balas tersebut.',
         ];
 
@@ -807,7 +807,7 @@ class EKenderaanController extends Controller
                 //     return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$driver->id.'" data-name="'.$driver->name.'" data-staff_id="'.$driver->staff_id.'" data-status="'.$driver->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 // }
 
-                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$driver->id.'" data-name="'.$driver->name.'" data-staff_id="'.$driver->staff_id.'" data-phone="'.$driver->tel_no.'" data-status="'.$driver->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="' . $driver->id . '" data-name="' . $driver->name . '" data-staff_id="' . $driver->staff_id . '" data-phone="' . $driver->tel_no . '" data-status="' . $driver->status . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
             ->rawColumns(['status','tel_no','edit'])
@@ -828,7 +828,7 @@ class EKenderaanController extends Controller
             'staff_id'  => $request->staff_id,
             'tel_no'    => $request->phone,
             'status'    => $request->status,
-            'created_by'=> Auth::user()->id
+            'created_by' => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Add Successfully');
@@ -842,7 +842,7 @@ class EKenderaanController extends Controller
             // 'staff_id'  => $request->staff_id,
             'tel_no'    => $request->phone,
             'status'    => $request->status,
-            'updated_by'=> Auth::user()->id
+            'updated_by' => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Update Successfully');
@@ -875,7 +875,7 @@ class EKenderaanController extends Controller
                 if ($vehicles != null) {
                     return '';
                 } else {
-                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$vehicle->id.'" data-name="'.$vehicle->name.'" data-plate_no="'.$vehicle->plate_no.'" data-status="'.$vehicle->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="' . $vehicle->id . '" data-name="' . $vehicle->name . '" data-plate_no="' . $vehicle->plate_no . '" data-status="' . $vehicle->status . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 }
             })
 
@@ -890,7 +890,7 @@ class EKenderaanController extends Controller
             'name'      => $request->name,
             'plate_no'  => $request->plate_no,
             'status'    => $request->status,
-            'created_by'=> Auth::user()->id
+            'created_by' => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Add Successfully');
@@ -903,7 +903,7 @@ class EKenderaanController extends Controller
             'name'      => $request->name,
             'plate_no'  => $request->plate_no,
             'status'    => $request->status,
-            'updated_by'=> Auth::user()->id
+            'updated_by' => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Update Successfully');
@@ -1086,12 +1086,12 @@ class EKenderaanController extends Controller
 
     public function eKenderaanReportYear($year)
     {
-        return Excel::download(new eKenderaanExportByYear($year), 'eKenderaan Report '.$year.'.xlsx');
+        return Excel::download(new eKenderaanExportByYear($year), 'eKenderaan Report ' . $year . '.xlsx');
     }
 
     public function eKenderaanReportYearMonth($year, $month)
     {
-        return Excel::download(new eKenderaanExportByYearMonth($year, $month), 'eKenderaan Report '.$month.' '.$year.'.xlsx');
+        return Excel::download(new eKenderaanExportByYearMonth($year, $month), 'eKenderaan Report ' . $month . ' ' . $year . '.xlsx');
     }
 
     public function log($id)
@@ -1189,12 +1189,12 @@ class EKenderaanController extends Controller
         $file = $request->file('attachment');
 
         if (isset($file)) {
-            $originalName = time().$file->getClientOriginalName();
+            $originalName = time() . $file->getClientOriginalName();
             $request->file('attachment')->storeAs('/eKenderaan', $originalName);
             $image = eKenderaanAttachments::create([
                 'ekn_details_id' => null,
                 'upload'         => $originalName,
-                'web_path'       => "eKenderaan/".$originalName,
+                'web_path'       => "eKenderaan/" . $originalName,
                 'created_by'     => Auth::user()->id
             ]);
 
@@ -1263,7 +1263,7 @@ class EKenderaanController extends Controller
     {
         $file = "Student List Excel Format.png";
 
-        $path = storage_path().'/ekenderaan/'.$file;
+        $path = storage_path() . '/ekenderaan/' . $file;
 
         $form = File::get($path);
         $filetype = File::mimeType($path);
@@ -1278,7 +1278,7 @@ class EKenderaanController extends Controller
     {
         $file = "E-KENDERAAN USER MANUAL (STAFF & STUDENT).pdf";
 
-        $path = storage_path().'/ekenderaan/'.$file;
+        $path = storage_path() . '/ekenderaan/' . $file;
 
         $form = File::get($path);
         $filetype = File::mimeType($path);
@@ -1293,7 +1293,7 @@ class EKenderaanController extends Controller
     {
         $file = eKenderaanAttachments::where('id', $id)->first();
         $filename = $file->upload;
-        return Storage::response('eKenderaan/'.$filename);
+        return Storage::response('eKenderaan/' . $filename);
     }
 
     public function cancelApplication($id)
@@ -1327,7 +1327,7 @@ class EKenderaanController extends Controller
                 if ($question->status == 'Y') {
                     return '';
                 } else {
-                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$question->id.'" data-question="'.$question->question.'" data-sequence="'.$question->sequence.'" data-status="'.$question->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="' . $question->id . '" data-question="' . $question->question . '" data-sequence="' . $question->sequence . '" data-status="' . $question->status . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 }
             })
 
@@ -1346,7 +1346,7 @@ class EKenderaanController extends Controller
             'question'  => $request->question,
             'sequence'  => $request->sequence,
             'status'    => $request->status,
-            'created_by'=> Auth::user()->id
+            'created_by' => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Add Successfully');
@@ -1359,7 +1359,7 @@ class EKenderaanController extends Controller
             'question'      => $request->question,
             'sequence'  => $request->sequence,
             'status'    => $request->status,
-            'updated_by'=> Auth::user()->id
+            'updated_by' => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Update Successfully');
@@ -1376,7 +1376,7 @@ class EKenderaanController extends Controller
         })
 
         ->editColumn('action', function ($data) {
-            return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-assign-driver/'.$data->id.'"><i class="fal fa-trash"></i></button>';
+            return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-assign-driver/' . $data->id . '"><i class="fal fa-trash"></i></button>';
         })
 
         ->rawColumns(['action'])
@@ -1391,7 +1391,7 @@ class EKenderaanController extends Controller
         ]);
 
         eKenderaanAssignDriver::create([
-            'ekn_details_id'=> $request->id,
+            'ekn_details_id' => $request->id,
             'driver_id'     => $request->driver,
             'created_by'    => Auth::user()->id
         ]);
@@ -1543,12 +1543,12 @@ class EKenderaanController extends Controller
         return datatables()::of($vehicle)
 
         ->editColumn('vehicle', function ($vehicle) {
-            return ''.$vehicle->vehicleList->name.' - '.$vehicle->vehicleList->plate_no.'';
+            return '' . $vehicle->vehicleList->name . ' - ' . $vehicle->vehicleList->plate_no . '';
         })
 
         ->editColumn('action', function ($vehicle) {
-            return '<a href="#" data-target="#editVehicle" data-toggle="modal" data-id="'.$vehicle->id.'" data-vehicle="'.$vehicle->vehicle_id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-assign-vehicle/'.$vehicle->id.'"><i class="fal fa-trash"></i></button>';
+            return '<a href="#" data-target="#editVehicle" data-toggle="modal" data-id="' . $vehicle->id . '" data-vehicle="' . $vehicle->vehicle_id . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+            <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-assign-vehicle/' . $vehicle->id . '"><i class="fal fa-trash"></i></button>';
         })
 
         ->rawColumns(['action'])
@@ -1769,7 +1769,7 @@ class EKenderaanController extends Controller
             $assign = eKenderaanAssignDriver::where('driver_id', $data->id)->where('rating', '!=', 'null');
 
             if ($assign->exists()) {
-                return '<a href="/view-driver-report/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                return '<a href="/view-driver-report/' . $data->id . '" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
             } else {
                 return '<span style="color:red;"><b>No Feedback</b></span>';
             }
@@ -1895,7 +1895,7 @@ class EKenderaanController extends Controller
 
         $updateApplication = eKenderaan::where('id', $request->id)->first();
         $updateApplication->update([
-            'status'     =>'6',
+            'status'     => '6',
             'updated_by' => Auth::user()->id
         ]);
 
@@ -1954,7 +1954,7 @@ class EKenderaanController extends Controller
 
         $data = [
             'receivers' => $staff->name,
-            'emel'      => 'Untuk makluman, permohonan anda untuk membatalkan permohonan e-Kenderaan telah dilaksanakan pada '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+            'emel'      => 'Untuk makluman, permohonan anda untuk membatalkan permohonan e-Kenderaan telah dilaksanakan pada ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
             'footer'    => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256.',
         ];
 
