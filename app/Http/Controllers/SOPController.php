@@ -1063,6 +1063,17 @@ class SOPController extends Controller
             'created_by'   => Auth::user()->id
         ]);
 
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+        $reviewRecord = 'Leave comment(s)';
+
+        SopReviewRecord::create([
+            'sop_lists_id'  => $request->id,
+            'review_record' => $reviewRecord,
+            'section'       => 'Comment',
+            'created_by'    => Auth::user()->id
+        ]);
+
         $update = SopList::where('id', $request->id)->first();
 
         if ($update->status == '3') {
@@ -1077,13 +1088,13 @@ class SOPController extends Controller
         $email   =  $staff->staff_email;
 
         $data2 = [
-            'receivers'   => $staff->staff_name,
-            'emel'        => 'You have received a feedback from QAC Admin on ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
-            'footer'      => 'Please log in to the IDS system for further action.',
+            'receivers' => $staff->staff_name,
+            'emel'      => 'You have received a comment from QAG Admin on ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
+            'footer'    => 'Please log in to the IDS system for further action.',
         ];
 
         Mail::send('sop.email-comment', $data2, function ($message2) use ($email) {
-            $message2->subject('SOP: FEEDBACK');
+            $message2->subject('SOP: COMMENT');
             $message2->from('qac@intec.edu.my');
             $message2->to($email);
         });

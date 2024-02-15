@@ -594,7 +594,7 @@ class EKenderaanController extends Controller
                 'purpose'     => $detail->purpose,
                 'passenger'   => $passenger,
                 'vehicle'     => $vehicle,
-                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
             ];
 
             Mail::send('eKenderaan.email', $data1, function ($message) use ($user_email) {
@@ -620,7 +620,7 @@ class EKenderaanController extends Controller
             'purpose'     => $detail->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
         ];
 
         Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
@@ -648,7 +648,7 @@ class EKenderaanController extends Controller
                         'purpose'     => $detail->purpose,
                         'passenger'   => $passenger,
                         'vehicle'     => $vehicle,
-                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
                     ];
 
                     Mail::send('eKenderaan.email', $data3, function ($message3) use ($passenger_email) {
@@ -692,7 +692,7 @@ class EKenderaanController extends Controller
         $data2 = [
             'receivers'   => $staff->name,
             'emel'        => 'Untuk makluman, permohonan anda telah ditolak. Sila log masuk ke sistem IDS untuk melihat sebab penolakan',
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256.',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548.',
         ];
 
         Mail::send('eKenderaan.email_announcement', $data2, function ($message2) use ($staff_email) {
@@ -1423,7 +1423,7 @@ class EKenderaanController extends Controller
             'purpose'     => $details->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
         ];
 
         Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
@@ -1448,7 +1448,7 @@ class EKenderaanController extends Controller
             'purpose'     => $details->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
         ];
 
         Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
@@ -1476,7 +1476,7 @@ class EKenderaanController extends Controller
                         'purpose'     => $details->purpose,
                         'passenger'   => $passenger,
                         'vehicle'     => $vehicle,
-                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
                     ];
 
                     Mail::send('eKenderaan.email', $data3, function ($message3) use ($passenger_email) {
@@ -1523,7 +1523,7 @@ class EKenderaanController extends Controller
             'purpose'     => $details->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
         ];
 
         Mail::send('eKenderaan.email', $datas, function ($message) use ($user_email) {
@@ -1593,7 +1593,7 @@ class EKenderaanController extends Controller
                 'purpose'     => $detail->purpose,
                 'passenger'   => $passenger,
                 'vehicle'     => $vehicle,
-                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
             ];
 
             Mail::send('eKenderaan.email', $data1, function ($message) use ($user_email) {
@@ -1619,7 +1619,7 @@ class EKenderaanController extends Controller
             'purpose'     => $detail->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
         ];
 
         Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
@@ -1674,7 +1674,7 @@ class EKenderaanController extends Controller
                 'purpose'     => $detail->purpose,
                 'passenger'   => $passenger,
                 'vehicle'     => $vehicle,
-                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
             ];
 
             Mail::send('eKenderaan.email', $data1, function ($message) use ($user_email) {
@@ -1700,7 +1700,7 @@ class EKenderaanController extends Controller
             'purpose'     => $detail->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
         ];
 
         Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
@@ -1728,7 +1728,7 @@ class EKenderaanController extends Controller
                         'purpose'     => $detail->purpose,
                         'passenger'   => $passenger,
                         'vehicle'     => $vehicle,
-                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
                     ];
 
                     Mail::send('eKenderaan.email', $data3, function ($message3) use ($passenger_email) {
@@ -1931,7 +1931,7 @@ class EKenderaanController extends Controller
                     'purpose'     => $updateApplication->purpose,
                     'passenger'   => $passenger,
                     'vehicle'     => $vehicle,
-                    'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256',
+                    'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
                 ];
 
                 Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
@@ -1955,7 +1955,7 @@ class EKenderaanController extends Controller
         $data = [
             'receivers' => $staff->name,
             'emel'      => 'Untuk makluman, permohonan anda untuk membatalkan permohonan e-Kenderaan telah dilaksanakan pada ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
-            'footer'    => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Ridzuan ditalian 017-3899256.',
+            'footer'    => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548.',
         ];
 
         Mail::send('eKenderaan.email_announcement', $data, function ($message) use ($staff_email) {

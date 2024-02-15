@@ -3,7 +3,7 @@
         <table class="table table-bordered">
             <tbody>
                 <tr style="background-color:#ccbd95; vertical-align: middle; text-align: center; font-weight: bold;">
-                    <td colspan="3">Comment By AQA</td>
+                    <td colspan="3">Comment(s) By QAG</td>
                 </tr>
 
                 @if ($data->status == '2' || $data->status == '3')

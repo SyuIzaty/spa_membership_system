@@ -14,7 +14,7 @@
         <table class="table table-bordered" id="addForm">
             <thead>
                 <tr class="card-header" style="background-color:#f3ce77;">
-                    <th colspan="3">Click plus button on the right to add forms details.
+                    <th colspan="3">Click plus button on the right to add form details.
                         <button type="button" id="form"
                             class="btn btn-sm btn-success btn-icon rounded-circle waves-effect waves-themed float-right">
                             <i class="fal fa-plus"></i>
@@ -22,7 +22,7 @@
                     </th>
                 </tr>
                 <tr class="card-header text-center" style="background-color:#EEE2C7;">
-                    <th colspan="3">FORMS</th>
+                    <th colspan="3">FORM</th>
                 </tr>
                 <tr class="card-header text-center">
                     <th>SOP Code</th>

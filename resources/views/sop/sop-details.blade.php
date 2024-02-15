@@ -8,8 +8,7 @@
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
-            <div class="card-header" style="background-color:#ede9e9;">Cover/Front
-                Page</div>
+            <div class="card-header" style="background-color:#ede9e9;">SOP Details</div>
             <div class="card-body">
                 <div class="row">
                     <div class="form-group col-md-6">

@@ -45,7 +45,7 @@
                                 </li>
                                 <li class="nav-item mr-2" style="background-color:#EEE2C7;">
                                     <a data-toggle="tab" style="background-color:#EEE2C7;" class="nav-link" href="#two"
-                                        role="tab">Forms</a>
+                                        role="tab">Form</a>
                                 </li>
                                 <li class="nav-item mr-2" style="background-color:#EBCEDE;">
                                     <a data-toggle="tab" style="background-color:#EBCEDE;" class="nav-link" href="#three"
@@ -98,7 +98,7 @@
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="card">
-                                                    <div class="card-header">Forms</div>
+                                                    <div class="card-header">Form</div>
                                                     <div class="card-body">
                                                         @if (!isset($sop))
                                                             <div class="row">
@@ -115,7 +115,7 @@
                                                                         <tbody>
                                                                             <tr class="card-header text-center">
                                                                                 <th style="background-color:#EEE2C7; vertical-align: middle;"
-                                                                                    rowspan="2">Forms
+                                                                                    rowspan="2">Form
                                                                                     Code</th>
                                                                                 <td class="text-center"
                                                                                     style="background-color:#ffffff;">
@@ -244,7 +244,7 @@
 
                 Swal.fire({
                     title: 'Are you sure you want to submit?',
-                    text: "Once submitted, comments cannot be edited.",
+                    text: "Once submitted, comment(s) cannot be edited.",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
