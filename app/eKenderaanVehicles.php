@@ -12,4 +12,9 @@ class eKenderaanVehicles extends Model
     protected $fillable = [
         'name', 'plate_no', 'status', 'created_by', 'updated_by', 'deleted_by'
     ];
+
+    public function assignedVehicle()
+    {
+        return $this->hasOne(eKenderaanAssignVehicle::class, 'vehicle_id', 'staff_id');
+    }
 }

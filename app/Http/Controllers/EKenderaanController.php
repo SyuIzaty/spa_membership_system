@@ -251,7 +251,6 @@ class EKenderaanController extends Controller
         // ], [
         //     'waitingarea.required_without'  => 'The Waiting Area field is required.',
         // ]);
-
         $application               = new eKenderaan();
         $application->intec_id     = Auth::user()->id;
         $application->phone_no     = $request->hp_no;
@@ -459,11 +458,41 @@ class EKenderaanController extends Controller
 
         $assignDriver     = eKenderaanAssignDriver::where('ekn_details_id', $id)->get();
         $driver_assign    = array_column($assignDriver->toArray(), 'driver_id');
-        $driver           = eKenderaanDrivers::where('status', 'Y')->whereNotIn('id', $driver_assign)->get();
+        // $driver           = eKenderaanDrivers::where('status', 'Y')->whereNotIn('id', $driver_assign)->get();
+        // $driver = eKenderaanDrivers::whereDoesntHave('assignedDriver', function ($query) use ($id, $data) {
+        //     $query->where('ekn_details_id', $id)->whereDoesntHave('details', function ($q) use ($id, $data) {
+        //         $q->where('id', $id)->where('depart_date', $data->depart_date)
+        //         ->where('depart_time', $data->depart_time);
+        //     });
+        // })->where('status', 'Y')->get();
+
+        // $exist = eKenderaanAssignDriver::pluck('driver_id')->toArray();
+        // dd($exist);
+
+        $driver = eKenderaanDrivers::where('status', 'Y')->whereNotIn('id', $driver_assign)
+        ->whereNotIn('id', function ($query) use ($data) {
+            $query->select('driver_id')
+                  ->from('ekn_assign_drivers')
+                  ->join('ekn_details', 'ekn_assign_drivers.ekn_details_id', '=', 'ekn_details.id')
+                  ->where('depart_date', $data->depart_date)
+                  ->where('depart_time', $data->depart_time);
+        })
+        ->get();
+        // dd($driver);
 
         $assignVehicle    = eKenderaanAssignVehicle::where('ekn_details_id', $id)->get();
         $vehicle_assign   = array_column($assignVehicle->toArray(), 'vehicle_id');
-        $vehicle          = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)->get();
+        // $vehicle          = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)->get();
+
+        $vehicle = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)
+        ->whereNotIn('id', function ($query) use ($data) {
+            $query->select('vehicle_id')
+                  ->from('ekn_assign_vehicles')
+                  ->join('ekn_details', 'ekn_assign_vehicles.ekn_details_id', '=', 'ekn_details.id')
+                  ->where('depart_date', $data->depart_date)
+                  ->where('depart_time', $data->depart_time);
+        })
+        ->get();
 
         return view('eKenderaan.details', compact(
             'id',

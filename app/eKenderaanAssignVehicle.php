@@ -17,4 +17,9 @@ class eKenderaanAssignVehicle extends Model
     {
         return $this->hasOne(eKenderaanVehicles::class, 'id', 'vehicle_id');
     }
+
+    public function details()
+    {
+        return $this->hasOne(eKenderaan::class, 'id', 'ekn_details_id');
+    }
 }
