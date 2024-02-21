@@ -22,7 +22,8 @@ class ItemDetailController extends Controller
     {
         $status = SpaceStatus::Main()->get();
         $department = DepartmentList::whereIn('id',[1,10,11])->get();
-        $item = SpaceItem::with('spaceStatus','departmentList')->select('space_items.*');
+        $item = SpaceItem::where('available_booking',1)
+        ->with('spaceStatus','departmentList')->select('space_items.*');
         if($request->ajax()) {
         return DataTables::of($item)
             ->addColumn('venue_status', function($item){
@@ -81,6 +82,7 @@ class ItemDetailController extends Controller
             'description' => $request->description,
             'quantity' => $request->quantity,
             'department_id' => $request->department_id,
+            'available_booking' => 1,
             'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 
@@ -125,6 +127,7 @@ class ItemDetailController extends Controller
             'description' => $request->description,
             'quantity' => $request->quantity,
             'department_id' => $request->department_id,
+            'available_booking' => 1,
             'status' => ($request->status == 'on') ? 1 : 2,
         ]);
 
