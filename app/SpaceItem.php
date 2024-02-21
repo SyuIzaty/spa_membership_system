@@ -46,6 +46,11 @@ class SpaceItem extends Model
         return $query->where('status','1');
     }
 
+    public function scopeBookingActive($query)
+    {
+        return $query->where('available_booking','1');
+    }
+
     public function scopeMain($query)
     {
         return $query->where('category','Main');

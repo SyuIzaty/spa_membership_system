@@ -97,7 +97,7 @@ class BookingController extends Controller
         }else{
             $venue = SpaceVenue::Active()->DepartmentId($id)->get();
         }
-        $item = SpaceItem::Active()->DepartmentId($id)->get();
+        $item = SpaceItem::Active()->BookingActive()->DepartmentId($id)->get();
         return view('space.booking.create',compact('user','venue','item','id'));
     }
 
@@ -206,7 +206,7 @@ class BookingController extends Controller
         $booking = SpaceBookingVenue::find($id);
         $booking_item = SpaceBookingItem::MainId($booking->space_main_id)->get();
         $venue = SpaceVenue::Active()->DepartmentId($booking->spaceVenue->department_id)->get();
-        $item = SpaceItem::Active()->DepartmentId($booking->spaceVenue->department_id)->get();
+        $item = SpaceItem::Active()->BookingActive()->DepartmentId($booking->spaceVenue->department_id)->get();
         $user = User::find(isset($booking->spaceBookingMain->staff_id) ? $booking->spaceBookingMain->staff_id : Auth::user()->id);
         if(isset($booking->spaceVenue)){
             if($booking->spaceVenue->department_id == 10){
@@ -236,7 +236,7 @@ class BookingController extends Controller
         $main = SpaceBookingVenue::find($id);
         $venue_department = SpaceVenue::find($main->venue_id);
         $venue = SpaceVenue::Active()->DepartmentId($venue_department->department_id)->get();
-        $item = SpaceItem::Active()->DepartmentId($venue_department->department_id)->get();
+        $item = SpaceItem::Active()->BookingActive()->DepartmentId($venue_department->department_id)->get();
         $user = User::find(isset($main->spaceBookingMain->staff_id) ? $main->spaceBookingMain->staff_id : Auth::user()->id);
         $booking_item = SpaceBookingItem::MainId($main->space_main_id)->pluck('item_id')->toArray();
 
