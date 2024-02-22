@@ -969,7 +969,7 @@
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="card-header">
-                                                    <h5 class="card-title w-100">Driver & Vehicle Details for Today</h5>
+                                                    <h5 class="card-title w-100">Driver & Vehicle Details for {{ date('d/m/y', strtotime($data->depart_date)) }}</h5>
                                                 </div>
                                                 <div class="modal-body">
 
