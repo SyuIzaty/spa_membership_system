@@ -459,15 +459,6 @@ class EKenderaanController extends Controller
         $assignDriver     = eKenderaanAssignDriver::where('ekn_details_id', $id)->get();
         $driver_assign    = array_column($assignDriver->toArray(), 'driver_id');
         // $driver           = eKenderaanDrivers::where('status', 'Y')->whereNotIn('id', $driver_assign)->get();
-        // $driver = eKenderaanDrivers::whereDoesntHave('assignedDriver', function ($query) use ($id, $data) {
-        //     $query->where('ekn_details_id', $id)->whereDoesntHave('details', function ($q) use ($id, $data) {
-        //         $q->where('id', $id)->where('depart_date', $data->depart_date)
-        //         ->where('depart_time', $data->depart_time);
-        //     });
-        // })->where('status', 'Y')->get();
-
-        // $exist = eKenderaanAssignDriver::pluck('driver_id')->toArray();
-        // dd($exist);
 
         $driver = eKenderaanDrivers::where('status', 'Y')->whereNotIn('id', $driver_assign)
         ->whereNotIn('id', function ($query) use ($data) {
@@ -478,11 +469,25 @@ class EKenderaanController extends Controller
                   ->where('depart_time', $data->depart_time);
         })
         ->get();
-        // dd($driver);
 
+        // $driverOccupied = eKenderaanDrivers::where('status', 'Y')
+        // ->whereHas('assignedDriver.details', function ($q) use ($id, $data) {
+        //     $q->where('id', $id)
+        //       ->where('depart_date', $data->depart_date)
+        //       ->orWhere('return_date', $data->depart_date);
+        // })
+        // ->get();
+
+        $occupied = eKenderaan::with(['drivers.driverList', 'vehicles.vehicleList'])
+        ->where('id', '!=', $id)
+        ->where('depart_date', $data->depart_date)
+        ->orWhere('return_date', $data->depart_date)
+        ->has('drivers') // Filters only the models that have at least one related driver
+        ->has('vehicles') // Filters only the models that have at least one related vehicle
+        ->get();
         $assignVehicle    = eKenderaanAssignVehicle::where('ekn_details_id', $id)->get();
         $vehicle_assign   = array_column($assignVehicle->toArray(), 'vehicle_id');
-        // $vehicle          = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)->get();
+        // $vehicle       = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)->get();
 
         $vehicle = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)
         ->whereNotIn('id', function ($query) use ($data) {
@@ -513,7 +518,8 @@ class EKenderaanController extends Controller
             'feedbackQuestion',
             'feedbackScale',
             'assignDriver',
-            'assignVehicle'
+            'assignVehicle',
+            'occupied'
         ));
     }
 

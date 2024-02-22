@@ -316,6 +316,13 @@
                                                             @endif
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <td colspan="2"><a href="#" data-target="#note"
+                                                                data-toggle="modal"
+                                                                class="btn btn-sm btn-primary waves-effect waves-themed">
+                                                                <i class="fal fa-info"> Details</i>
+                                                            </a></td>
+                                                    </tr>
                                                     @if ($data->status == '3' || $data->status == '5')
                                                         <tr>
                                                             <th width="20%" style="vertical-align: top">Driver</th>
@@ -477,6 +484,13 @@
                                                                         <i class="fal fa-times"></i>
                                                                     </a>
                                                                 </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2"><a href="#" data-target="#note"
+                                                                        data-toggle="modal"
+                                                                        class="btn btn-sm btn-primary waves-effect waves-themed">
+                                                                        <i class="fal fa-info"> Details</i>
+                                                                    </a></td>
                                                             </tr>
                                                             <tr>
                                                                 <th width="20%" style="vertical-align: top"><span
@@ -950,6 +964,73 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="modal fade" id="note" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="card-header">
+                                                    <h5 class="card-title w-100">Driver & Vehicle Details for Today</h5>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <table class="table table-bordered table-hover table-striped w-100">
+                                                        <thead>
+                                                            <tr>
+                                                                <td class="bg-warning text-center">
+                                                                    Driver
+                                                                </td>
+                                                                <td class="bg-warning text-center">
+                                                                    Vehicle
+                                                                </td>
+                                                                <td class="bg-warning text-center">
+                                                                    Depart Date
+                                                                </td>
+                                                                <td class="bg-warning text-center">
+                                                                    Depart Time
+                                                                </td>
+                                                                <td class="bg-warning text-center">
+                                                                    Return Date
+                                                                </td>
+                                                                <td class="bg-warning text-center">
+                                                                    Return Time
+                                                                </td>
+                                                            </tr>
+                                                        </thead>
+                                                        @if ($occupied->isNotEmpty())
+                                                            @foreach ($occupied as $o)
+                                                                @if ($o->drivers->count() > 0 && $o->vehicles->count() > 0)
+                                                                    <tr>
+                                                                        <td>{{ $o->drivers->first()->driverList->name }}
+                                                                        </td>
+                                                                        <td>{{ $o->vehicles->first()->vehicleList->name }}
+                                                                        </td>
+                                                                        <td>{{ date('d/m/y', strtotime($o->depart_date)) }}
+                                                                        </td>
+                                                                        <td>{{ $o->depart_time }}</td>
+                                                                        <td>{{ date('d/m/y', strtotime($o->return_date)) }}
+                                                                        </td>
+                                                                        <td>{{ $o->return_time }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            <tr>
+                                                                <td class="text-center" colspan="6">NOT AVAILABLE</td>
+                                                            </tr>
+                                                        @endif
+
+                                                    </table>
+                                                    <div class="footer">
+                                                        <button type="button"
+                                                            class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                                            data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                            Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
