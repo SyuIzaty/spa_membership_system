@@ -26,7 +26,7 @@
                                       <div class="">
                                           <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                               {{ $open }}
-                                              <small class="m-0 l-h-n">OPEN <b style="font-weight: 900">ROOM</b></small>
+                                              <small class="m-0 l-h-n">OPEN <b style="font-weight: 900">BLOCK {{ $block->name }}</b></small>
                                           </h3>
                                       </div>
                                       <i class="fal fa-table position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
@@ -37,7 +37,7 @@
                                       <div class="">
                                           <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                             {{ $closed }}
-                                              <small class="m-0 l-h-n">CLOSED <b style="font-weight: 900">ROOM</b></small>
+                                              <small class="m-0 l-h-n">CLOSED <b style="font-weight: 900">BLOCK {{ $block->name }}</b></small>
                                           </h3>
                                       </div>
                                       <i class="fal fa-table position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>

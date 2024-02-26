@@ -108,6 +108,7 @@ class BlockController extends Controller
      */
     public function edit($id, Request $request)
     {
+        $block = SpaceBlock::find($id);
         $open = SpaceRoom::StatusId(9)->BlockId($id)->count();
         $closed = SpaceRoom::StatusId(10)->BlockId($id)->count();
         $room = SpaceRoom::BlockId($id)->with('spaceRoomType','spaceStatus','spaceBlock')->select('space_rooms.*');
@@ -132,7 +133,7 @@ class BlockController extends Controller
             ->rawColumns(['action'])
             ->make(true);
         }
-        return view('space.space-setting.room.index',compact('open','closed','id'));
+        return view('space.space-setting.room.index',compact('open','closed','id','block'));
     }
 
     /**

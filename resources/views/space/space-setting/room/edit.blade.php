@@ -81,7 +81,7 @@
                                 <tr class="bg-primary-50 text-center">
                                   <th>Item</th>
                                   <th>Quantity</th>
-                                  <th>Name</th>
+                                  <th>Name / Brand</th>
                                   <th>Serial No</th>
                                   <th>Remark</th>
                                   <th>Status</th>
@@ -167,7 +167,7 @@
                                           <td><input type="text" class="form-control" name="item_serial"></td>
                                         </tr>
                                         <tr>
-                                          <td>Name</td>
+                                          <td>Name / Brand Name</td>
                                           <td><input type="text" class="form-control" name="item_name"></td>
                                         </tr>
                                         <tr>

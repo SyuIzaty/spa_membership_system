@@ -149,7 +149,7 @@
               },
               options: {
                 legend: {
-                    display: true
+                    display: false
                 },
                 tooltips: {
                     enabled: true

@@ -10,6 +10,7 @@ use App\Stock;
 use App\SpaceRoom;
 use App\SpaceBlock;
 use App\SpaceItem;
+use App\SpaceItemMain;
 use App\SpaceCategory;
 use App\SpaceRoomType;
 use App\DepartmentList;
@@ -149,16 +150,19 @@ class RoomController extends Controller
             'remark' => $request->remark,
         ]);
 
-        foreach($request->asset_id as $key => $value){
-            $item_category = explode('-',$value);
-            SpaceItem::where('id',$key)->update([
-                'item_category' => $item_category[1],
-                'item_id' => $item_category[0],
-                'serial_no' => $request->item_serial[$key],
-                'name' => $request->item_name[$key],
-                'description' => $request->item_description[$key],
-                'quantity' => $request->item_quantity[$key],
-            ]);
+        if(isset($request->asset_id)){
+            foreach($request->asset_id as $key => $value){
+                $item_category = explode('-',$value);
+                SpaceItem::where('id',$key)->update([
+                    'item_category' => $item_category[1],
+                    'item_id' => $item_category[0],
+                    'serial_no' => $request->item_serial[$key],
+                    'name' => $request->item_name[$key],
+                    'description' => $request->item_description[$key],
+                    'quantity' => $request->item_quantity[$key],
+                    'status' => $request->item_status[$key],
+                ]);
+            }
         }
 
         return redirect()->back()->with('message','Updated');
