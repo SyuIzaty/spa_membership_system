@@ -197,6 +197,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/view-driver-report/{year}/{month}/{id}', 'EKenderaanController@viewDriverReportYearMonth');
     Route::get('/report-driver-pdf/{year}/{month}/{id}', 'EKenderaanController@DriverReportPDFYearMonth');
     Route::post('request-cancellation', 'EKenderaanController@operationCancelApplication');
+    Route::resource('/ekenderaan-calendar', 'EKenderaanCalendarController');
 
     //iStationery
     Route::get('/application-list', 'Stationery\StationeryManagementController@index');

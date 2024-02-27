@@ -397,6 +397,15 @@
                             </a>
                         </li>
                         @role('eKenderaan Admin')
+                        @role('Super Admin')
+                        <li>
+                            <a href="/ekenderaan-calendar" title="e-Kenderaan Calendar" data-filter-tags="e-Kenderaan Calendar"
+                                target="_blank" style="text-decoration: none!important">
+                                <i class="fal fa-calendar"></i>
+                                <span class="nav-link-text" data-i18n="nav.user-manual">Calendar</span>
+                            </a>
+                        </li>
+                        @endrole
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-list"></i>
