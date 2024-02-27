@@ -44,10 +44,6 @@
                                                     <td>Return Time</td>
                                                     <td><span id="return_time"></span></td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Destination</td>
-                                                    <td colspan="3"><span id="destination"></span></td>
-                                                </tr>
                                             </table>
                                         </div>
                                     </div>
@@ -79,7 +75,6 @@
                             return_time: '{{ $d->details->return_time }}',
                             color: '{{ isset($d->driverList->color) ? $d->driverList->color : '' }}',
                             return_date: '{{ $d->details->return_date }}',
-                            destination: '{{ $d->details->destination }}',
                             eKenderaanId: '{{ $d->ekn_details_id }}',
                         },
                     @endforeach
@@ -94,7 +89,6 @@
                     $('#depart_date').text(calEvent.start.format('DD-MM-YYYY'));
                     $('#depart_time').text(moment(calEvent.depart_time, 'HH:mm:ss').format('HH:mm:ss'));
                     $('#return_time').text(moment(calEvent.return_time, 'HH:mm:ss').format('HH:mm:ss'));
-                    $('#destination').text(calEvent.destination);
 
                     $('#eKenderaan').modal('show');
                     $("#eKenderaan").prependTo("body");
