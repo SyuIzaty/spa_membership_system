@@ -18,7 +18,8 @@ class SpaceRoom extends Model
         'capacity',
         'status_id',
         'remark',
-        'created_at'
+        'created_at',
+        'updated_by'
     ];
 
     public function spaceBlock()

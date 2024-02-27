@@ -16,6 +16,7 @@ use App\SpaceRoomType;
 use App\DepartmentList;
 use DataTables;
 use Carbon\Carbon;
+use Auth;
 
 class RoomController extends Controller
 {
@@ -76,6 +77,7 @@ class RoomController extends Controller
             'status_id' => isset($request->room_status) ? 9 : 10,
             'remark' => $request->room_remark,
             'created_at' => Carbon::now(),
+            'updated_by' => Auth::user()->id,
         ]);
 
         if(isset($request->item_id)){
@@ -90,7 +92,8 @@ class RoomController extends Controller
                     'name' => $request->item_name[$key],
                     'serial_no' => $request->item_serial[$key],
                     'description' => $request->item_remark[$key],
-                    'status' => $request->item_status[$key]
+                    'status' => $request->item_status[$key],
+                    'updated_by' => Auth::user()->id,
                 ]);
             }
         }
@@ -148,6 +151,7 @@ class RoomController extends Controller
             'capacity' => $request->room_capacity,
             'status_id' => isset($request->status) ? 9 : 10,
             'remark' => $request->remark,
+            'updated_by' => Auth::user()->id,
         ]);
 
         if(isset($request->asset_id)){
@@ -161,6 +165,7 @@ class RoomController extends Controller
                     'description' => $request->item_description[$key],
                     'quantity' => $request->item_quantity[$key],
                     'status' => $request->item_status[$key],
+                    'updated_by' => Auth::user()->id,
                 ]);
             }
         }
@@ -176,6 +181,7 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
+        SpaceItem::RoomId($id)->delete();
         SpaceRoom::where('id',$id)->delete();
     }
 }
