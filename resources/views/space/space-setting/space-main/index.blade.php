@@ -10,7 +10,7 @@
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Block</h2>
+                        <h2>Category</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -39,14 +39,12 @@
                               <thead>
                                   <tr class="bg-primary-50 text-center">
                                       <th>ID</th>
-                                      <TH>CATEGORY</TH>
-                                      <th>BLOCK</th>
+                                      <th>CATEGORY</th>
                                       <th>STATUS</th>
-                                      <th>TOTAL</th>
+                                      <th>CREATED AT</th>
                                       <th>ACTION</th>
                                   </tr>
                                   <tr id="filterRow">
-                                    <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
@@ -56,8 +54,7 @@
                               </thead>
                               <tbody></tbody>
                             </table>
-                            <a class="btn btn-success btn-sm float-right mb-2 mt-2 ml-2" href="/space/space-setting/block/create">Upload Block</a>
-                            <a class="btn btn-success btn-sm float-right mb-2 mt-2" href="javascript:;" data-toggle="modal" id="new">Add Block</a>
+                            <a class="btn btn-success btn-sm float-right mb-2 mt-2" href="javascript:;" data-toggle="modal" id="new">Add Category</a>
                           </div>
                         </div>
 
@@ -68,28 +65,17 @@
                                       <h4 class="modal-title"> Add Block</h4>
                                   </div>
                                   <div class="modal-body">
-                                      {!! Form::open(['action' => 'Space\SpaceSetting\BlockController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                      {!! Form::open(['action' => 'Space\SpaceSetting\SpaceMainController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                       <table class="table table-bordered">
                                         <tr>
-                                          <td>Category <span class="text-danger">*</span></td>
-                                          <td>
-                                            <select class="form-control" name="category">
-                                              <option disabled selected>Please Select</option>
-                                              @foreach($main as $mains)
-                                              <option value="{{ $mains->id }}">{{ $mains->name }}</option>
-                                              @endforeach
-                                            </select>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Block <span class="text-danger">*</span></td>
-                                          <td><input type="text" class="form-control" name="block_name"></td>
+                                          <td>Name <span class="text-danger">*</span></td>
+                                          <td><input type="text" class="form-control" name="category_name"></td>
                                         </tr>
                                         <tr>
                                           <td>Open / Closed <span class="text-danger">*</span></td>
                                           <td>
                                             <div class="custom-control custom-switch">
-                                              <input type="checkbox" class="custom-control-input" name="block_status" id="store_status">
+                                              <input type="checkbox" class="custom-control-input" name="status" id="store_status">
                                               <label class="custom-control-label" for="store_status"></label>
                                             </div>
                                           </td>
@@ -106,25 +92,15 @@
                           <div class="modal-dialog modal-lg">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h4 class="modal-title">Update Block</h4>
+                                  <h4 class="modal-title">Update Category</h4>
                                 </div>
-                                {!! Form::open(['action' => ['Space\SpaceSetting\BlockController@update', '1'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                <input type="hidden" name="block_id" id="block_id">
+                                {!! Form::open(['action' => ['Space\SpaceSetting\SpaceMainController@update', '1'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                <input type="hidden" name="category_id" id="block_id">
                                 <div class="modal-body">
                                   <table class="table table-bordered">
                                     <tr>
-                                      <td>Category <span class="text-danger">*</span></td>
-                                      <td>
-                                        <select class="form-control" name="category" id="category_id">
-                                          @foreach($main as $mains)
-                                          <option value="{{ $mains->id }}">{{ $mains->name }}</option>
-                                          @endforeach
-                                        </select>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>Block <span class="text-danger">*</span></td>
-                                      <td><input type="text" class="form-control" name="block_name" id="block_name"></td>
+                                      <td>Name <span class="text-danger">*</span></td>
+                                      <td><input type="text" class="form-control" name="category_name" id="block_name"></td>
                                     </tr>
                                     <tr>
                                       <td>Status</td>
@@ -170,11 +146,10 @@
 
         columns: [
                 { data: 'id', name: 'id'},
-                { data: 'category_id', name: 'spaceMain.name' },
                 { data: 'name', name: 'name'},
                 { 
-                  data: 'block_status',
-                  name: 'space-setting.name',
+                  data: 'main_status',
+                  name: 'spaceStatus.name',
                   render: function(data) {
                     if(data == 'Open') {
                       badge = 'success';
@@ -185,7 +160,7 @@
                     return '<span class="badge badge-'+ badge +'">'+ data +'</span>';
                   }
                 },
-                { data: 'room_total', name: 'room_total'},
+                { data: 'created_at', name: 'created_at'},
                 { data: 'action'},
             ],
         order: [[ 0, "asc" ]],
@@ -215,18 +190,17 @@
       $(document).on('click', '.edit_data', function(){
         var id = $(this).attr("data-id");
         $.ajax({
-            url: '/space/space-setting/block/1',
+            url: '/space/space-setting/space-main/1',
             method:"GET",
             data:{id:id},
             dataType:"json",
             success:function(data){
                 $('#block_id').val(data.id);
                 $('#block_name').val(data.name);
-                $('#category_id').val(data.main_id);
 
-                if(data.status_id == 9){
+                if(data.status == 9){
                   $('#status').prop('checked', true);
-                } if(data.status_id != 9) {
+                } if(data.status != 9) {
                   $('#status').prop('checked', false);
                 }
                 $('.editModal').modal('show');

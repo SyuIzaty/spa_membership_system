@@ -10,6 +10,7 @@ class SpaceBlock extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'main_id',
         'name',
         'status_id',
         'color'
@@ -23,5 +24,10 @@ class SpaceBlock extends Model
     public function spaceStatus()
     {
         return $this->hasOne('App\SpaceStatus','id','status_id');
+    }
+
+    public function spaceMain()
+    {
+        return $this->hasOne('App\SpaceMain','id','main_id');
     }
 }

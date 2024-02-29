@@ -10,6 +10,7 @@ use App\Imports\Space\SpaceItemImport;
 use App\SpaceRoomType;
 use App\SpaceCategory;
 use App\SpaceBlock;
+use App\SpaceMain;
 use App\SpaceRoom;
 use App\AssetType;
 use DataTables;
@@ -23,9 +24,13 @@ class BlockController extends Controller
      */
     public function index(Request $request)
     {
-        $block = SpaceBlock::with('spaceStatus','spaceRooms')->select('space_blocks.*');
+        $main = SpaceMain::Active()->get();
+        $block = SpaceBlock::with('spaceStatus','spaceRooms','spaceMain')->select('space_blocks.*');
         if($request->ajax()) {
         return DataTables::of($block)
+            ->addColumn('category_id', function($block){
+                return isset($block->spaceMain->name) ? $block->spaceMain->name : '';
+            })
             ->addColumn('block_status', function($block){
                 return isset($block->spaceStatus->name) ? $block->spaceStatus->name : '';
             })
@@ -52,7 +57,7 @@ class BlockController extends Controller
             ->make(true);
         }
 
-        return view('space.space-setting.block.index',compact('block'));
+        return view('space.space-setting.block.index',compact('block','main'));
     }
 
     /**
@@ -78,10 +83,12 @@ class BlockController extends Controller
     {
         $request->validate([
             'block_name' => 'required',
+            'category' => 'required',
         ]);
 
         SpaceBlock::create([
             'name' => $request->block_name,
+            'main_id' => $request->category,
             'status_id' => isset($request->block_status) ? 9 : 10,
         ]);
 
@@ -147,10 +154,12 @@ class BlockController extends Controller
     {
         $request->validate([
             'block_name' => 'required',
+            'category' => 'required',
         ]);
 
         SpaceBlock::where('id',$request->block_id)->update([
             'name' => $request->block_name,
+            'main_id' => $request->category,
             'status_id' => isset($request->status) ? 9 : 10,
         ]);
 

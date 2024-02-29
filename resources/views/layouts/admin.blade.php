@@ -1463,7 +1463,7 @@
                         @endrole
                         {{-- End Computer Grant Management --}}
 
-                        @role('Super Admin')
+                        @canany(['Manage space'])
                             <li class="nav-title">SPACE MANAGEMENT</li>
                             <li class="open">
                                 <a href="/space/space-setting/dashboard" title="Training" data-filter-tags="training">
@@ -1484,6 +1484,12 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="/space/space-setting/space-main" title="Pending"
+                                            data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Category</span>
+                                        </a>
+                                      </li>
+                                    <li>
                                         <a href="/space/space-setting/block" title="Pending"
                                             data-filter-tags="pending">
                                             <span class="nav-link-text" data-i18n="nav.pending">Block</span>
@@ -1497,7 +1503,31 @@
                                     <span class="nav-link-text" data-i18n="nav.asset">Report</span>
                                 </a>
                             </li>
-                        @endrole
+                        @endcanany
+
+                        @canany(['Manage task'])
+                        <li class="nav-title">TASK MANAGEMENT</li>
+                        <li class="open">
+                            <a href="#" title="List" data-filter-tags="list">
+                                <i class="fal fa-cogs"></i>
+                                <span class="nav-link-text" data-i18n="nav.list">Task Setting</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/task/task-setting/task-type" title="Pending"
+                                        data-filter-tags="pending">
+                                        <span class="nav-link-text" data-i18n="nav.pending">Task Type</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/task/task-setting/task-category" title="Pending"
+                                        data-filter-tags="pending">
+                                        <span class="nav-link-text" data-i18n="nav.pending">Task Category</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endcanany
 
                         {{-- Start Covid --}}
                         {{-- @can('view admin')

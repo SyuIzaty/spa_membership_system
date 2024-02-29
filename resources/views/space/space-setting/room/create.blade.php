@@ -99,7 +99,7 @@
                                       </select>
                                   </td>
                                   <td style="width: 10%">
-                                      <input type="number" class="form-control" id="item_quantity" name="item_quantity[]" required>
+                                      <input type="number" class="form-control" id="item_quantity" name="item_quantity[]">
                                   </td>
                                   <td style="width: 10%">
                                       <input type="text" class="form-control" id="item_name" name="item_name[]">

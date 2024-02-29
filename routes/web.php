@@ -1052,6 +1052,7 @@ Route::group([
 ], function () {
     Route::resource('/space-setting/room-type', 'Space\SpaceSetting\RoomTypeController');
     Route::resource('/space-setting/room', 'Space\SpaceSetting\RoomController');
+    Route::resource('/space-setting/space-main', 'Space\SpaceSetting\SpaceMainController');
     Route::resource('/space-setting/block', 'Space\SpaceSetting\BlockController');
     Route::resource('/space-setting/report', 'Space\SpaceSetting\ReportController');
     Route::resource('/space-setting/item', 'Space\SpaceSetting\SpaceItemController');
@@ -1063,4 +1064,13 @@ Route::group([
     Route::get('/getTableData', 'Space\SpaceSetting\DashboardController@getTableData');
     Route::post('/upload-block', 'Space\SpaceSetting\BlockController@uploadBlock');
     Route::get('/block-template', 'Space\SpaceSetting\BlockController@blockTemplate');
+});
+
+Route::group([
+    'prefix' => 'task',
+    'as' => 'task.',
+    'middleware' => ['auth']
+], function () {
+    Route::resource('/task-setting/task-type', 'Task\TaskSetting\TaskTypeController');
+    Route::resource('/task-setting/task-category', 'Task\TaskSetting\TaskCategoryController');
 });
