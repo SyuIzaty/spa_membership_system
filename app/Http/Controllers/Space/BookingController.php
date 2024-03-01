@@ -215,7 +215,7 @@ class BookingController extends Controller
             if($booking->spaceVenue->department_id == 1){
                 $pdf = PDF::loadView('space.booking.iitu', compact('booking','user','venue','item','booking_item'));
             }
-            if($booking->spaceVenue->department_id == 11){
+            if($booking->spaceVenue->department_id == 4){
                 $pdf = PDF::loadView('space.booking.facility', compact('booking','user','venue','item','booking_item'));
             }
             if($booking->spaceVenue->department_id == 7){
