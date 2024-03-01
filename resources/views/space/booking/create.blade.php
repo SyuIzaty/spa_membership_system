@@ -241,7 +241,7 @@
                                                         </td>
                                                     </div>
                                                 </tr>
-                                                @if($id == 11)
+                                                @if($id == 4)
                                                 <tr>
                                                   <div class="form-group">
                                                     <td width="20%" style="vertical-align: middle"><label class="form-label"></label>Attachment <b>(Floor Plan for Dewan Besar INTEC, Old Library & etc)</b> :</label></td>
