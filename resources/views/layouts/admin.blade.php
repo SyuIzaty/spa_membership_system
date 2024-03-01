@@ -1270,7 +1270,7 @@
                                         <li>
                                             <a href="/space/booking/create/4" title="Arkib"
                                                 data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">Facility</span>
+                                                <span class="nav-link-text" data-i18n="nav.arkib">HEP</span>
                                             </a>
                                         </li>
                                         <li>
