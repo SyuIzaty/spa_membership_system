@@ -23,11 +23,20 @@ class SpaceConditionController extends Controller
                 return isset($type->spaceStatus->name) ? $type->spaceStatus->name : '';
             })
             ->addColumn('action', function($type){
-                return
-                    '
-                    <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$type->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
-                    <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/space-condition/' . $type->id . '"> <i class="fal fa-trash"></i></button>
-                    ';
+                if($type->spaceRoomConditions->count() >= 1){
+                    return
+                        '
+                        <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$type->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                        ';
+                    
+                }else{
+                    return
+                        '
+                        <button class="btn btn-primary btn-sm edit_data" data-toggle="modal" data-id="'.$type->id.'" id="edit" name="edit"><i class="fal fa-pencil"></i></button>
+                        <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/space-condition/' . $type->id . '"> <i class="fal fa-trash"></i></button>
+                        ';
+
+                }
             })
             ->rawColumns(['action'])
             ->make(true);
