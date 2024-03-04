@@ -52,6 +52,7 @@ class RoomController extends Controller
     {
         $request->validate([
             'room_type' => 'required',
+            'room_floor' => 'required',
             'block_id' => 'required',
             'condition_id' => 'required',
         ]);
@@ -68,6 +69,9 @@ class RoomController extends Controller
             }
         }else{
             $name = $request->room_name;
+            $request->validate([
+                'room_name' => 'required',
+            ]);
         }
         
         $room_id = SpaceRoom::insertGetId([
@@ -158,6 +162,13 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'room_id' => 'required',
+            'floor' => 'required',
+            'condition' => 'required',
+            'room_name' => 'required',
+        ]);
+
         SpaceRoom::where('id',$id)->update([
             'room_id' => $request->room_type,
             'floor' => $request->room_floor,

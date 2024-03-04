@@ -62,7 +62,7 @@
                               <tr>
                                 <td style="width: 15%">Capacity</td>
                                 <td style="width: 35%"><input type="number" class="form-control" name="room_capacity"></td>
-                                <td style="width: 15%">Open / Closed <span class="text-danger">*</span></td>
+                                <td style="width: 15%">Open / Closed</td>
                                 <td style="width: 35%">
                                   <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" name="room_status" id="store_status">
@@ -71,7 +71,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td style="width: 15%">Condition</td>
+                                <td style="width: 15%">Condition <span class="text-danger">*</span></td>
                                 <td style="width: 85%" colspan="3">
                                   <select class="form-control select" name="condition_id[]" multiple required>
                                     @foreach($condition as $conditions)
@@ -132,6 +132,7 @@
                             
                             <button class="btn btn-success btn-sm float-right mb-2">Create</button>
                             {!! Form::close() !!}
+                            <a href="/space/space-setting/block/{{ $id }}/edit" class="btn btn-secondary btn-sm float-right mr-2">Back</a>
                           </div>
                         </div>
 

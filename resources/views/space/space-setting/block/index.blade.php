@@ -50,13 +50,13 @@
                                     <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
                                     <th class="hasInputFilter"></th>
-                                    <th class="hasInputFilter"></th>
+                                    <th></th>
                                     <th></th>
                                   </tr>
                               </thead>
                               <tbody></tbody>
                             </table>
-                            <a class="btn btn-success btn-sm float-right mb-2 mt-2 ml-2" href="/space/space-setting/block/create">Upload Block</a>
+                            {{-- <a class="btn btn-success btn-sm float-right mb-2 mt-2 ml-2" href="/space/space-setting/block/create">Upload Block</a> --}}
                             <a class="btn btn-success btn-sm float-right mb-2 mt-2" href="javascript:;" data-toggle="modal" id="new">Add Block</a>
                           </div>
                         </div>
@@ -86,7 +86,7 @@
                                           <td><input type="text" class="form-control" name="block_name"></td>
                                         </tr>
                                         <tr>
-                                          <td>Open / Closed <span class="text-danger">*</span></td>
+                                          <td>Open / Closed</td>
                                           <td>
                                             <div class="custom-control custom-switch">
                                               <input type="checkbox" class="custom-control-input" name="block_status" id="store_status">
@@ -127,7 +127,7 @@
                                       <td><input type="text" class="form-control" name="block_name" id="block_name"></td>
                                     </tr>
                                     <tr>
-                                      <td>Status</td>
+                                      <td>Open / Closed</td>
                                       <td>
                                         <div class="custom-control custom-switch">
                                           <input type="checkbox" class="custom-control-input" name="status" id="status">
@@ -174,7 +174,7 @@
                 { data: 'name', name: 'name'},
                 { 
                   data: 'block_status',
-                  name: 'space-setting.name',
+                  name: 'spaceStatus.name',
                   render: function(data) {
                     if(data == 'Open') {
                       badge = 'success';
