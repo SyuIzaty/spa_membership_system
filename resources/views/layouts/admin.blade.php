@@ -1494,7 +1494,13 @@
                                             data-filter-tags="pending">
                                             <span class="nav-link-text" data-i18n="nav.pending">Category</span>
                                         </a>
-                                      </li>
+                                    </li>
+                                    <li>
+                                        <a href="/space/space-setting/space-condition" title="Pending"
+                                            data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Condition</span>
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="/space/space-setting/block" title="Pending"
                                             data-filter-tags="pending">

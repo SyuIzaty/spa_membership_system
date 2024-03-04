@@ -11,6 +11,8 @@ use App\SpaceRoom;
 use App\SpaceBlock;
 use App\SpaceItem;
 use App\SpaceItemMain;
+use App\SpaceCondition;
+use App\SpaceRoomCondition;
 use App\SpaceCategory;
 use App\SpaceRoomType;
 use App\DepartmentList;
@@ -51,6 +53,7 @@ class RoomController extends Controller
         $request->validate([
             'room_type' => 'required',
             'block_id' => 'required',
+            'condition_id' => 'required',
         ]);
 
         $block = SpaceBlock::find($request->block_id);
@@ -98,6 +101,15 @@ class RoomController extends Controller
             }
         }
 
+        if(isset($request->condition_id)){
+            foreach($request->condition_id as $condition_id){
+                SpaceRoomCondition::create([
+                    'room_id' => $room_id,
+                    'condition_id' => $condition_id,
+                ]);
+            }
+        }
+
         return redirect()->back()->with('message','Created');
     }
 
@@ -112,8 +124,9 @@ class RoomController extends Controller
         $type = SpaceRoomType::StatusId(9)->get();
         $asset = AssetType::all();
         $category = SpaceCategory::all();
+        $condition = SpaceCondition::Active()->get();
 
-        return view('space.space-setting.room.create',compact('id','type','asset','category'));
+        return view('space.space-setting.room.create',compact('id','type','asset','category','condition'));
     }
 
     /**
@@ -130,8 +143,10 @@ class RoomController extends Controller
         $department = DepartmentList::all();
         $asset = AssetType::all();
         $category = SpaceCategory::all();
+        $condition = SpaceCondition::Active()->get();
+        $room_cond = SpaceRoomCondition::RoomId($id)->pluck('condition_id')->toArray();
 
-        return view('space.space-setting.room.edit',compact('room','type','item','asset','category','department'));
+        return view('space.space-setting.room.edit',compact('room','type','item','asset','category','department','condition','room_cond'));
     }
 
     /**
@@ -168,6 +183,15 @@ class RoomController extends Controller
                     'updated_by' => Auth::user()->id,
                 ]);
             }
+        }
+
+        SpaceRoomCondition::RoomId($id)->whereNotIn('condition_id',$request->condition)->delete();
+
+        foreach($request->condition as $cond){
+            SpaceRoomCondition::firstOrCreate([
+                'room_id' => $id,
+                'condition_id' => $cond,
+            ]);
         }
 
         return redirect()->back()->with('message','Updated');

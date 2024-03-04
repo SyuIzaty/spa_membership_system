@@ -1056,12 +1056,14 @@ Route::group([
     Route::resource('/space-setting/block', 'Space\SpaceSetting\BlockController');
     Route::resource('/space-setting/report', 'Space\SpaceSetting\ReportController');
     Route::resource('/space-setting/item', 'Space\SpaceSetting\SpaceItemController');
+    Route::resource('/space-setting/space-condition', 'Space\SpaceSetting\SpaceConditionController');
     Route::post('/data_spacereport', 'Space\SpaceSetting\ReportController@data_spacereport');
     Route::resource('/space-setting/dashboard', 'Space\SpaceSetting\DashboardController');
     Route::get('/getChartData', 'Space\SpaceSetting\DashboardController@getChartData');
     Route::get('/getGroupChartData', 'Space\SpaceSetting\DashboardController@getGroupChartData');
     Route::get('/getStackChartData', 'Space\SpaceSetting\DashboardController@getStackChartData');
     Route::get('/getTableData', 'Space\SpaceSetting\DashboardController@getTableData');
+    Route::get('/getConditionData', 'Space\SpaceSetting\DashboardController@getConditionData');
     Route::post('/upload-block', 'Space\SpaceSetting\BlockController@uploadBlock');
     Route::get('/block-template', 'Space\SpaceSetting\BlockController@blockTemplate');
 });

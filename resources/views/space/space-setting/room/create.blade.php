@@ -71,6 +71,16 @@
                                 </td>
                               </tr>
                               <tr>
+                                <td style="width: 15%">Condition</td>
+                                <td style="width: 85%" colspan="3">
+                                  <select class="form-control select" name="condition_id[]" multiple required>
+                                    @foreach($condition as $conditions)
+                                    <option value="{{ $conditions->id }}">{{ $conditions->name }} - {{ $conditions->description }}</option>
+                                    @endforeach
+                                  </select>
+                                </td>
+                              </tr>
+                              <tr>
                                 <td style="width: 15%">Remark</td>
                                 <td style="width: 85%" colspan="3"><input type="text" class="form-control" name="room_remark"></td>
                               </tr>
@@ -134,6 +144,7 @@
 @endsection
 @section('script')
 <script>
+  $('.select').select2();
   $('#room_type').on('change',function(){
     var price = $(this).children('option:selected').data('price');
     if(price == 11){

@@ -70,6 +70,16 @@
                                 </td>
                               </tr>
                               <tr>
+                                <td style="width: 15%">Condition</td>
+                                <td style="width: 85%" colspan="3">
+                                  <select class="form-control select" name="condition[]" multiple required>
+                                    @foreach($condition as $conditions)
+                                    <option value="{{ $conditions->id }}" {{ in_array($conditions->id,$room_cond) ? 'selected' : '' }}>{{ $conditions->name }} - {{ $conditions->description }}</option>
+                                    @endforeach
+                                  </select>
+                                </td>
+                              </tr>
+                              <tr>
                                 <td style="width: 15%">Remark</td>
                                 <td style="width: 85%" colspan="3"><input type="text" name="remark" class="form-control" value="{{ $room->remark }}"></td>
                               </tr>
@@ -208,6 +218,8 @@
 @endsection
 @section('script')
 <script>
+  $('.select').select2();
+
   $('#new').click(function () {
       $('#crud-modal').modal('show');
   });
