@@ -23,6 +23,6 @@ class SpaceRoomType extends Model
 
     public function scopeStatusId($query)
     {
-        return $query->where('status_id',9);
+        return $query->where('status_id',1);
     }
 }
