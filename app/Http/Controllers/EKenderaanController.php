@@ -464,7 +464,7 @@ class EKenderaanController extends Controller
         ->whereNotIn('id', function ($query) use ($data) {
             $query->select('driver_id')
                   ->from('ekn_assign_drivers')
-                  ->whereNull('deleted_at')
+                  ->whereNull('ekn_assign_drivers.deleted_at')
                   ->join('ekn_details', 'ekn_assign_drivers.ekn_details_id', '=', 'ekn_details.id')
                   ->where('depart_date', $data->depart_date)
                   ->where('depart_time', $data->depart_time);
@@ -495,7 +495,7 @@ class EKenderaanController extends Controller
         ->whereNotIn('id', function ($query) use ($data) {
             $query->select('vehicle_id')
                   ->from('ekn_assign_vehicles')
-                  ->whereNull('deleted_at')
+                  ->whereNull('ekn_assign_vehicles.deleted_at')
                   ->join('ekn_details', 'ekn_assign_vehicles.ekn_details_id', '=', 'ekn_details.id')
                   ->where('depart_date', $data->depart_date)
                   ->where('depart_time', $data->depart_time);
