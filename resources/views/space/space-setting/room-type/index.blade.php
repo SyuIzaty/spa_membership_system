@@ -180,9 +180,9 @@
                 data: 'type_status', 
                 name: 'spaceStatus.name',
                 render: function(data) {
-                  if (data == 'Open'){
+                  if (data == 'Active'){
                     badge = 'success';
-                  } else if (data == 'Closed'){
+                  } else if (data == 'Inactive'){
                     badge = 'danger';
                   }
 
@@ -228,9 +228,9 @@
               $('#room_name').val(data.name);
               $('#room_description').val(data.description);
 
-              if(data.status_id == 9){
+              if(data.status_id == 1){
                 $('#status').prop('checked', true);
-              } if(data.status_id != 9) {
+              } if(data.status_id != 1) {
                 $('#status').prop('checked', false);
               }
               if(data.enable_generate == 11){

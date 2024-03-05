@@ -52,7 +52,7 @@ class RoomController extends Controller
     {
         $request->validate([
             'room_type' => 'required',
-            'room_floor' => 'required',
+            'room_floor' => 'required|integer|min:0',
             'block_id' => 'required',
             'condition_id' => 'required',
         ]);
@@ -164,7 +164,7 @@ class RoomController extends Controller
     {
         $request->validate([
             'room_id' => 'required',
-            'floor' => 'required',
+            'floor' => 'required|integer|min:0',
             'condition' => 'required',
             'room_name' => 'required',
         ]);

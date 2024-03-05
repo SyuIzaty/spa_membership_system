@@ -69,7 +69,7 @@ class RoomTypeController extends Controller
             'name' => $request->room_name,
             'description' => $request->room_description,
             'enable_generate' => isset($request->room_enable) ? 11 : 12,
-            'status_id' => isset($request->room_status) ? 9 : 10,
+            'status_id' => isset($request->room_status) ? 1 : 2,
         ]);
 
         return redirect()->back()->with('message','Data Added');
@@ -115,7 +115,7 @@ class RoomTypeController extends Controller
         SpaceRoomType::where('id',$request->type_id)->update([
             'name' => $request->room_name,
             'description' => $request->room_description,
-            'status_id' => isset($request->status) ? 9 : 10,
+            'status_id' => isset($request->status) ? 1 : 2,
             'enable_generate' => isset($request->enable) ? 11 : 12,
         ]);
 
