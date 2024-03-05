@@ -464,6 +464,7 @@ class EKenderaanController extends Controller
         ->whereNotIn('id', function ($query) use ($data) {
             $query->select('driver_id')
                   ->from('ekn_assign_drivers')
+                  ->whereNull('deleted_at')
                   ->join('ekn_details', 'ekn_assign_drivers.ekn_details_id', '=', 'ekn_details.id')
                   ->where('depart_date', $data->depart_date)
                   ->where('depart_time', $data->depart_time);
@@ -485,6 +486,7 @@ class EKenderaanController extends Controller
         ->has('drivers') // Filters only the models that have at least one related driver
         ->has('vehicles') // Filters only the models that have at least one related vehicle
         ->get();
+
         $assignVehicle    = eKenderaanAssignVehicle::where('ekn_details_id', $id)->get();
         $vehicle_assign   = array_column($assignVehicle->toArray(), 'vehicle_id');
         // $vehicle       = eKenderaanVehicles::where('status', 'Y')->whereNotIn('id', $vehicle_assign)->get();
@@ -493,6 +495,7 @@ class EKenderaanController extends Controller
         ->whereNotIn('id', function ($query) use ($data) {
             $query->select('vehicle_id')
                   ->from('ekn_assign_vehicles')
+                  ->whereNull('deleted_at')
                   ->join('ekn_details', 'ekn_assign_vehicles.ekn_details_id', '=', 'ekn_details.id')
                   ->where('depart_date', $data->depart_date)
                   ->where('depart_time', $data->depart_time);
