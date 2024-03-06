@@ -163,8 +163,8 @@ class RoomController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'room_id' => 'required',
-            'floor' => 'required|integer|min:0',
+            'room_type' => 'required',
+            'room_floor' => 'required|integer|min:0',
             'condition' => 'required',
             'room_name' => 'required',
         ]);
