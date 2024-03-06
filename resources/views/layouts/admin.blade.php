@@ -397,15 +397,24 @@
                             </a>
                         </li>
                         @role('eKenderaan Admin')
-                        @role('Super Admin')
-                        <li>
-                            <a href="/ekenderaan-calendar" title="e-Kenderaan Calendar" data-filter-tags="e-Kenderaan Calendar"
-                                target="_blank" style="text-decoration: none!important">
-                                <i class="fal fa-calendar"></i>
-                                <span class="nav-link-text" data-i18n="nav.user-manual">Calendar</span>
-                            </a>
-                        </li>
-                        @endrole
+                            @role('Super Admin')
+                                <li>
+                                    <a href="/ekenderaan-calendar" title="e-Kenderaan Calendar"
+                                        data-filter-tags="e-Kenderaan Calendar" target="_blank"
+                                        style="text-decoration: none!important">
+                                        <i class="fal fa-calendar"></i>
+                                        <span class="nav-link-text" data-i18n="nav.user-manual">Calendar</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/ekenderaan-dashboard" title="e-Kenderaan Dashboard"
+                                        data-filter-tags="e-Kenderaan Dashboard" target="_blank"
+                                        style="text-decoration: none!important">
+                                        <i class="fal fa-chart-pie"></i>
+                                        <span class="nav-link-text" data-i18n="nav.user-manual">Dashboard</span>
+                                    </a>
+                                </li>
+                            @endrole
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-list"></i>
@@ -1518,27 +1527,27 @@
                         @endcanany
 
                         @canany(['Manage task'])
-                        <li class="nav-title">TASK MANAGEMENT</li>
-                        <li class="open">
-                            <a href="#" title="List" data-filter-tags="list">
-                                <i class="fal fa-cogs"></i>
-                                <span class="nav-link-text" data-i18n="nav.list">Task Setting</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="/task/task-setting/task-type" title="Pending"
-                                        data-filter-tags="pending">
-                                        <span class="nav-link-text" data-i18n="nav.pending">Task Type</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/task/task-setting/task-category" title="Pending"
-                                        data-filter-tags="pending">
-                                        <span class="nav-link-text" data-i18n="nav.pending">Task Category</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="nav-title">TASK MANAGEMENT</li>
+                            <li class="open">
+                                <a href="#" title="List" data-filter-tags="list">
+                                    <i class="fal fa-cogs"></i>
+                                    <span class="nav-link-text" data-i18n="nav.list">Task Setting</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/task/task-setting/task-type" title="Pending"
+                                            data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Task Type</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/task/task-setting/task-category" title="Pending"
+                                            data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Task Category</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         @endcanany
 
                         {{-- Start Covid --}}
