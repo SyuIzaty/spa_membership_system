@@ -317,11 +317,22 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="2"><a href="#" data-target="#note"
-                                                                data-toggle="modal"
-                                                                class="btn btn-sm btn-primary waves-effect waves-themed">
-                                                                <i class="fal fa-info"> Details</i>
-                                                            </a></td>
+                                                        @canany('Manage and Verify eKenderaan Application')
+                                                            {{-- <td colspan="2"><a href="#" data-target="#note"
+                                                            data-toggle="modal"
+                                                            class="btn btn-sm btn-primary waves-effect waves-themed">
+                                                            <i class="fal fa-info"> Details</i>
+                                                        </a></td> --}}
+                                                            <td colspan="2">
+                                                                <a href="/ekenderaan-calendar" target="_blank"
+                                                                    style="text-decoration: none!important"
+                                                                    class="btn btn-sm btn-primary waves-effect waves-themed">
+                                                                    <i class="fal fa-calendar"></i>
+                                                                    <span class="nav-link-text"
+                                                                        data-i18n="nav.calendar">Calendar</span>
+                                                                </a>
+                                                            </td>
+                                                        @endcanany
                                                     </tr>
                                                     @if ($data->status == '3' || $data->status == '5')
                                                         <tr>
@@ -486,11 +497,15 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2"><a href="#" data-target="#note"
-                                                                        data-toggle="modal"
+                                                                <td colspan="2">
+                                                                    <a href="/ekenderaan-calendar" target="_blank"
+                                                                        style="text-decoration: none!important"
                                                                         class="btn btn-sm btn-primary waves-effect waves-themed">
-                                                                        <i class="fal fa-info"> Details</i>
-                                                                    </a></td>
+                                                                        <i class="fal fa-calendar"></i>
+                                                                        <span class="nav-link-text"
+                                                                            data-i18n="nav.calendar">Calendar</span>
+                                                                    </a>
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <th width="20%" style="vertical-align: top"><span
@@ -964,8 +979,7 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="modal fade" id="note" aria-hidden="true">
+                                    {{-- <div class="modal fade" id="note" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="card-header">
@@ -1029,8 +1043,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>

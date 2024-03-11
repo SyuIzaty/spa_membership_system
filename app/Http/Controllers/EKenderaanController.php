@@ -479,10 +479,13 @@ class EKenderaanController extends Controller
         // })
         // ->get();
 
-        $occupied = eKenderaan::with(['drivers.driverList', 'vehicles.vehicleList'])
-        ->where('depart_date', $data->depart_date)
-        ->orWhere('return_date', $data->depart_date)
-        ->get();
+        // $occupied = eKenderaan::with(['drivers.driverList', 'vehicles.vehicleList'])
+        // ->where('id', '!=', $id)
+        // ->where('depart_date', $data->depart_date)
+        // ->orWhere('return_date', $data->depart_date)
+        // ->has('drivers') // Filters only the models that have at least one related driver
+        // ->has('vehicles') // Filters only the models that have at least one related vehicle
+        // ->get();
 
         $assignVehicle    = eKenderaanAssignVehicle::where('ekn_details_id', $id)->get();
         $vehicle_assign   = array_column($assignVehicle->toArray(), 'vehicle_id');
@@ -519,7 +522,6 @@ class EKenderaanController extends Controller
             'feedbackScale',
             'assignDriver',
             'assignVehicle',
-            'occupied'
         ));
     }
 
