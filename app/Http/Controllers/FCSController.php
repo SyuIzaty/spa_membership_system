@@ -29,7 +29,8 @@ class FCSController extends Controller
 
     public function fileMainList()
     {
-        $owner = FcsOwner::where('staff_id', Auth::user()->id)->first();
+        $owner = FcsOwner::where('staff_id', Auth::user()->id)->get();
+        $owners   = array_column($owner->toArray(), 'dept_id');
 
         if (Auth::user()->hasAnyRole(['Library Executive', 'Library Manager', 'AQA Admin'])) {
 
@@ -37,7 +38,7 @@ class FCSController extends Controller
 
         } elseif (isset($owner)) {
 
-            $data = FcsActivity::with('department')->where('dept_id', $owner->dept_id);
+            $data = FcsActivity::with('department')->whereIn('dept_id', $owners);
         }
 
         return datatables()::of($data)
