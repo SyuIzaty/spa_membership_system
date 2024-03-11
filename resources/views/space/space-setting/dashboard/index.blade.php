@@ -63,7 +63,17 @@
                 <div class="card-body">
                   <form method="get" id="department-form">
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-3">
+                        <p>Category</p>
+                        <select class="form-control select" name="main_id" id="main-select">
+                          <option disabled selected>Select Category</option>
+                          <option value="All" {{ 'All' == $selected_main ? 'selected' : '' }}>All</option>
+                          @foreach ($all_main as $mains)
+                              <option value="{{ $mains->id }}" {{ $mains->id == $selected_main ? 'selected' : '' }}>{{ $mains->name }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <div class="col-md-3">
                         <p>Block</p>
                         <select class="form-control select" name="block_id" id="block-select">
                           <option disabled selected>Select Block</option>
@@ -73,7 +83,7 @@
                           @endforeach
                         </select>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <p>Room Type</p>
                         <select class="form-control select" name="room_id" id="room-select">
                           <option value="">Select Status</option>
@@ -83,7 +93,7 @@
                           @endforeach
                         </select>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <p>Status</p>
                         <select class="form-control select" name="status_id" id="status-select">
                           <option value="">Select Status</option>
@@ -107,15 +117,16 @@
   $('.select').select2();
 
   $(document).ready(function () {
-    $('#block-select, #status-select, #room-select').change(function () {
+    $('#block-select, #status-select, #room-select, #main-select').change(function () {
         var blockId = $('#block-select').val();
         var statusId = $('#status-select').val();
         var roomId = $('#room-select').val();
+        var mainId = $('#main-select').val();
 
         $.ajax({
             type: 'GET',
             url: '/space/getTableData',
-            data: {block_id: blockId, status_id: statusId, room_id: roomId},
+            data: {block_id: blockId, status_id: statusId, room_id: roomId, main_id: mainId},
             dataType: 'json',
             success: function (data) {
                 updateTable(data);
@@ -129,7 +140,7 @@
     function updateTable(data) {
         $('#table-container').html(data.table_html);
     }
-});
+  });
   
 
   var pie_chart = document.getElementById('pieChart').getContext('2d');

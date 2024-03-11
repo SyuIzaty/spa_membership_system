@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Space\SpaceSetting;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\SpaceRoomType;
+use App\SpaceCondition;
+use App\SpaceMain;
 use App\SpaceRoom;
+use App\AssetType;
 use App\SpaceBlock;
 
 class DashboardController extends Controller
@@ -20,17 +23,20 @@ class DashboardController extends Controller
 
         $all_block = SpaceBlock::get();
         $all_type = SpaceRoomType::get();
+        $all_main = SpaceMain::get();
         $open = SpaceRoom::StatusId(9)->get();
         $closed = SpaceRoom::StatusId(10)->get();
         if(isset($request->block_id) || isset($request->status_id)){
             $selected_block = $request->block_id;
             $selected_status = $request->status_id;
             $selected_room = $request->room_id;
+            $selected_main = $request->main_id;
         }else{
-            $block = $selected_block = $selected_status = $selected_room = null;
+            $block = $selected_block = $selected_status = $selected_room = $selected_main = null;
         }
 
-        return view('space.space-setting.dashboard.index',compact('open','closed','all_block','all_type','selected_block','selected_status','selected_room'));
+        return view('space.space-setting.dashboard.index',compact('open','closed','all_block','all_type','all_main',
+        'selected_block','selected_status','selected_room','selected_main'));
     }
 
     public function getChartData()
@@ -120,15 +126,19 @@ class DashboardController extends Controller
 
     public function getTableData(Request $request)
     {
+        set_time_limit(0);
         $filters = [
             'block_id' => $request->block_id ?? null,
             'status_id' => $request->status_id ?? null,
             'room_id' => $request->room_id ?? null,
+            'main_id' => $request->main_id ?? null,
         ];
     
         $all_block = SpaceBlock::get();
         $open = SpaceRoom::StatusId(9)->get();
         $closed = SpaceRoom::StatusId(10)->get();
+        $type = AssetType::all();
+        $condition = SpaceCondition::all();
     
         if ($filters['block_id'] == 'All') {
             $filters['block_id'] = null;
@@ -141,6 +151,10 @@ class DashboardController extends Controller
         if ($filters['room_id'] == 'All') {
             $filters['room_id'] = null;
         }
+
+        if ($filters['main_id'] == 'All') {
+            $filters['main_id'] = null;
+        }
     
         $facility_room = $filters['status_id'] ? SpaceRoom::StatusId($filters['status_id'])->pluck('id')->toArray() : SpaceRoom::pluck('id')->toArray();
         $facility_room_id = $filters['room_id'] ? SpaceRoom::RoomId($filters['room_id'])->pluck('id')->toArray() : SpaceRoom::pluck('id')->toArray();
@@ -149,6 +163,9 @@ class DashboardController extends Controller
         $cond = "1";
         if ($filters['block_id'] !== null) {
             $cond .= " AND (id = '" . $filters['block_id'] . "')";
+        }
+        if ($filters['main_id'] !== null) {
+            $cond .= " AND (main_id = '" . $filters['main_id'] . "')";
         }
     
         $block = SpaceBlock::whereRaw($cond)
@@ -161,12 +178,19 @@ class DashboardController extends Controller
                 $query->whereIn('id', $combine);
             }])
             ->get();
+
+        $all_type = SpaceRoomType::get();
     
         $data = [
             'block' => $block,
+            'type' => $type,
+            'condition' => $condition,
+            'all_type' => $all_type,
+            'all_block' => $all_block,
             'selected_block' => $filters['block_id'],
             'selected_status' => $filters['status_id'],
             'selected_room' => $filters['room_id'],
+            'selected_main' => $filters['main_id'],
         ];
     
         return response()->json(['table_html' => view('space.space-setting.dashboard.table', compact('data'))->render()]);
