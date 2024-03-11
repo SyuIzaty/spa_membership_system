@@ -1078,4 +1078,7 @@ Route::group([
 ], function () {
     Route::resource('/task-setting/task-type', 'Task\TaskSetting\TaskTypeController');
     Route::resource('/task-setting/task-category', 'Task\TaskSetting\TaskCategoryController');
+    Route::resource('/task-setting/task-status', 'Task\TaskSetting\TaskStatusController');
+    Route::resource('/task-setting/task-priority', 'Task\TaskSetting\TaskPriorityController');
+    Route::resource('/task-management/task-calendar', 'Task\TaskManagement\TaskCalendarController');
 });

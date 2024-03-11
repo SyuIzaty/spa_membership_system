@@ -1546,7 +1546,25 @@
                                             <span class="nav-link-text" data-i18n="nav.pending">Task Category</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="/task/task-setting/task-status" title="Pending"
+                                            data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Task Status</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/task/task-setting/task-priority" title="Pending"
+                                            data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Task Priority</span>
+                                        </a>
+                                    </li>
                                 </ul>
+                            </li>
+                            <li class="open">
+                                <a href="/task/task-management/task-calendar" title="Training" data-filter-tags="training">
+                                    <i class="fal fa-calendar"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Task Calendar</span>
+                                </a>
                             </li>
                         @endcanany
 
