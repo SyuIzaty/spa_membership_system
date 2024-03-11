@@ -103,7 +103,7 @@
                               </div>
                             </div>
                             <div class="tab-pane fade" id="list_view" role="tabpanel">
-                              <table class="table table-bordered" id="year_table" style="width:100%">
+                              <table class="table table-bordered table-responsive" id="year_table" style="width:100%">
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>ID</th>
@@ -111,6 +111,8 @@
                                         <th>PURPOSE</th>
                                         <th>START DATE</th>
                                         <th>END DATE</th>
+                                        <th>START TIME</th>
+                                        <th>END TIME</th>
                                         <th>VENUE</th>
                                         <th>STATUS</th>
                                         <th>APPLICATION</th>
@@ -122,6 +124,8 @@
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Purpose"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Start Date"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search End Date"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search Start Time"></td>
+                                      <td class="hasinput"><input type="text" class="form-control" placeholder="Search End Time"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Venue"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Status"></td>
                                       <td class="hasinput"><input type="text" class="form-control" placeholder="Search Application"></td>
@@ -245,6 +249,8 @@
               { data: 'purposes', name: 'spaceBookingMain.purpose'},
               { data: 'start_dates', name: 'spaceBookingMain.start_date'},
               { data: 'end_dates', name: 'spaceBookingMain.end_date'},
+              { data: 'start_times', name: 'spaceBookingMain.start_time'},
+              { data: 'end_times', name: 'spaceBookingMain.end_time'},
               { data: 'venues', name: 'spaceVenue.name'},
               {
                 data: 'status_name',
