@@ -397,15 +397,15 @@
                             </a>
                         </li>
                         @role('eKenderaan Admin')
+                            <li>
+                                <a href="/ekenderaan-calendar" title="e-Kenderaan Calendar"
+                                    data-filter-tags="e-Kenderaan Calendar" target="_blank"
+                                    style="text-decoration: none!important">
+                                    <i class="fal fa-calendar"></i>
+                                    <span class="nav-link-text" data-i18n="nav.user-manual">Calendar</span>
+                                </a>
+                            </li>
                             @role('Super Admin')
-                                <li>
-                                    <a href="/ekenderaan-calendar" title="e-Kenderaan Calendar"
-                                        data-filter-tags="e-Kenderaan Calendar" target="_blank"
-                                        style="text-decoration: none!important">
-                                        <i class="fal fa-calendar"></i>
-                                        <span class="nav-link-text" data-i18n="nav.user-manual">Calendar</span>
-                                    </a>
-                                </li>
                                 <li>
                                     <a href="/ekenderaan-dashboard" title="e-Kenderaan Dashboard"
                                         data-filter-tags="e-Kenderaan Dashboard" target="_blank"
