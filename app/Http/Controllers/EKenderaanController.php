@@ -480,7 +480,6 @@ class EKenderaanController extends Controller
         // ->get();
 
         $occupied = eKenderaan::with(['drivers.driverList', 'vehicles.vehicleList'])
-        ->where('id', '!=', $id)
         ->where('depart_date', $data->depart_date)
         ->orWhere('return_date', $data->depart_date)
         ->has('drivers') // Filters only the models that have at least one related driver
