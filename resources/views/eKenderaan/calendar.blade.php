@@ -44,6 +44,18 @@
                                                     <td>Return Time</td>
                                                     <td><span id="return_time"></span></td>
                                                 </tr>
+                                                <tr>
+                                                    <td>Purpose</td>
+                                                    <td colspan="3">
+                                                        <textarea class="form-control" id="purpose" rows="2" readonly></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Destination</td>
+                                                    <td colspan="3">
+                                                        <textarea class="form-control" id="destination" rows="2" readonly></textarea>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
                                     </div>
@@ -75,6 +87,8 @@
                             return_time: '{{ $d->details->return_time }}',
                             color: '{{ isset($d->driverList->color) ? $d->driverList->color : '' }}',
                             return_date: '{{ $d->details->return_date }}',
+                            purpose: {!! json_encode($d->details->purpose, JSON_UNESCAPED_UNICODE) !!},
+                            destination: {!! json_encode($d->details->destination, JSON_UNESCAPED_UNICODE) !!},
                             eKenderaanId: '{{ $d->ekn_details_id }}',
                         },
                     @endforeach
@@ -87,14 +101,17 @@
                 eventClick: function(calEvent, jsEvent, view) {
                     $('#return_date').text(moment(calEvent.return_date).format('DD-MM-YYYY'));
                     $('#depart_date').text(calEvent.start.format('DD-MM-YYYY'));
-                    $('#depart_time').text(moment(calEvent.depart_time, 'HH:mm:ss').format('HH:mm:ss'));
-                    $('#return_time').text(moment(calEvent.return_time, 'HH:mm:ss').format('HH:mm:ss'));
+                    $('#depart_time').text(moment(calEvent.depart_time, 'HH:mm:ss').format(
+                        'h:mm:ss A'));
+                    $('#return_time').text(moment(calEvent.return_time, 'HH:mm:ss').format(
+                        'h:mm:ss A'));
+                    $('#purpose').text(calEvent.purpose);
+                    $('#destination').text(calEvent.destination);
 
                     $('#eKenderaan').modal('show');
                     $("#eKenderaan").prependTo("body");
                 }
             });
-
         });
     </script>
 @endsection
