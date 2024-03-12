@@ -71,6 +71,7 @@ class TaskCategoryController extends Controller
      */
     public function show($id, Request $request)
     {
+        dd('aa');
         $type = TaskCategory::find($request->id);
         echo json_encode($type);
     }

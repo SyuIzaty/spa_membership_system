@@ -5,18 +5,20 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TaskCategory extends Model
+class TaskUser extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'status_id'
+        'user_id',
+        'short_name',
+        'status_id',
+        'color'
     ];
 
-    public function taskStatus()
+    public function user()
     {
-        return $this->hasOne('App\TaskStatus','id','status_id');
+        return $this->hasOne('App\User','id','user_id');
     }
 
     public function scopeActive($query)

@@ -21,5 +21,11 @@ class TaskMain extends Model
         'progress_id',
         'priority_id',
         'comment',
+        'email_sent'
     ];
+
+    public function taskUser()
+    {
+        return $this->hasOne('App\TaskUser','id','user_id');
+    }
 }
