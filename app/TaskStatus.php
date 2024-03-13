@@ -15,6 +15,11 @@ class TaskStatus extends Model
         'color'
     ];
 
+    public function taskProgresses()
+    {
+        return $this->hasOne('App\TaskMain','progress_id','id');
+    }
+
     public function scopeCategoryId($query, $category)
     {
         return $query->where('category',$category);

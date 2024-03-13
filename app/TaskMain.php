@@ -28,4 +28,39 @@ class TaskMain extends Model
     {
         return $this->hasOne('App\TaskUser','id','user_id');
     }
+
+    public function taskCategory()
+    {
+        return $this->hasOne('App\TaskCategory','id','category_id');
+    }
+
+    public function taskType()
+    {
+        return $this->hasOne('App\TaskType','id','type_id');
+    }
+
+    public function departmentList()
+    {
+        return $this->hasOne('App\DepartmentList','id','department_id');
+    }
+
+    public function progressStatus()
+    {
+        return $this->hasOne('App\TaskStatus','id','progress_id');
+    }
+
+    public function priorityStatus()
+    {
+        return $this->hasOne('App\TaskStatus','id','priority_id');
+    }
+
+    public function scopeProgressId($query, $progress_id)
+    {
+        return $query->where('progress_id',$progress_id);
+    }
+
+    public function scopePriorityId($query, $priority_id)
+    {
+        return $query->where('priority_id',$priority_id);
+    }
 }

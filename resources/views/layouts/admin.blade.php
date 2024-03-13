@@ -1527,6 +1527,12 @@
                         @canany(['Manage task'])
                             <li class="nav-title">TASK MANAGEMENT</li>
                             <li class="open">
+                                <a href="/task/task-management/task-dashboard" title="Task Dashboard" data-filter-tags="training">
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Task Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-cogs"></i>
                                     <span class="nav-link-text" data-i18n="nav.list">Task Setting</span>
@@ -1563,6 +1569,12 @@
                                     data-filter-tags="training">
                                     <i class="fal fa-calendar"></i>
                                     <span class="nav-link-text" data-i18n="nav.asset">Task Calendar</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="/task/task-management/task-report" title="Task Report" data-filter-tags="training">
+                                    <i class="fal fa-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Task Report</span>
                                 </a>
                             </li>
                         @endcanany

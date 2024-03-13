@@ -1083,4 +1083,10 @@ Route::group([
     Route::resource('/task-management/task-calendar', 'Task\TaskManagement\TaskCalendarController');
     Route::get('/task-management/all-event', 'Task\TaskManagement\TaskCalendarController@allEvent');
     Route::post('/task-calendar/event-date', 'Task\TaskManagement\TaskCalendarController@eventDate');
+    Route::resource('/task-management/task-report', 'Task\TaskManagement\TaskReportController');
+    Route::post('/task-report/data_exporttask', 'Task\TaskManagement\TaskReportController@data_exporttask');
+    Route::resource('/task-management/task-dashboard', 'Task\TaskManagement\TaskDashboardController');
+    Route::get('/task-dashboard/getChartData', 'Task\TaskManagement\TaskDashboardController@getChartData');
+    Route::get('/task-dashboard/getPriorityData', 'Task\TaskManagement\TaskDashboardController@getPriorityData');
+    Route::get('/task-dashboard/getMemberData', 'Task\TaskManagement\TaskDashboardController@getMemberData');
 });
