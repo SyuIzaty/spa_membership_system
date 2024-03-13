@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\eKenderaan;
 use App\eKenderaanDrivers;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\eKenderaanAssignDriver;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class eKenderaanDashboardController extends Controller
+class EKenderaanDashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -78,7 +75,6 @@ class eKenderaanDashboardController extends Controller
 
             $query->whereIn(DB::raw('MONTH(d.depart_date)'), $monthNumbers);
         }
-
 
         $assignments = $query->get();
 
