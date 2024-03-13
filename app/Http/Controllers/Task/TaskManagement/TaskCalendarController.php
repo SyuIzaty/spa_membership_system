@@ -88,10 +88,10 @@ class TaskCalendarController extends Controller
                 'email_sent' => isset($request->sent_email) ? 1 : 2,
             ]);
 
-            $user_main = User::find($users);
+            $user_main = TaskUser::find($users);
 
             $data = [
-                'app_recipient'     => $user_main->name,
+                'app_recipient'     => isset($user_main->user->name) ? $user_main->user->name : '',
                 'app_description'   => 'For your information, you have been assigned to a new task.',
             ];
 
