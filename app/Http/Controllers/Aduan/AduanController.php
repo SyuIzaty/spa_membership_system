@@ -411,7 +411,7 @@ class AduanController extends Controller
 
     public function exportExcelPengadu($id)
     {
-        return Excel::download(new eAduanFacilityExport($id), 'Laporan Excel E-Aduan.xlsx');
+        return Excel::download(new eAduanFacilityExport($id), 'Laporan E-Aduan.xlsx');
     }
 
     public function manualAduan() // OG

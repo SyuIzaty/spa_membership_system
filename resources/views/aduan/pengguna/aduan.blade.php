@@ -91,7 +91,7 @@
                                 </thead>
                             </table>
                             <a href="/export-excel-pengadu/{{Auth::user()->id}}" id="buttonfull" class="btn btn-info float-right" style="margin-top: 15px">
-                                <i class="fal fa-file-excel"></i> Excel Report
+                                <i class="fal fa-file-excel"></i> Laporan Keseluruhan
                             </a>
                         </div>
                     </div>
