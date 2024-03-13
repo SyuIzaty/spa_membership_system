@@ -97,8 +97,8 @@ class TaskCalendarController extends Controller
 
 
             if(isset($request->sent_email)){
-                Mail::send('task.task-management.mail-template', $data, function($message) {
-                    $message->to($data->email)->subject('Task : New Task');
+                Mail::send('task.task-management.mail-template', $data, function($message) use ($user_main) {
+                    $message->to(isset($user_main->user->email) ? $user_main->user->email : '')->subject('Task : New Task');
                     $message->from('itadmin@intec.edu.my');
                 });
             }
