@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Task\TaskManagement;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\DepartmentList;
 use App\TaskStatus;
 use App\TaskUser;
 use App\TaskMain;
+use Carbon\Carbon;
 
 class TaskDashboardController extends Controller
 {
@@ -17,10 +19,48 @@ class TaskDashboardController extends Controller
      */
     public function index()
     {
-        $status = TaskStatus::where('category','!=','Main')->get();
         $main = TaskMain::all();
+        $task = TaskMain::whereDate('start_date', '<=', Carbon::now())
+                ->whereDate('end_date', '>=', Carbon::now())
+                ->paginate(7);
 
-        return view('task.task-dashboard.index',compact('status','main'));
+        return view('task.task-dashboard.index',compact('main','task'));
+    }
+
+    public function fetchMemberTask()
+    {
+        $users = TaskUser::withCount('taskMains')->get();
+        return response()->json($users);
+    }
+
+    public function fetchProgressTask()
+    {
+        $status = TaskStatus::CategoryId('Progress')->withCount('taskProgresses')->get();
+        return response()->json($status);
+    }
+
+    public function fetchDepartmentTask()
+    {
+        $departments = DepartmentList::all();
+        $statuses = TaskStatus::where('category', 'Progress')->get();
+        $status_counts = [];
+
+        foreach ($departments as $department) {
+            $status_counts[$department->id] = [];
+
+            foreach ($statuses as $status) {
+                $status_counts[$department->id][$status->id] = TaskMain::where('department_id', $department->id)
+                    ->where('progress_id', $status->id)
+                    ->count();
+            }
+        }
+        // dd($departments, $statuses, $status_counts);
+
+        return response()->json([
+            'departments' => $departments,
+            'statuses' => $statuses,
+            'status_counts' => $status_counts,
+        ]);
     }
 
     public function getChartData()

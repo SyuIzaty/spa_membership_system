@@ -1089,4 +1089,7 @@ Route::group([
     Route::get('/task-dashboard/getChartData', 'Task\TaskManagement\TaskDashboardController@getChartData');
     Route::get('/task-dashboard/getPriorityData', 'Task\TaskManagement\TaskDashboardController@getPriorityData');
     Route::get('/task-dashboard/getMemberData', 'Task\TaskManagement\TaskDashboardController@getMemberData');
+    Route::get('/task-dashboard/fetchMemberTask', 'Task\TaskManagement\TaskDashboardController@fetchMemberTask');
+    Route::get('/task-dashboard/fetchDepartmentTask', 'Task\TaskManagement\TaskDashboardController@fetchDepartmentTask');
+    Route::get('/task-dashboard/fetchProgressTask', 'Task\TaskManagement\TaskDashboardController@fetchProgressTask');
 });

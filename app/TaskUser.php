@@ -21,6 +21,11 @@ class TaskUser extends Model
         return $this->hasOne('App\User','id','user_id');
     }
 
+    public function taskMains()
+    {
+        return $this->hasOne('App\TaskMain','user_id','id');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status_id','1');

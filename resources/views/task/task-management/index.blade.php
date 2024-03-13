@@ -304,7 +304,7 @@
                   <div class="card-header font-weight-bold">
                     ${moment(calEvent.start).format('MMMM Do YYYY')}
                   </div>
-                  <div class="card-body">
+                  <div class="card-body" style="border-left: 3px solid ${calEvent.color}">
                       <p class="card-text font-weight-bold">${calEvent.title}</p>
                       <p class="card-text">Date: ${moment(calEvent.start).format('MMMM Do YYYY')} - ${moment(calEvent.endDate).format('MMMM Do YYYY')}</p>
                       <p class="card-text"><button class="btn btn-outline-primary btn-sm edit_data" data-toggle="modal" data-id="${calEvent.taskId}" id="edit" name="edit">Edit</button></p>
@@ -325,7 +325,7 @@
         var tasksDetailsHTML = '';
         tasksOnDate.forEach(function(task) {
             tasksDetailsHTML += `
-                <div class="card">
+                <div class="card mt-2" style="border-left: 3px solid ${task.color}">
                     <div class="card-body">
                         <p class="card-text font-weight-bold">${task.title}</p>
                         <p class="card-text">Date: ${moment(task.start).format('MMMM Do YYYY')} - ${moment(task.endDate).format('MMMM Do YYYY')}</p>

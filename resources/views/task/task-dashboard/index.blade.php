@@ -17,12 +17,14 @@
                     </div>
                     <div class="col-6">
                       <table class="table table-bordered table-striped table-sm mt-3">
-                        @foreach($status->where('category','Progress') as $statuses)
-                        <tr>
+                        <tbody id="progressTableBody">
+                        </tbody>
+                        {{-- @foreach($status->where('category','Progress') as $statuses)
+                        <tr class="text-center">
                           <td>{{ $statuses->name }}</td>
                           <td>{{ $main->where('progress_id',$statuses->id)->count() }}</td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                       </table>
                     </div>
                   </div>
@@ -40,8 +42,53 @@
           <div class="col-md-12 mb-4 d-flex">
             <div class="card flex-fill">
                 <div class="card-header"><i class="fal fa-burn"></i> Members</div>
-                <div class="card-body" style="height: 400px">
-                  <canvas id="memberChart"></canvas>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-9" style="height: 400px">
+                      <canvas id="memberChart"></canvas>
+                    </div>
+                    <div class="col-3">
+                      <table class="table table-bordered table-striped table-sm mt-5">
+                        <tbody id="userTableBody">
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-4 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header"><i class="fal fa-burn"></i> Today Task</div>
+                <div class="card-body">
+                  @foreach($task as $tasks)
+                  <div class="card mb-2" style="border-left: 3px solid {{ isset($tasks->taskUser->color) ? $tasks->taskUser->color : 'blue' }}">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between bg-light font-weight-bold">
+                        <div>{{ $tasks->sub_category }}</div>
+                        <div>{{ isset($tasks->taskUser->short_name) ? $tasks->taskUser->short_name : 'blue' }}</div>
+                      </div>
+                      <p class="card-text">{{ $tasks->detail }}</p>
+                    </div>
+                  </div>
+                  @endforeach
+                  {{ $task->links() }}
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-4 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header"><i class="fal fa-burn"></i> Department</div>
+                <div class="card-body">
+                  <table class="table table-bordered">
+                    <thead>
+                        <tr class="text-center bg-highlight">
+                            <td>Department</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                  </table>
                 </div>
             </div>
           </div>
@@ -159,6 +206,72 @@
   }
 
   fetchMemberChartData();
+
+
+  $(document).ready(function () {
+    $.ajax({
+      url: "/task/task-dashboard/fetchMemberTask",
+      type: 'GET',
+      success: function (data) {
+        var userTableBody = $('#userTableBody');
+        userTableBody.empty();
+        data.forEach(function (user) {
+          userTableBody.append(`
+            <tr class="text-center">
+                <td>${user.short_name}</td>
+                <td>${user.task_mains_count}</td>
+            </tr>
+          `);
+        });
+      }
+    });
+
+    $.ajax({
+      url: "/task/task-dashboard/fetchProgressTask",
+      type: 'GET',
+      success: function (data) {
+        var progressTableBody = $('#progressTableBody');
+        progressTableBody.empty();
+        data.forEach(function (user) {
+          progressTableBody.append(`
+            <tr class="text-center">
+                <td>${user.name}</td>
+                <td>${user.task_progresses_count}</td>
+            </tr>
+          `);
+        });
+      }
+    });
+
+    $.ajax({
+      url: "/task/task-dashboard/fetchDepartmentTask",
+      type: 'GET',
+      success: function (datas) {
+        var tableBody = $('#tableBody');
+        var tableHeader = $('.bg-highlight');
+
+        tableBody.empty();
+        
+        tableHeader.html('<td>Department</td>');
+
+        $.each(datas.statuses, function(index, status) {
+            tableHeader.append('<td>' + status.name + '</td>');
+        });
+
+        $.each(datas.departments, function(index, department) {
+            var row = "<tr><td>" + department.name + "</td>";
+            
+            $.each(datas.statuses, function(index, status) {
+                var statusCount = datas.status_counts[department.id][status.id];
+                row += "<td class='text-center'>" + statusCount + "</td>";
+            });
+            
+            row += "</tr>";
+            tableBody.append(row);
+        });
+      }
+    });
+  });
 
 </script>
 @endsection
