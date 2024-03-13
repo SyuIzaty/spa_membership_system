@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        SENARAI <span class="fw-300"><i>BAHAN / ALAT GANTI</i></span>
+                        SENARAI <span class="fw-300">BAHAN / ALAT GANTI</span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -23,30 +23,22 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         @if (Session::has('message'))
-                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
-                        @endif
-                        @if (Session::has('notification'))
-                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
+                            <div class="alert alert-success" style="color: #3b6324"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                         @endif
                         <div class="table-responsive">
                             <table id="alat" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr class="text-center bg-primary-50" style="white-space: nowrap">
-                                        <th style="width:30px">NO</th>
-                                        <th>ALAT GANTI</th>
+                                        <th>ID</th>
+                                        <th>BAHAN/ALAT GANTI</th>
                                         <th>TINDAKAN</th>
-                                    </tr>
-                                    <tr>
-                                        <td class="hasinput"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian alat"></td>
-                                        <td class="hasinput"></td>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
                     </div>
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                        <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary ml-auto float-right"><i class="fal fa-plus-square"></i> Tambah Alat Ganti</a>
+                        <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-info ml-auto float-right"><i class="fal fa-plus-square"></i> Tambah Bahan/Alat Ganti</a>
                     </div>
                 </div>
             </div>
@@ -62,7 +54,7 @@
                 <div class="modal-body">
                     {!! Form::open(['action' => 'Aduan\AlatGantiController@tambahAlat', 'method' => 'POST']) !!}
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
-                        
+
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="alat_ganti"><span class="text-danger">*</span> Bahan/Alat Ganti :</label></td>
                             <td colspan="4"><input value="{{ old('alat_ganti') }}" class="form-control" id="alat_ganti" name="alat_ganti" required>
@@ -71,10 +63,10 @@
                                 @enderror
                             </td>
                         </div>
-                     
+
                     <div class="footer">
-                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
-                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
+                        <button type="submit" class="btn btn-success ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
+                        <button type="button" class="btn btn-secondary ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
                     </div>
                     {!! Form::close() !!}
                 </div>
@@ -101,10 +93,10 @@
                             @enderror
                         </td>
                     </div>
-                    
+
                     <div class="footer">
-                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Kemaskini</button>
-                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
+                        <button type="submit" class="btn btn-success ml-auto float-right"><i class="fal fa-save"></i> Kemaskini</button>
+                        <button type="button" class="btn btn-secondary ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
                     </div>
 
                     {!! Form::close() !!}
@@ -126,39 +118,13 @@
         });
 
         $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var id = button.data('id') 
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
             var alat = button.data('alat')
 
-            $('.modal-body #id').val(id); 
-            $('.modal-body #alat').val(alat); 
+            $('.modal-body #id').val(id);
+            $('.modal-body #alat').val(alat);
         })
-
-        $('#alat thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
 
         var table = $('#alat').DataTable({
             processing: true,
@@ -170,14 +136,14 @@
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { className: 'text-center', data: 'alat_ganti', name: 'alat_ganti' },
+                    { data: 'alat_ganti', name: 'alat_ganti' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 0, "asc" ]],
+                "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
 
         $('#alat').on('click', '.btn-delete[data-remote]', function (e) {
@@ -190,13 +156,13 @@
             var url = $(this).data('remote');
 
             Swal.fire({
-                title: 'Padam Alat?',
+                title: 'Padam Bahan/Alat Ganti?',
                 text: "Data tidak boleh dikembalikan semula!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Padam Alat!',
+                confirmButtonText: 'Ya!',
                 cancelButtonText: 'Tidak'
             }).then((result) => {
                 if (result.value) {

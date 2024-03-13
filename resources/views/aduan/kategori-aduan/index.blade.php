@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        SENARAI <span class="fw-300"><i>KATEGORI ADUAN</i></span>
+                        SENARAI <span class="fw-300">KATEGORI ADUAN</span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -23,32 +23,23 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         @if (Session::has('message'))
-                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
-                        @endif
-                        @if (Session::has('notification'))
-                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
+                            <div class="alert alert-success" style="color: #3b6324"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                         @endif
                         <div class="table-responsive">
                             <table id="kategori" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr class="text-center bg-primary-50" style="white-space: nowrap">
-                                        <th style="width:30px">NO</th>
+                                        <th>ID</th>
                                         <th>KOD KATEGORI</th>
                                         <th>NAMA KATEGORI</th>
                                         <th>TINDAKAN</th>
-                                    </tr>
-                                    <tr>
-                                        <td class="hasinput"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian Kod"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian Nama"></td>
-                                        <td class="hasinput"></td>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
                     </div>
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                        <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary ml-auto float-right"><i class="fal fa-plus-square"></i> Tambah Kategori</a>
+                        <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-info ml-auto float-right"><i class="fal fa-plus-square"></i> Tambah Kategori Aduan</a>
                     </div>
                 </div>
             </div>
@@ -59,7 +50,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> KATEGORI BARU</h5>
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> KATEGORI ADUAN BARU</h5>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'Aduan\KategoriAduanController@tambahKategori', 'method' => 'POST']) !!}
@@ -83,8 +74,8 @@
                         </div>
 
                     <div class="footer">
-                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
-                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
+                        <button type="submit" class="btn btn-success ml-auto float-right"><i class="fal fa-save"></i> Simpan</button>
+                        <button type="button" class="btn btn-secondary ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
                     </div>
                     {!! Form::close() !!}
                 </div>
@@ -96,7 +87,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT KATEGORI</h5>
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> EDIT KATEGORI ADUAN</h5>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'Aduan\KategoriAduanController@kemaskiniKategori', 'method' => 'POST']) !!}
@@ -121,8 +112,8 @@
                     </div>
 
                     <div class="footer">
-                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Kemaskini</button>
-                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
+                        <button type="submit" class="btn btn-success ml-auto float-right"><i class="fal fa-save"></i> Kemaskini</button>
+                        <button type="button" class="btn btn-secondary ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
                     </div>
 
                     {!! Form::close() !!}
@@ -139,7 +130,6 @@
 <script>
     $(document).ready(function()
     {
-
         $('#new').click(function () {
             $('#crud-modal').modal('show');
         });
@@ -150,36 +140,10 @@
             var kod = button.data('kod')
             var nama = button.data('nama')
 
-            $('.modal-body #kategori').val(kategori); // # for id in form
+            $('.modal-body #kategori').val(kategori);
             $('.modal-body #nama').val(nama);
             $('.modal-body #kod').val(kod);
         });
-
-        $('#kategori thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
 
         var table = $('#kategori').DataTable({
             processing: true,
@@ -192,11 +156,11 @@
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
                     { className: 'text-center', data: 'kod_kategori', name: 'kod_kategori' },
-                    { className: 'text-center', data: 'nama_kategori', name: 'nama_kategori' },
+                    { data: 'nama_kategori', name: 'nama_kategori' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 1, "asc" ]],
+                "order": [[ 2, "asc" ]],
                 "initComplete": function(settings, json) {
 
                 }
@@ -212,13 +176,13 @@
             var url = $(this).data('remote');
 
             Swal.fire({
-                title: 'Padam Kategori?',
+                title: 'Padam Kategori Aduan?',
                 text: "Data tidak boleh dikembalikan semula!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Padam Kategori!',
+                confirmButtonText: 'Ya!',
                 cancelButtonText: 'Tidak'
             }).then((result) => {
                 if (result.value) {

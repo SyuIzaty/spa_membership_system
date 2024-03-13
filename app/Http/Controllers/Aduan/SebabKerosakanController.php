@@ -19,27 +19,26 @@ class SebabKerosakanController extends Controller
      */
     public function index(Request $request)
     {
-        $sebab = new SebabKerosakan();
         $kategori = KategoriAduan::all();
-        $jenis = JenisKerosakan::all();
 
-        return view('sebab-kerosakan.index', compact('sebab', 'kategori', 'jenis'));
+        return view('aduan.sebab-kerosakan.index', compact('kategori'));
     }
 
     public function cariJenis(Request $request)
     {
         $data = JenisKerosakan::select('jenis_kerosakan', 'id')
                 ->where('kategori_aduan', $request->id)
-                ->take(100)->get();
+                ->get();
 
         return response()->json($data);
     }
 
     public function data_sebab()
     {
-        $sebab = SebabKerosakan::with(['kategori'])->select('cms_sebab_kerosakan.*');;
+        $sebab = SebabKerosakan::whereNotIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->with(['kategori'])->select('cms_sebab_kerosakan.*');
 
         return datatables()::of($sebab)
+
         ->addColumn('action', function ($sebab) {
 
             $exist = Aduan::where('sebab_kerosakan', $sebab->id)->first();
@@ -61,11 +60,6 @@ class SebabKerosakanController extends Controller
             return $sebab->kategori->nama_kategori;
         })
 
-        // ->editColumn('jenis_kerosakan', function ($sebab) {
-
-        //     return $sebab->jenis->jenis_kerosakan;
-        // })
-
         ->make(true);
     }
 
@@ -75,18 +69,17 @@ class SebabKerosakanController extends Controller
 
         $request->validate([
             'kategori_aduan'       => 'required',
-            // 'jenis_kerosakan'      => 'required',
             'sebab_kerosakan'      => 'required|max:255',
         ]);
 
         SebabKerosakan::create([
                 'kategori_aduan'     => $request->kategori_aduan,
-                // 'jenis_kerosakan'    => $request->jenis_kerosakan,
                 'sebab_kerosakan'    => $request->sebab_kerosakan,
             ]);
 
         Session::flash('message', 'Data Sebab Kerosakan Berjaya Ditambah');
-        return redirect('sebab-kerosakan');
+
+        return redirect()->back();
     }
 
     public function kemaskiniSebab(Request $request)
@@ -98,13 +91,12 @@ class SebabKerosakanController extends Controller
         ]);
 
         $sebab->update([
-            // 'kategori_aduan'     => $request->kategori_aduan,
-            // 'jenis_kerosakan'    => $request->jenis_kerosakan,
             'sebab_kerosakan'    => $request->sebab_kerosakan,
         ]);
 
-        Session::flash('notification', 'Data Sebab Kerosakan Berjaya Dikemaskini');
-        return redirect('sebab-kerosakan');
+        Session::flash('message', 'Data Sebab Kerosakan Berjaya Dikemaskini');
+
+       return redirect()->back();
     }
 
     /**
@@ -171,7 +163,9 @@ class SebabKerosakanController extends Controller
     public function destroy($id)
     {
         $exist = SebabKerosakan::find($id);
+
         $exist->delete();
-        return response()->json(['success'=>'Data Sebab Kerosakan Berjaya Dipadam.']);
+
+        return response()->json(['message'=>'Data Sebab Kerosakan Berjaya Dipadam.']);
     }
 }

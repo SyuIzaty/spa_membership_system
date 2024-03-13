@@ -1,6 +1,11 @@
 @extends('layouts.admin')
 
 @section('content')
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
@@ -12,7 +17,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        SENARAI <span class="fw-300"><i>ADUAN DIBUAT</i></span>
+                        SENARAI <span class="fw-300">ADUAN DIBUAT</span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -37,7 +42,7 @@
                                     </div>
                                     <div class="flex-1 pl-1">
                                         <ul class="mb-0 pb-0">
-                                            <li>Pengadu wajib mengesahkan semua penambahbaikan yang dilakukan selepas status aduan bertukar kepada
+                                            <li>Pengadu wajib mengesahkan semua pembaikan yang dilakukan selepas status aduan bertukar kepada
                                                 <b style="text-transform: uppercase">Aduan Selesai</b>, <b style="text-transform: uppercase">Selesai (Lantikan Kontraktor)</b>,
                                                 <b style="text-transform: uppercase">Selesai (Lantikan UiTM)</b>, atau <b style="text-transform: uppercase">Aduan Bertindih</b>.
                                             </li>
@@ -48,41 +53,46 @@
                                 </div>
                             </div>
                             @if (Session::has('message'))
-                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
+                                <div class="alert alert-success" style="color: #3b6324"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                             @endif
                             <table id="aduan" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr class="text-center bg-primary-50" style="white-space: nowrap">
-                                        <th>#TIKET</th>
+                                        <th>TIKET ID</th>
                                         <th>LOKASI</th>
-                                        <th>ADUAN</th>
-                                        <th>STATUS</th>
+                                        <th>KATEGORI ADUAN</th>
+                                        <th>JENIS KEROSAKAN</th>
+                                        <th>SEBAB KEROSAKAN</th>
+                                        <th>TARIKH ADUAN</th>
+                                        <th>STATUS TERKINI</th>
                                         <th>JURUTEKNIK</th>
-                                        <th>PENGESAHAN</th>
-                                        <th>TARIKH</th>
-                                        <th>MASA</th>
+                                        <th>PENGESAHAN PEMBAIKAN</th>
+                                        <th>PDF</th>
                                         <th>TINDAKAN</th>
                                     </tr>
                                     <tr>
+                                        <td class="hasinput"><input type="text" class="form-control"></td>
+                                        <td class="hasinput"><input type="text" class="form-control"></td>
+                                        <td class="hasinput"><input type="text" class="form-control"></td>
+                                        <td class="hasinput"><input type="text" class="form-control"></td>
+                                        <td class="hasinput"><input type="text" class="form-control"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="yyyy-mm-dd"></td>
+                                        <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
+                                            <option value="">SEMUA</option>
+                                            @foreach($status as $statuses)
+                                                <option value="{{$statuses->nama_status}}">{{ strtoupper($statuses->nama_status)}}</option>
+                                            @endforeach
+                                        </select></td>
                                         <td class="hasinput"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Lokasi"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Aduan"></td>
-                                        <td class="hasinput">
-                                            <select id="status_aduan" name="status_aduan" class="form-control">
-                                                <option value="" selected> Semua</option>
-                                                @foreach ($status as $stat)
-                                                    <option value="{{ $stat->kod_status }}">{{ $stat->nama_status }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Juruteknik"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Pengesahan"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Masa"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                     </tr>
                                 </thead>
                             </table>
+                            <a href="/export-excel-pengadu/{{Auth::user()->id}}" id="buttonfull" class="btn btn-info float-right" style="margin-top: 15px">
+                                <i class="fal fa-file-excel"></i> Excel Report
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -108,8 +118,8 @@
                                     </div>
 
                                 <div class="footer">
-                                    <button type="submit" class="btn btn-danger ml-auto float-right"><i class="fal fa-save"></i> Hantar</button>
-                                    <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
+                                    <button type="submit" class="btn btn-success ml-auto float-right"><i class="fal fa-save"></i> Hantar</button>
+                                    <button type="button" class="btn btn-secondary ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
                                 </div>
                                 {!! Form::close() !!}
                             </div>
@@ -198,22 +208,33 @@
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
                     { data: 'lokasi_aduan', name: 'lokasi_aduan' },
-                    { data: 'kategori_aduan', name: 'kategori_aduan' },
-                    { className: 'text-center', data: 'status_aduan', name: 'status_aduan' },
-                    { data: 'juruteknik_bertugas', name: 'juruteknik_bertugas' },
-                    { className: 'text-center', data: 'pengesahan_pembaikan', name: 'pengesahan_pembaikan' },
-                    { className: 'text-center', data: 'tarikh', name: 'tarikh_laporan' },
-                    { className: 'text-center', data: 'masa', name: 'tarikh_laporan' },
+                    { data: 'kategori_aduan', name: 'kategori.nama_kategori' },
+                    { data: 'jenis_kerosakan', name: 'jenis.jenis_kerosakan' },
+                    { data: 'sebab_kerosakan', name: 'sebab.sebab_kerosakan' },
+                    { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
+                    { className: 'text-center', data: 'status_aduan', name: 'status.nama_status' },
+                    { data: 'juruteknik_bertugas', name: 'juruteknik_bertugas', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'pengesahan_pembaikan', name: 'pengesahan_pembaikan', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'pdf', name: 'pdf', orderable: false, searchable: false },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 6, "desc" ]],
+                "order": [[ 0, "desc" ]],
                 "initComplete": function(settings, json) {
 
                 }
         });
 
     });
+
+    function Print(button)
+    {
+        var url = $(button).data('page');
+        var printWindow = window.open( '{{url("/")}}'+url+'', 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+        printWindow.addEventListener('load', function(){
+            printWindow.print();
+        }, true);
+    }
 
 </script>
 

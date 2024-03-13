@@ -22,14 +22,15 @@ class KategoriAduanController extends Controller
     {
         $kategori = KategoriAduan::where('id', $request->id)->first();
 
-        return view('kategori-aduan.index', compact('kategori'));
+        return view('aduan.kategori-aduan.index', compact('kategori'));
     }
 
     public function data_kategori()
     {
-        $kategori = KategoriAduan::all();
+        $kategori = KategoriAduan::whereNotIn('id', [9,10,14,16])->select('cms_kategori_aduan.*');
 
         return datatables()::of($kategori)
+
         ->addColumn('action', function ($kategori) {
 
             $exist = Aduan::where('kategori_aduan', $kategori->kod_kategori)->first();
@@ -59,8 +60,9 @@ class KategoriAduanController extends Controller
                 'nama_kategori'    => $request->nama_kategori,
             ]);
 
-        Session::flash('message', 'Data Kategori Berjaya Ditambah');
-        return redirect('kategori-aduan');
+        Session::flash('message', 'Data Kategori Aduan Berjaya Ditambah');
+
+        return redirect()->back();
     }
 
     public function kemaskiniKategori(Request $request)
@@ -68,12 +70,12 @@ class KategoriAduanController extends Controller
         $kategori = KategoriAduan::where('id', $request->kategori_id)->first();
 
         $kategori->update([
-            // 'kod_kategori'     => $request->kod_kategori,
             'nama_kategori'    => $request->nama_kategori,
         ]);
 
-        Session::flash('notification', 'Data Kategori Berjaya Dikemaskini');
-        return redirect('kategori-aduan');
+        Session::flash('message', 'Data Kategori Aduan Berjaya Dikemaskini');
+
+        return redirect()->back();
     }
 
     /**
@@ -139,8 +141,6 @@ class KategoriAduanController extends Controller
      */
     public function destroy($id)
     {
-        // $exist = KategoriAduan::find($id);
-
         $exist = KategoriAduan::where('id', $id)->first();
 
         $jenis = JenisKerosakan::where('kategori_aduan', $exist->kod_kategori)->delete();
@@ -149,6 +149,6 @@ class KategoriAduanController extends Controller
 
         $exist->delete();
 
-        return response()->json(['success'=>'Data Kategori Aduan Berjaya Dipadam.']);
+        return response()->json(['message'=>'Data Kategori Aduan Berjaya Dipadam.']);
     }
 }

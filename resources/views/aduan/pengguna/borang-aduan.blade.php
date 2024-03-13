@@ -21,11 +21,11 @@
                     <div class="panel-content">
                         <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
                         <h4 style="text-align: center">
-                            <b>BORANG E-ADUAN</b>
+                            <b>BORANG E-ADUAN FASILITI</b>
                         </h4>
                         <div>
-                            <p style="padding-left: 30px; padding-right: 30px">
-                                <b>PERHATIAN!</b> : Sebarang aduan kerosakkan akan diambil tindakan di dalam tempoh <b>lima (5)</b> hari bekerja. Sekiranya tiada tindakan dibuat sila rujuk kepada <b>Pegawai Fasiliti/IITU</b> untuk laporan/semakan. Sebarang aduan adalah diwajibkan secara online. Laporan secara manual atau pun emel adalah tidak akan diproses.
+                            <p style="padding-left: 20px; padding-right: 30px">
+                                <b>PERHATIAN!</b> : Sebarang aduan kerosakkan fasiliti akan diambil tindakan di dalam tempoh <b>lima (5)</b> hari bekerja. Sekiranya tiada tindakan dibuat sila rujuk kepada <b>Pegawai Fasiliti</b> untuk laporan/semakan.
                             </p>
                         </div>
                         <div class="panel-container show">
@@ -62,13 +62,13 @@
                                             <thead>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
-                                                    <td colspan="2" style="vertical-align: middle">{{ strtoupper($user->name)}}</td>
+                                                    <td colspan="2" style="vertical-align: middle">{{ strtoupper($pengguna->name)}}</td>
                                                     <th width="20%" style="vertical-align: middle">@if(Auth::user()->hasRole('Staff') ) ID Staf : @endif @if(Auth::user()->hasRole('Student') ) ID Pelajar : @endif</th>
-                                                    <td colspan="2" style="vertical-align: middle">{{ strtoupper($user->id)}}</td>
+                                                    <td colspan="2" style="vertical-align: middle">{{ strtoupper($pengguna->id)}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle">Emel : </th>
-                                                    <td colspan="2" style="vertical-align: middle">{{ $user->email}}</td>
+                                                    <td colspan="2" style="vertical-align: middle">{{ $pengguna->email}}</td>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> No. Telefon : </th>
                                                     <td colspan="2"><input class="form-control" id="no_tel_pelapor" name="no_tel_pelapor"  value="{{ old('no_tel_pelapor') }}" required></td>
                                                 </tr>
@@ -121,15 +121,9 @@
                                                     <td colspan="2">
                                                         <select class="form-control kategori" name="kategori_aduan" id="kategori_aduan" required>
                                                             <option value="" disabled selected> Sila Pilih</option>
-                                                            @if(Auth::user()->hasRole('Staff'))
-                                                                @foreach ($kategori as $kat)
-                                                                    <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ==  $kat->kod_kategori  ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
-                                                                @endforeach
-                                                            @elseif(Auth::user()->hasRole('Student'))
-                                                                @foreach ($kategori->whereNotIn('kod_kategori', ['IITU-HDWR', 'IITU-NTWK', 'IITU-OPR_EMEL', 'IITU-NTWK WIRELESS']) as $kat)
-                                                                    <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ==  $kat->kod_kategori  ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
-                                                                @endforeach
-                                                            @endif
+                                                            @foreach ($kategori as $kat)
+                                                                <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ==  $kat->kod_kategori  ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
+                                                            @endforeach
                                                         </select>
                                                         @error('kategori_aduan')
                                                             <p style="color: red">{{ $message }}</p>
@@ -234,7 +228,7 @@
                                             <li>
                                                 <a href="#" disabled style="pointer-events: none">
                                                     <i class="fal fa-check-square"></i>
-                                                    <span class=""> PERAKUAN DAN PENGESAHAN PELAPOR</span>
+                                                    <span class=""> PERAKUAN DAN PENGESAHAN PENGADU</span>
                                                 </a>
                                             </li>
                                             <p></p>
@@ -246,7 +240,7 @@
                                                         <td colspan="4"><p class="form-label" for="pengesahan_aduan">
                                                         <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="pengesahan_aduan" required id="chk" onclick="btn()"/>
                                                         BUTIRAN PERIBADI DAN ADUAN YANG DIBERIKAN ADALAH BENAR. SAYA BERSETUJU UNTUK DIHUBUNGI BAGI SEBARANG PERTANYAAN LANJUT BERKAITAN ADUAN YANG DIBUAT
-                                                        <button style="margin-top: 5px;" class="btn btn-danger float-right" type="submit" id="submit" name="submit" disabled><i class="fal fa-check"></i> Hantar Aduan</button></td>
+                                                        <button style="margin-top: 5px;" class="btn btn-success float-right" type="submit" id="submit" name="submit" disabled><i class="fal fa-check"></i> Hantar Aduan</button></td>
                                                     </div>
                                                 </tr>
                                             </thead>
@@ -321,7 +315,7 @@
 
             $.ajax({
                 type:'get',
-                url:'{!!URL::to('cariJenis')!!}',
+                url:'{!!URL::to('cari-jenis')!!}',
                 data:{'id':katid},
                 success:function(data)
                 {
@@ -354,7 +348,7 @@
 
             $.ajax({
                 type:'get',
-                url:'{!!URL::to('cariSebab')!!}',
+                url:'{!!URL::to('cari-sebab')!!}',
                 data:{'id':kateid},
                 success:function(data2)
                 {

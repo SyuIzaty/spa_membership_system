@@ -72,7 +72,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                @can('view technical admin')
+                                @can('view complaint - admin')
                                     <div class="col-md-6 mt-3">
                                         <label>Juruteknik</label>
                                         <select class="selectfilter form-control" name="juruteknik" id="juruteknik">

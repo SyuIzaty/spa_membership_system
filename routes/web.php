@@ -220,92 +220,92 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('data-stationery-report', 'Stationery\StationeryReportController@data_stationery_report');
     Route::get('/stationery-report-excel/{department}/{month}/{year}/{status}/{type}', 'Stationery\StationeryReportController@stationery_report');
 
-    // Aduan
-    Route::get('/borang-aduan', 'Aduan\AduanController@borangAduan')->name('borangAduan');
-    Route::post('simpanAduan', 'Aduan\AduanController@simpanAduan');
-    Route::get('/cariJenis', 'Aduan\AduanController@cariJenis');
-    Route::get('/cariSebab', 'Aduan\AduanController@cariSebab');
-    Route::post('batalAduan', 'Aduan\AduanController@batalAduan');
-    Route::post('hantarNotis', 'Aduan\AduanController@hantarNotis');
-    Route::get('/maklumat-aduan/{id}', 'Aduan\AduanController@maklumatAduan')->name('maklumatAduan');
-    Route::get('resit/{filename}/{type}', 'Aduan\AduanController@failResit');
-    Route::get('get-file-resit/{filename}', 'Aduan\AduanController@getImej');
-    Route::post('simpanPengesahan', 'Aduan\AduanController@simpanPengesahan');
-    Route::post('kemaskiniTahap', 'Aduan\AduanController@kemaskiniTahap');
-    Route::get('padamAlatan/{id}/{id_aduan}', 'Aduan\AduanController@padamAlatan')->name('padamAlatan');
-    Route::get('padamJuruteknik/{id}/{id_aduan}', 'Aduan\AduanController@padamJuruteknik')->name('padamJuruteknik');
-    Route::post('tukarStatus', 'Aduan\AduanController@tukarStatus');
-    Route::get('get-file-gambar/{filename}', 'Aduan\AduanController@getGambar');
-    Route::get('/info-aduan/{id}', 'Aduan\AduanController@infoAduan')->name('info');
-    Route::post('kemaskiniPenambahbaikan', 'Aduan\AduanController@kemaskiniPenambahbaikan');
-    Route::post('simpanStatus', 'Aduan\AduanController@simpanStatus');
-    Route::get('/pdfAduan/{id}', 'Aduan\AduanController@pdfAduan')->name('pdfAduan');
-    Route::get('/export_aduan', 'Aduan\AduanController@aduan_all')->name('exportAduan');
-    Route::post('/data_aduanexport', 'Aduan\AduanController@data_aduanexport');
-    Route::get('/export_aduan_staf', 'Aduan\AduanController@aduan_all_staff')->name('exportAduanStaf');
-    Route::post('/data_juruteknikexport', 'Aduan\AduanController@data_juruteknikexport');
-    Route::post('/data_individuexport', 'Aduan\AduanController@data_individuexport');
-    Route::get('/dashboard-aduan', 'Aduan\AduanController@index')->name('dashAduan');
-    Route::get('/download/{id}', 'Aduan\AduanController@downloadBorang')->name('downloadBorang');
-    Route::get('pembaikan/{filename}/{type}', 'Aduan\AduanController@failPembaikan');
-    Route::get('padamGambar/{id}/{id_aduan}', 'Aduan\AduanController@padamGambar')->name('padamGambar');
-    Route::get('/manual-aduan', 'Aduan\AduanController@manualAduan');
-    Route::get('/aduan-individu', 'Aduan\AduanController@aduan_individu')->name('aduan');
-    Route::post('data-aduan-individu', 'Aduan\AduanController@data_aduan_individu');
-    Route::get('/senarai-aduan', 'Aduan\AduanController@senarai_aduan');
-    Route::post('data-aduan', 'Aduan\AduanController@data_aduan');
-    Route::post('data-aduan-pelajar', 'Aduan\AduanController@data_aduan_pelajar');
-    Route::get('/senarai-selesai', 'Aduan\AduanController@senarai_selesai');
-    Route::post('data-selesai', 'Aduan\AduanController@data_selesai');
-    Route::post('data-selesai-pelajar', 'Aduan\AduanController@data_selesai_pelajar');
-    Route::get('/senarai-kiv', 'Aduan\AduanController@senarai_kiv');
-    Route::post('data-kiv', 'Aduan\AduanController@data_kiv');
-    Route::post('data-kiv-pelajar', 'Aduan\AduanController@data_kiv_pelajar');
-    Route::get('/senarai-bertindih', 'Aduan\AduanController@senarai_bertindih');
-    Route::post('data-bertindih', 'Aduan\AduanController@data_bertindih');
-    Route::post('data-bertindih-pelajar', 'Aduan\AduanController@data_bertindih_pelajar');
-    Route::get('/senarai-teknikal', 'Aduan\AduanController@senarai_teknikal');
-    Route::post('teknikal', 'Aduan\AduanController@teknikal');
-    Route::post('teknikal-pelajar', 'Aduan\AduanController@teknikal_pelajar');
-    Route::get('/senarai-teknikal-selesai', 'Aduan\AduanController@senarai_teknikal_selesai');
-    Route::post('teknikal-selesai', 'Aduan\AduanController@teknikal_selesai');
-    Route::post('teknikal-selesai-pelajar', 'Aduan\AduanController@teknikal_selesai_pelajar');
-    Route::get('/senarai-teknikal-kiv', 'Aduan\AduanController@senarai_teknikal_kiv');
-    Route::post('teknikal-kiv', 'Aduan\AduanController@teknikal_kiv');
-    Route::post('teknikal-kiv-pelajar', 'Aduan\AduanController@teknikal_kiv_pelajar');
-    Route::get('/senarai-teknikal-bertindih', 'Aduan\AduanController@senarai_teknikal_bertindih');
-    Route::post('teknikal-bertindih', 'Aduan\AduanController@teknikal_bertindih');
-    Route::post('teknikal-bertindih-pelajar', 'Aduan\AduanController@teknikal_bertindih_pelajar');
-    Route::post('aduan-luar', 'Aduan\AduanController@data_luar');
-    Route::post('aduan-selesai-luar', 'Aduan\AduanController@data_selesai_luar');
-    Route::post('aduan-kiv-luar', 'Aduan\AduanController@data_kiv_luar');
-    Route::post('aduan-bertindih-luar', 'Aduan\AduanController@data_bertindih_luar');
-    Route::post('teknikal-luar', 'Aduan\AduanController@teknikal_luar');
-    Route::post('teknikal-selesai-luar', 'Aduan\AduanController@teknikal_selesai_luar');
-    Route::post('teknikal-kiv-luar', 'Aduan\AduanController@teknikal_kiv_luar');
-    Route::post('teknikal-bertindih-luar', 'Aduan\AduanController@teknikal_bertindih_luar');
-    Route::get('/cariKuantiti', 'Aduan\AduanController@cariKuantiti');
-
-    // Kategori
-    Route::resource('kategori-aduan', 'Aduan\KategoriAduanController');
-    Route::post('kategoriAduan', 'Aduan\KategoriAduanController@data_kategori');
-    Route::post('tambahKategori', 'Aduan\KategoriAduanController@tambahKategori');
-    Route::post('kemaskiniKategori', 'Aduan\KategoriAduanController@kemaskiniKategori');
-    // Jenis
-    Route::resource('jenis-kerosakan', 'Aduan\JenisKerosakanController');
-    Route::post('jenisKerosakan', 'Aduan\JenisKerosakanController@data_jenis');
-    Route::post('tambahJenis', 'Aduan\JenisKerosakanController@tambahJenis');
-    Route::post('kemaskiniJenis', 'Aduan\JenisKerosakanController@kemaskiniJenis');
-    // Sebab
-    Route::resource('sebab-kerosakan', 'Aduan\SebabKerosakanController');
-    Route::post('sebabKerosakan', 'Aduan\SebabKerosakanController@data_sebab');
-    Route::post('tambahSebab', 'Aduan\SebabKerosakanController@tambahSebab');
-    Route::post('kemaskiniSebab', 'Aduan\SebabKerosakanController@kemaskiniSebab');
-    // Alat
-    Route::resource('alat-ganti', 'Aduan\AlatGantiController');
-    Route::post('alatGanti', 'Aduan\AlatGantiController@data_alat');
-    Route::post('tambahAlat', 'Aduan\AlatGantiController@tambahAlat');
-    Route::post('kemaskiniALat', 'Aduan\AlatGantiController@kemaskiniALat');
+    // Start E-Aduan Fasiliti
+        Route::get('/borang-aduan', 'Aduan\AduanController@borangAduan');
+        Route::post('simpan-aduan', 'Aduan\AduanController@simpanAduan');
+        Route::get('/cari-jenis', 'Aduan\AduanController@cariJenis');
+        Route::get('/cari-sebab', 'Aduan\AduanController@cariSebab');
+        Route::post('batal-aduan', 'Aduan\AduanController@batalAduan');
+        Route::get('/maklumat-aduan/{id}', 'Aduan\AduanController@maklumatAduan');
+        Route::get('resit/{filename}/{type}', 'Aduan\AduanController@failResitAduan');
+        Route::get('imej/{filename}', 'Aduan\AduanController@failImejAduan');
+        Route::post('simpan-pengesahan', 'Aduan\AduanController@simpanPengesahan');
+        Route::get('/export-excel-pengadu/{id}', 'Aduan\AduanController@exportExcelPengadu');
+        Route::post('kemaskiniTahap', 'Aduan\AduanController@kemaskiniTahap');
+        Route::get('padamAlatan/{id}/{id_aduan}', 'Aduan\AduanController@padamAlatan')->name('padamAlatan');
+        Route::get('padamJuruteknik/{id}/{id_aduan}', 'Aduan\AduanController@padamJuruteknik')->name('padamJuruteknik');
+        Route::post('tukarStatus', 'Aduan\AduanController@tukarStatus');
+        Route::post('hantarNotis', 'Aduan\AduanController@hantarNotis');
+        Route::get('imej-pembaikan/{filename}', 'Aduan\AduanController@failImejPembaikan');
+        Route::get('/info-aduan/{id}', 'Aduan\AduanController@infoAduan')->name('info');
+        Route::post('kemaskiniPenambahbaikan', 'Aduan\AduanController@kemaskiniPenambahbaikan');
+        Route::post('simpanStatus', 'Aduan\AduanController@simpanStatus');
+        Route::get('/pdfAduan/{id}', 'Aduan\AduanController@pdfAduan')->name('pdfAduan');
+        Route::get('/export_aduan', 'Aduan\AduanController@aduan_all')->name('exportAduan');
+        Route::post('/data_aduanexport', 'Aduan\AduanController@data_aduanexport');
+        Route::get('/export_aduan_staf', 'Aduan\AduanController@aduan_all_staff')->name('exportAduanStaf');
+        Route::post('/data_juruteknikexport', 'Aduan\AduanController@data_juruteknikexport');
+        Route::post('/data_individuexport', 'Aduan\AduanController@data_individuexport');
+        Route::get('/dashboard-aduan', 'Aduan\AduanController@index')->name('dashAduan');
+        Route::get('/download/{id}', 'Aduan\AduanController@downloadBorang')->name('downloadBorang');
+        Route::get('padamGambar/{id}/{id_aduan}', 'Aduan\AduanController@padamGambar')->name('padamGambar');
+        Route::get('/manual-aduan', 'Aduan\AduanController@manualAduan');
+        Route::get('/aduan-individu', 'Aduan\AduanController@aduan_individu')->name('aduan');
+        Route::post('data-aduan-individu', 'Aduan\AduanController@data_aduan_individu');
+        Route::get('/senarai-aduan', 'Aduan\AduanController@senarai_aduan');
+        Route::post('data-aduan', 'Aduan\AduanController@data_aduan');
+        Route::post('data-aduan-pelajar', 'Aduan\AduanController@data_aduan_pelajar');
+        Route::get('/senarai-selesai', 'Aduan\AduanController@senarai_selesai');
+        Route::post('data-selesai', 'Aduan\AduanController@data_selesai');
+        Route::post('data-selesai-pelajar', 'Aduan\AduanController@data_selesai_pelajar');
+        Route::get('/senarai-kiv', 'Aduan\AduanController@senarai_kiv');
+        Route::post('data-kiv', 'Aduan\AduanController@data_kiv');
+        Route::post('data-kiv-pelajar', 'Aduan\AduanController@data_kiv_pelajar');
+        Route::get('/senarai-bertindih', 'Aduan\AduanController@senarai_bertindih');
+        Route::post('data-bertindih', 'Aduan\AduanController@data_bertindih');
+        Route::post('data-bertindih-pelajar', 'Aduan\AduanController@data_bertindih_pelajar');
+        Route::get('/senarai-teknikal', 'Aduan\AduanController@senarai_teknikal');
+        Route::post('teknikal', 'Aduan\AduanController@teknikal');
+        Route::post('teknikal-pelajar', 'Aduan\AduanController@teknikal_pelajar');
+        Route::get('/senarai-teknikal-selesai', 'Aduan\AduanController@senarai_teknikal_selesai');
+        Route::post('teknikal-selesai', 'Aduan\AduanController@teknikal_selesai');
+        Route::post('teknikal-selesai-pelajar', 'Aduan\AduanController@teknikal_selesai_pelajar');
+        Route::get('/senarai-teknikal-kiv', 'Aduan\AduanController@senarai_teknikal_kiv');
+        Route::post('teknikal-kiv', 'Aduan\AduanController@teknikal_kiv');
+        Route::post('teknikal-kiv-pelajar', 'Aduan\AduanController@teknikal_kiv_pelajar');
+        Route::get('/senarai-teknikal-bertindih', 'Aduan\AduanController@senarai_teknikal_bertindih');
+        Route::post('teknikal-bertindih', 'Aduan\AduanController@teknikal_bertindih');
+        Route::post('teknikal-bertindih-pelajar', 'Aduan\AduanController@teknikal_bertindih_pelajar');
+        // Route::post('aduan-luar', 'Aduan\AduanController@data_luar');
+        // Route::post('aduan-selesai-luar', 'Aduan\AduanController@data_selesai_luar');
+        // Route::post('aduan-kiv-luar', 'Aduan\AduanController@data_kiv_luar');
+        // Route::post('aduan-bertindih-luar', 'Aduan\AduanController@data_bertindih_luar');
+        // Route::post('teknikal-luar', 'Aduan\AduanController@teknikal_luar');
+        // Route::post('teknikal-selesai-luar', 'Aduan\AduanController@teknikal_selesai_luar');
+        // Route::post('teknikal-kiv-luar', 'Aduan\AduanController@teknikal_kiv_luar');
+        // Route::post('teknikal-bertindih-luar', 'Aduan\AduanController@teknikal_bertindih_luar');
+        Route::get('/cariKuantiti', 'Aduan\AduanController@cariKuantiti');
+        // Kategori Aduan
+        Route::resource('kategori-aduan', 'Aduan\KategoriAduanController');
+        Route::post('kategoriAduan', 'Aduan\KategoriAduanController@data_kategori');
+        Route::post('tambahKategori', 'Aduan\KategoriAduanController@tambahKategori');
+        Route::post('kemaskiniKategori', 'Aduan\KategoriAduanController@kemaskiniKategori');
+        // Jenis Kerosakan
+        Route::resource('jenis-kerosakan', 'Aduan\JenisKerosakanController');
+        Route::post('jenisKerosakan', 'Aduan\JenisKerosakanController@data_jenis');
+        Route::post('tambahJenis', 'Aduan\JenisKerosakanController@tambahJenis');
+        Route::post('kemaskiniJenis', 'Aduan\JenisKerosakanController@kemaskiniJenis');
+        // Sebab Kerosakan
+        Route::resource('sebab-kerosakan', 'Aduan\SebabKerosakanController');
+        Route::post('sebabKerosakan', 'Aduan\SebabKerosakanController@data_sebab');
+        Route::post('tambahSebab', 'Aduan\SebabKerosakanController@tambahSebab');
+        Route::post('kemaskiniSebab', 'Aduan\SebabKerosakanController@kemaskiniSebab');
+        // Alat Ganti
+        Route::resource('alat-ganti', 'Aduan\AlatGantiController');
+        Route::post('alatGanti', 'Aduan\AlatGantiController@data_alat');
+        Route::post('tambahAlat', 'Aduan\AlatGantiController@tambahAlat');
+        Route::post('kemaskiniALat', 'Aduan\AlatGantiController@kemaskiniALat');
+    // End E-Aduan Fasiliti
 
     // Asset Management
     Route::get('/asset-type', 'Inventory\AssetParameterController@asset_type');
@@ -1034,19 +1034,19 @@ Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
 Route::get('/get-files/{id}', 'AduanKorporatController@file');
 
 // eAduan Public
-Route::get('/eAduan', 'Aduan\AduanUmumController@index');
-Route::get('/borang-aduan/{id}', 'Aduan\AduanUmumController@borangAduan');
-Route::post('simpan-aduan-umum', 'Aduan\AduanUmumController@simpanAduan');
-Route::get('/cari-jenis-umum', 'Aduan\AduanUmumController@cariJenis');
-Route::get('/cari-sebab-umum', 'Aduan\AduanUmumController@cariSebab');
-Route::get('/semak-aduan/{id}', 'Aduan\AduanUmumController@semakAduan');
-Route::post('data-aduan-umum/{id}', 'Aduan\AduanUmumController@dataAduan');
-Route::get('/maklumat-aduan-umum/{id}', 'Aduan\AduanUmumController@maklumatAduan');
-Route::post('batal-aduan-umum', 'Aduan\AduanUmumController@batalAduan');
-Route::get('imej-aduan/{filename}/{type}', 'Aduan\AduanUmumController@imejAduan');
-Route::get('resit-aduan/{filename}/{type}', 'Aduan\AduanUmumController@resitAduan');
-Route::post('pengesahan-aduan', 'Aduan\AduanUmumController@simpanPengesahan');
-Route::get('/manual-aduan-umum', 'Aduan\AduanUmumController@manualAduan');
+// Route::get('/eAduan', 'Aduan\AduanUmumController@index');
+// Route::get('/borang-aduan/{id}', 'Aduan\AduanUmumController@borangAduan');
+// Route::post('simpan-aduan-umum', 'Aduan\AduanUmumController@simpanAduan');
+// Route::get('/cari-jenis-umum', 'Aduan\AduanUmumController@cariJenis');
+// Route::get('/cari-sebab-umum', 'Aduan\AduanUmumController@cariSebab');
+// Route::get('/semak-aduan/{id}', 'Aduan\AduanUmumController@semakAduan');
+// Route::post('data-aduan-umum/{id}', 'Aduan\AduanUmumController@dataAduan');
+// Route::get('/maklumat-aduan-umum/{id}', 'Aduan\AduanUmumController@maklumatAduan');
+// Route::post('batal-aduan-umum', 'Aduan\AduanUmumController@batalAduan');
+// Route::get('imej-aduan/{filename}/{type}', 'Aduan\AduanUmumController@imejAduan');
+// Route::get('resit-aduan/{filename}/{type}', 'Aduan\AduanUmumController@resitAduan');
+// Route::post('pengesahan-aduan', 'Aduan\AduanUmumController@simpanPengesahan');
+// Route::get('/manual-aduan-umum', 'Aduan\AduanUmumController@manualAduan');
 
 Route::group([
     'prefix' => 'space',

@@ -7,7 +7,7 @@
 
             <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
             <h4 style="text-align: center">
-                <b>BORANG E-ADUAN BAGI TIKET #{{$aduan->id}}</b>
+                <b>BORANG E-ADUAN FASILITI - TIKET ID : {{$aduan->id}}{{$aduan->id}}</b>
             </h4>
             <center>
                 <label class="form-label">
@@ -77,7 +77,7 @@
 
             <table class="table table-bordered table-hover w-100">
                 <tr>
-                    <td colspan="5" style="background-color: rgb(228, 228, 228)"><label class="form-label">INFO ADUAN</label></td>
+                    <td colspan="5" style="background-color: rgb(228, 228, 228)"><label class="form-label">BUTIRAN ADUAN</label></td>
                 </tr>
                 <tr>
                     <div class="form-group">
@@ -141,14 +141,27 @@
                     <div class="form-group">
                         <td width="15%" style="vertical-align: middle"><label class="form-label" for="juruteknik">Juruteknik :</label></td>
                             <td colspan="4" style="vertical-align: middle">
-                                <ol style="margin-left: -25px">
-                                    @foreach($juruteknik as $senarai)
-                                        <li> {{ strtoupper($senarai->juruteknik->name) ?? '--'}}
-                                            ( @if ($senarai->jenis_juruteknik == 'K') KETUA @endif
-                                                @if ($senarai->jenis_juruteknik == 'P') PEMBANTU @endif )
-                                        </li>
-                                    @endforeach
-                                </ol>
+                                @if(!empty($juruteknik) && count($juruteknik) > 0)
+                                    <ol style="margin-left: -25px; margin-bottom: -2px">
+                                        @foreach($juruteknik as $senarai_juruteknik)
+                                            <li>
+                                                @if ($senarai_juruteknik->jenis_juruteknik == 'K') KETUA @endif
+                                                @if ($senarai_juruteknik->jenis_juruteknik == 'P') PEMBANTU @endif
+                                                :
+                                                {{ $senarai_juruteknik->juruteknik->name ?? '--'}}
+                                                @if(isset($senarai_juruteknik->juruteknik->staff))
+                                                    @if(isset($senarai_juruteknik->juruteknik->staff->staff_phone))
+                                                        ( {{ $senarai_juruteknik->juruteknik->staff->staff_phone }} )
+                                                    @elseif(isset($senarai_juruteknik->juruteknik->staff->staff_email))
+                                                        ( {{ $senarai_juruteknik->juruteknik->staff->staff_email }} )
+                                                    @endif
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ol>
+                                @else
+                                    TIADA JURUTEKNIK DITUGASKAN
+                                @endif
                             </td>
                     </div>
                 </tr>
@@ -158,7 +171,7 @@
                         <td colspan="2">
                             @if(isset($imej->first()->upload_image))
                                 @foreach($imej as $imejAduan)
-                                    <img src="/get-file-resit/{{ $imejAduan->upload_image }}" style="width:100px; height:100px;" class="img-fluid mr-2">
+                                    <img src="/imej/{{ $imejAduan->upload_image }}" style="width:100px; height:100px;" class="img-fluid mr-2">
                                 @endforeach
                             @else
                                 <span>TIADA GAMBAR SOKONGAN</span>
@@ -180,7 +193,7 @@
 
             <table class="table table-bordered table-hover w-100">
                 <tr>
-                    <td colspan="6" style="background-color: rgb(228, 228, 228)"><label class="form-label">TINDAKAN PENAMBAHBAIKAN</label></td>
+                    <td colspan="6" style="background-color: rgb(228, 228, 228)"><label class="form-label">RINGKASAN PEMBAIKAN</label></td>
                 </tr>
                 <tr>
                     <tr>

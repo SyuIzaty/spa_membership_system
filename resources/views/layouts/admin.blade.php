@@ -803,16 +803,16 @@
                         <!-- End ShortCourse Management System -->
 
                         {{-- Start Aduan --}}
-                        <li class="nav-title">E-ADUAN</li>
-                        @can('view technical admin')
+                        <li class="nav-title">E-ADUAN FASILITI</li>
+                        {{-- @can('view facility dashboard')
                             <li>
                                 <a href="/dashboard-aduan" title="Application Intel"
                                     data-filter-tags="application intel">
                                     <i class="fal fa-chart-pie"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Dashboard Aduan</span>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Dashboard Analisis</span>
                                 </a>
                             </li>
-                        @endcan
+                        @endcan --}}
                         @can('view complaint form')
                             <li>
                                 <a href="#" title="Aduan" data-filter-tags="aduan">
@@ -830,18 +830,18 @@
                                             <span class="nav-link-text" data-i18n="nav.senarai"> Senarai Aduan</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    {{-- <li>
                                         <a href="/manual-aduan" title="Manual Pengguna"
                                             data-filter-tags="Manual Pengguna" target="_blank"
                                             style="text-decoration: none!important">
                                             <span class="nav-link-text" data-i18n="nav.user-manual">Manual Pengguna</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </li>
                         @endcan
-                        @canany(['view complaint list', 'view complaint list - HEP'])
-                            @canany(['view technical admin', 'view complaint list - HEP'])
+                        @canany(['view complaint - admin', 'view complaint - technician', 'view complaint - HEP'])
+                            @canany(['view complaint - admin', 'view complaint - HEP'])
                                 <li class="open">
                                     <a href="#" title="Aduan" data-filter-tags="aduan">
                                         <i class="fal fa-list"></i>
@@ -861,7 +861,7 @@
                                         </li>
                                         <li>
                                             <a href="/senarai-kiv" title="Aduan KIV" data-filter-tags="kiv">
-                                                <span class="nav-link-text" data-i18n="nav.kiv"> KIV </span>
+                                                <span class="nav-link-text" data-i18n="nav.kiv">  Keep In View (KIV) </span>
                                             </a>
                                         </li>
                                         <li>
@@ -873,11 +873,11 @@
                                     </ul>
                                 </li>
                             @endcanany
-                            @can('view technical staff')
+                            @can('view complaint - technician')
                                 <li class="open">
                                     <a href="#" title="Aduan" data-filter-tags="aduan">
                                         <i class="fal fa-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.aduan">Pengurusan Aduan Juruteknik</span>
+                                        <span class="nav-link-text" data-i18n="nav.aduan">Pengurusan Aduan</span>
                                     </a>
                                     <ul>
                                         <li>
@@ -895,7 +895,7 @@
                                         </li>
                                         <li>
                                             <a href="/senarai-teknikal-kiv" title="Aduan KIV" data-filter-tags="kiv">
-                                                <span class="nav-link-text" data-i18n="nav.kiv"> KIV </span>
+                                                <span class="nav-link-text" data-i18n="nav.kiv"> Keep In View (KIV) </span>
                                             </a>
                                         </li>
                                         <li>
@@ -907,35 +907,33 @@
                                     </ul>
                                 </li>
                             @endcan
-                            @cannot('view complaint list - HEP')
+                            @canany(['view complaint - admin', 'view complaint - technician'])
                                 <li>
                                     <a href="#" title="Laporan" data-filter-tags="laporan">
                                         <i class="fal fa-file-excel"></i>
                                         <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
                                     </a>
                                     <ul>
-                                        @canany(['view technical admin', 'view technical staff'])
-                                            @can('view technical admin')
-                                                <li>
-                                                    <a href="/export_aduan" title="Kategori" data-filter-tags="kategori">
-                                                        <span class="nav-link-text" data-i18n="nav.kategori">Keseluruhan</span>
-                                                    </a>
-                                                </li>
-                                            @endcan
+                                        @can('view complaint - admin')
                                             <li>
-                                                <a href="/export_aduan_staf" title="Kategori" data-filter-tags="kategori">
-                                                    <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
+                                                <a href="/export_aduan" title="Kategori" data-filter-tags="kategori">
+                                                    <span class="nav-link-text" data-i18n="nav.kategori">Keseluruhan</span>
                                                 </a>
                                             </li>
-                                        @endcanany
+                                        @endcan
+                                        <li>
+                                            <a href="/export_aduan_staf" title="Kategori" data-filter-tags="kategori">
+                                                <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
-                            @endcannot
-                            @can('view complaint parameter')
+                            @endcanany
+                            @can('view complaint - admin')
                                 <li>
                                     <a href="#" title="Parameter" data-filter-tags="parameter">
                                         <i class="fal fa-list-alt"></i>
-                                        <span class="nav-link-text" data-i18n="nav.parameter">Pengurusan Parameter</span>
+                                        <span class="nav-link-text" data-i18n="nav.parameter">Tetapan Parameter</span>
                                     </a>
                                     <ul>
                                         <li>

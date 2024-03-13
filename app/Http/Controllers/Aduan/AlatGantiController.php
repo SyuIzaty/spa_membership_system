@@ -18,14 +18,15 @@ class AlatGantiController extends Controller
     public function index(Request $request)
     {
         $alat = new AlatGanti();
-        return view('alat-ganti.index', compact('alat'));
+        return view('aduan.alat-ganti.index', compact('alat'));
     }
 
     public function data_alat()
     {
-        $alat = AlatGanti::all();
+        $alat = AlatGanti::select('cms_alat_ganti.*');
 
         return datatables()::of($alat)
+
         ->addColumn('action', function ($alat) {
 
             $exist = AlatanPembaikan::where('alat_ganti', $alat->id)->first();
@@ -39,9 +40,9 @@ class AlatGantiController extends Controller
                 return '<a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$alat->id.'" data-alat="'.$alat->alat_ganti.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
                         <button class="btn btn-sm btn-danger btn-delete" data-remote="/alat-ganti/' . $alat->id . '"><i class="fal fa-trash"></i></button>';
             }
-            
+
         })
-            
+
         ->make(true);
     }
 
@@ -56,25 +57,27 @@ class AlatGantiController extends Controller
         AlatGanti::create([
                 'alat_ganti'     => $request->alat_ganti,
             ]);
-        
+
         Session::flash('message', 'Data Alat Ganti Berjaya Ditambah');
-        return redirect('alat-ganti');
+
+        return redirect()->back();
     }
 
-    public function kemaskiniALat(Request $request) 
+    public function kemaskiniALat(Request $request)
     {
         $alat = AlatGanti::where('id', $request->alat_id)->first();
 
         $request->validate([
             'alat_ganti'       => 'required|max:255',
         ]);
-        
+
         $alat->update([
             'alat_ganti'     => $request->alat_ganti,
         ]);
-        
-        Session::flash('notification', 'Data Alat Ganti Berjaya Dikemaskini');
-        return redirect('alat-ganti');
+
+        Session::flash('message', 'Data Alat Ganti Berjaya Dikemaskini');
+
+        return redirect()->back();
     }
 
     /**
@@ -141,7 +144,9 @@ class AlatGantiController extends Controller
     public function destroy($id)
     {
         $exist = AlatGanti::find($id);
+
         $exist->delete();
-        return response()->json(['success'=>'Data Alat Ganti Berjaya Dipadam.']);
+
+        return response()->json(['message'=>'Data Alat Ganti Berjaya Dipadam.']);
     }
 }

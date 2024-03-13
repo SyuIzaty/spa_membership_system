@@ -18,17 +18,17 @@ class JenisKerosakanController extends Controller
      */
     public function index(Request $request)
     {
-        $jenis = JenisKerosakan::where('id', $request->id)->first();
         $kategori = KategoriAduan::all();
 
-        return view('jenis-kerosakan.index', compact('jenis', 'kategori'));
+        return view('aduan.jenis-kerosakan.index', compact('kategori'));
     }
 
     public function data_jenis()
     {
-        $jenis = JenisKerosakan::with(['kategori'])->select('cms_jenis_kerosakan.*');;
+        $jenis = JenisKerosakan::whereNotIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->with(['kategori'])->select('cms_jenis_kerosakan.*');
 
         return datatables()::of($jenis)
+
         ->addColumn('action', function ($jenis) {
 
             $exist = Aduan::where('jenis_kerosakan', $jenis->id)->first();
@@ -68,7 +68,8 @@ class JenisKerosakanController extends Controller
             ]);
 
         Session::flash('message', 'Data Jenis Kerosakan Berjaya Ditambah');
-        return redirect('jenis-kerosakan');
+
+        return redirect()->back();
     }
 
     public function kemaskiniJenis(Request $request)
@@ -80,12 +81,12 @@ class JenisKerosakanController extends Controller
         ]);
 
         $jenis->update([
-            // 'kategori_aduan'     => $request->kategori_aduan,
             'jenis_kerosakan'    => $request->jenis_kerosakan,
         ]);
 
-        Session::flash('notification', 'Data Jenis Kerosakan Berjaya Dikemaskini');
-        return redirect('jenis-kerosakan');
+        Session::flash('message', 'Data Jenis Kerosakan Berjaya Dikemaskini');
+
+        return redirect()->back();
     }
 
     /**
@@ -152,7 +153,9 @@ class JenisKerosakanController extends Controller
     public function destroy($id)
     {
         $exist = JenisKerosakan::find($id);
+
         $exist->delete();
-        return response()->json(['success'=>'Data Jenis Kerosakan Berjaya Dipadam.']);
+
+        return response()->json(['message'=>'Data Jenis Kerosakan Berjaya Dipadam.']);
     }
 }
