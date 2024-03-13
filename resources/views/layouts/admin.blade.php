@@ -405,16 +405,14 @@
                                     <span class="nav-link-text" data-i18n="nav.user-manual">Calendar</span>
                                 </a>
                             </li>
-                            @role('Super Admin')
-                                <li>
-                                    <a href="/ekenderaan-dashboard" title="e-Kenderaan Dashboard"
-                                        data-filter-tags="e-Kenderaan Dashboard" target="_blank"
-                                        style="text-decoration: none!important">
-                                        <i class="fal fa-chart-pie"></i>
-                                        <span class="nav-link-text" data-i18n="nav.user-manual">Dashboard</span>
-                                    </a>
-                                </li>
-                            @endrole
+                            <li>
+                                <a href="/ekenderaan-dashboard" title="e-Kenderaan Dashboard"
+                                    data-filter-tags="e-Kenderaan Dashboard" target="_blank"
+                                    style="text-decoration: none!important">
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.user-manual">Dashboard</span>
+                                </a>
+                            </li>
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-list"></i>
@@ -1561,7 +1559,8 @@
                                 </ul>
                             </li>
                             <li class="open">
-                                <a href="/task/task-management/task-calendar" title="Training" data-filter-tags="training">
+                                <a href="/task/task-management/task-calendar" title="Training"
+                                    data-filter-tags="training">
                                     <i class="fal fa-calendar"></i>
                                     <span class="nav-link-text" data-i18n="nav.asset">Task Calendar</span>
                                 </a>

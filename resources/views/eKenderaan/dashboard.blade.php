@@ -82,7 +82,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel-tag"
-                                        style="border-left: 3px solid #39a5fd; background: #eef7fd; color: black">
+                                        style="border-left: 3px solid #886ab5; background: #f5f0fd; color: black">
                                         <b>Summary</b>
                                     </div>
                                     <div class="table-responsive">
