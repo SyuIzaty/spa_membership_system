@@ -8,7 +8,7 @@ use App\eKenderaanAssignDriver;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class EKenderaanDashboardController extends Controller
+class eKenderaanDashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -75,6 +75,7 @@ class EKenderaanDashboardController extends Controller
 
             $query->whereIn(DB::raw('MONTH(d.depart_date)'), $monthNumbers);
         }
+
 
         $assignments = $query->get();
 
