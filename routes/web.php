@@ -1081,5 +1081,6 @@ Route::group([
     Route::resource('/task-setting/task-status', 'Task\TaskSetting\TaskStatusController');
     Route::resource('/task-setting/task-priority', 'Task\TaskSetting\TaskPriorityController');
     Route::resource('/task-management/task-calendar', 'Task\TaskManagement\TaskCalendarController');
+    Route::get('/task-management/all-event', 'Task\TaskManagement\TaskCalendarController@allEvent');
     Route::post('/task-calendar/event-date', 'Task\TaskManagement\TaskCalendarController@eventDate');
 });

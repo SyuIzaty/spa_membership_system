@@ -37,7 +37,7 @@
                             @endif
                             <div class="row">
                               <div class="col-md-12">
-                                <button class="tn btn-primary btn-sm float-right mb-3" data-toggle="modal" data-target="#taskModal">Add Task</button>
+                                <button class="btn btn-primary btn-sm mb-2" data-toggle="modal" data-target="#taskModal">Add Task</button>
                               </div>
                             </div>
                             <div class="row">
@@ -293,19 +293,10 @@
     $('#calendar').fullCalendar({
       eventLimit: true,
       editable: true,
-      events: [
-          @foreach($task as $tasks)
-          {
-            title: '{{ $tasks->sub_category }}',
-            start: '{{ $tasks->start_date }}',
-            end: moment('{{ $tasks->end_date }}').add(1, 'day').format('YYYY-MM-DD'),
-            taskId: '{{ $tasks->id }}',
-            endDate: '{{ $tasks->end_date }}',
-            color: '{{ isset($tasks->taskUser->color) ? $tasks->taskUser->color : '' }}',
-            pic: '{{ isset($tasks->taskUser->short_name) ? $tasks->taskUser->short_name : '' }}',
-          },
-          @endforeach
-      ],
+      events: {
+          url: '/task/task-management/all-event',
+          method: 'GET',
+      },
         
       eventClick: function(calEvent, jsEvent, view) {
           $('#taskDetails').html(`

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Task\TaskManagement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Task\StoreTaskMainRequest;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\DepartmentList;
 use App\TaskCategory;
@@ -12,6 +13,7 @@ use App\TaskStatus;
 use App\TaskUser;
 use App\TaskType;
 use App\TaskMain;
+use App\User;
 
 class TaskCalendarController extends Controller
 {
@@ -22,14 +24,34 @@ class TaskCalendarController extends Controller
      */
     public function index()
     {
-        $task = TaskMain::all();
         $type = TaskType::Active()->get();
         $category = TaskCategory::Active()->get();
         $department = DepartmentList::all();
         $status = TaskStatus::all();
         $user = TaskUser::all();
 
-        return view('task.task-management.index',compact('task','category','type','department','status','user'));
+        return view('task.task-management.index',compact('category','type','department','status','user'));
+    }
+
+    public function allEvent()
+    {
+        $tasks = TaskMain::all();
+
+        $events = [];
+
+        foreach ($tasks as $task) {
+            $events[] = [
+                'title' => $task->sub_category,
+                'start' => $task->start_date,
+                'end' => \Carbon\Carbon::parse($task->end_date)->addDay()->format('Y-m-d'),
+                'taskId' => $task->id,
+                'endDate' => $task->end_date,
+                'color' => isset($task->taskUser->color) ? $task->taskUser->color : '',
+                'pic' => isset($task->taskUser->short_name) ? $task->taskUser->short_name : '',
+            ];
+        }
+
+        return response()->json($events);
     }
 
     /**
@@ -65,6 +87,21 @@ class TaskCalendarController extends Controller
                 'comment' => $request->comment,
                 'email_sent' => isset($request->sent_email) ? 1 : 2,
             ]);
+
+            $user_main = User::find($users);
+
+            $data = [
+                'app_recipient'     => $user_main->name,
+                'app_description'   => 'For your information, you have been assigned to a new task.',
+            ];
+
+
+            if(isset($request->sent_email)){
+                Mail::send('task.task-management.mail-template', $data, function($message) {
+                    $message->to($data->email)->subject('Task : New Task');
+                    $message->from('itadmin@intec.edu.my');
+                });
+            }
         }
 
         return redirect()->back()->with('message','Task Added');
