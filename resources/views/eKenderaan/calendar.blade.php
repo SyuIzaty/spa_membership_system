@@ -56,6 +56,12 @@
                                                         <textarea class="form-control" id="destination" rows="2" readonly></textarea>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td>Vehicle(s)</td>
+                                                    <td colspan="3">
+                                                        <span id="vehicle"></span>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
                                     </div>
@@ -89,6 +95,11 @@
                             return_date: '{{ $d->details->return_date }}',
                             purpose: {!! json_encode($d->details->purpose, JSON_UNESCAPED_UNICODE) !!},
                             destination: {!! json_encode($d->details->destination, JSON_UNESCAPED_UNICODE) !!},
+                            vehicles: [
+                                @foreach ($d->vehicles as $v)
+                                    '{{ isset($v->vehicleList) ? $v->vehicleList->name . ' - ' . $v->vehicleList->plate_no : 'NOT AVAILABLE' }}',
+                                @endforeach
+                            ],
                             eKenderaanId: '{{ $d->ekn_details_id }}',
                         },
                     @endforeach
@@ -99,6 +110,12 @@
                     }
                 },
                 eventClick: function(calEvent, jsEvent, view) {
+                    var vehicleList = '<ul>';
+                    $.each(calEvent.vehicles, function(index, vehicle) {
+                        vehicleList += '<li>' + vehicle + '</li>';
+                    });
+                    vehicleList += '</ul>';
+
                     $('#return_date').text(moment(calEvent.return_date).format('DD-MM-YYYY'));
                     $('#depart_date').text(calEvent.start.format('DD-MM-YYYY'));
                     $('#depart_time').text(moment(calEvent.depart_time, 'HH:mm:ss').format(
@@ -107,6 +124,7 @@
                         'h:mm:ss A'));
                     $('#purpose').text(calEvent.purpose);
                     $('#destination').text(calEvent.destination);
+                    $('#vehicle').html(vehicleList);
 
                     $('#eKenderaan').modal('show');
                     $("#eKenderaan").prependTo("body");
