@@ -43,6 +43,22 @@ class eKenderaanDashboardController extends Controller
         //     ->whereNull('ekn_assign_drivers.deleted_at')
         //     ->groupBy('ekn_assign_drivers.driver_id');
 
+        // $query = eKenderaanDrivers::selectRaw('
+        // ekn_drivers.id as driver_id,
+        // ekn_drivers.name as driver_name,
+        // COUNT(ekn_assign_drivers.id) as total_assignments')
+        // ->leftJoin('ekn_assign_drivers', function ($join) {
+        //     $join->on('ekn_drivers.id', '=', 'ekn_assign_drivers.driver_id')
+        //         ->whereNull('ekn_assign_drivers.deleted_at');
+        // })
+        // ->leftJoin('ekn_details as d', function ($join) {
+        //     $join->on('ekn_assign_drivers.ekn_details_id', '=', 'd.id')
+        //         ->whereNull('d.deleted_at');
+        // })
+        // ->where('ekn_drivers.status', 'Y')
+        // ->whereNull('ekn_drivers.deleted_at')
+        // ->groupBy('ekn_drivers.id');
+
         $query = eKenderaanDrivers::selectRaw('
         ekn_drivers.id as driver_id,
         ekn_drivers.name as driver_name,
@@ -57,7 +73,7 @@ class eKenderaanDashboardController extends Controller
         })
         ->where('ekn_drivers.status', 'Y')
         ->whereNull('ekn_drivers.deleted_at')
-        ->groupBy('ekn_drivers.id');
+        ->groupBy('ekn_drivers.id', 'ekn_drivers.name');
 
 
         if ($driverId) {
