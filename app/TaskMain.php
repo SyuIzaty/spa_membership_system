@@ -54,6 +54,11 @@ class TaskMain extends Model
         return $this->hasOne('App\TaskStatus','id','priority_id');
     }
 
+    public function scopeUserId($query, $user_id)
+    {
+        return $query->where('user_id',$user_id);
+    }
+
     public function scopeProgressId($query, $progress_id)
     {
         return $query->where('progress_id',$progress_id);

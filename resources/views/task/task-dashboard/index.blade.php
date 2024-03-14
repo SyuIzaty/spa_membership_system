@@ -3,7 +3,7 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Space Dashboard
+                <i class='subheader-icon fal fa-table'></i> Task Dashboard
             </h1>
         </div>
         <div class="row">

@@ -1080,6 +1080,7 @@ Route::group([
     Route::resource('/task-setting/task-category', 'Task\TaskSetting\TaskCategoryController');
     Route::resource('/task-setting/task-status', 'Task\TaskSetting\TaskStatusController');
     Route::resource('/task-setting/task-priority', 'Task\TaskSetting\TaskPriorityController');
+    Route::resource('/task-setting/task-user', 'Task\TaskSetting\TaskUserController');
     Route::resource('/task-management/task-calendar', 'Task\TaskManagement\TaskCalendarController');
     Route::get('/task-management/all-event', 'Task\TaskManagement\TaskCalendarController@allEvent');
     Route::post('/task-calendar/event-date', 'Task\TaskManagement\TaskCalendarController@eventDate');
@@ -1087,7 +1088,9 @@ Route::group([
     Route::post('/task-report/data_exporttask', 'Task\TaskManagement\TaskReportController@data_exporttask');
     Route::resource('/task-management/task-dashboard', 'Task\TaskManagement\TaskDashboardController');
     Route::get('/task-dashboard/getChartData', 'Task\TaskManagement\TaskDashboardController@getChartData');
+    Route::get('/task-dashboard/userChartData/{id}', 'Task\TaskManagement\TaskDashboardController@userChartData');
     Route::get('/task-dashboard/getPriorityData', 'Task\TaskManagement\TaskDashboardController@getPriorityData');
+    Route::get('/task-dashboard/userPriorityData/{id}', 'Task\TaskManagement\TaskDashboardController@userPriorityData');
     Route::get('/task-dashboard/getMemberData', 'Task\TaskManagement\TaskDashboardController@getMemberData');
     Route::get('/task-dashboard/fetchMemberTask', 'Task\TaskManagement\TaskDashboardController@fetchMemberTask');
     Route::get('/task-dashboard/fetchDepartmentTask', 'Task\TaskManagement\TaskDashboardController@fetchDepartmentTask');

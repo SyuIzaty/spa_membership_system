@@ -30,4 +30,9 @@ class TaskUser extends Model
     {
         return $query->where('status_id','1');
     }
+
+    public function scopeUserId($query, $user_id)
+    {
+        return $query->where('user_id',$user_id);
+    }
 }

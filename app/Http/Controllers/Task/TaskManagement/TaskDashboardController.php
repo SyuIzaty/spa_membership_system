@@ -80,6 +80,25 @@ class TaskDashboardController extends Controller
         return response()->json($data);
     }
 
+    public function userChartData($id)
+    {
+        $type = TaskStatus::CategoryId('Progress')->get();
+        $all_progress = $total_progress = [];
+        foreach ($type as $types) {
+            $all_progress[] = $types->name;
+            $all_color[] = $types->color;
+            $total_progress[] = TaskMain::ProgressId($types->id)->UserId($id)->count();
+        }
+
+        $data = [
+            'labels' => $all_progress,
+            'data' => $total_progress,
+            'color' => $all_color,
+        ];
+
+        return response()->json($data);
+    }
+
     public function getPriorityData()
     {
         $priorities = TaskStatus::CategoryId('Priority')->get();
@@ -98,6 +117,41 @@ class TaskDashboardController extends Controller
                 $count = TaskMain::where('priority_id', $priority->id)
                                 ->where('progress_id', $status->id)
                                 ->count();
+                $data['data'][] = $count;
+            }
+
+            $datasets[] = $data;
+        }
+
+        foreach ($priorities as $priority) {
+            $all_priorities[] = $priority->name;
+        }
+
+        $data = [
+            'labels' => $all_priorities,
+            'datasets' => $datasets,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function userPriorityData($id)
+    {
+        $priorities = TaskStatus::CategoryId('Priority')->get();
+        $progress = TaskStatus::CategoryId('Progress')->get();
+        $all_priorities = [];
+        $datasets = [];
+
+        foreach ($progress as $status) {
+            $data = [
+                'label' => $status->name,
+                'data' => [],
+                'backgroundColor' => $status->color,
+            ];
+            
+            foreach ($priorities as $priority) {
+                $count = TaskMain::UserId($id)->where('priority_id', $priority->id)
+                ->where('progress_id', $status->id)->count();
                 $data['data'][] = $count;
             }
 

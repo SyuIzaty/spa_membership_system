@@ -1562,6 +1562,13 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="/task/task-setting/task-user" title="Pending"
+                                    data-filter-tags="pending">
+                                    <i class="fal fa-user"></i>
+                                    <span class="nav-link-text" data-i18n="nav.pending">Member</span>
+                                </a>
+                            </li>
                             <li class="open">
                                 <a href="/task/task-management/task-calendar" title="Training"
                                     data-filter-tags="training">
