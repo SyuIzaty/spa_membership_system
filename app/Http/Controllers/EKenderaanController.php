@@ -1986,6 +1986,13 @@ class EKenderaanController extends Controller
             }
         }
 
+        if (isset($vehicle)) {
+            foreach ($vehicle as $v) {
+                $v->delete();
+                $v->update(['deleted_by' => Auth::user()->id]);
+            }
+        }
+
         $staff = User::where('id', $updateApplication->intec_id)->first();
         $staff_email =  $staff->email;
 
