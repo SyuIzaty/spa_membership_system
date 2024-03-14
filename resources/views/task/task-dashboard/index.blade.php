@@ -19,12 +19,6 @@
                       <table class="table table-bordered table-striped table-sm mt-3">
                         <tbody id="progressTableBody">
                         </tbody>
-                        {{-- @foreach($status->where('category','Progress') as $statuses)
-                        <tr class="text-center">
-                          <td>{{ $statuses->name }}</td>
-                          <td>{{ $main->where('progress_id',$statuses->id)->count() }}</td>
-                        </tr>
-                        @endforeach --}}
                       </table>
                     </div>
                   </div>
@@ -80,7 +74,7 @@
             <div class="card flex-fill">
                 <div class="card-header"><i class="fal fa-burn"></i> Department</div>
                 <div class="card-body">
-                  <table class="table table-bordered">
+                  <table class="table table-bordered table-sm">
                     <thead>
                         <tr class="text-center bg-highlight">
                             <td>Department</td>

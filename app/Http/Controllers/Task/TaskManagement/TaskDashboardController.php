@@ -17,14 +17,13 @@ class TaskDashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $main = TaskMain::all();
         $task = TaskMain::whereDate('start_date', '<=', Carbon::now())
                 ->whereDate('end_date', '>=', Carbon::now())
                 ->paginate(7);
 
-        return view('task.task-dashboard.index',compact('main','task'));
+        return view('task.task-dashboard.index',compact('task'));
     }
 
     public function fetchMemberTask()
@@ -54,7 +53,6 @@ class TaskDashboardController extends Controller
                     ->count();
             }
         }
-        // dd($departments, $statuses, $status_counts);
 
         return response()->json([
             'departments' => $departments,
