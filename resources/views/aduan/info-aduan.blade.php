@@ -29,7 +29,7 @@
                                 <div class="col-md-12">
                             @endif
                         @elseif(Auth::user()->hasPermissionTo('view complaint - technician'))
-                            @if($aduan->status_aduan == 'DJ')
+                            @if($aduan->status_aduan == 'DJ' || $aduan->status_aduan == 'TD')
                                 <div class="col-md-7">
                             @else
                                 <div class="col-md-12">
@@ -607,7 +607,7 @@
                             @endcan
                             @can('view complaint - technician')
                                 @if(isset($juru))
-                                    @if($aduan->status_aduan == 'DJ')
+                                    @if($aduan->status_aduan == 'DJ' || $aduan->status_aduan == 'TD')
                                         <div class="card card-primary card-outline">
                                             <div class="card-header">
                                                 <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>BORANG PEMBAIKAN</h5>
