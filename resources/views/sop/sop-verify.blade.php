@@ -3,7 +3,7 @@
         <table class="table table-bordered">
             <tbody>
                 <tr style="background-color:#c4cc95; vertical-align: middle; text-align: center; font-weight: bold;">
-                    <td colspan="2">Verification From QAG</td>
+                    <td colspan="2">Verification from QAG</td>
                 </tr>
 
                 @if ($data->status == '2')

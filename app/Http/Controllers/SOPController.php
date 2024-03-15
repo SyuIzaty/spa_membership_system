@@ -652,7 +652,7 @@ class SOPController extends Controller
         $data       = SopList::where('id', $id)->first();
         $dateNow    = date(' j F Y ', strtotime(Carbon::now()->toDateTimeString()));
         $staff      = Staff::get();
-        $department = SopDepartment::get();
+        $department = SopDepartment::where('active', 'Y')->get();
         $sop        = SopDetail::where('sop_lists_id', $id)->first();
         $sopReview  = SopReviewRecord::where('sop_lists_id', $id)->get();
         $sopForm    = SopForm::where('sop_lists_id', $id)->get();

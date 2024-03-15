@@ -370,7 +370,7 @@
                     <table class=" w-100" style="border: none;">
                         <tr>
                             <td style="font-weight: bold">6.0</td>
-                            <td style="font-weight: bold"> Work Flow of Application for Provisional Accreditation (MQA)
+                            <td style="font-weight: bold"> Workflow
                             </td>
                         </tr>
                     </table>

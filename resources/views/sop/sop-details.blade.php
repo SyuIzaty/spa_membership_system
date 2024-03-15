@@ -98,7 +98,7 @@
                                         in the SOP).</td>
                                 </tr>
                                 <tr>
-                                    <td><b>Work Flow</b> in <b>Part C</b>
+                                    <td><b>Workflow</b> in <b>Part C</b>
                                         (to list/ draw flow-chart of the
                                         process involved).</td>
                                 </tr>

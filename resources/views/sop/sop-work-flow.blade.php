@@ -17,7 +17,7 @@
                     <tr>
                         <th>
                             <ol>
-                                <li>Design the work flow in Visio or in any preference medium.</li>
+                                <li>Design the workflow in Visio or in any preference medium.</li>
                                 <li>Please make sure the orientation is <b style="color:red">potrait</b> and the size is
                                     <b style="color:red">A4 (8.27" x 11.69").</b>
                                 </li>

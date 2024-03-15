@@ -49,7 +49,7 @@
                                 </li>
                                 <li class="nav-item mr-2" style="background-color:#EBCEDE;">
                                     <a data-toggle="tab" style="background-color:#EBCEDE;" class="nav-link" href="#three"
-                                        role="tab">Work Flow</a>
+                                        role="tab">Workflow</a>
                                 </li>
                                 <li class="nav-item mr-2" style="background-color:#B99FC9;">
                                     <a data-toggle="tab" style="background-color:#B99FC9;" class="nav-link" href="#four"
@@ -67,7 +67,7 @@
                                     @if ($data->status != '1')
                                         <li class="nav-item mr-2" style="background-color:#c99f9f;">
                                             <a data-toggle="tab" style="background-color:#c99f9f;" class="nav-link"
-                                                href="#seven" role="tab">Verify SOP</a>
+                                                href="#seven" role="tab">Verification & Approval</a>
                                         </li>
                                     @endif
                                 @endcan
@@ -150,7 +150,7 @@
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="card">
-                                                    <div class="card-header">Work Flow (Flow Chart)</div>
+                                                    <div class="card-header">Workflow (Flow Chart)</div>
                                                     <div class="card-body">
                                                         @include('sop.sop-work-flow')
                                                     </div>
@@ -203,7 +203,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 grid-margin stretch-card">
                                                     <div class="card">
-                                                        <div class="card-header">Verify SOP</div>
+                                                        <div class="card-header">Verification & Approval</div>
                                                         <div class="card-body">
                                                             @include('sop.sop-verify')
                                                         </div>
@@ -459,7 +459,6 @@
 
                 Swal.fire({
                     title: 'Are you sure you want to verify this SOP?',
-                    text: "Ammendment can't be made once the SOP has been verified",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
