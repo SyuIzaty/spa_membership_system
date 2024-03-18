@@ -150,7 +150,7 @@
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="card">
-                                                    <div class="card-header">Workflow (Flow Chart)</div>
+                                                    <div class="card-header">Workflow (Flowchart)</div>
                                                     <div class="card-body">
                                                         @include('sop.sop-work-flow')
                                                     </div>
