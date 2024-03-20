@@ -514,7 +514,7 @@ class SOPController extends Controller
 
     public function getSOPOwner()
     {
-        $data = SopDepartment::all();
+        $data = SopDepartment::where('active', 'Y');
 
         return datatables()::of($data)
 
