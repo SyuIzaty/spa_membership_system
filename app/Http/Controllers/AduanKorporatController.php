@@ -504,7 +504,8 @@ class AduanKorporatController extends Controller
 
     public function file($id)
     {
-        $file = AduanKorporatFile::where('id', $id)->first();
+        $de_id = Crypt::decryptString($id);
+        $file = AduanKorporatFile::where('id', $de_id)->first();
         return Storage::disk('minio')->response($file->web_path);
     }
 
@@ -575,8 +576,8 @@ class AduanKorporatController extends Controller
         })
 
         ->addColumn('action', function ($list) {
-
-            return '<a href="/view-detail/' .$list->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $route = Crypt::encryptString($list->id);
+            return '<a href="/view-detail/' .$route.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
         })
 
         ->addIndexColumn()
@@ -613,7 +614,9 @@ class AduanKorporatController extends Controller
 
     public function publicDetail($id)
     {
-        $data = AduanKorporat::where('id', $id)->first();
+        $dec_id = Crypt::decryptString($id);
+
+        $data = AduanKorporat::where('id', $dec_id)->first();
 
         if($data->user_category == "STF" || $data->user_category == "STD") {
             $ids = $data->created_by;
@@ -626,7 +629,7 @@ class AduanKorporatController extends Controller
             }
         }
 
-        $file = AduanKorporatFile::where('complaint_id', $id)->get();
+        $file = AduanKorporatFile::where('complaint_id', $dec_id)->get();
         return view('aduan-korporat.view-detail', compact('data', 'file', 'ids'));
     }
 

@@ -134,9 +134,12 @@
                                                     <td colspan="4" style="vertical-align: middle">
                                                         <ol>
                                                             @foreach ($file as $f)
+                                                                @php
+                                                                    $route = Crypt::encryptString($f->id);
+                                                                @endphp
                                                                 <li>
                                                                     <a target="_blank"
-                                                                        href="/get-files/{{ $f->id }}">{{ $f->original_name }}</a>
+                                                                        href="/get-files/{{ $route }}">{{ $f->original_name }}</a>
                                                                 </li>
                                                                 <br>
                                                             @endforeach
