@@ -156,6 +156,7 @@ class AduanKorporatController extends Controller
                 'user_phone'   => 'required|regex:/[0-9]/|min:10|max:11',
                 'other_email'  => 'required|email:rfc,dns',
                 'ic'           => 'required|regex:/[0-9]/|min:9|max:12',
+                'attachment.*' => 'required|file|mimes:jpeg,png,gif,pdf,doc,docx|max:2048',
             ], [
                 'user_phone.min'      => 'Phone number does not match the format!',
                 'user_phone.max'      => 'Phone number does not match the format!',
@@ -168,6 +169,10 @@ class AduanKorporatController extends Controller
                 'ic.max'      => 'IC/Passport No. does not match the format!',
                 'ic.regex'    => 'IC/Passport No. must be number only!',
                 'ic.required' => 'IC/Passport No. is required!',
+                'attachment.*.required' => 'Attachment is required!',
+                'attachment.*.file'     => 'Attachment must be a file!',
+                'attachment.*.mimes'    => 'Attachment must be in image or document format (jpeg, png, gif, pdf, doc, docx)!',
+                'attachment.*.max'      => 'Attachment size must not exceed 2MB!',
             ]);
 
             $data                = new AduanKorporat();
