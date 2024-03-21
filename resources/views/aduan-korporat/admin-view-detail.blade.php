@@ -2,223 +2,281 @@
 
 @section('content')
 
-<main id="js-page-content" role="main" class="page-content">
-    <div class="subheader">
-        <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-file-alt'></i> i-Complaint
-        </h1>
-    </div>
-    <div class="row">
-        <div class="col-xl-12">
-            <div id="panel-1" class="panel">
-                <div class="panel-hdr bg-primary">
-                    <div class="panel-toolbar">
-                        <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
-                        <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
-                        <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+    <main id="js-page-content" role="main" class="page-content">
+        <div class="subheader">
+            <h1 class="subheader-title">
+                <i class='subheader-icon fal fa-file-alt'></i> i-Complaint
+            </h1>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div id="panel-1" class="panel">
+                    <div class="panel-hdr bg-primary">
+                        <div class="panel-toolbar">
+                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip"
+                                data-offset="0,10" data-original-title="Collapse"></button>
+                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
+                                data-offset="0,10" data-original-title="Fullscreen"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
+                                data-original-title="Close"></button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="panel-container show">
-                    <div class="panel-content">
-                        
-                        @if(session()->has('message'))
-                            <div class="alert alert-success">
-                                {{ session()->get('message') }}
-                            </div>
-                        @endif
+                    <div class="panel-container show">
+                        <div class="panel-content">
 
-                        <div class="panel-container show">
-                            <div class="panel-content">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped w-100">
-                                        <thead>
-                                            <tr>
-                                                <td colspan="3" class="bg-warning text-center"><h5>Status:  <b>{{strtoupper($data->getStatus()->first()->description)}}</b></h5></td>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                            @if (session()->has('message'))
+                                <div class="alert alert-success">
+                                    {{ session()->get('message') }}
                                 </div>
+                            @endif
 
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped w-100">
-                                        <thead>
-                                            <tr>
-                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-user"></i> USER PROFILE</label></td>
-                                            </tr>
-                                            <tr>
-                                                <th width="20%" style="vertical-align: middle">Ticket No : </th>
-                                                <td colspan="2" style="vertical-align: middle">{{isset($data->ticket_no) ? $data->ticket_no : '-'}}</td>
-                                                <th width="20%" style="vertical-align: middle">Email : </th>
-                                                <td colspan="2" style="vertical-align: middle">{{isset($data->email) ? $data->email : '-'}}</td>
-                                            </tr>
-
-                                            <tr>
-                                                <th width="20%" style="vertical-align: middle">Name : </th>
-                                                <td colspan="2" style="vertical-align: middle">{{strtoupper($data->name)}}</td>
-                                                <th width="20%" style="vertical-align: middle">Staff ID / Student ID / IC No. / Passport No. : </th>
-                                                <td colspan="2" style="vertical-align: middle">{{$data->created_by}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th width="20%" style="vertical-align: middle">Phone Number : </th>
-                                                <td colspan="2" style="vertical-align: middle">{{$data->phone_no}}</td>
-                                                <th width="20%" style="vertical-align: middle">Address : </th>
-                                                <td colspan="2" style="vertical-align: middle">{!! nl2br($data->address) !!}</td>
-                                            </tr>
-                                            <tr>
-                                                <th width="20%" style="vertical-align: middle"></span> User Category : </th>
-                                                <td colspan="2" style="vertical-align: middle">{{$data->getUserCategory->description}}</td>
-                                                <th width="20%" style="vertical-align: middle"></span> Category : </th>
-                                                <td colspan="2" style="vertical-align: middle">{{$data->getCategory->description}}</td>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped w-100">
-                                        <thead>
-                                            <tr>
-                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-file"></i> DETAILS</label></td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <th width="20%" style="vertical-align: middle">Title : </th>
-                                                <td colspan="4" style="vertical-align: middle">{{$data->title}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th width="20%" style="vertical-align: middle">Description : </th>
-                                                <td colspan="4" style="vertical-align: middle">{!! nl2br($data->description) !!}</td>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-
-                                @if ($file->isNotEmpty())
+                            <div class="panel-container show">
+                                <div class="panel-content">
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>
-                                                    <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-file"></i> FILE</label></td>
-                                                </tr>
-                                                
-                                                <tr>
-                                                    <td colspan="4" style="vertical-align: middle">
-                                                        <ol>
-                                                            @foreach ( $file as $f )
-                                                                <li>
-                                                                    <a target="_blank" href="/get-files/{{$f->id}}">{{$f->original_name}}</a>
-                                                                </li>
-                                                                <br>
-                                                            @endforeach
-                                                        </ol>
+                                                    <td colspan="3" class="bg-warning text-center">
+                                                        <h5>Status:
+                                                            <b>{{ strtoupper($data->getStatus()->first()->description) }}</b>
+                                                        </h5>
                                                     </td>
                                                 </tr>
                                             </thead>
                                         </table>
                                     </div>
-                                @endif
 
-                                @if ($data->status == '1')
-                                    @can('assign department')
-                                        <form id="formId">
-                                            @csrf
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered table-hover table-striped w-100">
-                                                    <thead>
-                                                        <input type="hidden" id="id" name="id" value="{{ $data->id }}" required>
-                                                        <tr>
-                                                            <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-pencil"></i> ASSIGN DEPARTMENT</label></td>
-                                                        </tr>
-                                                        <tr>      
-                                                            <td colspan="5" class="bg-warning-50" style="vertical-align: middle">Please assign department.</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th width="20%" style="vertical-align: middle">Department : </th>
-                                                            <td colspan="4" style="vertical-align: middle">
-                                                                <select class="form-control" name="department" id="department" required>
-                                                                    <option disabled selected>Select Department</option>
-                                                                    @foreach ($department as $d)
-                                                                        <option value="{{ $d->id }}" {{ old('department') == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary ml-auto float-right mr-2 waves-effect waves-themed" id="assign" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
-                                        </form>
-                                    @endcan
-                                @endif
-
-                                @if ($data->status == '2')
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-hover table-striped w-100">
                                             <thead>
-                                                @can('assign department')
-                                                    <tr>
-                                                        <td colspan="5" class="bg-info-50">
-                                                            <label class="form-label"><i class="fal fa-comment-alt"></i> FEEDBACK: 
-                                                                    <form id="changedept" style="display: inline-block;">
-                                                                        @csrf
-                                                                        <input type="hidden" id="id" name="id" value="{{ $data->id }}">
-                                                                        <select  name="department" id="department" >
-                                                                            <option disabled selected>Select Department</option>
-                                                                            @foreach ($department as $d)
-                                                                                <option value="{{ $d->id }}" {{ $data->assign == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                        <button type="submit" id="submitDept" class="btn btn-primary btn-xs float-right waves-effect waves-themed" style="display: none; margin-top: 5px;"><i class="fal fa-times-circle"></i> Change</button>
-                                                                    </form>
-                                                            </label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>      
-                                                        <td colspan="5" class="bg-warning-50" style="vertical-align: middle">Department assignation can still be changed if still no feedback yet.</td>
-                                                    </tr>
-                                                @endcan
-                                                @can('take action')
-                                                    <tr>
-                                                        <td colspan="5" class="bg-info-50">
-                                                            <label class="form-label"><i class="fal fa-comment-alt"></i> FEEDBACK: </label>
-                                                        </td>
-                                                    </tr>
-                                                    <form id="formRemark">
-                                                        @csrf                
-                                                        <input type="hidden" id="id" name="id" value="{{ $data->id }}">
-                                                        <tr>
-                                                            <td colspan="4" style="vertical-align: middle">
-                                                                <textarea value="{{ old('remark') }}" class="form-control summernote" id="remark" name="remark"></textarea>                                        
-                                                                <br>
-                                                                <button type="submit" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" id="remarks" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
-                                                            </td>
-                                                        </tr>
-                                                    </form>
-                                                @endcan
+                                                <tr>
+                                                    <td colspan="5" class="bg-info-50"><label class="form-label"><i
+                                                                class="fal fa-user"></i> USER PROFILE</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle">Ticket No : </th>
+                                                    <td colspan="2" style="vertical-align: middle">
+                                                        {{ isset($data->ticket_no) ? $data->ticket_no : '-' }}</td>
+                                                    <th width="20%" style="vertical-align: middle">Email : </th>
+                                                    <td colspan="2" style="vertical-align: middle">
+                                                        {{ isset($data->email) ? $data->email : '-' }}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle">Name : </th>
+                                                    <td colspan="2" style="vertical-align: middle">
+                                                        {{ strtoupper($data->name) }}</td>
+                                                    <th width="20%" style="vertical-align: middle">Staff ID / Student ID
+                                                        / IC No. / Passport No. : </th>
+                                                    <td colspan="2" style="vertical-align: middle">{{ $id }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle">Phone Number : </th>
+                                                    <td colspan="2" style="vertical-align: middle">{{ $data->phone_no }}
+                                                    </td>
+                                                    <th width="20%" style="vertical-align: middle">Address : </th>
+                                                    <td colspan="2" style="vertical-align: middle">
+                                                        {!! nl2br($data->address) !!}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle"></span> User Category
+                                                        : </th>
+                                                    <td colspan="2" style="vertical-align: middle">
+                                                        {{ $data->getUserCategory->description }}</td>
+                                                    <th width="20%" style="vertical-align: middle"></span> Category :
+                                                    </th>
+                                                    <td colspan="2" style="vertical-align: middle">
+                                                        {{ $data->getCategory->description }}</td>
+                                                </tr>
                                             </thead>
                                         </table>
-                                    </div>                                       
-                                @endif
+                                    </div>
 
-                                @if ($data->status == '3' || $data->status == '4')
-                                        @can('view complaint')
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped w-100">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="5" class="bg-info-50"><label class="form-label"><i
+                                                                class="fal fa-file"></i> DETAILS</label></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle">Title : </th>
+                                                    <td colspan="4" style="vertical-align: middle">{{ $data->title }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle">Description : </th>
+                                                    <td colspan="4" style="vertical-align: middle">
+                                                        {!! nl2br($data->description) !!}</td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+
+                                    @if ($file->isNotEmpty())
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <td colspan="5" class="bg-info-50"><label class="form-label"><i
+                                                                    class="fal fa-file"></i> FILE</label></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="4" style="vertical-align: middle">
+                                                            <ol>
+                                                                @foreach ($file as $f)
+                                                                    <li>
+                                                                        <a target="_blank"
+                                                                            href="/get-files/{{ $f->id }}">{{ $f->original_name }}</a>
+                                                                    </li>
+                                                                    <br>
+                                                                @endforeach
+                                                            </ol>
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    @endif
+
+                                    @if ($data->status == '1')
+                                        @can('assign department')
+                                            <form id="formId">
+                                                @csrf
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
+                                                            <input type="hidden" id="id" name="id"
+                                                                value="{{ $data->id }}" required>
                                                             <tr>
-                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-comment-alt"></i> FEEDBACK: {{$data->getDepartment->name}} Department</label></td>
+                                                                <td colspan="5" class="bg-info-50"><label
+                                                                        class="form-label"><i class="fal fa-pencil"></i>
+                                                                        ASSIGN DEPARTMENT</label></td>
                                                             </tr>
-                                                            
                                                             <tr>
+                                                                <td colspan="5" class="bg-warning-50"
+                                                                    style="vertical-align: middle">Please assign department.
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th width="20%" style="vertical-align: middle">Department :
+                                                                </th>
                                                                 <td colspan="4" style="vertical-align: middle">
-                                                                    <p style="font-size: 10px;"><i style="color:#858c93">{{isset($dataRemark->staff->staff_name) ? $dataRemark->staff->staff_name : ''}} &nbsp; {{isset($dataRemark->created_at) ? $dataRemark->created_at : ''}}</i></p>
-                                                                    {!! nl2br($dataRemark->remark) !!}
+                                                                    <select class="form-control" name="department"
+                                                                        id="department" required>
+                                                                        <option disabled selected>Select Department</option>
+                                                                        @foreach ($department as $d)
+                                                                            <option value="{{ $d->id }}"
+                                                                                {{ old('department') == $d->id ? 'selected' : '' }}>
+                                                                                {{ $d->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </td>
                                                             </tr>
                                                         </thead>
                                                     </table>
                                                 </div>
+                                                <button type="submit"
+                                                    class="btn btn-primary ml-auto float-right mr-2 waves-effect waves-themed"
+                                                    id="assign" style="margin-bottom: 20px;"><i
+                                                        class="fal fa-times-circle"></i> Submit</button>
+                                            </form>
+                                        @endcan
+                                    @endif
+
+                                    @if ($data->status == '2')
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    @can('assign department')
+                                                        <tr>
+                                                            <td colspan="5" class="bg-info-50">
+                                                                <label class="form-label"><i class="fal fa-comment-alt"></i>
+                                                                    FEEDBACK:
+                                                                    <form id="changedept" style="display: inline-block;">
+                                                                        @csrf
+                                                                        <input type="hidden" id="id" name="id"
+                                                                            value="{{ $data->id }}">
+                                                                        <select name="department" id="department">
+                                                                            <option disabled selected>Select Department</option>
+                                                                            @foreach ($department as $d)
+                                                                                <option value="{{ $d->id }}"
+                                                                                    {{ $data->assign == $d->id ? 'selected' : '' }}>
+                                                                                    {{ $d->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <button type="submit" id="submitDept"
+                                                                            class="btn btn-primary btn-xs float-right waves-effect waves-themed"
+                                                                            style="display: none; margin-top: 5px;"><i
+                                                                                class="fal fa-times-circle"></i>
+                                                                            Change</button>
+                                                                    </form>
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="bg-warning-50"
+                                                                style="vertical-align: middle">Department assignation can still
+                                                                be changed if still no feedback yet.</td>
+                                                        </tr>
+                                                    @endcan
+                                                    @can('take action')
+                                                        <tr>
+                                                            <td colspan="5" class="bg-info-50">
+                                                                <label class="form-label"><i class="fal fa-comment-alt"></i>
+                                                                    FEEDBACK: </label>
+                                                            </td>
+                                                        </tr>
+                                                        <form id="formRemark">
+                                                            @csrf
+                                                            <input type="hidden" id="id" name="id"
+                                                                value="{{ $data->id }}">
+                                                            <tr>
+                                                                <td colspan="4" style="vertical-align: middle">
+                                                                    <textarea value="{{ old('remark') }}" class="form-control summernote" id="remark" name="remark"></textarea>
+                                                                    <br>
+                                                                    <button type="submit"
+                                                                        class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                                                        id="remarks" style="margin-bottom: 20px;"><i
+                                                                            class="fal fa-times-circle"></i> Submit</button>
+                                                                </td>
+                                                            </tr>
+                                                        </form>
+                                                    @endcan
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    @endif
+
+                                    @if ($data->status == '3' || $data->status == '4')
+                                        @can('view complaint')
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <td colspan="5" class="bg-info-50"><label
+                                                                    class="form-label"><i class="fal fa-comment-alt"></i>
+                                                                    FEEDBACK: {{ $data->getDepartment->name }}
+                                                                    Department</label></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="4" style="vertical-align: middle">
+                                                                <p style="font-size: 10px;"><i
+                                                                        style="color:#858c93">{{ isset($dataRemark->staff->staff_name) ? $dataRemark->staff->staff_name : '' }}
+                                                                        &nbsp;
+                                                                        {{ isset($dataRemark->created_at) ? $dataRemark->created_at : '' }}</i>
+                                                                </p>
+                                                                {!! nl2br($dataRemark->remark) !!}
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
                                         @endcan
                                     @endif
 
@@ -229,19 +287,30 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
-                                                            <input type="hidden" id="id" name="id" value="{{ $data->id }}" required>
+                                                            <input type="hidden" id="id" name="id"
+                                                                value="{{ $data->id }}" required>
                                                             <tr>
-                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-user"></i> ADMIN FEEDBACK</label></td>
-                                                            </tr>
-                                                            <tr>      
-                                                                <td colspan="5" class="bg-warning-50" style="vertical-align: middle; color:#ff0030;">Please write feedback carefully. This will be displayed to user view.</td>
+                                                                <td colspan="5" class="bg-info-50"><label
+                                                                        class="form-label"><i class="fal fa-user"></i> ADMIN
+                                                                        FEEDBACK</label></td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="4" style="vertical-align: middle">   
-                                                                    <textarea class="form-control summernote" id="adminremarks" name="adminremarks" required>{!! nl2br($dataRemark->remark) !!}</textarea>                                        
+                                                                <td colspan="5" class="bg-warning-50"
+                                                                    style="vertical-align: middle; color:#ff0030;">Please write
+                                                                    feedback carefully. This will be displayed to user view.
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="4" style="vertical-align: middle">
+                                                                    <textarea class="form-control summernote" id="adminremarks" name="adminremarks" required>{!! nl2br($dataRemark->remark) !!}</textarea>
                                                                     <br>
-                                                                    <p class="form-label" for="check"><input type="checkbox" name="check" checked> Notify user by email</p> 
-                                                                    <button type="submit" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" id="adminremark"><i class="fal fa-times-circle"></i> Complete</button>
+                                                                    <p class="form-label" for="check"><input
+                                                                            type="checkbox" name="check" checked> Notify
+                                                                        user by email</p>
+                                                                    <button type="submit"
+                                                                        class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed"
+                                                                        id="adminremark"><i class="fal fa-times-circle"></i>
+                                                                        Complete</button>
                                                                 </td>
                                                             </tr>
                                                         </thead>
@@ -258,12 +327,18 @@
                                                     <table class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
                                                             <tr>
-                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-user"></i> ADMIN FEEDBACK</label></td>
+                                                                <td colspan="5" class="bg-info-50"><label
+                                                                        class="form-label"><i class="fal fa-user"></i> ADMIN
+                                                                        FEEDBACK</label></td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td colspan="4" style="vertical-align: middle">
-                                                                    <p style="font-size: 10px;"><i style="color:#858c93">{{isset($dataRemark->staffAdmin->staff_name) ? $dataRemark->staffAdmin->staff_name : ''}} &nbsp; {{isset($dataRemark->updated_at) ? $dataRemark->updated_at : ''}}</i></p>
+                                                                    <p style="font-size: 10px;"><i
+                                                                            style="color:#858c93">{{ isset($dataRemark->staffAdmin->staff_name) ? $dataRemark->staffAdmin->staff_name : '' }}
+                                                                            &nbsp;
+                                                                            {{ isset($dataRemark->updated_at) ? $dataRemark->updated_at : '' }}</i>
+                                                                    </p>
                                                                     {!! nl2br($dataRemark->admin_remark) !!}
                                                                 </td>
                                                             </tr>
@@ -273,19 +348,19 @@
                                             @endif
                                         @endcan
                                     @endif
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 
 @endsection
 
 @section('script')
-<script>
+    <script>
         $('#department').select2({
             placeholder: "Select Department",
             allowClear: true,
@@ -300,63 +375,63 @@
 
 
         $("#assign").on('click', function(e) {
-           
-           e.preventDefault();
+
+            e.preventDefault();
 
             var datas = $('#formId').serialize();
 
             $.ajax({
                 type: "POST",
-                url: "{{ url('get-department')}}",
+                url: "{{ url('get-department') }}",
                 data: datas,
                 dataType: "json",
-                success: function (response) {
-                console.log(response);
-                        
-                Swal.fire({
-                title: response.success,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes!'
-            }).then(function (e) {
+                success: function(response) {
+                    console.log(response);
 
-                if (e.value === true) {
                     Swal.fire({
-                        title: 'Sending..',
-                        text: 'Please wait..',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        allowEnterKey: false,
-                        onOpen: () => {
-                            Swal.showLoading()
+                        title: response.success,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes!'
+                    }).then(function(e) {
+
+                        if (e.value === true) {
+                            Swal.fire({
+                                title: 'Sending..',
+                                text: 'Please wait..',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                allowEnterKey: false,
+                                onOpen: () => {
+                                    Swal.showLoading()
+                                }
+                            })
+                            $.ajax({
+                                type: "POST",
+                                url: "{{ url('assign-department') }}",
+                                data: datas,
+                                dataType: "json",
+                                success: function(response) {
+                                    console.log(response);
+                                    if (response) {
+                                        Swal.fire(response.success);
+                                        location.reload();
+                                    }
+                                }
+                            });
+
+                        } else {
+                            e.dismiss;
                         }
+
+                    }, function(dismiss) {
+                        return false;
                     })
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ url('assign-department')}}",
-                        data: datas,
-                        dataType: "json",
-                        success: function (response) {
-                        console.log(response);
-                        if(response){
-                        Swal.fire(response.success);
-                        location.reload();
-                    }
-                        }
-                    });
 
-                } else {
-                    e.dismiss;
+
                 }
-
-            }, function (dismiss) {
-                return false;
-            })
-
-
-            }
             });
 
         });
@@ -367,9 +442,9 @@
             var datas = $('#formRemark').serialize();
 
             $.ajaxSetup({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
 
             Swal.fire({
@@ -384,26 +459,26 @@
                 if (result.value) {
 
                     Swal.fire({
-                    title: 'Loading..',
-                    text: 'Please wait..',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    allowEnterKey: false,
-                    onOpen: () => {
-                        Swal.showLoading()
-                    }
-                })
+                        title: 'Loading..',
+                        text: 'Please wait..',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        onOpen: () => {
+                            Swal.showLoading()
+                        }
+                    })
                     $.ajax({
                         type: "POST",
-                        url: "{{ url('submit-remark')}}",
+                        url: "{{ url('submit-remark') }}",
                         data: datas,
                         dataType: "json",
-                        success: function (response) {
-                        console.log(response);
-                        if(response){
-                        Swal.fire(response.success);
-                        location.reload();
-                    }
+                        success: function(response) {
+                            console.log(response);
+                            if (response) {
+                                Swal.fire(response.success);
+                                location.reload();
+                            }
                         }
                     });
                 }
@@ -416,9 +491,9 @@
             var datas = $('#formAdminRemark').serialize();
 
             $.ajaxSetup({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
 
             Swal.fire({
@@ -433,71 +508,68 @@
                 if (result.value) {
 
                     Swal.fire({
-                    title: 'Loading..',
-                    text: 'Please wait..',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    allowEnterKey: false,
-                    onOpen: () => {
-                        Swal.showLoading()
-                    }
-                })
+                        title: 'Loading..',
+                        text: 'Please wait..',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        onOpen: () => {
+                            Swal.showLoading()
+                        }
+                    })
                     $.ajax({
                         type: "POST",
-                        url: "{{ url('submit-complete')}}",
+                        url: "{{ url('submit-complete') }}",
                         data: datas,
                         dataType: "json",
-                        success: function (response) {
-                        console.log(response);
-                        if(response){
-                        Swal.fire(response.success);
-                        location.reload();
-                    }
+                        success: function(response) {
+                            console.log(response);
+                            if (response) {
+                                Swal.fire(response.success);
+                                location.reload();
+                            }
                         }
                     });
                 }
             })
         });
 
-        $(function() { 
-            $(document).on('change','#department',function(){
+        $(function() {
+            $(document).on('change', '#department', function() {
                 $("#submitDept").show();
             });
         });
 
         $("#submitDept").on('click', function(e) {
-        
-        e.preventDefault();
 
-        var datas = $('#changedept').serialize();
+            e.preventDefault();
 
-        $.ajaxSetup({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+            var datas = $('#changedept').serialize();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
 
-        $.ajax({
-            type: "POST",
-            url: "{{ url('change-dept')}}",
-            data: datas,
-            dataType: "json",
-            success: function(response) {
-                console.log(response);
-                if(response){
-                    Swal.fire(response.success);
-                    $("#submitDept").hide();
+            $.ajax({
+                type: "POST",
+                url: "{{ url('change-dept') }}",
+                data: datas,
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                    if (response) {
+                        Swal.fire(response.success);
+                        $("#submitDept").hide();
+                    }
+                },
+                error: function(error) {
+                    console.log(error)
+                    alert("Error");
                 }
-            },
-            error:function(error){
-                console.log(error)
-                alert("Error");
-            }
+            });
+
         });
-
-    });
-
-        
-</script>
+    </script>
 @endsection
-
