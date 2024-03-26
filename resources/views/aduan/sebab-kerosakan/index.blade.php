@@ -168,7 +168,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/sebabKerosakan",
+                url: "/data-sebab-kerosakan",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },

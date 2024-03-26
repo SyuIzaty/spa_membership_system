@@ -130,7 +130,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/alatGanti",
+                url: "/data-alat-ganti",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },

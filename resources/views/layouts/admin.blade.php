@@ -909,24 +909,10 @@
                             @endcan
                             @canany(['view complaint - admin', 'view complaint - technician'])
                                 <li>
-                                    <a href="#" title="Laporan" data-filter-tags="laporan">
+                                    <a href="/laporan-aduan" title="Laporan" data-filter-tags="laporan">
                                         <i class="fal fa-file-excel"></i>
                                         <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
                                     </a>
-                                    <ul>
-                                        @can('view complaint - admin')
-                                            <li>
-                                                <a href="/export_aduan" title="Kategori" data-filter-tags="kategori">
-                                                    <span class="nav-link-text" data-i18n="nav.kategori">Keseluruhan</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        <li>
-                                            <a href="/export_aduan_staf" title="Kategori" data-filter-tags="kategori">
-                                                <span class="nav-link-text" data-i18n="nav.kategori">Juruteknik</span>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
                             @endcanany
                             @can('view complaint - admin')
@@ -961,6 +947,24 @@
                             @endcan
                         @endcanany
                         {{-- End Aduan --}}
+
+                        {{-- Start Helpdesk IITU --}}
+                            <li class="nav-title">HELPDESK IITU</li>
+                            <li>
+                                <a href="https://forms.office.com/r/TwQq580L7m" title="Helpdesk" data-filter-tags="helpdesk">
+                                    <i class="fal fa-file-alt"></i>
+                                    <span class="nav-link-text" data-i18n="nav.helpdesk">Complaint Form</span>
+                                </a>
+                            </li>
+                            @can('view complaint - IT')
+                                <li>
+                                    <a href="/aduan-it" title="Aduan" data-filter-tags="aduan">
+                                        <i class="fal fa-list-alt"></i>
+                                        <span class="nav-link-text" data-i18n="nav.aduan">E-Aduan (Backdated)</span>
+                                    </a>
+                                </li>
+                            @endcan
+                        {{-- End Helpdesk IITU --}}
 
                         {{-- Start Training --}}
                         @can('view training component')

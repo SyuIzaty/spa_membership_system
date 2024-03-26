@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\KategoriAduan;
 use App\JenisKerosakan;
 use App\SebabKerosakan;
+use App\AduanLog;
 use App\Aduan;
 use Session;
+use Auth;
 
 class KategoriAduanController extends Controller
 {
@@ -25,7 +27,7 @@ class KategoriAduanController extends Controller
         return view('aduan.kategori-aduan.index', compact('kategori'));
     }
 
-    public function data_kategori()
+    public function dataKategori()
     {
         $kategori = KategoriAduan::whereNotIn('id', [9,10,14,16])->select('cms_kategori_aduan.*');
 
@@ -53,12 +55,25 @@ class KategoriAduanController extends Controller
 
     public function tambahKategori(Request $request)
     {
-        $kategori = KategoriAduan::where('id', $request->id)->first();
+        $request->validate([
+            'kod_kategori'       => 'required',
+            'nama_kategori'      => 'required|max:255',
+        ]);
 
-        KategoriAduan::create([
-                'kod_kategori'     => $request->kod_kategori,
-                'nama_kategori'    => $request->nama_kategori,
-            ]);
+        $kategori = KategoriAduan::create([
+            'kod_kategori'     => $request->kod_kategori,
+            'nama_kategori'    => $request->nama_kategori,
+        ]);
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Tambah Kategori Aduan',
+            'subject_id'        => $kategori->id,
+            'subject_type'      => 'App\KategoriAduan',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
 
         Session::flash('message', 'Data Kategori Aduan Berjaya Ditambah');
 
@@ -67,10 +82,24 @@ class KategoriAduanController extends Controller
 
     public function kemaskiniKategori(Request $request)
     {
+        $request->validate([
+            'nama_kategori'      => 'required|max:255',
+        ]);
+
         $kategori = KategoriAduan::where('id', $request->kategori_id)->first();
 
         $kategori->update([
             'nama_kategori'    => $request->nama_kategori,
+        ]);
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Kemaskini Kategori Aduan',
+            'subject_id'        => $kategori->id,
+            'subject_type'      => 'App\KategoriAduan',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
         ]);
 
         Session::flash('message', 'Data Kategori Aduan Berjaya Dikemaskini');
@@ -148,6 +177,16 @@ class KategoriAduanController extends Controller
         $sebab = SebabKerosakan::where('kategori_aduan', $exist->kod_kategori)->delete();
 
         $exist->delete();
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Padam Kategori Aduan',
+            'subject_id'        => $exist->id,
+            'subject_type'      => 'App\KategoriAduan',
+            'properties'        => json_encode($exist),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
 
         return response()->json(['message'=>'Data Kategori Aduan Berjaya Dipadam.']);
     }

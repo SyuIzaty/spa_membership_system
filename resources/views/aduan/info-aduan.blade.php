@@ -466,7 +466,7 @@
                                                 </table>
                                             </div>
                                         @endif
-                                        <a data-page="/pdfAduan/{{$aduan->id}}" class="btn btn-info text-white float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-print"></i> Cetak Borang</a>
+                                        <a data-page="/pdf-aduan/{{$aduan->id}}" class="btn btn-info text-white float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-print"></i> Cetak Borang</a>
                                         <a href="javascript:history.back()" class="btn btn-secondary ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Kembali</a><br>
                                     </div>
                                 </div>
@@ -613,7 +613,7 @@
                                                 <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i>BORANG PEMBAIKAN</h5>
                                             </div>
                                             <div class="card-body">
-                                                {!! Form::open(['action' => 'Aduan\AduanController@kemaskiniPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'datas']) !!}
+                                                {!! Form::open(['action' => 'Aduan\AduanController@kemaskiniPembaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'datas']) !!}
                                                 {{Form::hidden('idp', $aduan->id)}}
                                                 <div class="table-responsive">
                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
@@ -928,7 +928,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '/cariKuantiti',
+                    url: '/cari-kuantiti',
                     data: { id_stok: selectedStok },
                     success: function (data) {
                         kuantitiSelect.empty();
@@ -1056,7 +1056,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '/cariKuantiti',
+                    url: '/cari-kuantiti',
                     data: { id_stok: selectedStok },
                     success: function (data) {
                         kuantitiSelect.empty();

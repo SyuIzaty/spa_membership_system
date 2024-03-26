@@ -40,7 +40,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="col-md-2 float-right" style="font-size: 12px">
-                                    <form action="{{ route('dashAduan') }}" method="GET" id="form_find">
+                                    <form action="{{ route('dashboardAduan') }}" method="GET" id="form_find">
                                         <select class="selectfilter form-control" name="year" id="year">
                                             @foreach ($years as $yrs)
                                                 <option value="{{ $yrs->year }}" {{ $selectedYear == $yrs->year ? 'selected' : '' }}>{{ $yrs->year }}</option>

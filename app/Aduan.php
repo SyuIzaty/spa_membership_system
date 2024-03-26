@@ -17,6 +17,11 @@ class Aduan extends Model
         'ak_bahan_alat', 'jumlah_kos', 'tarikh_selesai_aduan', 'catatan_pembaikan', 'sebab_pembatalan', 'tukar_status', 'sebab_tukar_status', 'notis_juruteknik'
     ];
 
+    public function pengadu()
+    {
+        return $this->hasOne('App\User','id','id_pelapor');
+    }
+
     public function jawatan()
     {
         return $this->hasOne('App\JawatanPengadu','id','jawatan_pelapor');

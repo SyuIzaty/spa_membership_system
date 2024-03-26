@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\KategoriAduan;
 use App\JenisKerosakan;
 use App\SebabKerosakan;
+use App\AduanLog;
 use App\Aduan;
 use Session;
+use Auth;
 
 class SebabKerosakanController extends Controller
 {
@@ -33,7 +35,7 @@ class SebabKerosakanController extends Controller
         return response()->json($data);
     }
 
-    public function data_sebab()
+    public function dataSebab()
     {
         $sebab = SebabKerosakan::whereNotIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->with(['kategori'])->select('cms_sebab_kerosakan.*');
 
@@ -65,17 +67,25 @@ class SebabKerosakanController extends Controller
 
     public function tambahSebab(Request $request)
     {
-        $sebab = SebabKerosakan::where('id', $request->id)->first();
-
         $request->validate([
             'kategori_aduan'       => 'required',
             'sebab_kerosakan'      => 'required|max:255',
         ]);
 
-        SebabKerosakan::create([
-                'kategori_aduan'     => $request->kategori_aduan,
-                'sebab_kerosakan'    => $request->sebab_kerosakan,
-            ]);
+        $sebab = SebabKerosakan::create([
+            'kategori_aduan'     => $request->kategori_aduan,
+            'sebab_kerosakan'    => $request->sebab_kerosakan,
+        ]);
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Tambah Sebab Kerosakan',
+            'subject_id'        => $sebab->id,
+            'subject_type'      => 'App\SebabKerosakan',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
 
         Session::flash('message', 'Data Sebab Kerosakan Berjaya Ditambah');
 
@@ -92,6 +102,16 @@ class SebabKerosakanController extends Controller
 
         $sebab->update([
             'sebab_kerosakan'    => $request->sebab_kerosakan,
+        ]);
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Kemaskini Sebab Kerosakan',
+            'subject_id'        => $sebab->id,
+            'subject_type'      => 'App\SebabKerosakan',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
         ]);
 
         Session::flash('message', 'Data Sebab Kerosakan Berjaya Dikemaskini');
@@ -165,6 +185,16 @@ class SebabKerosakanController extends Controller
         $exist = SebabKerosakan::find($id);
 
         $exist->delete();
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Padam Sebab Kerosakan',
+            'subject_id'        => $exist->id,
+            'subject_type'      => 'App\SebabKerosakan',
+            'properties'        => json_encode($exist),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
 
         return response()->json(['message'=>'Data Sebab Kerosakan Berjaya Dipadam.']);
     }

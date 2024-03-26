@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\KategoriAduan;
 use App\JenisKerosakan;
+use App\AduanLog;
 use App\Aduan;
 use Session;
+use Auth;
 
 class JenisKerosakanController extends Controller
 {
@@ -23,7 +25,7 @@ class JenisKerosakanController extends Controller
         return view('aduan.jenis-kerosakan.index', compact('kategori'));
     }
 
-    public function data_jenis()
+    public function dataJenis()
     {
         $jenis = JenisKerosakan::whereNotIn('kategori_aduan', ['IITU-HDWR','IITU-NTWK','IITU-OPR_EMEL','IITU-NTWK WIRELESS'])->with(['kategori'])->select('cms_jenis_kerosakan.*');
 
@@ -55,17 +57,25 @@ class JenisKerosakanController extends Controller
 
     public function tambahJenis(Request $request)
     {
-        $jenis = JenisKerosakan::where('id', $request->id)->first();
-
         $request->validate([
             'kategori_aduan'       => 'required',
             'jenis_kerosakan'      => 'required|max:255',
         ]);
 
-        JenisKerosakan::create([
-                'kategori_aduan'     => $request->kategori_aduan,
-                'jenis_kerosakan'    => $request->jenis_kerosakan,
-            ]);
+        $jenis = JenisKerosakan::create([
+            'kategori_aduan'     => $request->kategori_aduan,
+            'jenis_kerosakan'    => $request->jenis_kerosakan,
+        ]);
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Tambah Jenis Kerosakan',
+            'subject_id'        => $jenis->id,
+            'subject_type'      => 'App\JenisKerosakan',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
 
         Session::flash('message', 'Data Jenis Kerosakan Berjaya Ditambah');
 
@@ -82,6 +92,16 @@ class JenisKerosakanController extends Controller
 
         $jenis->update([
             'jenis_kerosakan'    => $request->jenis_kerosakan,
+        ]);
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Kemaskini Jenis Kerosakan',
+            'subject_id'        => $jenis->id,
+            'subject_type'      => 'App\JenisKerosakan',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
         ]);
 
         Session::flash('message', 'Data Jenis Kerosakan Berjaya Dikemaskini');
@@ -155,6 +175,16 @@ class JenisKerosakanController extends Controller
         $exist = JenisKerosakan::find($id);
 
         $exist->delete();
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Padam Jenis Kerosakan',
+            'subject_id'        => $exist->id,
+            'subject_type'      => 'App\JenisKerosakan',
+            'properties'        => json_encode($exist),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
 
         return response()->json(['message'=>'Data Jenis Kerosakan Berjaya Dipadam.']);
     }

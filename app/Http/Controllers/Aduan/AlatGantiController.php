@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Aduan;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\AduanLog;
 use App\AlatGanti;
 use App\AlatanPembaikan;
 use Session;
+use Auth;
 
 class AlatGantiController extends Controller
 {
@@ -18,10 +20,11 @@ class AlatGantiController extends Controller
     public function index(Request $request)
     {
         $alat = new AlatGanti();
+
         return view('aduan.alat-ganti.index', compact('alat'));
     }
 
-    public function data_alat()
+    public function dataAlat()
     {
         $alat = AlatGanti::select('cms_alat_ganti.*');
 
@@ -48,15 +51,23 @@ class AlatGantiController extends Controller
 
     public function tambahAlat(Request $request)
     {
-        $alat = AlatGanti::where('id', $request->id)->first();
-
         $request->validate([
             'alat_ganti'      => 'required|max:255',
         ]);
 
-        AlatGanti::create([
-                'alat_ganti'     => $request->alat_ganti,
-            ]);
+        $alat = AlatGanti::create([
+            'alat_ganti'     => $request->alat_ganti,
+        ]);
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Tambah Alat Ganti/Bahan',
+            'subject_id'        => $alat->id,
+            'subject_type'      => 'App\AlatGanti',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
 
         Session::flash('message', 'Data Alat Ganti Berjaya Ditambah');
 
@@ -73,6 +84,16 @@ class AlatGantiController extends Controller
 
         $alat->update([
             'alat_ganti'     => $request->alat_ganti,
+        ]);
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Kemaskini Alat Ganti/Bahan',
+            'subject_id'        => $alat->id,
+            'subject_type'      => 'App\AlatGanti',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
         ]);
 
         Session::flash('message', 'Data Alat Ganti Berjaya Dikemaskini');
@@ -146,6 +167,16 @@ class AlatGantiController extends Controller
         $exist = AlatGanti::find($id);
 
         $exist->delete();
+
+        AduanLog::create([
+            'name'              => 'default',
+            'description'       => 'Padam Alat Ganti/Bahan',
+            'subject_id'        => $exist->id,
+            'subject_type'      => 'App\AlatGanti',
+            'properties'        => json_encode($exist),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
 
         return response()->json(['message'=>'Data Alat Ganti Berjaya Dipadam.']);
     }

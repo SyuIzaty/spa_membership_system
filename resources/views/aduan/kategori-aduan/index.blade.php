@@ -149,7 +149,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/kategoriAduan",
+                url: "/data-kategori-aduan",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
