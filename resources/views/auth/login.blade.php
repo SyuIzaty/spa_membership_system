@@ -25,7 +25,7 @@
                         </div>
                     @endif
                     <form method="POST" action="{{ route('login') }}">
-                        @csrf 
+                        @csrf
 
                         <!-- Username -->
                             <div class="input-group col-lg-12 mb-4"><br><br>
@@ -49,7 +49,7 @@
                                         <i class="fal fa-lock text-muted"></i>
                                     </span>
                                 </div>
-                                <input style="margin-top: 0px; height: 50px" id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror bg-white border-left-0 border-md" name="password" required autocomplete="current-password">
+                                <input style="margin-top: 0px; height: 50px" id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror bg-white border-left-0 border-md" name="password" required autocomplete="off">
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -80,19 +80,19 @@
                                 <span class="px-2 small text-muted font-weight-bold text-muted">OR</span>
                                 <div class="border-bottom w-100 mr-5 border-dark"></div>
                             </div> --}}
-                        
+
                         <!-- Already Registered -->
                             {{-- <div class="text-center w-100">
-                                <p class="text-muted font-weight-bold">Don't have an account? <a href="/register" class="text-primary ml-2">Register</a></p>  
+                                <p class="text-muted font-weight-bold">Don't have an account? <a href="/register" class="text-primary ml-2">Register</a></p>
                             </div> --}}
                         </div>
                     </form>
-                                    
+
                 </div>
             </div>
         </div>
 
-        <div class="bg-blue py-4"> 
+        <div class="bg-blue py-4">
             <div class="row px-3"> <small class="ml-4 ml-sm-5 mb-0">Copyright © {{ \Carbon\Carbon::now()->format('Y') }} INTEC Education College. All Rights Reserved</small>
             </div>
         </div>

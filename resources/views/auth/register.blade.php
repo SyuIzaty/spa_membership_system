@@ -1,7 +1,7 @@
 @extends('layouts.single')
 
 @section('content')
- 
+
 <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
     <div class="card card0 border-0">
         <div class="row d-flex">
@@ -66,7 +66,7 @@
                                         </span>
                                     @enderror
                             </div>
-                        
+
                         <!-- Role -->
                             {{-- <div class="input-group col-lg-12 mb-4">
                                 <div class="input-group-prepend">
@@ -80,17 +80,17 @@
                                     <option value="">Student</option>
                                 </select>
                             </div> --}}
-    
+
                         <!-- Password -->
-                            <div class="input-group col-lg-12 mb-4"> 
-                                
+                            <div class="input-group col-lg-12 mb-4">
+
                                     <div class="input-group col-lg-6 mb-2 px-md-0">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-white px-4 border-md border-right-0">
                                                 <i class="fal fa-lock text-muted"></i>
                                             </span>
                                         </div>
-                                        <input style="margin-top: 0px; height: 50px" id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror bg-white border-left-0 border-md" name="password" required autocomplete="new-password">
+                                        <input style="margin-top: 0px; height: 50px" id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror bg-white border-left-0 border-md" name="password" required autocomplete="off">
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -104,11 +104,11 @@
                                                 <i class="fal fa-lock text-muted"></i>
                                             </span>
                                         </div>
-                                        <input style="margin-top: 0px; height: 50px" id="password-confirm" type="password" placeholder="Confirm Password" class="form-control bg-white border-left-0 border-md" name="password_confirmation" required autocomplete="new-password">
+                                        <input style="margin-top: 0px; height: 50px" id="password-confirm" type="password" placeholder="Confirm Password" class="form-control bg-white border-left-0 border-md" name="password_confirmation" required autocomplete="off">
                                     </div>
 
                             </div>
-                            
+
                         <!-- Submit Button -->
                             <div class="form-group col-lg-12 mx-auto mb-0">
                                 <button type="submit" class="btn btn-blue btn-block py-2 w-100">
@@ -122,14 +122,14 @@
                                 <span class="px-2 small text-muted font-weight-bold text-muted">OR</span>
                                 <div class="border-bottom w-100 mr-5 border-dark"></div>
                             </div>
-                        
+
                          <!-- Already Registered -->
                             <div class="text-center w-100">
                                 <p class="text-muted font-weight-bold">Already Registered? <a href="/login" class="text-primary ml-2">Login</a></p>
                             </div>
 
                     </form>
-                                    
+
                 </div>
             </div>
         </div>
