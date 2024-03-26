@@ -953,7 +953,7 @@
                             <li>
                                 <a href="https://forms.office.com/r/TwQq580L7m" title="Helpdesk" data-filter-tags="helpdesk">
                                     <i class="fal fa-file-alt"></i>
-                                    <span class="nav-link-text" data-i18n="nav.helpdesk">Complaint Form</span>
+                                    <span class="nav-link-text" data-i18n="nav.helpdesk">Complaint Form (IT)</span>
                                 </a>
                             </li>
                             @can('view complaint - IT')
