@@ -2,23 +2,17 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\iComplaint as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class OauthIcomplaint extends Authenticatable
+class OauthIcomplaint extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'oauth_icomplaint';
     protected $connection = 'auth';
     protected $primaryKey = 'id';
-    public $incrementing = false;
-
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
 
     protected $fillable = [
-        'id' , 'name', 'email'
+        'google_id' , 'name', 'email'
     ];
 }

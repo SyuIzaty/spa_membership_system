@@ -34,24 +34,12 @@ class AduanKorporatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
         $userCategory = AduanKorporatUser::all();
         $category = AduanKorporatCategory::all();
         $subcategory = AduanKorporatSubCategory::all();
         return view('aduan-korporat.form', compact('userCategory', 'category', 'subcategory'));
-    }
-
-    public function main()
-    {
-        $user = session('user');
-
-        return view('aduan-korporat.main', compact('user'));
-    }
-
-    public function loginIComplaint()
-    {
-        return view('aduan-korporat.login');
     }
 
     public function search(Request $request)
@@ -65,7 +53,6 @@ class AduanKorporatController extends Controller
         } else {
             return response()->json($data);
         }
-
     }
 
     /**

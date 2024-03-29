@@ -1058,13 +1058,13 @@ Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 
 
 // eAduan Korporat Public
-Route::get('/iComplaint/login', 'AduanKorporatController@loginIComplaint');
-Route::get('/form', 'AduanKorporatController@index');
-Route::get('/iComplaint-public/{id}', 'AduanKorporatController@main');
-// Route::get('/end/{ticket}', 'AduanKorporatController@end');
+Route::get('/iComplaint/login', 'iComplaintGmailController@loginIComplaint');
+Route::get('/form/{id}', 'iComplaintGmailController@formGmailUser');
+Route::get('/iComplaint-public/{id}', 'iComplaintGmailController@main');
+Route::post('/store', 'iComplaintGmailController@store');
+Route::get('/end/{id}', 'iComplaintGmailController@end');
 // Route::get('/check', 'AduanKorporatController@check');
 // Route::get('/search', 'AduanKorporatController@search');
-// Route::post('/store', 'AduanKorporatController@store');
 // Route::get('/searchID', 'AduanKorporatController@searchID');
 // Route::get('/detail', 'AduanKorporatController@displayDetail');
 // Route::get('/lists', 'AduanKorporatController@publicList');
