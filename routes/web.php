@@ -273,13 +273,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('imej-pembaikan/{filename}', 'Aduan\AduanController@failImejPembaikan');
     Route::post('data-bertindih-pelajar', 'Aduan\AduanController@dataBertindihPelajar');
     Route::get('/export-excel-pengadu/{id}', 'Aduan\AduanController@exportExcelPengadu');
-    Route::get('/dashboard-aduan', 'Aduan\AduanController@index')->name('dashboardAduan');
     Route::get('padam-juruteknik/{id}/{id_aduan}', 'Aduan\AduanController@padamJuruteknik');
     Route::post('teknikal-selesai-pelajar', 'Aduan\AduanController@teknikalSelesaiPelajar');
     Route::get('/senarai-teknikal-selesai', 'Aduan\AduanController@senaraiTeknikalSelesai');
     Route::get('/senarai-teknikal-bertindih', 'Aduan\AduanController@senaraiTeknikalBertindih');
     Route::post('teknikal-bertindih-pelajar', 'Aduan\AduanController@teknikalBertindihPelajar');
     Route::get('/laporan-aduan-excel/{params}', 'Aduan\AduanController@laporanAduanExcel')->where('params', '.*');
+    // Dashboard Fasiliti
+    Route::get('/dashboard-aduan', 'Aduan\AduanDashboardController@index')->name('dashboardAduan');
+    Route::get('/kemaskini-aduan-ringkasan', 'Aduan\AduanDashboardController@kemaskiniAduanRingkasan');
+    Route::get('/kemaskini-aduan-juruteknik', 'Aduan\AduanDashboardController@kemaskiniAduanJuruteknik');
     // Kategori Aduan
     Route::resource('kategori-aduan', 'Aduan\KategoriAduanController');
     Route::post('data-kategori-aduan', 'Aduan\KategoriAduanController@dataKategori');

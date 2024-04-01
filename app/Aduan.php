@@ -61,4 +61,9 @@ class Aduan extends Model
     {
         return $this->hasmany('App\JuruteknikBertugas','id_aduan', 'id');
     }
+
+    public function stafJuruteknik()
+    {
+        return $this->hasOne('App\JuruteknikBertugas','id_aduan', 'id');
+    }
 }

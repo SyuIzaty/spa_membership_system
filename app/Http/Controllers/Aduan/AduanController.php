@@ -3301,57 +3301,9 @@ class AduanController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // Dashboard
-
     public function index(Request $request)
     {
-        $years = Aduan::selectRaw("DATE_FORMAT(tarikh_laporan, '%Y') year")
-                ->whereNotNull('tarikh_laporan')
-                ->groupBy('year')
-                ->orderBy('year', 'desc')
-                ->get();
-
-        if($request->year) {
-            $selectedYear = $request->year;
-        } else {
-            $selectedYear = Carbon::now()->format('Y');
-        }
-
-        $category = DB::table('cms_kategori_aduan as categories')
-        ->select('categories.nama_kategori','claims.kategori_aduan', DB::raw('COUNT(claims.kategori_aduan) as count'))
-        ->leftJoin('cms_aduan as claims','categories.kod_kategori','=','claims.kategori_aduan')
-        ->where(DB::raw('YEAR(claims.tarikh_laporan)'), '=', $selectedYear)
-        ->groupBy('categories.kod_kategori', 'categories.nama_kategori', 'claims.kategori_aduan')
-        ->get();
-
-        $result[] = ['Juruteknik','Aduan'];
-        foreach ($category as $key => $value) {
-            $result[++$key] = [$value->nama_kategori, (int)$value->count];
-        }
-
-        $list = DB::table('cms_juruteknik as tblJuru')
-        ->select('tblJuru.juruteknik_bertugas','tblUser.name', DB::raw('COUNT(tblAduan.status_aduan) as count'))
-        ->leftJoin('cms_aduan as tblAduan','tblAduan.id','=','tblJuru.id_aduan')
-        ->leftJoin('auth.users as tblUser','tblUser.id','=','tblJuru.juruteknik_bertugas')
-        ->where(DB::raw('YEAR(tblAduan.tarikh_laporan)'), '=', $selectedYear)
-        ->groupBy('tblJuru.juruteknik_bertugas','tblUser.name')
-        ->get();
-
-        $results[] = ['Juruteknik','Aduan'];
-        foreach ($list as $key => $value) {
-            $results[++$key] = [$value->name, (int)$value->count];
-        }
-
-        $senarai = User::whereHas('roles', function($query){
-            $query->where('id', 'CMS002');
-        })->with(['staff'])->get();
-
-        $rank = JuruteknikBertugas::select('juruteknik_bertugas', DB::raw('count(*) as total'))->groupBy('juruteknik_bertugas')
-                ->whereHas('aduan', function($query) use ($selectedYear) {
-                    $query->where(DB::raw('YEAR(tarikh_laporan)'), '=', $selectedYear);
-                })->limit(5)->orderBy('total', 'desc')->get();
-
-        return view('aduan.dashboard', compact('years','selectedYear','rank','senarai'))->with('list',json_encode($results))->with('category',json_encode($result));
+        //
     }
 
     /**

@@ -804,7 +804,7 @@
 
                         {{-- Start Aduan --}}
                         <li class="nav-title">E-ADUAN FASILITI</li>
-                        {{-- @can('view facility dashboard')
+                        @can('view facility dashboard')
                             <li>
                                 <a href="/dashboard-aduan" title="Application Intel"
                                     data-filter-tags="application intel">
@@ -812,7 +812,7 @@
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Dashboard Analisis</span>
                                 </a>
                             </li>
-                        @endcan --}}
+                        @endcan
                         @can('view complaint form')
                             <li>
                                 <a href="#" title="Aduan" data-filter-tags="aduan">
