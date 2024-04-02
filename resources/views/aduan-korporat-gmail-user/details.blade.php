@@ -134,7 +134,7 @@
                                                                 @endphp
                                                                 <li>
                                                                     <a target="_blank"
-                                                                        href="/get-files/{{ $route }}">{{ $f->original_name }}</a>
+                                                                        href="/get-file/{{ $route }}">{{ $f->original_name }}</a>
                                                                 </li>
                                                                 <br>
                                                             @endforeach

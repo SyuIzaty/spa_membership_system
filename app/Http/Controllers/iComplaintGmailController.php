@@ -184,4 +184,12 @@ class iComplaintGmailController extends Controller
 
         return view('aduan-korporat-gmail-user.details', compact('data', 'file'));
     }
+
+    public function file($id)
+    {
+        $de_id = Crypt::decryptString($id);
+        $file = AduanKorporatFile::where('id', $de_id)->first();
+        return Storage::disk('minio')->response($file->web_path);
+    }
+
 }
