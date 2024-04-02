@@ -66,31 +66,24 @@
                                                 <td style="vertical-align: middle"><label class="form-label"
                                                         for="id">ID </label></td>
                                                 <td>
-                                                    <input class="form-control" value="{{ $ids }}" readonly>
+                                                    <input class="form-control" value="{{ $user->id }}" readonly>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="vertical-align: middle"><label class="form-label"
                                                         for="user_name">Full Name </label></td>
                                                 <td colspan="6">
-                                                    <input class="form-control" value="{{ $data->name }}" readonly>
+                                                    <input class="form-control" value="{{ $user->name }}" readonly>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="vertical-align: middle"><label class="form-label"
                                                         for="user_email">Email </label></td>
-                                                <td><input class="form-control" value="{{ $data->email }}" readonly></td>
+                                                <td><input class="form-control" value="{{ $user->email }}" readonly></td>
 
                                                 <td style="vertical-align: middle"><label class="form-label"
                                                         for="user_phone">Phone No. </label></td>
                                                 <td><input class="form-control" value="{{ $data->phone_no }}" readonly></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="vertical-align: middle"><label class="form-label"
-                                                        for="user_address">Full Address </label></td>
-                                                <td colspan="6">
-                                                    <textarea class="form-control" value="" rows="5" readonly>{{ str_replace('<br />', "\r\n", $data->address) }}</textarea>
-                                                </td>
                                             </tr>
                                         </thead>
                                     </table>
@@ -134,12 +127,9 @@
                                                     <td colspan="4" style="vertical-align: middle">
                                                         <ol>
                                                             @foreach ($file as $f)
-                                                                @php
-                                                                    $route = Crypt::encryptString($f->id);
-                                                                @endphp
                                                                 <li>
                                                                     <a target="_blank"
-                                                                        href="/get-files/{{ $route }}">{{ $f->original_name }}</a>
+                                                                        href="/get-files/{{ $f->id }}">{{ $f->original_name }}</a>
                                                                 </li>
                                                                 <br>
                                                             @endforeach
@@ -167,8 +157,7 @@
                                     </table>
                                 </div>
 
-                                <a href="/lists"
-                                    class="btn btn-success btn-icon rounded-circle waves-effect waves-themed">
+                                <a href="/lists" class="btn btn-success btn-icon rounded-circle waves-effect waves-themed">
                                     <i class="fal fa-arrow-alt-left"></i>
                                 </a>
 

@@ -38,27 +38,8 @@
                                     'method' => 'POST',
                                     'enctype' => 'multipart/form-data',
                                 ]) !!}
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped w-100">
-                                        <thead>
-                                            <td width="20%" style="vertical-align: middle"><label class="form-label"
-                                                    for="userCategory">User Category</label></td>
-                                            <td colspan="6">
-                                                <select class="form-control userCategory" name="userCategory"
-                                                    id="userCategory" required>
-                                                    <option disabled value="">Please select</option>
-                                                    @foreach ($userCategory as $user)
-                                                        <option value="{{ $user->code }}"
-                                                            @if (old('userCategory') == $user->code) selected="selected" @endif>
-                                                            {{ $user->description }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                        </thead>
-                                    </table>
-                                </div>
 
-                                <div class="table-responsive all" style="display:none">
+                                <div class="table-responsive all">
                                     <table class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
@@ -68,20 +49,11 @@
                                             <tr>
                                                 <td width="20%" style="vertical-align: middle">
                                                     <label class="form-label intecStf"><span class="text-danger">*</span>
-                                                        Staff ID </label>
-                                                    <label class="form-label intecStd"><span class="text-danger">*</span>
-                                                        Student ID </label>
-                                                    <label class="form-label icOther"><span class="text-danger">*</span>
-                                                        IC/Passport No. </label>
+                                                        ID</label>
                                                 </td>
                                                 <td colspan="6">
-                                                    <input class="form-control user_id" id="user_id" name="user_id">
-                                                    <input class="form-control ic" id="ic" name="ic"
-                                                        placeholder="eg: 951108112233">
-
-                                                    @error('ic')
-                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
-                                                    @enderror
+                                                    <input class="form-control user_id" id="user_id" name="user_id"
+                                                        value="{{ $user->id }}" readonly>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -89,16 +61,8 @@
                                                         for="user_name"><span class="text-danger">*</span> Full Name
                                                     </label></td>
                                                 <td colspan="6">
-                                                    <input class="form-control intec" id="user_name" name="user_name"
-                                                        readonly>
-                                                    <input class="form-control other" id="other_name" name="other_name">
-
-                                                    @error('user_name')
-                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
-                                                    @enderror
-                                                    @error('other_name')
-                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
-                                                    @enderror
+                                                    <input class="form-control" id="user_name" name="user_name"
+                                                        value="{{ $user->name }}" readonly>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -106,19 +70,10 @@
                                                         for="user_email"><span class="text-danger">*</span> Email </label>
                                                 </td>
                                                 <td>
-                                                    <input class="form-control intec" id="user_email" name="user_email"
-                                                        readonly>
-                                                    <input class="form-control other" id="other_email" name="other_email"
-                                                        placeholder="eg: intec@intec.edu.my">
+                                                    <input class="form-control" id="user_email" name="user_email"
+                                                        value="{{ $user->email }}" readonly>
                                                     <span style="font-size: 12px; color: #1487fd;"><i>*Feedback will be sent
                                                             to this email.</i></span>
-
-                                                    @error('user_email')
-                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
-                                                    @enderror
-                                                    @error('other_email')
-                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
-                                                    @enderror
                                                 </td>
 
                                                 <td width="20%" style="vertical-align: middle"><label class="form-label"
@@ -126,7 +81,8 @@
                                                     </label></td>
                                                 <td>
                                                     <input class="form-control user_phone" id="user_phone" name="user_phone"
-                                                        placeholder="eg: 0131234567" required>
+                                                        placeholder="eg: 0131234567" value="{{ old('user_phone') }}"
+                                                        required>
 
                                                     @error('user_phone')
                                                         <p style="color: red"><strong> {{ $message }} </strong></p>
@@ -134,21 +90,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td width="20%" style="vertical-align: middle"><label
-                                                        class="form-label" for="user_address"><span
-                                                            class="text-danger">*</span> Full Address </label></td>
-                                                <td colspan="6">
-                                                    <textarea class="form-control preserveLines" name="address" id="address" rows="2" required>{{ old('address') }}</textarea>
+                                                <td width="20%" style="vertical-align: middle"><label class="form-label"
+                                                        for="category"><span class="text-danger">*</span> Category</label>
                                                 </td>
-
-                                                @error('address')
-                                                    <p style="color: red"><strong> {{ $message }} </strong></p>
-                                                @enderror
-                                            </tr>
-                                            <tr>
-                                                <td width="20%" style="vertical-align: middle"><label
-                                                        class="form-label" for="category"><span
-                                                            class="text-danger">*</span> Category</label></td>
                                                 <td colspan="6">
                                                     <select class="form-control category" name="category" id="category"
                                                         required>
@@ -162,8 +106,8 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td width="20%" style="vertical-align: middle"><label
-                                                        class="form-label" for="subcategory">Sub Category</label></td>
+                                                <td width="20%" style="vertical-align: middle"><label class="form-label"
+                                                        for="subcategory">Sub Category</label></td>
                                                 <td colspan="6">
                                                     <select class="form-control subcategory" name="subcategory"
                                                         id="subcategory">
@@ -180,7 +124,7 @@
                                     </table>
                                 </div>
 
-                                <div class="table-responsive all" style="display:none">
+                                <div class="table-responsive all">
                                     <table class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
@@ -192,7 +136,8 @@
                                                         class="form-label" for="title"><span
                                                             class="text-danger">*</span> Title </label></td>
                                                 <td colspan="6">
-                                                    <input class="form-control" id="title" name="title" required>
+                                                    <input class="form-control" id="title" name="title"
+                                                        value="{{ old('title') }}" required>
 
                                                     @error('title')
                                                         <p style="color: red"><strong> {{ $message }} </strong></p>
@@ -215,7 +160,7 @@
                                     </table>
                                 </div>
 
-                                <div class="table-responsive all" style="display:none">
+                                <div class="table-responsive all">
                                     <table class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
@@ -238,7 +183,7 @@
                                     @endforeach
                                 @endif
 
-                                <div class="table-responsive all" style="display:none">
+                                <div class="table-responsive all">
                                     <table class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
@@ -256,7 +201,7 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="table-responsive all" style="display:none">
+                                <div class="table-responsive all">
                                     <div class="form-group">
                                         <button style="margin-top: 5px;" class="btn btn-danger float-right"
                                             id="submit" name="submit" disabled><i class="fal fa-check"></i>
@@ -275,119 +220,6 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function() {
-
-            if ($('.user_id').val() != '') {
-                search($('.user_id'));
-            }
-
-            $(function() {
-                $(document).on('change', '.user_id', function() {
-
-                    search($(this));
-                });
-            });
-
-            function search(elem) {
-
-                var user_id = elem.val();
-
-                $.ajax({
-                    type: 'get',
-                    url: '{!! URL::to('search') !!}',
-                    data: {
-                        'id': user_id
-                    },
-                    success: function(data) {
-                        $('#user_id').html(data.id);
-                        $('#user_name').val(data.name);
-                        $('#name').val(data.name);
-                        $('#user_email').val(data.email);
-                        $('#email').val(data.email);
-
-                        if (data == '') {
-                            Swal.fire("ID not exist!");
-                            $("#submit").hide(); //all details
-                        } else {
-                            $("#submit").show(); //all details
-                        }
-
-                    }
-                });
-            }
-
-            $("#userCategory").change(function() {
-
-                var val = $("#userCategory").val();
-
-                if (val == "STF") {
-                    $(".intecStf").show(); // staff id
-                    $(".all").show(); //all details
-                    $(".icOther").hide(); // ic
-                    $(".user_id").show(); // allID
-                    $(".intec").show(); // staff/student name & email
-                    $(".ic").hide(); // IC
-
-                    $(".intecStd").hide(); // student id
-                    $(".other").hide(); // other name & email
-                } else if (val == "STD") {
-                    $(".intecStd").show(); // student id
-                    $(".all").show(); //all details
-                    $(".icOther").hide(); // ic
-                    $(".user_id").show(); // allID
-                    $(".intec").show(); // staff/student name & email
-                    $(".ic").hide(); // IC
-
-                    $(".intecStf").hide(); // staff id
-                    $(".other").hide(); // other name & email
-                } else if (val == "VSR" || val == "SPL" || val == "SPR" || val == "SPS") {
-                    $(".all").show(); // all details
-                    $(".other").show(); // other name & email
-                    $(".icOther").show(); // ic
-                    $(".ic").show(); // IC
-                    $(".user_id").hide(); // allID
-
-                    $(".intecStf").hide(); // staff id
-                    $(".intecStd").hide(); // staff id
-
-                    $(".intec").hide(); // staff/student name & email
-                }
-            });
-
-            $("#userCategory").change(function() {
-                $("#user_id").val("");
-                $("#user_name").val("");
-                $("#user_phone").val("");
-                $("#user_email").val("");
-                $("#category").val("");
-                $("#subcategory").val("");
-                $("#title").val("");
-                $("#ic").val("");
-                $("#other_name").val("");
-                $("#other_email").val("");
-            });
-
-            $('.userCategory').val('{{ old('userCategory') }}');
-            $(".userCategory").change();
-
-            $('.user_id').val('{{ old('user_id') }}');
-            $(".user_id").change();
-
-            $('.user_category').val('{{ old('user_category') }}');
-            $(".user_category").change();
-
-            $('#user_id').val('{{ old('user_id') }}');
-            $('#user_name').val('{{ old('user_name') }}');
-            $('#user_phone').val('{{ old('user_phone') }}');
-            $('#user_email').val('{{ old('user_email') }}');
-            $('#title').val('{{ old('title') }}');
-            $('#category').val('{{ old('category') }}');
-            $('#subcategory').val('{{ old('category') }}');
-            $('#ic').val('{{ old('ic') }}');
-            $('#other_name').val('{{ old('other_name') }}');
-            $('#other_email').val('{{ old('other_email') }}');
-        });
-
         function agreement() {
             var agree = document.getElementById("agree")
             var submit = document.getElementById("submit");

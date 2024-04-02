@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use File;
 use App\User;
 use DateTime;
-use Response;
 use Carbon\Carbon;
 use App\AduanKorporat;
 use App\AduanKorporatLog;
@@ -34,25 +32,17 @@ class AduanKorporatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function main()
     {
-        $userCategory = AduanKorporatUser::all();
-        $category = AduanKorporatCategory::all();
-        $subcategory = AduanKorporatSubCategory::all();
-        return view('aduan-korporat.form', compact('userCategory', 'category', 'subcategory'));
+        return view('aduan-korporat.main');
     }
 
-    public function search(Request $request)
+    public function index()
     {
-        $data = User::select('id', 'name', 'email')->where('id', $request->id)->first();
-
-        if ($data == '') {
-            $data = '';
-            return response()->json($data);
-
-        } else {
-            return response()->json($data);
-        }
+        $category     = AduanKorporatCategory::all();
+        $subcategory  = AduanKorporatSubCategory::all();
+        $user         = Auth::user();
+        return view('aduan-korporat.form', compact('category', 'subcategory', 'user'));
     }
 
     /**
@@ -63,174 +53,82 @@ class AduanKorporatController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->userCategory == "STF" || $request->userCategory == "STD") {
-            $request->validate([
-                'user_phone'   => 'required|regex:/[0-9]/|min:10|max:11',
-                'attachment.*' => 'required|file|mimes:jpeg,png,gif,pdf,doc,docx|max:2048',
-            ], [
-                'user_phone.min'        => 'Phone number does not match the format!',
-                'user_phone.max'        => 'Phone number does not match the format!',
-                'user_phone.regex'      => 'Phone number must be number only!',
-                'user_phone.required'   => 'Phone number is required!',
-                'attachment.*.required' => 'Attachment is required!',
-                'attachment.*.file'     => 'Attachment must be a file!',
-                'attachment.*.mimes'    => 'Attachment must be in image or document format (jpeg, png, gif, pdf, doc, docx)!',
-                'attachment.*.max'      => 'Attachment size must not exceed 2MB!',
-            ]);
+        $request->validate([
+            'user_phone'   => 'required|regex:/[0-9]/|min:10|max:11',
+            'category'     => 'required',
+            'title'        => 'required',
+            'description'  => 'required',
+            'attachment.*' => 'required|file|mimes:jpeg,png,gif,pdf,doc,docx|max:2048',
+        ], [
+            'user_phone.min'        => 'Phone number does not match the format!',
+            'user_phone.max'        => 'Phone number does not match the format!',
+            'user_phone.regex'      => 'Phone number must be number only!',
+            'user_phone.required'   => 'Phone number is required!',
+            'attachment.*.required' => 'Attachment is required!',
+            'attachment.*.file'     => 'Attachment must be a file!',
+            'attachment.*.mimes'    => 'Attachment must be in image or document format (jpeg, png, gif, pdf, doc, docx)!',
+            'attachment.*.max'      => 'Attachment size must not exceed 2MB!',
+        ]);
 
-            $data                = new AduanKorporat();
-            $data->name          = $request->user_name;
-            $data->phone_no      = $request->user_phone;
-            $data->address       = $request->address;
-            $data->email         = $request->user_email;
-            $data->user_category = $request->userCategory;
-            $data->category      = $request->category;
-            $data->subcategory   = $request->subcategory;
-            $data->status        = '1';
-            $data->title         = $request->title;
-            $data->description   = $request->description;
-            $data->created_by    = $request->user_id;
-            $data->updated_by    = $request->user_id;
-            $data->save();
+        $data = AduanKorporat::create([
+            'phone_no'      => $request->user_phone,
+            'address'       => $request->address,
+            'user_category' => $request->userCategory,
+            'category'      => $request->category,
+            'subcategory'   => $request->subcategory,
+            'status'        => '1',
+            'title'         => $request->title,
+            'description'   => $request->description,
+            'created_by'    => Auth::user()->id,
+        ]);
 
-            $cat = AduanKorporatCategory::where('id', $request->category)->first();
-            $ticket = date('dmY').$cat->code.$data->id;
+        $cat = AduanKorporatCategory::where('id', $request->category)->first();
+        $ticket = date('dmY').$cat->code.$data->id;
 
-            AduanKorporat::where('id', $data->id)->update(['ticket_no' => $ticket]);
+        AduanKorporat::where('id', $data->id)->update(['ticket_no' => $ticket]);
 
-            AduanKorporatLog::create([
-                'complaint_id'  => $data->id,
-                'name'          => $request->user_name,
-                'activity'      => 'Create new',
-                'created_by'    => $request->user_id
-            ]);
+        AduanKorporatLog::create([
+            'complaint_id'  => $data->id,
+            'name'          => $request->user_name,
+            'activity'      => 'Create new',
+            'created_by'    => Auth::user()->id
+        ]);
 
-            $file = $request->attachment;
+        $file = $request->attachment;
 
-            if (isset($file)) {
-                foreach ($file as $f => $value) {
-                    $originalName = $value->getClientOriginalName();
-                    $fileName = time() . '-' . $value->getClientOriginalName();
-                    Storage::disk('minio')->put("/iComplaint/" . $fileName, file_get_contents($value));
-                    AduanKorporatFile::create([
-                        'complaint_id'  => $data->id,
-                        'original_name' => $originalName,
-                        'upload'        => $fileName,
-                        'web_path'      => "iComplaint/" . $fileName,
-                        'created_by'    => $request->user_id
-                    ]);
-                }
+        if (isset($file)) {
+            foreach ($file as $f => $value) {
+                $originalName = $value->getClientOriginalName();
+                $fileName = time() . '-' . $value->getClientOriginalName();
+                Storage::disk('minio')->put("/iComplaint/" . $fileName, file_get_contents($value));
+                AduanKorporatFile::create([
+                    'complaint_id'  => $data->id,
+                    'original_name' => $originalName,
+                    'upload'        => $fileName,
+                    'web_path'      => "iComplaint/" . $fileName,
+                    'created_by'    => $request->user_id
+                ]);
             }
-
-            $admin = User::whereHas('roles', function ($query) {
-                $query->where('id', 'EAK001'); // Admin
-            })->get();
-
-
-            // foreach($admin as $a) {
-            //     $admin_email = $a->email;
-
-            //     $data = [
-            //         'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
-            //         'emel'     => 'You have received new iComplaint from '.$request->user_name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
-            //     ];
-
-            //     Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
-            //         $message->subject('New iComplaint');
-            //         $message->from('corporate@intec.edu.my');
-            //         $message->to($admin_email);
-            //     });
-            // }
-
         }
 
-        if($request->userCategory == "VSR" || $request->userCategory == "SPL" || $request->userCategory == "SPR" || $request->userCategory == "SPS") {
-            $validated = $request->validate([
-                'user_phone'   => 'required|regex:/[0-9]/|min:10|max:11',
-                'other_email'  => 'required|email:rfc,dns',
-                'ic'           => 'required|regex:/[0-9]/|min:9|max:12',
-                'attachment.*' => 'required|file|mimes:jpeg,png,gif,pdf,doc,docx|max:2048',
-            ], [
-                'user_phone.min'      => 'Phone number does not match the format!',
-                'user_phone.max'      => 'Phone number does not match the format!',
-                'user_phone.regex'    => 'Phone number must be number only!',
-                'user_phone.required' => 'Phone number is required!',
+        // $admin = User::whereHas('roles', function ($query) {
+        //     $query->where('id', 'EAK001'); // Admin
+        // })->get();
 
-                'other_email.email'   => 'Email does not match the format!',
+        // foreach($admin as $a) {
+        //     $admin_email = $a->email;
 
-                'ic.min'      => 'IC/Passport No. does not match the format!',
-                'ic.max'      => 'IC/Passport No. does not match the format!',
-                'ic.regex'    => 'IC/Passport No. must be number only!',
-                'ic.required' => 'IC/Passport No. is required!',
-                'attachment.*.required' => 'Attachment is required!',
-                'attachment.*.file'     => 'Attachment must be a file!',
-                'attachment.*.mimes'    => 'Attachment must be in image or document format (jpeg, png, gif, pdf, doc, docx)!',
-                'attachment.*.max'      => 'Attachment size must not exceed 2MB!',
-            ]);
+        //     $data = [
+        //         'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
+        //         'emel'     => 'You have received new iComplaint from '.$request->user_name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+        //     ];
 
-            $data                = new AduanKorporat();
-            $data->name          = $request->other_name;
-            $data->phone_no      = $request->user_phone;
-            $data->address       = $request->address;
-            $data->email         = $request->other_email;
-            $data->user_category = $request->userCategory;
-            $data->category      = $request->category;
-            $data->subcategory   = $request->subcategory;
-            $data->status        = '1';
-            $data->title         = $request->title;
-            $data->description   = $request->description;
-            $data->created_by    = md5($request->ic);
-            $data->updated_by    = md5($request->ic);
-            $data->save();
-
-            $cat = AduanKorporatCategory::where('id', $request->category)->first();
-            $ticket = date('dmY').$cat->code.$data->id;
-
-            AduanKorporatLog::create([
-                'complaint_id'  => $data->id,
-                'name'          => $request->other_name,
-                'activity'      => 'Create new',
-                'created_by'    =>  md5($request->ic)
-            ]);
-
-            AduanKorporat::where('id', $data->id)->update(['ticket_no' => $ticket]);
-
-            $file = $request->attachment;
-
-            if (isset($file)) {
-                foreach ($file as $f => $value) {
-                    $originalName = $value->getClientOriginalName();
-                    $fileName = time() . '-' . $value->getClientOriginalName();
-                    Storage::disk('minio')->put("/iComplaint/" . $fileName, file_get_contents($value));
-                    AduanKorporatFile::create([
-                        'complaint_id'  => $data->id,
-                        'original_name' => $originalName,
-                        'upload'        => $fileName,
-                        'web_path'      => "iComplaint/" . $fileName,
-                        'created_by'    =>  md5($request->ic)
-                    ]);
-                }
-            }
-
-            $admin = User::whereHas('roles', function ($query) {
-                $query->where('id', 'EAK001'); // Admin
-            })->get();
-
-            // foreach($admin as $a) {
-            //     $admin_email = $a->email;
-
-            //     $data = [
-            //         'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
-            //         'emel'     => 'You have received new iComplaint from '.$request->other_name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
-            //     ];
-
-            //     Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
-            //         $message->subject('New iComplaint');
-            //         $message->from('corporate@intec.edu.my');
-            //         $message->to($admin_email);
-            //     });
-            // }
-        }
+        //     Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
+        //         $message->subject('New iComplaint');
+        //         $message->from('corporate@intec.edu.my');
+        //         $message->to($admin_email);
+        //     });
+        // }
 
         return redirect('end/'.$ticket);
     }
@@ -239,7 +137,6 @@ class AduanKorporatController extends Controller
     {
         return view('aduan-korporat.end', compact('ticket'));
     }
-
 
     /**
      * Display the specified resource.
@@ -360,6 +257,7 @@ class AduanKorporatController extends Controller
         return view('aduan-korporat.admin-view-detail', compact('data', 'department', 'dataRemark', 'file', 'admin', 'ids'));
     }
 
+    //Start Assign Admin
     public function getDept(Request $request)
     {
         $message = $dept = '';
@@ -399,6 +297,11 @@ class AduanKorporatController extends Controller
             return response() ->json(['success' => 'Please select department!']);
         }
     }
+
+    //End Assign Admin
+
+
+    //Start Admin Give Feedback
 
     public function remark(Request $request)
     {
@@ -495,6 +398,21 @@ class AduanKorporatController extends Controller
         }
     }
 
+    //Start Change Assign Department
+    public function changeDepartment(Request $request)
+    {
+        $update = AduanKorporat::where('id', $request->id)->first();
+        $update->update([
+            'assign'      => $request->department,
+            'updated_by'  => Auth::user()->id
+        ]);
+
+        return response() ->json(['success' => 'Changes Saved!']);
+    }
+    //End Change Assign Department
+
+    //End Admin Give Feedback
+
     public function file($id)
     {
         $de_id = Crypt::decryptString($id);
@@ -502,6 +420,7 @@ class AduanKorporatController extends Controller
         return Storage::disk('minio')->response($file->web_path);
     }
 
+    //Start Log List
     public function log($id)
     {
         return view('aduan-korporat.log', compact('id'));
@@ -529,6 +448,8 @@ class AduanKorporatController extends Controller
             ->make(true);
     }
 
+    //End Log List
+
     public function publicList()
     {
         $userCategory = AduanKorporatUser::all();
@@ -536,22 +457,10 @@ class AduanKorporatController extends Controller
         return view('aduan-korporat.public-list', compact('userCategory'));
     }
 
-    public function getPublicList($id)
+    public function getPublicList()
     {
-        // Determine if the ID needs to be encrypted
-        $encryptId = false; // Default to false
+        $list = AduanKorporat::where('created_by', Auth::user()->id)->get();
 
-        // Check if the ID is an IC input (you should replace this with your actual logic)
-        if (strlen($id) == 12) {
-            $encryptId = true; // Encrypt ID if it matches the length of an IC input
-        }
-
-        if ($encryptId) {
-            $encryptedId = md5($id);
-            $list = AduanKorporat::where('created_by', $encryptedId)->get();
-        } else {
-            $list = AduanKorporat::where('created_by', $id)->get();
-        }
         return datatables()::of($list)
 
         ->editColumn('ticket_no', function ($list) {
@@ -569,8 +478,7 @@ class AduanKorporatController extends Controller
         })
 
         ->addColumn('action', function ($list) {
-            $route = Crypt::encryptString($list->id);
-            return '<a href="/view-detail/' .$route.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            return '<a href="/view-detail/' .$list->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
         })
 
         ->addIndexColumn()
@@ -579,54 +487,15 @@ class AduanKorporatController extends Controller
         ->make(true);
     }
 
-    public function searchID(Request $request)
-    {
-        try {
-            $encrypted_id = $request->id;
-
-            // Attempt to decrypt the ID
-            try {
-                $id = Crypt::decrypt($encrypted_id);
-            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-                // If decryption fails, assume the ID is not encrypted and use it directly
-                $id = $encrypted_id;
-            }
-
-            // Query based on the ID
-            $data = AduanKorporat::where('created_by', $id)->get();
-
-            if (empty($data)) {
-                return response()->json(['message' => 'No data found for the given ID']);
-            } else {
-                return response()->json($data);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'An unexpected error occurred.']);
-        }
-    }
-
     public function publicDetail($id)
     {
-        $dec_id = Crypt::decryptString($id);
-
-        $data = AduanKorporat::where('id', $dec_id)->first();
-
-        if($data->user_category == "STF" || $data->user_category == "STD") {
-            $ids = $data->created_by;
-        } else {
-            $encrypted_id = $data->created_by;
-            try {
-                $ids = Crypt::decrypt($encrypted_id);
-            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-                $ids = $encrypted_id;
-            }
-        }
-
-        $file = AduanKorporatFile::where('complaint_id', $dec_id)->get();
-        return view('aduan-korporat.view-detail', compact('data', 'file', 'ids'));
+        $data = AduanKorporat::where('id', $id)->first();
+        $user = Auth::user();
+        $file = AduanKorporatFile::where('complaint_id', $id)->get();
+        return view('aduan-korporat.view-detail', compact('data', 'file', 'user'));
     }
 
-
+    //Start Dashboard
     public function dashboard()
     {
         $userCategory = AduanKorporatUser::select('code', 'description')->withCount('complaint')->orderBy('description', 'ASC')->get();
@@ -702,9 +571,10 @@ class AduanKorporatController extends Controller
         $result = array( 'countUserCat' => $countUserCat, 'countCat' => $countCategory, 'countDepartment' => $countDepartment);
 
         return response()->json($result);
-
     }
+    //End Dashboard
 
+    //Start Report
     public function searchYear($year)
     {
         $month = AduanKorporat::whereYear('created_at', '=', $year)
@@ -718,16 +588,6 @@ class AduanKorporatController extends Controller
         return response()->json($month);
     }
 
-    public function changeDepartment(Request $request)
-    {
-        $update = AduanKorporat::where('id', $request->id)->first();
-        $update->update([
-            'assign'      => $request->department,
-            'updated_by'  => Auth::user()->id
-        ]);
-
-        return response() ->json(['success' => 'Changes Saved!']);
-    }
 
     public function iComplaintReport()
     {
@@ -986,7 +846,9 @@ class AduanKorporatController extends Controller
         ->addIndexColumn()
         ->make(true);
     }
+    //End Report
 
+    //Start Department List
     public function admin()
     {
         return view('aduan-korporat.department-list');
@@ -1014,7 +876,9 @@ class AduanKorporatController extends Controller
             ->rawColumns(['update'])
             ->make(true);
     }
+    //End Department List
 
+    //Start Admin List
     public function adminList($id)
     {
         $department = AduanKorporatDepartment::where('id', $id)->first();
@@ -1072,6 +936,7 @@ class AduanKorporatController extends Controller
 
         return response()->json(['success' => 'Deleted!']);
     }
+    //End Admin List
 
     public function status()
     {

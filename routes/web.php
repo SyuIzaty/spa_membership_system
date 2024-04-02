@@ -747,18 +747,16 @@ Route::group(['middleware' => 'auth'], function () {
 
     //eAduan Korporat
 
-    // Route::get('/form', 'AduanKorporatController@index');
-    // Route::get('/iComplaint', 'AduanKorporatController@main');
-    // Route::get('/end/{ticket}', 'AduanKorporatController@end');
-    // Route::get('/check', 'AduanKorporatController@check');
-    // Route::get('/search', 'AduanKorporatController@search');
-    // Route::post('/store', 'AduanKorporatController@store');
-    // Route::get('/searchID', 'AduanKorporatController@searchID');
-    // Route::get('/detail', 'AduanKorporatController@displayDetail');
-    // Route::get('/lists', 'AduanKorporatController@publicList');
-    // Route::post('/get-lists/{id}', 'AduanKorporatController@getPublicList');
-    // Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
-    // Route::get('/get-files/{id}', 'AduanKorporatController@file');
+    Route::get('/iComplaint', 'AduanKorporatController@main');
+    Route::get('/form', 'AduanKorporatController@index');
+    Route::post('/store-aduan-korporat', 'AduanKorporatController@store');
+    Route::get('/end/{ticket}', 'AduanKorporatController@end');
+    Route::get('/check', 'AduanKorporatController@check');
+    Route::get('/detail', 'AduanKorporatController@displayDetail');
+    Route::get('/lists', 'AduanKorporatController@publicList');
+    Route::post('/get-lists', 'AduanKorporatController@getPublicList');
+    Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
+    Route::get('/get-files/{id}', 'AduanKorporatController@file');
 
     Route::get('/lists/{id}', 'AduanKorporatController@list');
     Route::post('/get-list/{id}', 'AduanKorporatController@show');
@@ -1060,7 +1058,7 @@ Route::post('training-confirm-attendance', 'TrainingController@confirmAttendance
 Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 
 
-// eAduan Korporat Public
+// eAduan Korporat/iComplaint Public
 Route::get('/iComplaint/login', 'iComplaintGmailController@loginIComplaint');
 Route::get('/form/{id}', 'iComplaintGmailController@form');
 Route::get('/iComplaint-public/{id}', 'iComplaintGmailController@main');

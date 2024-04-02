@@ -29,25 +29,7 @@
                                             class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                                 @endif
 
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped w-100">
-                                        <thead>
-                                            <td width="20%" style="vertical-align: middle">
-                                                <label class="form-label intecStf" for="user_id"><span
-                                                        class="text-danger">*</span> Staff ID / Student ID / IC / Passport
-                                                    No. </label>
-                                            </td>
-                                            <td colspan="6">
-                                                <input class="form-control user_id" id="user_id" name="user_id">
-                                                @error('user_id')
-                                                    <p style="color: red"><strong> {{ $message }} </strong></p>
-                                                @enderror
-                                            </td>
-                                        </thead>
-                                    </table>
-                                </div>
-
-                                <div class="table-responsive all" style="display:none">
+                                <div class="table-responsive all">
                                     <table id="list" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr class="bg-primary-50 text-center">
@@ -80,90 +62,50 @@
     <script>
         $(document).ready(function() {
 
-            if ($('.user_id').val() != '') {
-                search($('.user_id'));
-            }
-
-            $(function() {
-                $(document).on('change', '.user_id', function() {
-
-                    search($(this));
-                });
-            });
-
-            function search(elem) {
-
-                var user_id = elem.val();
-
-                $.ajax({
-                    type: 'get',
-                    url: '{!! URL::to('searchID') !!}',
-                    data: {
-                        'id': user_id
-                    },
-                    success: function(data) {
-                        if (data.hasOwnProperty('error')) {
-                            Swal.fire("Error", data.error,
-                                "error"); // Display error message from server
-                            $(".all").hide(); // Hide details
-                        } else if (data.hasOwnProperty('message')) {
-                            Swal.fire("Info", data.message, "info"); // Display info message from server
-                            $(".all").hide(); // Hide details
-                        } else {
-                            $(".all").show(); // Show details
-
-                            var id = $('.user_id').val();
-
-                            var table = $('#list').DataTable({
-                                processing: true,
-                                serverSide: true,
-                                ajax: {
-                                    url: "/get-lists/" + id,
-                                    type: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                                            'content')
-                                    }
-                                },
-                                columns: [{
-                                        className: 'text-center',
-                                        data: 'DT_RowIndex',
-                                        name: 'DT_RowIndex',
-                                        orderable: false,
-                                        searchable: false
-                                    },
-                                    {
-                                        className: 'text-left',
-                                        data: 'ticket_no',
-                                        name: 'ticket_no'
-                                    },
-                                    {
-                                        className: 'text-center',
-                                        data: 'status',
-                                        name: 'status'
-                                    },
-                                    {
-                                        className: 'text-center',
-                                        data: 'action',
-                                        name: 'action',
-                                        orderable: false,
-                                        searchable: false
-                                    },
-                                ],
-                                orderCellsTop: true,
-                                "order": [
-                                    [1, "asc"]
-                                ],
-                                "initComplete": function(settings, json) {
-
-                                }
-                            });
-                        }
+            $('#list').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "/get-lists/",
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content')
                     }
-                });
-            }
+                },
+                columns: [{
+                        className: 'text-center',
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        className: 'text-left',
+                        data: 'ticket_no',
+                        name: 'ticket_no'
+                    },
+                    {
+                        className: 'text-center',
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        className: 'text-center',
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                orderCellsTop: true,
+                "order": [
+                    [1, "asc"]
+                ],
+                "initComplete": function(settings, json) {
 
-
+                }
+            });
         });
     </script>
 @endsection
