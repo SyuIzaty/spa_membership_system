@@ -191,5 +191,4 @@ class iComplaintGmailController extends Controller
         $file = AduanKorporatFile::where('id', $de_id)->first();
         return Storage::disk('minio')->response($file->web_path);
     }
-
 }

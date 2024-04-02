@@ -415,8 +415,7 @@ class AduanKorporatController extends Controller
 
     public function file($id)
     {
-        $de_id = Crypt::decryptString($id);
-        $file = AduanKorporatFile::where('id', $de_id)->first();
+        $file = AduanKorporatFile::where('id', $id)->first();
         return Storage::disk('minio')->response($file->web_path);
     }
 
