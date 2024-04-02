@@ -15,44 +15,49 @@ class AduanKorporat extends Model
         'category', 'subcategory', 'status', 'assign', 'title', 'description', 'created_by', 'updated_by', 'deleted_by'
     ];
 
+    public function getUser()
+    {
+        return $this->hasOne('App\OauthIcomplaint', 'id', 'created_by');
+    }
+
     public function getAdmin()
     {
-        return $this->hasOne('App\AduanKorporatAdmin','department_id','assign');
+        return $this->hasOne('App\AduanKorporatAdmin', 'department_id', 'assign');
     }
 
     public function getStatus()
     {
-        return $this->hasOne('App\AduanKorporatStatus','id','status');
+        return $this->hasOne('App\AduanKorporatStatus', 'id', 'status');
     }
 
     public function getUserCategory()
     {
-        return $this->hasOne('App\AduanKorporatUser','code','user_category');
+        return $this->hasOne('App\AduanKorporatUser', 'code', 'user_category');
     }
 
     public function getCategory()
     {
-        return $this->hasOne('App\AduanKorporatCategory','id','category');
+        return $this->hasOne('App\AduanKorporatCategory', 'id', 'category');
     }
 
     public function getSubCategory()
     {
-        return $this->hasOne('App\AduanKorporatSubCategory','id','subcategory');
+        return $this->hasOne('App\AduanKorporatSubCategory', 'id', 'subcategory');
     }
 
     public function getDepartment()
     {
-        return $this->hasOne('App\AduanKorporatDepartment','id','assign');
+        return $this->hasOne('App\AduanKorporatDepartment', 'id', 'assign');
     }
 
     public function getLog()
     {
-        return $this->hasMany('App\AduanKorporatLog','complaint_id','id');
+        return $this->hasMany('App\AduanKorporatLog', 'complaint_id', 'id');
     }
 
     public function getRemark()
     {
-        return $this->hasOne('App\AduanKorporatRemark','complaint_id','id');
+        return $this->hasOne('App\AduanKorporatRemark', 'complaint_id', 'id');
     }
 
     public function countPending()

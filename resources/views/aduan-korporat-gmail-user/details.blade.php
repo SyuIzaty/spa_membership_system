@@ -67,13 +67,14 @@
                                                 <td style="vertical-align: middle"><label class="form-label"
                                                         for="user_name">Full Name </label></td>
                                                 <td colspan="6">
-                                                    <input class="form-control" value="{{ $data->name }}" readonly>
+                                                    <input class="form-control" value="{{ $data->getUser->name }}" readonly>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="vertical-align: middle"><label class="form-label"
                                                         for="user_email">Email </label></td>
-                                                <td><input class="form-control" value="{{ $data->email }}" readonly></td>
+                                                <td><input class="form-control" value="{{ $data->getUser->email }}"
+                                                        readonly></td>
 
                                                 <td style="vertical-align: middle"><label class="form-label"
                                                         for="user_phone">Phone No. </label></td>
