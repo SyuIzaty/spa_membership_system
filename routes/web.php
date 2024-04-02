@@ -1062,19 +1062,13 @@ Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 
 // eAduan Korporat Public
 Route::get('/iComplaint/login', 'iComplaintGmailController@loginIComplaint');
-Route::get('/form/{id}', 'iComplaintGmailController@formGmailUser');
+Route::get('/form/{id}', 'iComplaintGmailController@form');
 Route::get('/iComplaint-public/{id}', 'iComplaintGmailController@main');
 Route::post('/store', 'iComplaintGmailController@store');
-Route::get('/end/{id}', 'iComplaintGmailController@end');
-// Route::get('/check', 'AduanKorporatController@check');
-// Route::get('/search', 'AduanKorporatController@search');
-// Route::get('/searchID', 'AduanKorporatController@searchID');
-// Route::get('/detail', 'AduanKorporatController@displayDetail');
-// Route::get('/lists', 'AduanKorporatController@publicList');
-// Route::post('/get-lists/{id}', 'AduanKorporatController@getPublicList');
-// Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
-// Route::get('/get-files/{id}', 'AduanKorporatController@file');
-
+Route::get('/end/{id}/{ticket}', 'iComplaintGmailController@end');
+Route::get('/list/{id}', 'iComplaintGmailController@list');
+Route::post('/get-public-lists/{id}', 'iComplaintGmailController@getList');
+Route::get('/details/{id}', 'iComplaintGmailController@detail');
 
 Route::group([
     'prefix' => 'space',

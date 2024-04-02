@@ -57,6 +57,9 @@
                                                             {{ $user->description }}</option>
                                                     @endforeach
                                                 </select>
+                                                @error('userCategory')
+                                                    <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                @enderror
                                             </td>
                                         </thead>
                                     </table>
@@ -102,7 +105,8 @@
                                                     </label></td>
                                                 <td>
                                                     <input class="form-control user_phone" id="user_phone" name="user_phone"
-                                                        placeholder="eg: 0131234567" required>
+                                                        placeholder="eg: 0131234567" value="{{ old('user_phone') }}"
+                                                        required>
 
                                                     @error('user_phone')
                                                         <p style="color: red"><strong> {{ $message }} </strong></p>
@@ -168,7 +172,8 @@
                                                         class="form-label" for="title"><span
                                                             class="text-danger">*</span> Title </label></td>
                                                 <td colspan="6">
-                                                    <input class="form-control" id="title" name="title" required>
+                                                    <input class="form-control" id="title" name="title"
+                                                        value="{{ old('title') }}" required>
 
                                                     @error('title')
                                                         <p style="color: red"><strong> {{ $message }} </strong></p>

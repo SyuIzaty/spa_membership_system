@@ -28,7 +28,7 @@ class iComplaintGmailController extends Controller
         return view('aduan-korporat-gmail-user.main', compact('user', 'id'));
     }
 
-    public function formGmailUser($encryptID)
+    public function form($encryptID)
     {
         $decryptID = Crypt::decryptString($encryptID);
         $details = OauthIcomplaint::where('id', $decryptID)->first();
@@ -131,7 +131,57 @@ class iComplaintGmailController extends Controller
 
     public function end($id, $ticket)
     {
-        return view('aduan-korporat-gmail-user.end', compact('ticket'));
+        $decryptTicket = Crypt::decryptString($ticket);
+
+        return view('aduan-korporat-gmail-user.end', compact('decryptTicket', 'id'));
     }
 
+    public function list($id)
+    {
+        return view('aduan-korporat-gmail-user.list', compact('id'));
+    }
+
+    public function getList($id)
+    {
+        $decryptID = Crypt::decryptString($id);
+
+        $list = AduanKorporat::where('created_by', $decryptID);
+
+        return datatables()::of($list)
+
+        ->editColumn('ticket_no', function ($list) {
+
+            return $list->ticket_no;
+        })
+
+        ->editColumn('status', function ($list) {
+
+            if ($list->status == '2' || $list->status == '3') {
+                return "In Process";
+            } else {
+                return $list->getStatus->description;
+            }
+        })
+
+        ->addColumn('action', function ($list) {
+
+            $route = Crypt::encryptString($list->id);
+            return '<a href="/details/' .$route.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+        })
+
+        ->addIndexColumn()
+
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+
+    public function detail($id)
+    {
+        $dec_id = Crypt::decryptString($id);
+
+        $data = AduanKorporat::where('id', $dec_id)->first();
+        $file = AduanKorporatFile::where('complaint_id', $dec_id)->get();
+
+        return view('aduan-korporat-gmail-user.details', compact('data', 'file'));
+    }
 }

@@ -174,7 +174,7 @@
                                         </div>
                                     </a>
 
-                                    <a href="/lists/{{ $id }}">
+                                    <a href="/list/{{ $id }}">
                                         <div class="box">
                                             <div class="box-icon">
                                                 <span><i class="fas fa-search"></i></span>
