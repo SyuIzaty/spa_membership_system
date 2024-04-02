@@ -124,7 +124,7 @@ class AduanDashboardController extends Controller
                 if ($juruteknik != 'null' && $juruteknik != '') {
 
                     $query->whereHas('stafJuruteknik', function ($query) use ($juruteknik) {
-                        $query->where('juruteknik_bertugas', $juruteknik);
+                        $query->where('juruteknik_bertugas', $juruteknik)->whereNull('deleted_at');
                     });
 
                 } else {
@@ -134,7 +134,7 @@ class AduanDashboardController extends Controller
                     })->distinct('juruteknik_bertugas')->pluck('juruteknik_bertugas')->toArray();
 
                     $query->whereHas('stafJuruteknik', function ($query) use ($juruteknik_terkumpul) {
-                        $query->whereIn('juruteknik_bertugas', $juruteknik_terkumpul);
+                        $query->whereIn('juruteknik_bertugas', $juruteknik_terkumpul)->whereNull('deleted_at');
                     });
                 }
             })
@@ -152,7 +152,7 @@ class AduanDashboardController extends Controller
                 }
             })
 
-        ->get();
+        ->whereNull('deleted_at')->get();
 
         $data = $query;
 
@@ -238,85 +238,125 @@ class AduanDashboardController extends Controller
 
     public function kemaskiniAduanJuruteknik(Request $request)
     {
-        $query = Aduan::query();
+        $tahun = $request->input('tahun');
+        $bulan = $request->input('bulan');
+        $kategori = $request->input('kategori');
+        $jenis = $request->input('jenis');
+        $sebab = $request->input('sebab');
+        $tahap = $request->input('tahap');
+        $kategoriPengadu = $request->input('kategoriPengadu');
+        $juruteknik = $request->input('juruteknik');
+        $status = $request->input('status');
+        $pengesahanPengadu = $request->input('pengesahanPengadu');
 
-        $query->when($request->input('tahun'), function ($query) use ($request) {
-            $query->whereYear('tarikh_laporan', $request->input('tahun'));
-        });
+        $query = Aduan::
+            when($tahun, function ($query) use ($tahun) {
+                $query->whereYear('tarikh_laporan', $tahun);
+            })
 
-        $query->when($request->input('bulan'), function ($query) use ($request) {
-            $query->whereMonth('tarikh_laporan', $request->input('bulan'));
-        });
+            ->when($bulan, function ($query) use ($bulan) {
+                $query->whereMonth('tarikh_laporan', $bulan);
+            })
 
-        $query->when($request->input('kategori'), function ($query) use ($request) {
-            $kategori = $request->input('kategori');
-            $query->whereIn('kategori_aduan', $kategori ? [$kategori] : ['AWM', 'ELK', 'MKL', 'PKH', 'TKM']);
-        });
+            ->when($kategori, function ($query) use ($kategori) {
+                if ($kategori != 'null' && $kategori != '') {
 
-        $query->when($request->input('jenis'), function ($query) use ($request) {
-            $jenis = $request->input('jenis');
-            $query->whereIn('jenis_kerosakan', $jenis);
-        });
+                    $query->where('kategori_aduan', $kategori);
 
-        $query->when($request->input('sebab'), function ($query) use ($request) {
-            $sebab = $request->input('sebab');
-            $query->whereIn('sebab_kerosakan', $sebab);
-        });
+                } else {
 
-        $query->when($request->input('tahap'), function ($query) use ($request) {
-            $query->where('tahap_kategori', $request->input('tahap'));
-        });
+                    $query->whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM']);
+                }
+            })
 
-        $query->when($request->input('status'), function ($query) use ($request) {
-            $status = $request->input('status');
-            $query->whereNotIn('status_aduan', $status ? array_merge($status, ['AB']) : ['AB']);
-        });
+            ->when($jenis, function ($query) use ($jenis) {
+                $query->whereIn('jenis_kerosakan', $jenis);
+            })
 
-        $query->when($request->input('kategoriPengadu'), function ($query) use ($request) {
-            $kategoriPengadu = $request->input('kategoriPengadu');
-            if ($kategoriPengadu == 'STF') {
-                $staffIds = User::select('id')->where('category', 'STF')->pluck('id')->toArray();
-                $query->whereIn('id_pelapor', $staffIds)->whereNull('deleted_at');
-            } elseif ($kategoriPengadu == 'STD') {
-                $studentIds = User::select('id')->where('category', 'STD')->pluck('id')->toArray();
-                $query->whereIn('id_pelapor', $studentIds)->whereNull('deleted_at');
-            }
-        });
+            ->when($sebab, function ($query) use ($sebab) {
+                $query->whereIn('sebab_kerosakan', $sebab);
+            })
 
-        $query->when($request->input('juruteknik'), function ($query) use ($request) {
-            $juruteknik = $request->input('juruteknik');
-            if ($juruteknik != 'null' && $juruteknik != '') {
-                $query->whereHas('stafJuruteknik', function ($query) use ($juruteknik) {
-                    $query->where('juruteknik_bertugas', $juruteknik);
-                });
-            } else {
-                $juruteknik_terkumpul = JuruteknikBertugas::whereHas('aduan', function ($query) {
-                    $query->whereIn('kategori_aduan', ['AWM', 'ELK', 'MKL', 'PKH', 'TKM']);
-                })->distinct('juruteknik_bertugas')->pluck('juruteknik_bertugas')->toArray();
-                $query->whereHas('stafJuruteknik', function ($query) use ($juruteknik_terkumpul) {
-                    $query->whereIn('juruteknik_bertugas', $juruteknik_terkumpul);
-                });
-            }
-        });
+            ->when($tahap, function ($query) use ($tahap) {
+                $query->where('tahap_kategori', $tahap);
+            })
 
-        $query->when($request->input('pengesahanPengadu'), function ($query) use ($request) {
-            $pengesahanPengadu = $request->input('pengesahanPengadu');
-            if ($pengesahanPengadu == 'Y') {
-                $query->where('pengesahan_pembaikan', $pengesahanPengadu);
-            } elseif ($pengesahanPengadu == 'N') {
-                $query->where('pengesahan_pembaikan', '');
-            }
-        });
+            ->when($status, function ($query) use ($status) {
+                if ($status != 'null' && $status != '') {
 
-        $dataList = $query->with(['stafJuruteknik'])->get();
+                    $query->whereIn('status_aduan', $status)->whereNotIn('status_aduan', ['AB']);
 
-        $senarai_juruteknik = $request->input('juruteknik')
-            ? Staff::where('staff_id', $request->input('juruteknik'))->get()
-            : Staff::whereIn('staff_id', $dataList->pluck('stafJuruteknik.juruteknik_bertugas'))->get();
+                } else {
 
-        $senarai_kategori = $request->input('kategori')
-            ? KategoriAduan::where('kod_kategori', $request->input('kategori'))->get()
-            : KategoriAduan::whereIn('kod_kategori', ['AWM', 'ELK', 'MKL', 'PKH', 'TKM'])->get();
+                    $query->whereNotIn('status_aduan', ['AB']);
+                }
+            })
+
+            ->when($kategoriPengadu, function ($query) use ($kategoriPengadu) {
+                if ($kategoriPengadu == 'STF') {
+
+                    $staffIds = User::select('id')->where('category', 'STF')->pluck('id')->toArray();
+
+                    $query->whereIn('id_pelapor', $staffIds)->whereNull('deleted_at');
+
+                } elseif ($kategoriPengadu == 'STD') {
+
+                    $studentIds = User::select('id')->where('category', 'STD')->pluck('id')->toArray();
+
+                    $query->whereIn('id_pelapor', $studentIds)->whereNull('deleted_at');
+                }
+            })
+
+            ->when($juruteknik, function ($query) use ($juruteknik) {
+
+                if ($juruteknik != 'null' && $juruteknik != '') {
+
+                    $query->whereHas('stafJuruteknik', function ($query) use ($juruteknik) {
+                        $query->where('juruteknik_bertugas', $juruteknik)->whereNull('deleted_at');
+                    });
+
+                } else {
+
+                    $juruteknik_terkumpul = JuruteknikBertugas::whereHas('aduan', function ($query) {
+                        $query->whereIn('kategori_aduan', ['AWM', 'ELK', 'MKL', 'PKH', 'TKM']);
+                    })->distinct('juruteknik_bertugas')->pluck('juruteknik_bertugas')->toArray();
+
+                    $query->whereHas('stafJuruteknik', function ($query) use ($juruteknik_terkumpul) {
+                        $query->whereIn('juruteknik_bertugas', $juruteknik_terkumpul)->whereNull('deleted_at');
+                    });
+                }
+            })
+
+            ->when($pengesahanPengadu, function ($query) use ($pengesahanPengadu) {
+
+                if ($pengesahanPengadu == 'Y') {
+
+                    $query->where('pengesahan_pembaikan', $pengesahanPengadu);
+
+                } elseif ($pengesahanPengadu == 'N') {
+
+                    $query->where('pengesahan_pembaikan', '');
+
+                }
+            })
+
+        ->whereNull('deleted_at')->get();
+
+        if (isset($kategori)) {
+            $senarai_kategori = KategoriAduan::where('kod_kategori', $kategori)->get();
+        } else {
+            $senarai_kategori = KategoriAduan::whereIn('kod_kategori', ['AWM','ELK','MKL','PKH','TKM'])->get();
+        }
+
+        if (isset($juruteknik)) {
+            $senarai_juruteknik = Staff::where('staff_id', $juruteknik)->whereNotIn('staff_code', ['IITU'])->get();
+        } else {
+            $kumpul_juruteknik = JuruteknikBertugas::whereHas('aduan', function ($query) {
+                $query->whereIn('kategori_aduan', ['AWM', 'ELK', 'MKL', 'PKH', 'TKM']);
+            })->pluck('juruteknik_bertugas')->toArray();
+
+            $senarai_juruteknik = Staff::whereIn('staff_id', $kumpul_juruteknik)->whereNotIn('staff_code', ['IITU'])->get();
+        }
 
         $datasets = [];
 
@@ -331,9 +371,15 @@ class AduanDashboardController extends Controller
             ];
 
             foreach ($senarai_juruteknik as $juruteknik) {
-                $count = $dataList->where('stafJuruteknik.juruteknik_bertugas', $juruteknik->staff_id)
+
+                $countList = Aduan::whereHas('stafJuruteknik', function($q) use($juruteknik){
+                    $q->where('juruteknik_bertugas', $juruteknik->staff_id);
+                })->pluck('id')->toArray();
+
+                $count = $query->whereIn('id', $countList)
                     ->where('kategori_aduan', $kategori->kod_kategori)
                     ->count();
+
                 $data['data'][] = $count;
             }
 
@@ -358,10 +404,6 @@ class AduanDashboardController extends Controller
 
         return "rgb($red, $green, $blue)";
     }
-
-
-
-
 
     /**
      * Show the form for creating a new resource.
