@@ -1067,7 +1067,7 @@ Route::get('/end/{id}/{ticket}', 'iComplaintGmailController@end');
 Route::get('/list/{id}', 'iComplaintGmailController@list');
 Route::post('/get-public-lists/{id}', 'iComplaintGmailController@getList');
 Route::get('/details/{id}', 'iComplaintGmailController@detail');
-Route::get('/get-file/{id}', 'iComplaintGmailController@file');
+Route::get('/fetch-file/{id}', 'iComplaintGmailController@file');
 
 Route::group([
     'prefix' => 'space',
