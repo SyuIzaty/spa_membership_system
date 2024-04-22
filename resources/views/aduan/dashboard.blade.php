@@ -137,14 +137,6 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2 col-sm-12 mb-2">
-                        <label>Pengesahan Pengadu :</label>
-                        <select id="filtPengesahanPengadu" name="filtPengesahanPengadu" class="filtPengesahanPengadu selectfilter form-control">
-                            <option value="" selected>SEMUA</option>
-                            <option value="Y">DISAHKAN</option>
-                            <option value="N">BELUM DISAHKAN</option>
-                        </select>
-                    </div>
                     <div class="col-md-3 col-sm-12 mb-2">
                         <label>Status :</label>
                         <select id="filtStatus" name="filtStatus[]" class="filtStatus selectfilter form-control" multiple="multiple">
@@ -194,7 +186,7 @@
 
 <script>
 
-    $('#filtTahun, #filtBulan, #filtKategori, #filtJenis, #filtSebab, #filtTahap, #filtKategoriPengadu, #filtJuruteknik, #filtStatus, #filtPengesahanPengadu').select2();
+    $('#filtTahun, #filtBulan, #filtKategori, #filtJenis, #filtSebab, #filtTahap, #filtKategoriPengadu, #filtJuruteknik, #filtStatus').select2();
 
     $(document).ready(function () {
         function updateAduanRingkasan() {
@@ -208,7 +200,6 @@
                 kategoriPengadu: $('#filtKategoriPengadu').val(),
                 juruteknik: $('#filtJuruteknik').val(),
                 status: $('#filtStatus').val(),
-                pengesahanPengadu: $('#filtPengesahanPengadu').val(),
             };
 
             $.ajax({
@@ -247,7 +238,6 @@
                 kategoriPengadu: $('#filtKategoriPengadu').val(),
                 juruteknik: $('#filtJuruteknik').val(),
                 status: $('#filtStatus').val(),
-                pengesahanPengadu: $('#filtPengesahanPengadu').val(),
             };
 
             if (myChart) {

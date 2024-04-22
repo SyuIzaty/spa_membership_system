@@ -20,7 +20,8 @@ class AduanDashboardController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
+    */
+
     public function index(Request $request)
     {
         $aduan = Aduan::whereIn('kategori_aduan', ['AWM','ELK','MKL','PKH','TKM'])->whereNotIn('status_aduan', ['AB'])->get();
@@ -59,7 +60,6 @@ class AduanDashboardController extends Controller
         $kategoriPengadu = $request->input('kategoriPengadu');
         $juruteknik = $request->input('juruteknik');
         $status = $request->input('status');
-        $pengesahanPengadu = $request->input('pengesahanPengadu');
 
         $query = Aduan::
             when($tahun, function ($query) use ($tahun) {
@@ -136,19 +136,6 @@ class AduanDashboardController extends Controller
                     $query->whereHas('stafJuruteknik', function ($query) use ($juruteknik_terkumpul) {
                         $query->whereIn('juruteknik_bertugas', $juruteknik_terkumpul)->whereNull('deleted_at');
                     });
-                }
-            })
-
-            ->when($pengesahanPengadu, function ($query) use ($pengesahanPengadu) {
-
-                if ($pengesahanPengadu == 'Y') {
-
-                    $query->where('pengesahan_pembaikan', $pengesahanPengadu);
-
-                } elseif ($pengesahanPengadu == 'N') {
-
-                    $query->where('pengesahan_pembaikan', '');
-
                 }
             })
 
@@ -247,7 +234,6 @@ class AduanDashboardController extends Controller
         $kategoriPengadu = $request->input('kategoriPengadu');
         $juruteknik = $request->input('juruteknik');
         $status = $request->input('status');
-        $pengesahanPengadu = $request->input('pengesahanPengadu');
 
         $query = Aduan::
             when($tahun, function ($query) use ($tahun) {
@@ -327,19 +313,6 @@ class AduanDashboardController extends Controller
                 }
             })
 
-            ->when($pengesahanPengadu, function ($query) use ($pengesahanPengadu) {
-
-                if ($pengesahanPengadu == 'Y') {
-
-                    $query->where('pengesahan_pembaikan', $pengesahanPengadu);
-
-                } elseif ($pengesahanPengadu == 'N') {
-
-                    $query->where('pengesahan_pembaikan', '');
-
-                }
-            })
-
         ->whereNull('deleted_at')->get();
 
         if (isset($kategori)) {
@@ -409,7 +382,8 @@ class AduanDashboardController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
-     */
+    */
+
     public function create()
     {
         //
@@ -420,7 +394,8 @@ class AduanDashboardController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
+    */
+
     public function store(Request $request)
     {
         //
@@ -431,7 +406,8 @@ class AduanDashboardController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+    */
+
     public function show($id)
     {
         //
@@ -442,7 +418,8 @@ class AduanDashboardController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+    */
+
     public function edit($id)
     {
         //
@@ -454,7 +431,8 @@ class AduanDashboardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+    */
+
     public function update(Request $request, $id)
     {
         //
@@ -465,7 +443,8 @@ class AduanDashboardController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+    */
+
     public function destroy($id)
     {
         //
