@@ -205,6 +205,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/ekenderaan-dashboard', 'eKenderaanDashboardController');
     Route::post('/driver-data', 'eKenderaanDashboardController@driverData');
     Route::get('/dashboard-driver', 'eKenderaanDashboardController@dashboardDriver');
+    Route::delete('/delete-driver/{id}', 'EKenderaanController@deleteDriver');
 
     //iStationery
     Route::get('/application-list', 'Stationery\StationeryManagementController@index');

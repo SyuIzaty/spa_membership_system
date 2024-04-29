@@ -73,22 +73,19 @@
                     </div>
                     <div class="modal-body">
                         {!! Form::open(['action' => 'EKenderaanController@addDriver', 'method' => 'POST']) !!}
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Name</span>
-                                </div>
-                                <input type="text" name="name" class="form-control" required>
-                            </div>
-                        </div>
 
                         <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Staff ID</span>
-                                </div>
-                                <input type="text" name="staff_id" class="form-control" required>
-                            </div>
+                            <label class="form-label">Name</label>
+                            <select class="form-control staff" name="staff_id" id="staff" required>
+                                <option disabled selected>Choose Staff
+                                </option>
+                                @foreach ($staff as $s)
+                                    <option value="{{ $s->staff_id }}"
+                                        {{ old('staff') == $s->staff_id ? 'selected' : '' }}>
+                                        {{ $s->staff_name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -96,7 +93,16 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Phone No.</span>
                                 </div>
-                                <input type="text" name="phone" class="form-control" required>
+                                <input type="text" name="tel_no" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Color (for Calendar)</span>
+                                </div>
+                                <input type="color" name="color" class="form-control" required>
                             </div>
                         </div>
 
@@ -145,19 +151,18 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Staff ID</span>
+                                    <span class="input-group-text">Phone No.</span>
                                 </div>
-                                <input type="text" id="staff_id" name="staff_id" class="form-control" disabled
-                                    required>
+                                <input type="text" id="phone" name="phone" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Phone No.</span>
+                                    <span class="input-group-text">Color (for Calendar)</span>
                                 </div>
-                                <input type="text" id="phone" name="phone" class="form-control">
+                                <input type="color" name="color" class="form-control" required>
                             </div>
                         </div>
 
@@ -190,20 +195,31 @@
     <script>
         $(document).ready(function() {
 
+            $('#add').on('shown.bs.modal', function() {
+                $('.staff').select2({
+                    dropdownParent: $('#add')
+                });
+            });
+
             $('#edit').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget)
                 var id = button.data('id') // data-id
                 var name = button.data('name') // data-name
                 var staff_id = button.data('staff_id') // data-staff_id
                 var phone = button.data('phone') // data-phone
+                var color = button.data('color') // data-color
                 var status = button.data('status') // data-status
 
                 $('.modal-body #id').val(id);
                 $('.modal-body #name').val(name);
                 $('.modal-body #staff_id').val(staff_id);
                 $('.modal-body #phone').val(phone);
+                $('.modal-body #color').val(color);
                 $('.modal-body #status').val(status);
 
+                $('.staffs').select2({
+                    dropdownParent: $('#edit')
+                });
             });
 
             var table = $('#driver').DataTable({
@@ -259,6 +275,41 @@
 
                 }
             });
+
+            $('#driver').on('click', '.btn-delete[data-remote]', function(e) {
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                var url = $(this).data('remote');
+                Swal.fire({
+                    title: 'Are you sure you want to delete this driver?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            dataType: 'json',
+                            data: {
+                                method: '_DELETE',
+                                submit: true
+                            }
+                        }).always(function(data) {
+                            $('#driver').DataTable().draw(false);
+                        });
+                    }
+                })
+            });
+
         });
     </script>
 @endsection

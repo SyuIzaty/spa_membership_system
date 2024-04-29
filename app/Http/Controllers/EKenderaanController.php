@@ -807,7 +807,12 @@ class EKenderaanController extends Controller
 
     public function driver()
     {
-        return view('eKenderaan.driver');
+        $drivers = eKenderaanDrivers::get();
+        $driver  = array_column($drivers->toArray(), 'staff_id');
+
+        $staff = Staff::whereNotIn('staff_id', $driver)->get();
+
+        return view('eKenderaan.driver', compact('staff'));
     }
 
     public function driverList()
@@ -844,7 +849,12 @@ class EKenderaanController extends Controller
                 //     return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$driver->id.'" data-name="'.$driver->name.'" data-staff_id="'.$driver->staff_id.'" data-status="'.$driver->status.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
                 // }
 
-                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="' . $driver->id . '" data-name="' . $driver->name . '" data-staff_id="' . $driver->staff_id . '" data-phone="' . $driver->tel_no . '" data-status="' . $driver->status . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                if (Auth::user()->hasAnyRole(['Super Admin'])) {
+                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="' . $driver->id . '" data-name="' . $driver->name . '" data-staff_id="' . $driver->staff_id . '" data-phone="' . $driver->tel_no . '" data-color="' . $driver->color . '" data-status="' . $driver->status . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+                    <div class="btn-group"><button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-driver/' . $driver->id . '"><i class="fal fa-trash"></i></button></div>';
+                } else {
+                    return '<a href="#" data-target="#edit" data-toggle="modal" data-id="' . $driver->id . '" data-name="' . $driver->name . '" data-staff_id="' . $driver->staff_id . '" data-phone="' . $driver->tel_no . '" data-color="' . $driver->color . '" data-status="' . $driver->status . '" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                }
             })
 
             ->rawColumns(['status','tel_no','edit'])
@@ -854,17 +864,20 @@ class EKenderaanController extends Controller
 
     public function addDriver(Request $request)
     {
-        $validated = $request->validate([
-            'name'      => 'required',
-            'staff_id'  => 'required',
-            'tel_no'    => 'required',
-        ]);
+        $request->validate([
+             'staff_id'  => 'required',
+             'tel_no'    => 'required',
+             'color'    => 'required',
+         ]);
+
+        $staff = Staff::where('staff_id', $request->staff_id)->first();
 
         eKenderaanDrivers::create([
-            'name'      => $request->name,
-            'staff_id'  => $request->staff_id,
-            'tel_no'    => $request->phone,
-            'status'    => $request->status,
+            'name'       => $staff->staff_name,
+            'staff_id'   => $request->staff_id,
+            'tel_no'     => $request->tel_no,
+            'color'      => $request->color,
+            'status'     => $request->status,
             'created_by' => Auth::user()->id
         ]);
 
@@ -877,12 +890,22 @@ class EKenderaanController extends Controller
         $update->update([
             // 'name'      => $request->name,
             // 'staff_id'  => $request->staff_id,
-            'tel_no'    => $request->phone,
-            'status'    => $request->status,
+            'tel_no'     => $request->phone,
+            'color'      => $request->color,
+            'status'     => $request->status,
             'updated_by' => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message', 'Update Successfully');
+    }
+
+    public function deleteDriver($id)
+    {
+        $exist = eKenderaanDrivers::find($id);
+        $exist->update(['deleted_by' => Auth::user()->id]);
+        $exist->delete();
+
+        return response()->json();
     }
 
     public function vehicle()
