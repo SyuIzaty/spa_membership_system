@@ -606,7 +606,7 @@
                                 @endif
                             @endcan
                             @canany(['view complaint - admin', 'view complaint - technician'])
-                                @if(isset($juru))
+                                {{-- @if(isset($juru)) --}}
                                     @if($aduan->status_aduan == 'DJ' || $aduan->status_aduan == 'TD')
                                         <div class="card card-primary card-outline">
                                             <div class="card-header">
@@ -844,7 +844,7 @@
                                         </div>
                                         <br><br>
                                     @endif
-                                @endif
+                                {{-- @endif --}}
                             @endcanany
                             @can('view complaint - admin')
                                 @if($aduan->status_aduan == 'TD' && $aduan->pengesahan_pembaikan != 'Y')
