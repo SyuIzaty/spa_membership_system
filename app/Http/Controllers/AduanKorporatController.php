@@ -72,6 +72,7 @@ class AduanKorporatController extends Controller
 
         $data = AduanKorporat::create([
             'phone_no'      => $request->user_phone,
+            'email'         => $request->user_email,
             'address'       => $request->address,
             'user_category' => $request->userCategory,
             'category'      => $request->category,
@@ -116,20 +117,20 @@ class AduanKorporatController extends Controller
         // })->get();
 
         // foreach($admin as $a) {
-            // $admin_email = $a->email;
-            $users = AduanKorporat::where('id', $request->id)->first();
-            $user_email = $users->email;
+        // $admin_email = $a->email;
+        $users = AduanKorporat::where('id', $request->id)->first();
+        $user_email = $users->email;
 
-            $data = [
-                'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $users->name,
-                'emel'     => 'You have received new iComplaint from '.$users->name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
-            ];
+        $data = [
+            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ',
+            'emel'     => 'You have received new iComplaint on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+        ];
 
-            Mail::send('aduan-korporat.email', $data, function ($message) use ($user_email) {
-                $message->subject('New iComplaint');
-                $message->from('intec@uitm.edu.my');
-                $message->to($user_email);
-            });
+        Mail::send('aduan-korporat.email', $data, function ($message) use ($user_email) {
+            $message->subject('New iComplaint');
+            $message->from('intec@uitm.edu.my');
+            $message->to($user_email);
+        });
         // }
 
         return redirect('end/'.$ticket);
