@@ -135,7 +135,7 @@ class VenueDetailController extends Controller
         $check = SpaceBookingVenue::where('venue_id',$request->venue_id)->count();
         $venue = SpaceVenue::find($request->venue_id);
         SpaceVenue::where('id',$request->venue_id)->update([
-            'name' =>($check >= 1) ? $venue->name : $request->name,
+            'name' => $request->name,
             'description' => $request->description,
             'maximum' => $request->maximum,
             'open_student' => ($request->open_student == 'on') ? 7 : 8,
