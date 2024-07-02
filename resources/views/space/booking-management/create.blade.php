@@ -60,7 +60,7 @@
                                                           <select class="form-control" name="user_id" id="user_id">
                                                             <option disabled selected>Please Select</option>
                                                             @foreach($user as $users)
-                                                            <option value="{{ $users->id }}">[{{ $users->id }}] {{ $users->name }}</option>
+                                                            <option value="{{ $users->id }}" {{ old('user_id') ==  $users->id  ? 'selected' : '' }}>[{{ $users->id }}] {{ $users->name }}</option>
                                                             @endforeach
                                                           </select>
                                                         </td>
@@ -70,11 +70,11 @@
                                                   <div class="form-group">
                                                       <td width="20%" style="vertical-align: middle"><label class="form-label"> Office No :</label></td>
                                                       <td colspan="3">
-                                                          <input type="text" class="form-control" name="office_no">
+                                                          <input type="text" class="form-control" name="office_no" value="{{ old('office_no') }}">
                                                       </td>
                                                       <td width="20%" style="vertical-align: middle"><span class="text-danger">*</span> <label class="form-label"> H/P :</label></td>
                                                       <td colspan="3">
-                                                        <input type="text" class="form-control" name="phone_number">
+                                                        <input type="text" class="form-control" name="phone_number" value="{{ old('phone_number') }}">
                                                       </td>
                                                   </div>
                                                 </tr>
@@ -82,7 +82,7 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Purpose :</label></td>
                                                         <td colspan="6">
-                                                          <input type="text" class="form-control" name="purpose">
+                                                          <input type="text" class="form-control" name="purpose" value="{{ old('purpose') }}">
                                                         </td>
                                                     </div>
                                                 </tr>
@@ -90,7 +90,7 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Number of User :</label></td>
                                                         <td colspan="6">
-                                                          <input type="number" class="form-control" name="no_user">
+                                                          <input type="number" class="form-control" name="no_user" value="{{ old('no_user') }}">
                                                         </td>
                                                     </div>
                                                 </tr>
@@ -98,12 +98,12 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Start Date :</label></td>
                                                         <td colspan="3">
-                                                            <input type="date" class="form-control" id="start_date" name="start_date">
+                                                            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ old('start_date') }}">
                                                           
                                                         </td>
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> End Date :</label></td>
                                                         <td colspan="3">
-                                                            <input type="date" class="form-control" id="end_date" name="end_date">
+                                                            <input type="date" class="form-control" id="end_date" name="end_date" value="{{ old('end_date') }}">
                                                         </td>
                                                     </div>
                                                 </tr>
@@ -111,11 +111,11 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Start Time :</label></td>
                                                         <td colspan="3">
-                                                            <input type="time" class="form-control" id="start_time" name="start_time">
+                                                            <input type="time" class="form-control" id="start_time" name="start_time" value="{{ old('start_time') }}">
                                                         </td>
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> End Time :</label></td>
                                                         <td colspan="3">
-                                                            <input type="time" class="form-control" id="end_time" name="end_time">
+                                                            <input type="time" class="form-control" id="end_time" name="end_time" value="{{ old('end_time') }}">
                                                         </td>
                                                     </div>
                                                 </tr>
@@ -194,7 +194,7 @@
                                                     <div class="form-group">
                                                         <td width="20%" style="vertical-align: middle"><label class="form-label">Remark :</label></td>
                                                         <td colspan="5">
-                                                          <input type="text" class="form-control" id="remark" name="remark">
+                                                          <input type="text" class="form-control" id="remark" name="remark" value="{{ old('remark') }}">
                                                         </td>
                                                     </div>
                                                 </tr>
