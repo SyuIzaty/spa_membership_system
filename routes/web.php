@@ -1009,6 +1009,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/space/venue-management', 'Space\VenueDetailController');
     Route::post('/get-venue-detail', 'Space\VenueDetailController@getVenueDetail');
+    Route::get('/get-venue-email/{id}', 'Space\VenueDetailController@getVenueEmail');
     Route::resource('/space/item-management', 'Space\ItemDetailController');
     Route::post('/get-item-detail', 'Space\ItemDetailController@getItemDetail');
     Route::resource('/space/booking-management', 'Space\BookingManagementController');

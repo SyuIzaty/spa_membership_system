@@ -9,7 +9,7 @@ class SpaceVenue extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['name','description','maximum','open_student','department_id','status'];
+    protected $fillable = ['name','description','maximum','open_student','department_id','status','email_sent'];
 
     public function spaceStatus()
     {
@@ -29,6 +29,11 @@ class SpaceVenue extends Model
     public function departmentList()
     {
         return $this->hasOne('App\DepartmentList','id','department_id');
+    }
+
+    public function spaceVenueEmails()
+    {
+        return $this->hasMany('App\SpaceVenueEmail','venue_id','id');
     }
 
     public function scopeActive($query)

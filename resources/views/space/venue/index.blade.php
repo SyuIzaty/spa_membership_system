@@ -105,12 +105,31 @@
                                           </td>
                                         </tr>
                                         <tr>
-                                          <td>Status <span class="text-danger">*</span></td>
+                                          <td>Status</td>
                                           <td>
                                             <div class="custom-control custom-switch">
                                               <input type="checkbox" class="custom-control-input" name="status" id="store_status">
                                               <label class="custom-control-label" for="store_status"></label>
                                             </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Sent Email?</td>
+                                          <td>
+                                            <div class="custom-control custom-switch">
+                                              <input type="checkbox" class="custom-control-input" name="email_sent" id="store_email">
+                                              <label class="custom-control-label" for="store_email"></label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Email to</td>
+                                          <td>
+                                            <select class="form-control" name="staff_id[]" id="staff_id" multiple>
+                                              @foreach($staff as $staffs)
+                                              <option value="{{ $staffs->staff_id }}">{{ $staffs->staff_name }}</option>
+                                              @endforeach
+                                            </select>
                                           </td>
                                         </tr>
                                       </table>
@@ -163,12 +182,28 @@
                                           </td>
                                         </tr>
                                         <tr>
-                                          <td>Status <span class="text-danger">*</span></td>
+                                          <td>Status</td>
                                           <td>
                                             <div class="custom-control custom-switch">
                                               <input type="checkbox" class="custom-control-input" name="status" id="status">
                                               <label class="custom-control-label" for="status"></label>
                                             </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Sent Email?</td>
+                                          <td>
+                                            <div class="custom-control custom-switch">
+                                              <input type="checkbox" class="custom-control-input" name="email_sent" id="email_sent">
+                                              <label class="custom-control-label" for="email_sent"></label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Email to</td>
+                                          <td>
+                                            <select class="form-control" name="staff_id[]" id="staff_id2" multiple>
+                                            </select>
                                           </td>
                                         </tr>
                                       </table>
@@ -193,6 +228,14 @@
 <script>
   $('#new').click(function () {
       $('#crud-modal').modal('show');
+  });
+
+  $('#staff_id').select2({
+      dropdownParent: $('#crud-modal')
+  });
+
+  $('#staff_id2').select2({
+      dropdownParent: $('.editModal')
   });
 
   $(document).ready(function() {
@@ -270,12 +313,31 @@
                   $('#status').prop('checked', false);
                 }
 
+                if(data.email_sent == 1){
+                  $('#email_sent').prop('checked', true);
+                } if(data.email_sent != 1) {
+                  $('#email_sent').prop('checked', false);
+                }
+
                 if(data.open_student == 7){
                   $('#open_student').prop('checked', true);
                 }if(data.open_student != 7) {
                   $('#open_student').prop('checked', false);
                 }
                 $('.editModal').modal('show');
+            }
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: "{{url('/get-venue-email')}}/" + id,
+            success: function (respond) {
+                $('#staff_id2').empty();
+                respond.interest.forEach(function(ele){
+                    $('#staff_id2').append(`<option value="${ele.staff_id}">${ele.staff_id} - ${ele.staff_name}</option>
+                    `);
+                });
+                $('#staff_id2').val(respond.offer);
             }
         });
       });

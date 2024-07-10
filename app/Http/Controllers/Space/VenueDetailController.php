@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Space\StoreVenueRequest;
 use App\SpaceBookingVenue;
+use App\SpaceVenueEmail;
 use App\DepartmentList;
 use App\SpaceStatus;
 use App\SpaceVenue;
 use App\SpaceStaff;
+use App\Staff;
 use DataTables;
 use Auth;
 
@@ -26,6 +28,7 @@ class VenueDetailController extends Controller
         $student = SpaceStatus::Student()->get();
         $department = DepartmentList::all();
         $check = SpaceStaff::StaffId(Auth::user()->id)->first();
+        $staff = Staff::where('status_id',1)->get();
         if(isset($check)){
             $venue = SpaceVenue::with('spaceStatus','departmentList')
             ->where('department_id',$check->department_id)->select('space_venues.*');
@@ -61,13 +64,24 @@ class VenueDetailController extends Controller
             ->make(true);
         }
 
-        return view('space.venue.index',compact('venue','status','student','department'));
+        return view('space.venue.index',compact('venue','status','student','department','staff'));
     }
 
     public function getVenueDetail(Request $request)
     {
         $venue = SpaceVenue::find($request->id);
         echo json_encode($venue);
+    }
+
+    public function getVenueEmail($id)
+    {
+        $email = SpaceVenueEmail::VenueId($id)->get();
+
+        $offer = $email->pluck('staff_id')->toArray();
+
+        $interest = Staff::where('status_id',1)->get();
+
+        return response()->json(compact('interest','offer'));
     }
 
     /**
@@ -88,7 +102,7 @@ class VenueDetailController extends Controller
      */
     public function store(StoreVenueRequest $request)
     {
-        SpaceVenue::create([
+        $venue_id = SpaceVenue::create([
             'name' => $request->name,
             'description' => $request->description,
             'minimum' => $request->minimum,
@@ -96,7 +110,17 @@ class VenueDetailController extends Controller
             'open_student' => ($request->open_student == 'on') ? 7 : 8,
             'department_id' => $request->department_id,
             'status' => ($request->status == 'on') ? 1 : 2,
+            'email_sent' => ($request->email_sent == 'on') ? 1 : 2,
         ]);
+
+        if(isset($request->staff_id)){
+            foreach($request->staff_id as $staffs_id){
+                SpaceVenueEmail::create([
+                    'venue_id' => $venue_id->id,
+                    'staff_id' => $staffs_id,
+                ]);
+            }
+        }
 
         return redirect()->back()->with('message','Created');
     }
@@ -141,7 +165,18 @@ class VenueDetailController extends Controller
             'open_student' => ($request->open_student == 'on') ? 7 : 8,
             'department_id' => $request->department_id,
             'status' => ($request->status == 'on') ? 1 : 2,
+            'email_sent' => ($request->email_sent == 'on') ? 1 : 2,
         ]);
+
+        SpaceVenueEmail::where('venue_id',$request->venue_id)
+        ->whereNotIn('staff_id',$request->staff_id)->delete();
+
+        foreach($request->staff_id as $staffs_id){
+            SpaceVenueEmail::firstOrCreate([
+                'venue_id' => $request->venue_id,
+                'staff_id' => $staffs_id,
+            ]);
+        }
 
         return redirect()->back()->with('message','Update');
     }

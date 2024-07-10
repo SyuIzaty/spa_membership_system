@@ -13,6 +13,7 @@ use App\SpaceBookingMain;
 use App\SpaceBookingItem;
 use App\SpaceBookingVenue;
 use App\SpaceStatus;
+use App\SpaceVenueEmail;
 use App\SpaceVenue;
 use App\SpaceStaff;
 use App\DepartmentList;
@@ -173,6 +174,33 @@ class BookingManagementController extends Controller
                         'application_status' => 3,
                         'verify_by' => Auth::user()->id
                     ]);
+
+                    $check_email = SpaceVenue::find($key);
+                    if($check_email->email_sent == 1){
+                        $all_email = SpaceVenueEmail::VenueId($key)->get();
+
+                        foreach($all_email as $all_emails){
+                            $user_email = isset($all_emails->staff->staff_email) ? $all_emails->staff->staff_email : 'nurmaryam.mohamad@intec.edu.my';
+                            $data = [
+                                'receivers'   => isset($all_emails->staff->staff_email) ? $all_emails->staff->staff_email : '',
+                                'departDate'  => date(' d/m/Y ', strtotime($request->start_date)),
+                                'departTime'  => date(' h:i A ', strtotime($request->start_time)),
+                                'returnDate'  => date(' d/m/Y ', strtotime($request->end_date)),
+                                'returnTime'  => date(' h:i A ', strtotime($request->end_time)),
+                                'destination' => $check_email->name,
+                                'purpose'     => $request->purpose,
+                                'departmentName' => isset($check_email->departmentList->name) ? $check_email->departmentList->name : '',
+                                'departmentPhone' => isset($check_email->departmentList->phone) ? $check_email->departmentList->phone : '',
+                                'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
+                            ];
+                
+                            Mail::send('space.booking-management.email', $data, function ($message) use ($user_email,$check_email) {
+                                $message->subject(isset($check_email->departmentList->name) ? $check_email->departmentList->name : ''.': TEMPAHAN RUANG');
+                                $message->from(isset($check_email->departmentList->email) ? $check_email->departmentList->email : '');
+                                $message->to($user_email);
+                            });
+                        }
+                    }
                 }
             }
     
