@@ -177,12 +177,13 @@ class BookingManagementController extends Controller
 
                     $check_email = SpaceVenue::find($key);
                     if($check_email->email_sent == 1){
-                        $all_email = SpaceVenueEmail::VenueId($key)->get();
+                        $all_email = SpaceVenueEmail::VenueId($key)->with('staff')->get();
 
                         foreach($all_email as $all_emails){
                             $user_email = isset($all_emails->staff->staff_email) ? $all_emails->staff->staff_email : 'nurmaryam.mohamad@intec.edu.my';
+                            $started_date = $request->start_date;
                             $data = [
-                                'receivers'   => isset($all_emails->staff->staff_email) ? $all_emails->staff->staff_email : '',
+                                'receivers'   => isset($all_emails->staff->staff_name) ? $all_emails->staff->staff_name : 'Nurmaryam',
                                 'departDate'  => date(' d/m/Y ', strtotime($request->start_date)),
                                 'departTime'  => date(' h:i A ', strtotime($request->start_time)),
                                 'returnDate'  => date(' d/m/Y ', strtotime($request->end_date)),
@@ -194,8 +195,8 @@ class BookingManagementController extends Controller
                                 'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
                             ];
                 
-                            Mail::send('space.booking-management.email', $data, function ($message) use ($user_email,$check_email) {
-                                $message->subject(isset($check_email->departmentList->name) ? $check_email->departmentList->name : ''.': TEMPAHAN RUANG');
+                            Mail::send('space.booking-management.email-admin', $data, function ($message) use ($user_email,$check_email,$started_date) {
+                                $message->subject('PENGGUNAAN RUANG PADA '.$started_date);
                                 $message->from(isset($check_email->departmentList->email) ? $check_email->departmentList->email : '');
                                 $message->to($user_email);
                             });
@@ -297,6 +298,34 @@ class BookingManagementController extends Controller
                 $message->from(isset($venue_main->departmentList->email) ? $venue_main->departmentList->email : '');
                 $message->to($user_email);
             });
+
+
+            if($venue_main->email_sent == 1){
+                $all_email = SpaceVenueEmail::VenueId($venue_main->id)->with('staff')->get();
+
+                foreach($all_email as $all_emails){
+                    $user_email = isset($all_emails->staff->staff_email) ? $all_emails->staff->staff_email : 'nurmaryam.mohamad@intec.edu.my';
+                    $started_date = $main->start_date;
+                    $data2 = [
+                        'receivers'   => isset($all_emails->staff->staff_name) ? $all_emails->staff->staff_name : 'Nurmaryam',
+                        'departDate'  => date(' d/m/Y ', strtotime($main->start_date)),
+                        'departTime'  => date(' h:i A ', strtotime($main->start_time)),
+                        'returnDate'  => date(' d/m/Y ', strtotime($main->end_date)),
+                        'returnTime'  => date(' h:i A ', strtotime($main->end_time)),
+                        'destination' => $venue_main->name,
+                        'purpose'     => $main->purpose,
+                        'departmentName' => isset($venue_main->departmentList->name) ? $venue_main->departmentList->name : '',
+                        'departmentPhone' => isset($venue_main->departmentList->phone) ? $venue_main->departmentList->phone : '',
+                        'footer'      => 'Kerjasama daripada pihak Tuan/Puan amat kami hargai. Terima Kasih',
+                    ];
+        
+                    Mail::send('space.booking-management.email-admin', $data2, function ($message) use ($user_email,$venue_main,$started_date) {
+                        $message->subject('PENGGUNAAN RUANG PADA '.$started_date);
+                        $message->from(isset($venue_main->departmentList->email) ? $venue_main->departmentList->email : '');
+                        $message->to($user_email);
+                    });
+                }
+            }
         }
         if($request->application_status == 4){
 
