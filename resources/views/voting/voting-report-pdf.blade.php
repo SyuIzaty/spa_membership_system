@@ -103,9 +103,17 @@
 
                                                     $disengageVoter = $activeStudent - $engageVoter;
 
-                                                    $engagePercent = ($engageVoter / $activeStudent) * 100;
+                                                    // $engagePercent = ($engageVoter / $activeStudent) * 100;
 
-                                                    $disengagePercent = ($disengageVoter / $activeStudent) * 100;
+                                                    // $disengagePercent = ($disengageVoter / $activeStudent) * 100;
+
+                                                    if ($activeStudent > 0) {
+                                                        $engagePercent = ($engageVoter / $activeStudent) * 100;
+                                                        $disengagePercent = ($disengageVoter / $activeStudent) * 100;
+                                                    } else {
+                                                        $engagePercent = 0;
+                                                        $disengagePercent = 0;
+                                                    }
                                                 @endphp
                                                 <li>
                                                     <p class="text-muted">
