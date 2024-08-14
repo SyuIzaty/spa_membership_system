@@ -114,9 +114,17 @@
 
                         $disengageVoter = $activeStudent - $engageVoter;
 
-                        $engagePercent = ($engageVoter / $activeStudent) * 100;
+                        // $engagePercent = ($engageVoter / $activeStudent) * 100;
 
-                        $disengagePercent = ($disengageVoter / $activeStudent) * 100;
+                        // $disengagePercent = ($disengageVoter / $activeStudent) * 100;
+
+                        if ($activeStudent > 0) {
+                            $engagePercent = ($engageVoter / $activeStudent) * 100;
+                            $disengagePercent = ($disengageVoter / $activeStudent) * 100;
+                        } else {
+                            $engagePercent = 0;
+                            $disengagePercent = 0;
+                        }
                     @endphp
                     <div class="col-sm-12 col-xl-12">
                         <div class="p-3">

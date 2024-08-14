@@ -91,7 +91,7 @@
                                         @endphp
                                         @if ($finalCandidate)
                                             <p>
-                                                Candidate <b><u>{{$finalCandidate->student->students_name}}</u></b> has been verified and subsequently declared as the chosen winner in this category of voting.
+                                                Candidate <b><u>{{$finalCandidate->student->students_name ?? 'N/A'}}</u></b> has been verified and subsequently declared as the chosen winner in this category of voting.
                                              </p>
                                         @else
                                              <p>
