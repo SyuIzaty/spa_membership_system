@@ -168,14 +168,18 @@ class VenueDetailController extends Controller
             'email_sent' => ($request->email_sent == 'on') ? 1 : 2,
         ]);
 
-        SpaceVenueEmail::where('venue_id',$request->venue_id)
-        ->whereNotIn('staff_id',$request->staff_id)->delete();
-
-        foreach($request->staff_id as $staffs_id){
-            SpaceVenueEmail::firstOrCreate([
-                'venue_id' => $request->venue_id,
-                'staff_id' => $staffs_id,
-            ]);
+        if(isset($request->staff_id)){
+            SpaceVenueEmail::where('venue_id',$request->venue_id)
+            ->whereNotIn('staff_id',$request->staff_id)->delete();
+    
+            foreach($request->staff_id as $staffs_id){
+                SpaceVenueEmail::firstOrCreate([
+                    'venue_id' => $request->venue_id,
+                    'staff_id' => $staffs_id,
+                ]);
+            }
+        }else{
+            SpaceVenueEmail::where('venue_id',$request->venue_id)->delete();   
         }
 
         return redirect()->back()->with('message','Update');
