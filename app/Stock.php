@@ -12,7 +12,7 @@ class Stock extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'stock_code', 'stock_name', 'model', 'brand', 'status', 'created_by', 'current_owner', 'updated_by', 'department_id',
-        'applicable_for_stationary', 'applicable_for_aduan', 'deleted_by'
+        'applicable_for_stationary', 'applicable_for_aduan', 'deleted_by', 'current_co_owner'
     ];
 
     public function type()
@@ -23,6 +23,11 @@ class Stock extends Model
     public function user()
     {
         return $this->hasOne('App\User', 'id', 'current_owner');
+    }
+
+    public function coOwner()
+    {
+        return $this->hasOne('App\User', 'id', 'current_co_owner');
     }
 
     public function transaction()

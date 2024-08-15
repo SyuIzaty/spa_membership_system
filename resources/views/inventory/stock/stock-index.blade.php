@@ -66,6 +66,11 @@
                         <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
                             <a href="javascript:;" data-toggle="modals" id="news" class="btn btn-info float-right mr-2 ml-auto"><i class="fal fa-file-excel"></i> Import</a>
                             <a class="btn btn-warning float-right mr-2" href="/export-stock"><i class="fal fa-file-excel"></i> Export</a>
+                            @if(in_array(Auth::user()->id, $curr_owner))
+                                <a href="" data-target="#crud-modal-access" class="btn btn-danger float-right mr-2" data-toggle="modal" data-id="{{ Auth::user()->id }}">
+                                    <i class="fal fa-user"></i> Add Access
+                                </a>
+                            @endif
                             <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary float-right"><i class="fal fa-plus-square"></i> Add New Stock</a>
                         </div>
                     @endcannot
@@ -187,7 +192,7 @@
                                 <div class="form-group">
                                     <td width="20%"><label class="form-label" for="import_file"><span class="text-danger">*</span> File : </td>
                                     <td colspan="5"><input type="file" name="import_file" class="form-control mb-3" required>
-                                        <p style="color:red; font-size: 14px"><span class="text-danger">**</span><i>Notes:</i><br>
+                                        <p style="color:red; font-size: 14px"><span class="text-danger">**</span>Notes:<br>
                                         - This upload function is suitable to use for only first time stock entry.<br>
                                         - Delete the example column data when uploading to avoid data error.<br>
                                         - io_no = invoice number.<br>
@@ -335,6 +340,53 @@
         </div>
     </div>
 
+    <div class="modal fade" id="crud-modal-access" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i> CHANGE ACCESS</h5>
+                </div>
+                <div class="modal-body">
+                    {!! Form::open(['action' => 'Inventory\StockController@changeAccess', 'method' => 'POST']) !!}
+                    <input type="hidden" name="user_id" id="user_id">
+                    <p><span class="text-danger">*</span> Required fields</p>
+
+                    <div class="form-group int">
+                        <label class="form-label" for="access_owner"><span class="text-danger">*</span> Owner :</label>
+                        <select class="form-control access_owner" name="access_owner" id="access_owner" required>
+                            <option value="" disabled selected> Please select </option>
+                            @foreach ($role as $roles)
+                                <option value="{{ $roles->id }}">{{ $roles->id }} - {{ $roles->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('access_owner')
+                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group int">
+                        <label class="form-label" for="access_co_owner"> Co-Owner :</label>
+                        <select class="form-control access_co_owner" name="access_co_owner" id="access_co_owner">
+                            <option value="" selected> Please select </option>
+                            @foreach ($role as $roles)
+                                <option value="{{ $roles->id }}">{{ $roles->id }} - {{ $roles->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('access_co_owner')
+                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                        @enderror
+                    </div>
+
+                    <div class="footer">
+                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
+                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 @endsection
 
@@ -343,12 +395,12 @@
 <script>
     $(document).ready(function()
     {
-        $('#status').select2({
-            dropdownParent: $('#crud-modal')
-        });
-
         $('#new').click(function () {
             $('#crud-modal').modal('show');
+
+            $('#status').select2({
+                dropdownParent: $('#crud-modal')
+            });
         });
 
         $('#news').click(function () {
@@ -363,6 +415,26 @@
 
             $('#current_owner').select2({
                 dropdownParent: $('#crud-modal-owner')
+            });
+        });
+
+        $('#crud-modal-access').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var userId = button.data('id');
+
+            $('#user_id').val(userId);
+
+            $.ajax({
+                url: '/get-stock-access/' + userId,
+                type: 'GET',
+                success: function(response) {
+                    $('#access_owner').val(response.currentOwnerId).trigger('change');
+                    $('#access_co_owner').val(response.currentCoOwnerId).trigger('change');
+
+                    $('#access_owner, #access_co_owner').select2({
+                        dropdownParent: $('#crud-modal-access')
+                    });
+                }
             });
         });
 
@@ -528,7 +600,6 @@
         });
 
     });
-
 
 </script>
 

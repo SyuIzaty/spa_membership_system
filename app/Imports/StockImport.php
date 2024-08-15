@@ -65,7 +65,7 @@ class StockImport implements ToModel, WithHeadingRow, WithValidation
                 'lo_no'                   => $row['lo_no'],
                 'io_no'                   => $row['io_no'],
                 'unit_price'              => $row['unit_price'],
-                'purchase_date'           => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['purchase_date']),
+                'purchase_date'           => $row['purchase_date'] ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['purchase_date']) : null,
                 'trans_date'              => Carbon::now()->toDateString(),
                 'remark'                  => $row['remark'],
                 'status'                  => '1',

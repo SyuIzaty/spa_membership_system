@@ -107,12 +107,22 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="current_owner"> Current Owner : </label></td>
+                                                                    <td width="25%"><label class="form-label" for="current_owner"> Owner : </label></td>
                                                                     <td colspan="3">
                                                                         <input class="form-control" id="current_owner" style="cursor:context-menu" name="current_owner" value="{{ $stock->user->name }}" readonly>
                                                                     </td>
                                                                 </div>
                                                             </tr>
+                                                            @if(isset($stock->current_co_owner))
+                                                                <tr>
+                                                                    <div class="form-group">
+                                                                        <td width="25%"><label class="form-label" for="current_co_owner"> Co-Owner : </label></td>
+                                                                        <td colspan="3">
+                                                                            <input class="form-control" id="current_co_owner" style="cursor:context-menu" name="current_co_owner" value="{{ $stock->coOwner->name }}" readonly>
+                                                                        </td>
+                                                                    </div>
+                                                                </tr>
+                                                            @endif
                                                             <tr>
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="purchase_date"> Created Date : </label></td>

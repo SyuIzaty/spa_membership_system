@@ -433,6 +433,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/transactionTemplate', 'Inventory\StockController@transactionTemplate');
     Route::post('store-bulk-transaction', 'Inventory\StockController@bulkTransactionStore');
     Route::post('changeOwner', 'Inventory\StockController@changeOwner');
+    Route::post('change-access', 'Inventory\StockController@changeAccess');
+    Route::get('/get-stock-access/{userId}', 'Inventory\StockController@getStockAccess');
 
     // Rental
     Route::get('/rental-list', 'Inventory\RentalManagementController@index');

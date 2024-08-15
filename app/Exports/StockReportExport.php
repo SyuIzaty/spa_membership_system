@@ -50,13 +50,24 @@ class StockReportExport implements FromView, WithColumnFormatting
 
         } elseif (!empty($department) && $stock == 'null' && !empty($owner)) {
 
-            $data->where('department_id', $department)->where('current_owner', $owner);
+            // $data->where('department_id', $department)->where('current_owner', $owner);
+            $data->where('department_id', $department)
+                ->where(function($query) use ($owner) {
+                    $query->where('current_owner', $owner)
+                        ->orWhere('current_co_owner', $owner);
+                });
 
         } elseif (!empty($department) && !empty($stock) && !empty($owner)) {
 
             $stockArray = explode(',', $stock[0]);
 
-            $data->where('department_id', $department)->whereIn('id', $stockArray)->where('current_owner', $owner);
+            // $data->where('department_id', $department)->whereIn('id', $stockArray)->where('current_owner', $owner);
+            $data->where('department_id', $department)
+                ->whereIn('id', $stockArray)
+                ->where(function($query) use ($owner) {
+                    $query->where('current_owner', $owner)
+                        ->orWhere('current_co_owner', $owner);
+                });
 
         } else {
 

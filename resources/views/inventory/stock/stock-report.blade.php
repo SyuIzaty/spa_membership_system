@@ -51,7 +51,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-12 mb-4">
-                                    <label>Current Owner : </label>
+                                    <label>Owner : </label>
                                     <select class="form-control owner selectOwner" name="owner" id="owner">
                                     </select>
                                 </div>

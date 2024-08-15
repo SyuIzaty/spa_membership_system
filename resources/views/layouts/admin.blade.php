@@ -1183,12 +1183,12 @@
                                         </a>
                                     </li> --}}
                             @endcanany
-                            <li class="open">
+                            {{-- <li class="open">
                                 <a href="/renter-list" title="Asset Individual" data-filter-tags="assetIndividual">
                                     <i class="fal fa-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.assetIndividual">Rental List</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             @can('manage stock')
                                 <li class="open">
                                     <a href="#" title="Stock" data-filter-tags="stock">

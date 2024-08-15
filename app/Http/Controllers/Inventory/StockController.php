@@ -34,7 +34,9 @@ class StockController extends Controller
             $query->where('name', 'Stock Admin');
         })->get();
 
-        return view('inventory.stock.stock-index', compact('staff','department','role'));
+        $curr_owner = Stock::select('current_owner')->groupBy('current_owner')->pluck('current_owner')->toArray();
+
+        return view('inventory.stock.stock-index', compact('staff','department','role', 'curr_owner'));
     }
 
     public function stockTemplate()
@@ -160,6 +162,41 @@ class StockController extends Controller
         return redirect()->back();
     }
 
+    public function changeAccess(Request $request)
+    {
+        $request->validate([
+            'access_owner'         => 'required',
+        ]);
+
+        Stock::where('current_owner', $request->user_id)->update([
+            'current_owner'         => $request->access_owner,
+            'current_co_owner'      => $request->access_co_owner,
+            'updated_by'            => Auth::user()->id,
+        ]);
+
+        Session::flash('message', 'Stock ownership have been changed successfully.');
+
+        return redirect()->back();
+    }
+
+    public function getStockAccess($userId)
+    {
+        // $stock = Stock::where('current_owner', $userId)->first();
+
+        $stock = Stock::where('current_owner', $userId)
+              ->orWhere('current_co_owner', $userId)
+              ->first();
+
+
+        $currentOwnerId = $stock ? $stock->current_owner : null;
+        $currentCoOwnerId = $stock ? $stock->current_co_owner : null;
+
+        return response()->json([
+            'currentOwnerId' => $currentOwnerId,
+            'currentCoOwnerId' => $currentCoOwnerId,
+        ]);
+    }
+
     public function data_stockList()
     {
         if (Auth::user()->can('view stock')) {
@@ -168,8 +205,12 @@ class StockController extends Controller
 
         } else {
 
-            $stock = Stock::where('current_owner', Auth::user()->id)->with(['user','departments'])->get();
-
+            $stock = Stock::where(function($query) {
+                $query->where('current_owner', Auth::user()->id)
+                      ->orWhere('current_co_owner', Auth::user()->id);
+            })
+            ->with(['user', 'departments'])
+            ->get();
         }
 
         return datatables()::of($stock)
@@ -203,12 +244,12 @@ class StockController extends Controller
 
         ->editColumn('current_owner', function ($stock) {
 
-            if(Auth::user()->can('view stock')){
-                return strtoupper($stock->user->name).'<a href="" data-target="#crud-modal-owner" class="ml-2" data-toggle="modal" data-id="'. $stock->id.'">
-                <i class="fal fa-pencil" style="color: red"></i></a>';
-            } else {
-                return strtoupper($stock->user->name);
-            }
+            // if(Auth::user()->can('view stock')){
+            //     return strtoupper($stock->user->name).'<a href="" data-target="#crud-modal-owner" class="ml-2" data-toggle="modal" data-id="'. $stock->id.'">
+            //     <i class="fal fa-pencil" style="color: red"></i></a>';
+            // } else {
+                return strtoupper($stock->user->name) ?? '<div style="color:red;" >--</div>';
+            // }
 
         })
 
@@ -581,11 +622,22 @@ class StockController extends Controller
 
         } elseif (!empty($department) && empty($stock) && !empty($owner)) {
 
-            $query->where('department_id', $department)->where('current_owner', $owner);
+            // $query->where('department_id', $department)->where('current_owner', $owner);
+            $query->where('department_id', $department)
+                ->where(function($q) use ($owner) {
+                    $q->where('current_owner', $owner)
+                        ->orWhere('current_co_owner', $owner);
+                });
 
         } elseif (!empty($department) && !empty($stock) && !empty($owner)) {
 
-            $query->where('department_id', $department)->whereIn('id', $stock)->where('current_owner', $owner);
+            // $query->where('department_id', $department)->whereIn('id', $stock)->where('current_owner', $owner);
+            $query->where('department_id', $department)
+                ->whereIn('id', $stock)
+                ->where(function($q) use ($owner) {
+                    $q->where('current_owner', $owner)
+                        ->orWhere('current_co_owner', $owner);
+                });
 
         } else {
 
@@ -628,11 +680,17 @@ class StockController extends Controller
 
             ->editColumn('current_owner', function ($query) {
 
-                return strtoupper($query->user->name);
+                if(isset($query->current_co_owner)) {
+                    $owner = strtoupper($query->user->name).'<br>'.strtoupper($query->coOwner->name);
+                } else {
+                    $owner = strtoupper($query->user->name);
+                }
+
+                return $owner;
 
             })
 
-            ->rawColumns(['status', 'current_owner', 'stock_name', 'created_at', 'department_id'])
+            ->rawColumns(['status', 'stock_name', 'created_at', 'department_id', 'current_owner'])
 
             ->make(true);
     }

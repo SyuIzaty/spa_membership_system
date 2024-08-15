@@ -20,6 +20,7 @@
                 <th style="background-color: #ffe1b7; text-align: center; border: 1px solid black">BALANCE STATUS</th>
                 <th style="background-color: #ffe1b7; text-align: center; border: 1px solid black">APPLICABLE FOR i-STATIONERY</th>
                 <th style="background-color: #ffe1b7; text-align: center; border: 1px solid black">CURRENT OWNER</th>
+                <th style="background-color: #ffe1b7; text-align: center; border: 1px solid black">CURRENT CO-OWNER</th>
                 <th style="background-color: #ffe1b7; text-align: center; border: 1px solid black">CREATED DATE</th>
             </tr>
             <tr>
@@ -57,6 +58,7 @@
                     @endif
                 </td>
                 <td style="width: 200px; text-align: center; border: 1px solid black">{{ $datas->user->name ?? 'No Data' }}</td>
+                <td style="width: 200px; text-align: center; border: 1px solid black">{{ $datas->coOwner->name ?? 'No Data' }}</td>
                 <td style="width: 200px; text-align: center; border: 1px solid black">{{ isset($datas->created_at) ? date('Y-m-d', strtotime($datas->created_at)) : 'No Data' }}</td>
             </tr>
             <tr>
