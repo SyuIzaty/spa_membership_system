@@ -13,6 +13,7 @@ use App\Stock;
 use App\StockImage;
 use App\StockTransaction;
 use App\Departments;
+use App\InventoryLog;
 use Carbon\Carbon;
 use App\Exports\StockExport;
 use App\Exports\StockReportExport;
@@ -107,6 +108,16 @@ class StockController extends Controller
             }
         }
 
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Create Stock',
+            'subject_id'        => $stock->id,
+            'subject_type'      => 'App\Stock',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
         Session::flash('message', 'New Stock Data Have Been Successfully Recorded');
 
         return redirect()->back();
@@ -137,6 +148,16 @@ class StockController extends Controller
                     'img_path' => "app/einventory/" . $storedFileName,
                 ]);
 
+                InventoryLog::create([
+                    'name'              => 'default',
+                    'description'       => 'Upload Stock Image',
+                    'subject_id'        => $stockImg->id,
+                    'subject_type'      => 'App\StockImage',
+                    'properties'        => json_encode($request->all()),
+                    'creator_id'        => Auth::user()->id,
+                    'creator_type'      => 'App\User',
+                ]);
+
                 Storage::disk('minio')->put($stockImg->img_path, file_get_contents($file));
             }
         }
@@ -152,9 +173,19 @@ class StockController extends Controller
             'current_owner'         => 'required',
         ]);
 
-        Stock::where('id', $request->owner_id)->update([
+        $stock = Stock::where('id', $request->owner_id)->update([
             'current_owner'         => $request->current_owner,
             'updated_by'            => Auth::user()->id,
+        ]);
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Change Owner',
+            'subject_id'        => $stock->id,
+            'subject_type'      => 'App\Stock',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
         ]);
 
         Session::flash('message', 'Stock have been change its ownership. The current owner can view the stock in their display.');
@@ -168,10 +199,20 @@ class StockController extends Controller
             'access_owner'         => 'required',
         ]);
 
-        Stock::where('current_owner', $request->user_id)->update([
+        $stock = Stock::where('current_owner', $request->user_id)->update([
             'current_owner'         => $request->access_owner,
             'current_co_owner'      => $request->access_co_owner,
             'updated_by'            => Auth::user()->id,
+        ]);
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Change Access',
+            'subject_id'        => $stock->id,
+            'subject_type'      => 'App\Stock',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
         ]);
 
         Session::flash('message', 'Stock ownership have been changed successfully.');
@@ -323,6 +364,16 @@ class StockController extends Controller
 
         $exist->delete();
 
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Delete Stock',
+            'subject_id'        => $exist->id,
+            'subject_type'      => 'App\Stock',
+            'properties'        => json_encode($exist),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
         return response()->json(['success' => 'Stock Deleted Successfully']);
     }
 
@@ -352,6 +403,16 @@ class StockController extends Controller
 
         $image->delete();
 
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Delete Stock Image',
+            'subject_id'        => $image->id,
+            'subject_type'      => 'App\StockImage',
+            'properties'        => json_encode($image),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
         $message = 'Stock Image Have Been Successfully Deleted';
 
         return response()->json(['message' => $message]);
@@ -375,6 +436,16 @@ class StockController extends Controller
             'applicable_for_stationary' => $request->has('applicable_for_stationary') ? 1 : 0,
             'applicable_for_aduan'      => $request->has('applicable_for_aduan') ? 1 : 0,
             'updated_by'                => Auth::user()->id,
+        ]);
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Update Stock',
+            'subject_id'        => $stock->id,
+            'subject_type'      => 'App\Stock',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
         ]);
 
         Session::flash('message', 'Stock Detail Have Been Successfully Updated');
@@ -410,6 +481,16 @@ class StockController extends Controller
                 'created_by'       => $user->id,
                 'remark'           => $request->remark,
                 'status'           => '1',
+            ]);
+
+            InventoryLog::create([
+                'name'              => 'default',
+                'description'       => 'Create Transaction In',
+                'subject_id'        => $stockIn->id,
+                'subject_type'      => 'App\StockTransaction',
+                'properties'        => json_encode($request->all()),
+                'creator_id'        => Auth::user()->id,
+                'creator_type'      => 'App\User',
             ]);
 
         Session::flash('message', 'Transaction In Detail Have Been Successfully Recorded');
@@ -474,6 +555,16 @@ class StockController extends Controller
             ]);
         }
 
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Create Transaction Out',
+            'subject_id'        => $stockOut->id,
+            'subject_type'      => 'App\StockTransaction',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
         Session::flash('message', 'Transaction Out Detail Have Been Successfully Recorded');
 
         return redirect()->back();
@@ -499,6 +590,16 @@ class StockController extends Controller
                 'stock_out'        => '0',
                 'unit_price'       => $request->unit_price,
                 'remark'           => $request->remark,
+        ]);
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Update Transaction In',
+            'subject_id'        => $stock->id,
+            'subject_type'      => 'App\StockTransaction',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
         ]);
 
         Session::flash('message', 'Transaction In Detail Have Been Successfully Updated');
@@ -548,6 +649,16 @@ class StockController extends Controller
             ]);
         }
 
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Update Transaction Out',
+            'subject_id'        => $stock->id,
+            'subject_type'      => 'App\StockTransaction',
+            'properties'        => json_encode($request->all()),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
+
         Session::flash('message', 'Transaction Out Detail Have Been Successfully Updated');
 
         return redirect()->back();
@@ -558,6 +669,16 @@ class StockController extends Controller
         $trans = StockTransaction::find($id);
 
         $trans->delete();
+
+        InventoryLog::create([
+            'name'              => 'default',
+            'description'       => 'Delete Transaction',
+            'subject_id'        => $trans->id,
+            'subject_type'      => 'App\StockTransaction',
+            'properties'        => json_encode($trans),
+            'creator_id'        => Auth::user()->id,
+            'creator_type'      => 'App\User',
+        ]);
 
         $message = 'Transaction Have Been Successfully Deleted';
 

@@ -6,6 +6,7 @@ use Auth;
 use App\Files;
 use App\Stock;
 use Session;
+use App\InventoryLog;
 use Carbon\Carbon;
 use App\StockTransaction;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -70,6 +71,16 @@ class StockImport implements ToModel, WithHeadingRow, WithValidation
                 'remark'                  => $row['remark'],
                 'status'                  => '1',
                 'created_by'              => $row['created_by'],
+            ]);
+
+            InventoryLog::create([
+                'name'            => 'default',
+                'description'     => 'Upload Stock Data',
+                'subject_id'      => $stock->id,
+                'subject_type'    => 'App\Stock',
+                'properties'      => json_encode($row),
+                'creator_id'      => Auth::user()->id,
+                'creator_type'    => 'App\User',
             ]);
 
             Session::flash('message', 'Stock and Transaction In Data Imported Successfully');
