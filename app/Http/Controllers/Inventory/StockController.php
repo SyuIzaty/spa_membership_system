@@ -181,7 +181,8 @@ class StockController extends Controller
         InventoryLog::create([
             'name'              => 'default',
             'description'       => 'Change Owner',
-            'subject_id'        => $stock->id,
+            // 'subject_id'        => $stock->id,
+            'subject_id'        => '0',
             'subject_type'      => 'App\Stock',
             'properties'        => json_encode($request->all()),
             'creator_id'        => Auth::user()->id,
@@ -208,7 +209,8 @@ class StockController extends Controller
         InventoryLog::create([
             'name'              => 'default',
             'description'       => 'Change Access',
-            'subject_id'        => $stock->id,
+            // 'subject_id'        => $stock->id,
+            'subject_id'        => '0',
             'subject_type'      => 'App\Stock',
             'properties'        => json_encode($request->all()),
             'creator_id'        => Auth::user()->id,
