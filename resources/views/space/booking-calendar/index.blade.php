@@ -51,6 +51,14 @@
                                   <div class="modal-body">
                                     <table class="table table-bordered">
                                         <tr>
+                                            <td>Request By</td>
+                                            <td colspan="3"><span id="user_id"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Purpose</td>
+                                            <td colspan="3"><span id="purpose"></span></td>
+                                        </tr>
+                                        <tr>
                                             <td>Start Date</td>
                                             <td><span id="start_date"></span></td>
                                             <td>End Date</td>
@@ -99,6 +107,8 @@
                   check_out: '{{ $bookings->spaceBookingMain->end_date }}',
                   spacebookingId: '{{ $bookings->id }}',
                   room_venue: '{{ isset($bookings->spaceVenue->name) ? $bookings->spaceVenue->name : '' }}',
+                  user_id: '{{ isset($bookings->spaceBookingMain->user->name) ? $bookings->spaceBookingMain->user->name : '' }}',
+                  purpose: '{{ isset($bookings->spaceBookingMain->purpose) ? $bookings->spaceBookingMain->purpose : '' }}',
               },
           @endforeach
       ],
@@ -108,6 +118,8 @@
           $('#start_time').text(moment(calEvent.start_time, 'HH:mm:ss').format('HH:mm:ss'));
           $('#end_time').text(moment(calEvent.end_time, 'HH:mm:ss').format('HH:mm:ss'));
           $('#room_venue').text(calEvent.room_venue);
+          $('#user_id').text(calEvent.user_id);
+          $('#purpose').text(calEvent.purpose);
 
           $('#bookingModal').modal('show');
           $("#bookingModal").prependTo("body");
