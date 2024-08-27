@@ -162,6 +162,10 @@
                                             <td colspan="3"><span id="user"></span></td>
                                         </tr>
                                         <tr>
+                                            <td>Phone Number</td>
+                                            <td colspan="3"><span id="phone_number"></span></td>
+                                        </tr>
+                                        <tr>
                                             <td>Start Date</td>
                                             <td><span id="start_date"></span></td>
                                             <td>End Date</td>
@@ -298,6 +302,7 @@
                   remark: '{{ isset($bookings->spaceBookingMain->remark) ? $bookings->spaceBookingMain->remark : '' }}',
                   requirement: '<ul>@foreach($bookings->spaceBookingItems as $item)<li>{{ $item->spaceItem->name }}</li>@endforeach</ul>',
                   created_at: '{{ $bookings->created_at }}',
+                  phone_number: '{{ isset($bookings->spaceBookingMain->user_phone) ? $bookings->spaceBookingMain->user_phone : '' }}',
               },
           @endforeach
       ],
@@ -310,6 +315,7 @@
           $('#start_time').text(moment(calEvent.start_time, 'HH:mm:ss').format('HH:mm:ss'));
           $('#end_time').text(moment(calEvent.end_time, 'HH:mm:ss').format('HH:mm:ss'));
           $('#user').text(calEvent.buyer);
+          $('#phone_number').text(calEvent.phone_number);
           $('#application_status').val(calEvent.application_status);
           $('#room_venue').text(calEvent.room_venue);
           $('#remark').text(calEvent.remark);
