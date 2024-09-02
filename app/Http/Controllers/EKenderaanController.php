@@ -42,11 +42,19 @@ use App\Exports\eKenderaanExportByYearMonth;
 
 class EKenderaanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public $admin_name;
+    public $admin_phone;
+    public $admin_email;
+
+    // Admin/PIC
+    public function __construct()
+    {
+        $admin = Staff::where('staff_id', '17020376')->first();
+        $this->admin_name = $admin->staff_name;
+        $this->admin_phone = $admin->staff_phone;
+        $this->admin_email = $admin->staff_email;
+    }
+
     public function index()
     {
         $user = Auth::user();
@@ -412,19 +420,16 @@ class EKenderaanController extends Controller
 
         $user = Auth::user();
 
-        $admin = User::where('id', '22020503')->first();
-        $admin_email = $admin->email;
-
         $data = [
-            'receivers' => $admin->name,
+            'receivers' => $this->admin_name,
             'emel'      => 'Anda telah menerima permohonan e-Kenderaan baharu daripada ' . $user->name . ' pada ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
             'footer'    => 'Sila log masuk ke sistem IDS untuk tindakan selanjutnya.',
         ];
 
-        Mail::send('eKenderaan.email_announcement', $data, function ($message) use ($admin_email) {
+        Mail::send('eKenderaan.email_announcement', $data, function ($message) {
             $message->subject('EKENDERAAN: PERMOHONAN BAHARU');
             $message->from('operasi@intec.edu.my');
-            $message->to($admin_email);
+            $message->to($this->admin_email);
         });
 
         return redirect('eKenderaan-application/' . $application->id)->with('message', 'Application Sent!');
@@ -631,7 +636,7 @@ class EKenderaanController extends Controller
                 'purpose'     => $detail->purpose,
                 'passenger'   => $passenger,
                 'vehicle'     => $vehicle,
-                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
             ];
 
             Mail::send('eKenderaan.email', $data1, function ($message) use ($user_email) {
@@ -657,7 +662,7 @@ class EKenderaanController extends Controller
             'purpose'     => $detail->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
         ];
 
         Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
@@ -685,7 +690,7 @@ class EKenderaanController extends Controller
                         'purpose'     => $detail->purpose,
                         'passenger'   => $passenger,
                         'vehicle'     => $vehicle,
-                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
                     ];
 
                     Mail::send('eKenderaan.email', $data3, function ($message3) use ($passenger_email) {
@@ -729,7 +734,7 @@ class EKenderaanController extends Controller
         $data2 = [
             'receivers'   => $staff->name,
             'emel'        => 'Untuk makluman, permohonan anda telah ditolak. Sila log masuk ke sistem IDS untuk melihat sebab penolakan',
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548.',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
         ];
 
         Mail::send('eKenderaan.email_announcement', $data2, function ($message2) use ($staff_email) {
@@ -787,19 +792,16 @@ class EKenderaanController extends Controller
 
         $user = Auth::user();
 
-        $admin = User::where('id', '22020503')->first();
-        $admin_email = $admin->email;
-
         $data = [
-            'receivers' => $admin->name,
+            'receivers' => $this->admin_name,
             'emel'      => $user->name . ' telah menghantar maklum balas pada ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
             'footer'    => 'Sila log masuk ke sistem IDS untuk melihat maklum balas tersebut.',
         ];
 
-        Mail::send('eKenderaan.email_announcement', $data, function ($message) use ($admin_email) {
+        Mail::send('eKenderaan.email_announcement', $data, function ($message) {
             $message->subject('EKENDERAAN: MAKLUM BALAS BAHARU');
             $message->from('operasi@intec.edu.my');
-            $message->to($admin_email);
+            $message->to($this->admin_email);
         });
 
         return redirect()->back()->with('message', 'Feedback Successfully Submitted!');
@@ -1483,7 +1485,7 @@ class EKenderaanController extends Controller
             'purpose'     => $details->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
         ];
 
         Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
@@ -1508,7 +1510,7 @@ class EKenderaanController extends Controller
             'purpose'     => $details->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
         ];
 
         Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
@@ -1536,7 +1538,7 @@ class EKenderaanController extends Controller
                         'purpose'     => $details->purpose,
                         'passenger'   => $passenger,
                         'vehicle'     => $vehicle,
-                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
                     ];
 
                     Mail::send('eKenderaan.email', $data3, function ($message3) use ($passenger_email) {
@@ -1583,7 +1585,7 @@ class EKenderaanController extends Controller
             'purpose'     => $details->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
         ];
 
         Mail::send('eKenderaan.email', $datas, function ($message) use ($user_email) {
@@ -1653,7 +1655,7 @@ class EKenderaanController extends Controller
                 'purpose'     => $detail->purpose,
                 'passenger'   => $passenger,
                 'vehicle'     => $vehicle,
-                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
             ];
 
             Mail::send('eKenderaan.email', $data1, function ($message) use ($user_email) {
@@ -1679,7 +1681,7 @@ class EKenderaanController extends Controller
             'purpose'     => $detail->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
         ];
 
         Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
@@ -1734,7 +1736,7 @@ class EKenderaanController extends Controller
                 'purpose'     => $detail->purpose,
                 'passenger'   => $passenger,
                 'vehicle'     => $vehicle,
-                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+                'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
             ];
 
             Mail::send('eKenderaan.email', $data1, function ($message) use ($user_email) {
@@ -1760,7 +1762,7 @@ class EKenderaanController extends Controller
             'purpose'     => $detail->purpose,
             'passenger'   => $passenger,
             'vehicle'     => $vehicle,
-            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+            'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
         ];
 
         Mail::send('eKenderaan.email', $data2, function ($message2) use ($staff_email) {
@@ -1788,7 +1790,7 @@ class EKenderaanController extends Controller
                         'purpose'     => $detail->purpose,
                         'passenger'   => $passenger,
                         'vehicle'     => $vehicle,
-                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+                        'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
                     ];
 
                     Mail::send('eKenderaan.email', $data3, function ($message3) use ($passenger_email) {
@@ -1991,7 +1993,7 @@ class EKenderaanController extends Controller
                     'purpose'     => $updateApplication->purpose,
                     'passenger'   => $passenger,
                     'vehicle'     => $vehicle,
-                    'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548',
+                    'footer'      => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
                 ];
 
                 Mail::send('eKenderaan.email', $data, function ($message) use ($user_email) {
@@ -2022,7 +2024,7 @@ class EKenderaanController extends Controller
         $data = [
             'receivers' => $staff->name,
             'emel'      => 'Untuk makluman, permohonan anda untuk membatalkan permohonan e-Kenderaan telah dilaksanakan pada ' . date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())),
-            'footer'    => 'Sebarang pertanyaan atau perubahan, sila hubungi En. Muhaimin ditalian 012-9893548.',
+            'footer'    => 'Sebarang pertanyaan atau perubahan, sila hubungi '.$this->admin_name.' ditalian '.$this->admin_phone.'.',
         ];
 
         Mail::send('eKenderaan.email_announcement', $data, function ($message) use ($staff_email) {
