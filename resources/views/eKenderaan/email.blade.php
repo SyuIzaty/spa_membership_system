@@ -46,6 +46,7 @@
                                 <p style="line-height: 0.5em">{{ $receivers }},</p>
                                 <p>{{ $emel }}</p>
                                 <br>
+                                <p>No. Tiket : {{ $ticket }}</p>
                                 <p>Tarikh Berlepas : {{ $departDate }}</p>
                                 <p>Masa Berlepas : {{ $departTime }}</p>
                                 <p>Tarikh Pulang : {{ $returnDate }}</p>

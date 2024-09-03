@@ -626,6 +626,7 @@ class EKenderaanController extends Controller
             $data1 = [
                 'receivers'   => $d->driverDetails->staff_name,
                 'emel'        => 'Untuk makluman, anda telah ditugaskan pada :-',
+                'ticket'      => $detail->id,
                 'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
                 'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
                 'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
@@ -652,6 +653,7 @@ class EKenderaanController extends Controller
         $data2 = [
             'receivers'   => $staff->name,
             'emel'        => 'Untuk makluman, permohonan anda telah diluluskan. Berikut merupakan butiran permohonan:-',
+            'ticket'      => $detail->id,
             'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
             'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
             'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
@@ -680,6 +682,7 @@ class EKenderaanController extends Controller
                     $data3 = [
                         'receivers'   => $passengers->name,
                         'emel'        => 'Untuk makluman, berikut merupakan maklumat permohonan kenderaan:-',
+                        'ticket'      => $detail->id,
                         'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
                         'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
                         'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
@@ -1475,6 +1478,7 @@ class EKenderaanController extends Controller
         $data = [
             'receivers'   => $user->staff_name,
             'emel'        => 'Untuk makluman, anda telah ditugaskan pada :-',
+            'ticket'      => $details->id,
             'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
             'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
             'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
@@ -1500,6 +1504,7 @@ class EKenderaanController extends Controller
         $data2 = [
             'receivers'   => $staff->name,
             'emel'        => 'Untuk makluman, terdapat perubahan pemandu bagi permohonan yang telah diluluskan. Berikut merupakan butiran permohonan:-',
+            'ticket'      => $details->id,
             'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
             'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
             'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
@@ -1528,6 +1533,7 @@ class EKenderaanController extends Controller
                     $data3 = [
                         'receivers'   => $passengers->name,
                         'emel'        => 'Untuk makluman, berikut merupakan maklumat permohonan kenderaan:-',
+                        'ticket'      => $details->id,
                         'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
                         'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
                         'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
@@ -1575,6 +1581,7 @@ class EKenderaanController extends Controller
         $datas = [
             'receivers'   => $user->staff_name,
             'emel'        => 'Untuk makluman, penugasan pada butiran tersebut telah dibatalkan.',
+            'ticket'      => $details->id,
             'departDate'  => date(' d/m/Y ', strtotime($details->depart_date)),
             'departTime'  => date(' h:i A ', strtotime($details->depart_time)),
             'returnDate'  => date(' d/m/Y ', strtotime($details->return_date)),
@@ -1645,6 +1652,7 @@ class EKenderaanController extends Controller
             $data1 = [
                 'receivers'   => $d->driverDetails->staff_name,
                 'emel'        => 'Untuk makluman, terdapat perubahan kenderaan bagi permohonan berikut :-',
+                'ticket'      => $detail->id,
                 'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
                 'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
                 'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
@@ -1671,6 +1679,7 @@ class EKenderaanController extends Controller
         $data2 = [
             'receivers'   => $staff->name,
             'emel'        => 'Untuk makluman, terdapat perubahan kenderaan bagi permohonan yang telah diluluskan. Berikut merupakan butiran permohonan:-',
+            'ticket'      => $detail->id,
             'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
             'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
             'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
@@ -1726,6 +1735,7 @@ class EKenderaanController extends Controller
             $data1 = [
                 'receivers'   => $d->driverDetails->staff_name,
                 'emel'        => 'Untuk makluman, terdapat perubahan kenderaan bagi permohonan berikut :-',
+                'ticket'      => $detail->id,
                 'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
                 'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
                 'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
@@ -1752,6 +1762,7 @@ class EKenderaanController extends Controller
         $data2 = [
             'receivers'   => $staff->name,
             'emel'        => 'Untuk makluman, terdapat perubahan kenderaan bagi permohonan yang telah diluluskan. Berikut merupakan butiran permohonan:-',
+            'ticket'      => $detail->id,
             'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
             'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
             'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
@@ -1780,6 +1791,7 @@ class EKenderaanController extends Controller
                     $data3 = [
                         'receivers'   => $passengers->name,
                         'emel'        => 'Untuk makluman, berikut merupakan maklumat permohonan kenderaan:-',
+                        'ticket'      => $detail->id,
                         'departDate'  => date(' d/m/Y ', strtotime($detail->depart_date)),
                         'departTime'  => date(' h:i A ', strtotime($detail->depart_time)),
                         'returnDate'  => date(' d/m/Y ', strtotime($detail->return_date)),
@@ -1983,6 +1995,7 @@ class EKenderaanController extends Controller
                 $data = [
                     'receivers'   => $d->driverDetails->staff_name,
                     'emel'        => 'Untuk makluman, penugasan pada butiran tersebut telah dibatalkan.',
+                    'ticket'      => $updateApplication->id,
                     'departDate'  => date(' d/m/Y ', strtotime($updateApplication->depart_date)),
                     'departTime'  => date(' h:i A ', strtotime($updateApplication->depart_time)),
                     'returnDate'  => date(' d/m/Y ', strtotime($updateApplication->return_date)),

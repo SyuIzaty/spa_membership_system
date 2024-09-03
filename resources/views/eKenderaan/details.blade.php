@@ -168,6 +168,13 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <th style="vertical-align: middle">
+                                                        Ticket No.</th>
+                                                    <td colspan="5" style="vertical-align: middle">
+                                                        <input class="form-control" value="{{ $data->id }}" readonly>
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <th style="vertical-align: middle">Name</th>
                                                     <td style="vertical-align: middle">
                                                         <input class="form-control" value="{{ $name }}" readonly>
