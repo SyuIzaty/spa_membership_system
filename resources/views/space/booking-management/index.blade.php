@@ -158,6 +158,10 @@
                                             <td colspan="3"><span id="no_user"></span></td>
                                         </tr>
                                         <tr>
+                                            <td>Category</td>
+                                            <td colspan="3"><span id="category_id"></span></td>
+                                        </tr>
+                                        <tr>
                                             <td>Request by</td>
                                             <td colspan="3"><span id="user"></span></td>
                                         </tr>
@@ -297,6 +301,7 @@
                   spacebookingId: '{{ $bookings->id }}',
                   bookingDetails: '{{ $bookings->spaceBookingMain->purpose }}',
                   buyer: '{{ isset($bookings->spaceBookingMain->user->name) ? $bookings->spaceBookingMain->user->name : '' }}',
+                  category_id: '{{ isset($bookings->spaceBookingMain->user->category) ? $bookings->spaceBookingMain->user->category : '' }}',
                   application_status: '{{ isset($bookings->application_status) ? $bookings->application_status : '' }}',
                   room_venue: '{{ isset($bookings->spaceVenue->name) ? $bookings->spaceVenue->name : '' }}',
                   remark: '{{ isset($bookings->spaceBookingMain->remark) ? $bookings->spaceBookingMain->remark : '' }}',
@@ -315,6 +320,7 @@
           $('#start_time').text(moment(calEvent.start_time, 'HH:mm:ss').format('HH:mm:ss'));
           $('#end_time').text(moment(calEvent.end_time, 'HH:mm:ss').format('HH:mm:ss'));
           $('#user').text(calEvent.buyer);
+          $('#category_id').text(calEvent.category_id);
           $('#phone_number').text(calEvent.phone_number);
           $('#application_status').val(calEvent.application_status);
           $('#room_venue').text(calEvent.room_venue);

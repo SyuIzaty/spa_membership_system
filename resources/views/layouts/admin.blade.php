@@ -1279,7 +1279,7 @@
                                         <li>
                                             <a href="/space/booking/create/6" title="Arkib"
                                                 data-filter-tags="Arkib">
-                                                <span class="nav-link-text" data-i18n="nav.arkib">OPERATION</span>
+                                                <span class="nav-link-text" data-i18n="nav.arkib">Operation</span>
                                             </a>
                                         </li>
                                         <li>
