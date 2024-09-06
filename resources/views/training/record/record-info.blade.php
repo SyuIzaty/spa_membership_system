@@ -33,7 +33,7 @@
                                             @foreach ($year as $years)
                                                 <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $years->year }}</option>
                                             @endforeach
-                                        </select> 
+                                        </select>
                                     </div>
                                 </form>
                                 <br>
@@ -48,15 +48,15 @@
                                     </a>
                                 </div>
                             </div>
-                            
+
                             <div class="col">
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane mt-1 active" id="current" role="tabpanel"><br>
                                         <div class="col-sm-12 mb-4">
                                             <div class="card card-primary card-outline mb-4">
                                                 <div class="card-header">
-                                                    <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i> STAFF PROFILE 
-                                                        @if($data_status->status == '4') 
+                                                    <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i> STAFF PROFILE
+                                                        @if($data_status->status == '4')
                                                            [ <span class="badge badge-success" style="padding: 0.4em 0.8em;font-size: 12px"><b>{{ $data_status->record_status->status_name}} </b></span> ]
                                                         @else
                                                            [ <span class="badge badge-duplicate" style="padding: 0.4em 0.8em;font-size: 12px"><b>{{ $data_status->record_status->status_name}} </b></span> ]
@@ -93,7 +93,7 @@
                                                                     <th width="15%">Department : </th>
                                                                     <td colspan="4">{{ $staff->staff_dept ?? '--' }}</td>
                                                                 </tr>
-                                                                
+
                                                             </thead>
                                                         </table>
                                                     </div>
@@ -125,7 +125,7 @@
                                                                         <td class="text-right">{{ $details->approved_hour}}</td>
                                                                     </tr>
                                                                 @endforeach
-                                                            @else 
+                                                            @else
                                                                 <td colspan="8" class="text-center">-- No Data Available --</td>
                                                             @endif
                                                             </tbody>
@@ -152,8 +152,8 @@
                                                                                 <h5 class="m-0 fw-700 h4 keep-print-font text-danger">{{ $current_hours }}</h5>
                                                                             </td>
                                                                         </tr>
-                                                                        <?php 
-                                                                            if(isset($yerly_hour->training_hour)) {
+                                                                        <?php
+                                                                            if(isset($yearly_hour->training_hour)) {
                                                                                 $balance = $yearly_hour->training_hour - $current_hours;
                                                                             } else {
                                                                                 $balance = 0;
@@ -167,7 +167,7 @@
                                                                                 <h5 class="m-0 fw-700 h4 keep-print-font text-danger">
                                                                                     @if($balance >= 0)
                                                                                         {{ number_format((float)$balance, 2, '.', '') ?? '0' }}
-                                                                                    @else 
+                                                                                    @else
                                                                                         0
                                                                                     @endif
                                                                                 </h5>
@@ -188,7 +188,7 @@
                                         <div class="col-sm-12 mb-4">
                                             <div class="card card-primary card-outline">
                                                 <div class="card-header">
-                                                    <h5 class="card-title w-100"><i class="fal fa-clipboard width-2 fs-xl"></i> CLAIM RECORD 
+                                                    <h5 class="card-title w-100"><i class="fal fa-clipboard width-2 fs-xl"></i> CLAIM RECORD
                                                         @if($training_history->first() != null)
                                                             <a data-page="/claim-all-slip/{{ $staff->staff_id }}/{{ $selectedYear }}/" class="float-right" style="cursor: pointer; margin-right: 25px" onclick="Print(this)"><i class="fal fa-file-pdf" style="color: red; font-size: 25px"></i></a>
                                                         @endif
@@ -273,8 +273,8 @@
                                                             </tbody>
                                                         </table>
                                                         <br>
-                                                        <a href="/record-staff" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a> 
-                                                    </div> 
+                                                        <a href="/record-staff" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -283,7 +283,7 @@
                             </div>
                     </div>
                 </div>
-                       
+
             </div>
         </div>
     </div>

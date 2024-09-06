@@ -125,7 +125,7 @@
                                                         <tr class="bg-primary-50 text-center">
                                                             <td>ID</td>
                                                             <td>DEPARTMENT</td>
-                                                            <td>TYPE CODE</td>
+                                                            {{-- <td>TYPE CODE</td> --}}
                                                             <td>ASSET TYPE NAME</td>
                                                         </tr>
                                                     </thead>
@@ -134,7 +134,7 @@
                                                             <tr align="center">
                                                                 <td>{{ $types->id ?? '-' }}</td>
                                                                 <td>{{ $types->department->department_name ?? '-' }}</td>
-                                                                <td>{{ $types->id ?? '-' }}</td>
+                                                                {{-- <td>{{ $types->id ?? '-' }}</td> --}}
                                                                 <td>{{ $types->asset_type ?? '-' }}</td>
                                                             </tr>
                                                         @endforeach
@@ -366,14 +366,14 @@
                                                     <thead>
                                                         <tr class="bg-primary-50 text-center">
                                                             <td> ID</td>
-                                                            <td> NAME</td> 
+                                                            <td> NAME</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($space as $spaces)
                                                             <tr align="center">
                                                                 <td>{{ $spaces->id ?? '-' }}</td>
-                                                                <td>{{ $spaces->name ?? '-' }}</td> 
+                                                                <td>{{ $spaces->name ?? '-' }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
