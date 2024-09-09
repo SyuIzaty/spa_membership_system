@@ -202,6 +202,13 @@ class EKenderaanController extends Controller
             return $dateApplied;
         })
 
+        ->editColumn('departure', function ($data) {
+            $date = new DateTime($data->depart_date);
+            $departure = $date->format('d-m-Y');
+
+            return $departure;
+        })
+
         ->editColumn('status', function ($data) {
             return $data->statusList->name;
         })

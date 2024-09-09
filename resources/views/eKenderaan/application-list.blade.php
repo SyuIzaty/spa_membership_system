@@ -37,6 +37,7 @@
                                             <th class="text-center">Staff/Student ID.</th>
                                             <th class="text-center">Department/Programme</th>
                                             <th class="text-center">Date Applied</th>
+                                            <th class="text-center">Departure Date</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Action</th>
                                             <th class="text-center">Activity Log</th>
@@ -44,6 +45,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -105,6 +107,11 @@
                         className: 'text-center',
                         data: 'date_applied',
                         name: 'date_applied'
+                    },
+                    {
+                        className: 'text-center',
+                        data: 'departure',
+                        name: 'departure'
                     },
                     {
                         className: 'text-center',

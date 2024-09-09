@@ -496,9 +496,6 @@
         $('#departtime').timepicker({
             timeFormat: 'h:mm p',
             interval: '15',
-            minTime: '6',
-            maxTime: '11:55pm',
-            startTime: '6:00',
             dynamic: false,
             dropdown: true,
             scrollbar: true
@@ -507,9 +504,6 @@
         $('#returntime').timepicker({
             timeFormat: 'h:mm p',
             interval: '15',
-            minTime: '6',
-            maxTime: '11:55pm',
-            startTime: '6:00',
             dynamic: false,
             dropdown: true,
             scrollbar: true

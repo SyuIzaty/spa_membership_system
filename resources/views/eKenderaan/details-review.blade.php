@@ -259,7 +259,10 @@
                                                 @if ($passenger_staff != null)
                                                     @foreach ($passenger_staff as $key => $value)
                                                         @php
-                                                            $staff = App\Staff::where('staff_id', $passenger_staff[$key])->first();
+                                                            $staff = App\Staff::where(
+                                                                'staff_id',
+                                                                $passenger_staff[$key],
+                                                            )->first();
                                                         @endphp
 
                                                         <tr id="rowStaff{{ $staff->staff_id }}"
@@ -388,7 +391,10 @@
                                                 @if ($passenger_student != null)
                                                     @foreach ($passenger_student as $key => $value)
                                                         @php
-                                                            $students = App\Student::where('students_id', $passenger_student[$key])->first();
+                                                            $students = App\Student::where(
+                                                                'students_id',
+                                                                $passenger_student[$key],
+                                                            )->first();
                                                         @endphp
                                                         <tr name="student{{ $students->students_id }}">
                                                             <td>
@@ -634,9 +640,6 @@
         $('#departtime').timepicker({
             timeFormat: 'h:mm p',
             interval: '15',
-            minTime: '6',
-            maxTime: '11:55pm',
-            startTime: '6:00',
             dynamic: false,
             dropdown: true,
             scrollbar: true
@@ -645,9 +648,6 @@
         $('#returntime').timepicker({
             timeFormat: 'h:mm p',
             interval: '15',
-            minTime: '6',
-            maxTime: '11:55pm',
-            startTime: '6:00',
             dynamic: false,
             dropdown: true,
             scrollbar: true
