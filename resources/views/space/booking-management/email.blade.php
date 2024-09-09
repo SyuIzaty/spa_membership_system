@@ -60,17 +60,12 @@
                               <p>Tempat / Ruang : {{ $destination }}</p>
                               <p>Tujuan : {{ $purpose }}</p>
                               <p style="margin-top:20px"> 
-                                Sebagai peringatan kepada staff / pelajar yang menempah ruang di perpustakaan
-                                para pengguna wajib untuk membawa kad ID pelajar/staf
-                                untuk mengimbas <i>QR Code</i> pada <i>barrier gate</i> sebelum masuk ke
-                                dalam banggunan perpustakaan. Proses yang sama juga hendaklah dilakukan
-                                ketika keluar daripada banggunan.
+                                Sehubungan itu, tuan/puan adalah diminta menjaga dan memastikan bilik/ruang tersebut
                               </p>
-                              <p style="margin-top:10px">
-                                Jika kad ID pelajar/staf tertinggal, sila dapatkan lampiran kad ID masing-masing di
-                                laman web <i><b>SIMS INTEC</b></i> atau <i><b>IDS INTEC</b></i>. Tindakan tatatertib
-                                boleh diambil sekiranya pengguna tidak mematuhi arahan yang ditetapkan.
-                              </p>
+                              <ol style="margin-top: 10px">
+                                <li>Berada di dalam keadaan yang bersih selepas digunakan</li>
+                                <li>Peralatan yang digunakan hendaklah disusun dan diletakkan semula ditempat yang asal.</li>
+                              </ol>
                               <p style="line-height: 2em"></p>
                           </div><br>
                           <div style="margin-left: 30px; line-height: 1em; color: black">

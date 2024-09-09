@@ -45,15 +45,29 @@
                               <p>Assalammualaikum & Salam Sejahtera,</p><br>
                               <p style="line-height: 0.5em">{{ $receivers }},</p>
                               <p>
-                                  Mohon untuk buka ruang seperti maklumat di bawah:
+                                Dimaklumkan bahawa permohonan untuk tempahan bilik & ruang adalah seperti berikut,
                               </p>
                               <br>
+                              <p>Nama: {{ $applicant }}</p>
+                              <p>No. Telefon: {{ $phone_number }}</p>
+                              <p>Bilik / Ruang : {{ $destination }}</p>
                               <p>Tarikh Mula : {{ $departDate }}</p>
                               <p>Masa Mula : {{ $departTime }}</p>
                               <p>Tarikh Akhir : {{ $returnDate }}</p>
                               <p>Masa Akhir : {{ $returnTime }}</p>
-                              <p>Tempat / Ruang : {{ $destination }}</p>
                               <p>Tujuan : {{ $purpose }}</p>
+                              <p style="margin-top: 20px">Sehubungan itu, mohon kerjasama tuan/puan untuk memastikan,</p>
+                              <p style="margin-top: 20px"><b>Unit Keselamatan </b></p>
+                              <ol>
+                                <li>Kawalan lalulintas.</li>
+                                <li>Membuka dan menutup bilik/ruang tersebut.</li>
+                                <li>Keselamatan sekitar kawasan kampus.</li>
+                              </ol>
+                              <p style="margin-top: 20px"><b>Jabatan Fasiliti</b></p>
+                              <ol>
+                                <li>Memastikan alat penghawa dingin dibuka sebelum majlis/acara bermula dan ditutup selepas majlis/acara tamat.</li>
+                                <li>Memastikan ‘PA System’ dibuka sebelum majlis/acara bermula dan ditutup selepas majlis/acara tamat.</li>
+                              </ol>
                               <p style="line-height: 2em"></p>
                           </div><br>
                           <div style="margin-left: 30px; line-height: 1em; color: black">

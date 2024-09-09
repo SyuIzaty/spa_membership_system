@@ -178,11 +178,21 @@ class BookingManagementController extends Controller
                     $check_email = SpaceVenue::find($key);
                     if($check_email->email_sent == 1){
                         $all_email = SpaceVenueEmail::VenueId($key)->with('staff')->get();
+                        $users = User::find($request->user_id);
+                        if($users->category == 'STF'){
+                            $staff_detail = Staff::where('staff_id',$users->id)->first();
+                            $user_phone = $staff_detail->staff_phone;
+                        }if($users->category == 'STD'){
+                            $student_detail = Student::StudentId($users->id)->first();
+                            $user_phone = $student_detail->students_phone;
+                        }
 
                         foreach($all_email as $all_emails){
                             $user_email = isset($all_emails->staff->staff_email) ? $all_emails->staff->staff_email : 'nurmaryam.mohamad@intec.edu.my';
                             $started_date = $request->start_date;
                             $data = [
+                                'applicant' => $users->name,
+                                'phone_number' => $user_phone,
                                 'receivers'   => isset($all_emails->staff->staff_name) ? $all_emails->staff->staff_name : 'Nurmaryam',
                                 'departDate'  => date(' d/m/Y ', strtotime($request->start_date)),
                                 'departTime'  => date(' h:i A ', strtotime($request->start_time)),
@@ -303,10 +313,20 @@ class BookingManagementController extends Controller
             if($venue_main->email_sent == 1){
                 $all_email = SpaceVenueEmail::VenueId($venue_main->id)->with('staff')->get();
 
+                if($user->category == 'STF'){
+                    $staff_detail = Staff::where('staff_id',$user->id)->first();
+                    $user_phone = $staff_detail->staff_phone;
+                }if($user->category == 'STD'){
+                    $student_detail = Student::StudentId($user->id)->first();
+                    $user_phone = $student_detail->students_phone;
+                }
+
                 foreach($all_email as $all_emails){
                     $user_email = isset($all_emails->staff->staff_email) ? $all_emails->staff->staff_email : 'nurmaryam.mohamad@intec.edu.my';
                     $started_date = $main->start_date;
                     $data2 = [
+                        'applicant' => $user->name,
+                        'phone_number' => $user_phone,
                         'receivers'   => isset($all_emails->staff->staff_name) ? $all_emails->staff->staff_name : 'Nurmaryam',
                         'departDate'  => date(' d/m/Y ', strtotime($main->start_date)),
                         'departTime'  => date(' h:i A ', strtotime($main->start_time)),
