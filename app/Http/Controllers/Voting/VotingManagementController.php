@@ -117,6 +117,7 @@ class VotingManagementController extends Controller
         $request->validate([
             'category_name'          => 'required',
             'category_description'   => 'nullable',
+            'category_max_vote'      => 'required',
             'programme_code'         => 'required',
         ]);
 
@@ -124,6 +125,7 @@ class VotingManagementController extends Controller
             'vote_id'                   => $request->voteId,
             'category_name'             => $request->category_name,
             'category_description'      => $request->category_description,
+            'category_max_vote'         => $request->category_max_vote,
             'created_by'                => Auth::user()->id,
             'updated_by'                => Auth::user()->id,
         ]);
@@ -145,12 +147,14 @@ class VotingManagementController extends Controller
         $request->validate([
             'names'             => 'required',
             'descriptions'      => 'nullable',
+            'max_votes'         => 'required',
             'programme_codes'   => 'required',
         ]);
 
         $category = EvmCategory::where('id', $request->ids)->update([
             'category_name'             => $request->names,
             'category_description'      => $request->descriptions,
+            'category_max_vote'         => $request->max_votes,
             'updated_by'                => Auth::user()->id,
         ]);
 
@@ -364,56 +368,16 @@ class VotingManagementController extends Controller
             return "<a href='/voter-list/{$data->id}' class='btn btn-xs btn-info'><i class='fal fa-users'></i></a>";
         })
 
-        // ->addColumn('verify', function ($data) {
-        //     if ($data->verify_status === 'Y') {
-        //         return '<div style="text-align: left;">
-        //                     <p>VERIFIED BY:<br><b>' . $data->staff->staff_name . '</b></p>
-        //                     <p>VERIFIED ON:<br><b>' . date('d-m-Y', strtotime($data->verify_date)) . '</b></p>
-        //                     REMARK:<br><b>' . $data->verify_remark . '</b>
-        //                 </div>';
-        //     }
-
-        //     $endTimestamp = strtotime($data->programme->category->vote->end_date);
-        //     $threeDaysAfterEndTimestamp = $endTimestamp + (3 * 24 * 60 * 60); // 3 days * 24 hours * 60 minutes * 60 seconds
-        //     $currentTimestamp = now()->timestamp;
-
-        //     if (!($currentTimestamp > $endTimestamp && $currentTimestamp <= $threeDaysAfterEndTimestamp)) {
-        //         return 'N/A';
-        //     }
-
-        //     $exist = EvmCandidate::where('programme_id', $data->programme_id)->where('verify_status', 'Y')->first();
-
-        //     if (isset($exist)) {
-        //         return 'N/A';
-        //     }
-
-        //     $records = EvmCandidate::where('programme_id', $data->programme_id)->get();
-        //     $highest_cast_vote = 0;
-        //     $highest_cast_vote_index = 0;
-
-        //     foreach ($records as $index => $record) {
-        //         if ($record->cast_vote > $highest_cast_vote) {
-        //             $highest_cast_vote = $record->cast_vote;
-        //             $highest_cast_vote_index = $index;
-        //         }
-        //     }
-
-        //     $formatted_cast_vote = $data->cast_vote ?? 0;
-
-        //     if ($highest_cast_vote === null || $highest_cast_vote === 0) {
-
-        //         $formatted_cast_vote = '<input type="checkbox" class="verification-checkbox" data-id="' . $data->id . '">';
-        //     } elseif ($data->cast_vote === $highest_cast_vote) {
-
-        //         $formatted_cast_vote = '<input type="checkbox" class="verification-checkbox" data-id="' . $data->id . '">';
-        //     } else {
-        //         $formatted_cast_vote = 'N/A';
-        //     }
-
-        //     return $formatted_cast_vote;
-        // })
-
         ->addColumn('verify', function ($data) {
+            // Get the maximum votes allowed for the category
+            $maxVotes = $data->programme->category->category_max_vote;
+
+            // Count how many candidates have been verified in the category
+            $verifiedVotes = EvmCandidate::whereHas('programme', function($query) use ($data) {
+                $query->where('category_id', $data->programme->category->id);
+            })->where('verify_status', 'Y')->count();
+
+            // If the candidate has already been verified, show verification details
             if ($data->verify_status === 'Y') {
                 return '<div style="text-align: left;">
                             <p>VERIFIED BY:<br><b>' . $data->staff->staff_name . '</b></p>
@@ -422,21 +386,22 @@ class VotingManagementController extends Controller
                         </div>';
             }
 
+            // If the max votes have been reached and the candidate is not verified, show 'N/A'
+            if ($verifiedVotes >= $maxVotes) {
+                return 'N/A';
+            }
+
+            // Check if verification window is still open (3 days after vote end)
             $endTimestamp = strtotime($data->programme->category->vote->end_date);
-            $threeDaysAfterEndTimestamp = $endTimestamp + (3 * 24 * 60 * 60); // 3 days * 24 hours * 60 minutes * 60 seconds
+            $threeDaysAfterEndTimestamp = $endTimestamp + (3 * 24 * 60 * 60);
             $currentTimestamp = now()->timestamp;
 
             if (!($currentTimestamp > $endTimestamp && $currentTimestamp <= $threeDaysAfterEndTimestamp)) {
                 return 'N/A';
             }
 
-            $exist = EvmCandidate::where('programme_id', $data->programme_id)->where('verify_status', 'Y')->first();
-
-            if (isset($exist)) {
-                return 'N/A';
-            } else {
-                return '<input type="checkbox" class="verification-checkbox" data-id="' . $data->id . '">';
-            }
+            // If not verified and within the max votes, show checkbox
+            return '<input type="checkbox" class="verification-checkbox" data-id="' . $data->id . '">';
         })
 
         ->addColumn('action', function ($data) {
@@ -594,32 +559,37 @@ class VotingManagementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request)
     {
-        $request->validate([
+        $vote = EvmVote::where('id', $request->ids)->first();
+
+        $rules = [
             'names' => 'required',
             'descriptions' => 'nullable',
             'start_dates' => [
                 'required',
                 'date',
-                'after_or_equal:' . Date::today()->toDateString(),
+                $vote->start_date ? 'after_or_equal:' . $vote->start_date : Date::today()->toDateString(),
             ],
             'end_dates' => [
                 'required',
                 'date',
                 'after:start_dates',
             ],
+        ];
+
+        $request->validate($rules);
+
+        $vote->update([
+            'name'          => $request->names,
+            'description'   => $request->descriptions,
+            'start_date'    => $request->start_dates,
+            'end_date'      => $request->end_dates,
+            'updated_by'    => Auth::user()->id,
         ]);
 
-        EvmVote::where('id', $request->ids)->update([
-            'name'            => $request->names,
-            'description'     => $request->descriptions,
-            'start_date'      => $request->start_dates,
-            'end_date'        => $request->end_dates,
-            'updated_by'      => Auth::user()->id,
-        ]);
-
-        Session::flash('message',' Data is updated successfully.');
+        Session::flash('message', 'Data is updated successfully.');
         return redirect()->back();
     }
 

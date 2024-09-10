@@ -87,7 +87,8 @@
                                                                     @if (strtotime(Carbon\Carbon::now()) < strtotime($vote->start_date))
                                                                         <div class="float-right" style="margin-top:-28px">
                                                                             <a href="" data-target="#crud-modal-categories" data-toggle="modal" data-id="{{ $category->id }}" data-name="{{ $category->category_name }}"
-                                                                            data-description="{{ $category->category_description }}" data-programme="{{ $existInProgramme->programme_code }}" class="btn btn-xs btn-warning"><i class="fal fa-pencil"></i></a>
+                                                                            data-description="{{ $category->category_description }}" data-programme="{{ $existInProgramme->programme_code }}" data-max="{{ $category->category_max_vote }}"
+                                                                            class="btn btn-xs btn-warning"><i class="fal fa-pencil"></i></a>
                                                                             @if (!isset($existInCandidate))
                                                                                 <form method="POST" action="/voting-setting-delete/{{ $category->id }}" style="display: inline;">
                                                                                     @csrf
@@ -165,6 +166,7 @@
                                                                                                                 <div class="d-flex align-items-center">
                                                                                                                     <div class="flex-1 pl-1">
                                                                                                                         The <b>VERIFICATION</b> checkbox will become visible after the voting end date and remain available for 3 days based on the configured time settings.
+                                                                                                                        Please verify <b>{{ $category->category_max_vote ?? '0'}}</b> candidate(s) for this category.
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
@@ -268,6 +270,15 @@
                                                     @enderror
                                                 </td>
                                             </div>
+                                            <div class="form-group">
+                                                <td width="10%"><label class="form-label" for="category_max_vote"><span class="text-danger">*</span> Max Vote(s) :</label></td>
+                                                <td colspan="4">
+                                                    <input class="form-control" type="number" id="category_max_vote" name="category_max_vote" min="1" value="{{ old('category_max_vote', 1) }}" required>
+                                                    @error('category_max_vote')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </td>
+                                            </div>
                                             <div class="footer">
                                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                                                 <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -320,6 +331,16 @@
                                                     @enderror
                                                 </td>
                                             </div>
+                                            <div class="form-group">
+                                                <td width="10%"><label class="form-label" for="max_votes"><span class="text-danger">*</span> Max Vote(s) :</label></td>
+                                                <td colspan="4">
+                                                    <input class="form-control" type="number" id="max_votes" name="max_votes" min="1" required>
+                                                    @error('max_votes')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </td>
+                                            </div>
+
                                             <div class="footer">
                                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
                                                 <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -467,11 +488,13 @@
             var name = button.data('name');
             var description = button.data('description');
             var programme = button.data('programme');
+            var max = button.data('max');
 
             $('.modal-body #ids').val(id);
             $('.modal-body #names').val(name);
             $('.modal-body #descriptions').val(description);
             $('.modal-body #programme_codes').val(programme);
+            $('.modal-body #max_votes').val(max);
 
             $('#programme_codes').select2({
                 dropdownParent: $('#crud-modal-categories')

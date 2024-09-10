@@ -104,13 +104,25 @@
                     @php
                         $activeStudent = \App\Student::where('students_programme', $programme->programme_code)->where('students_status', 'AKTIF')->count();
 
-                        $engageVoter = \App\EvmVoter::where('voter_programme', $programme->programme_code)->whereHas('candidate', function($query) use($category, $voteData){
-                            $query->whereHas('programme', function($subQuery) use($category, $voteData){
-                                $subQuery->whereHas('category', function($subSubQuery) use($category, $voteData){
-                                    $subSubQuery->where('id', $category->id)->where('vote_id', $voteData->id);
+                        // $engageVoter = \App\EvmVoter::where('voter_programme', $programme->programme_code)->whereHas('candidate', function($query) use($category, $voteData){
+                        //     $query->whereHas('programme', function($subQuery) use($category, $voteData){
+                        //         $subQuery->whereHas('category', function($subSubQuery) use($category, $voteData){
+                        //             $subSubQuery->where('id', $category->id)->where('vote_id', $voteData->id);
+                        //         });
+                        //     });
+                        // })->count();
+
+                        $engageVoter = \App\EvmVoter::where('voter_programme', $programme->programme_code)
+                            ->whereHas('candidate', function($query) use($category, $voteData) {
+                                $query->whereHas('programme', function($subQuery) use($category, $voteData) {
+                                    $subQuery->whereHas('category', function($subSubQuery) use($category, $voteData) {
+                                        $subSubQuery->where('id', $category->id)
+                                            ->where('vote_id', $voteData->id);
+                                    });
                                 });
-                            });
-                        })->count();
+                            })
+                            ->distinct('voter_id')
+                            ->count('voter_id');
 
                         $disengageVoter = $activeStudent - $engageVoter;
 

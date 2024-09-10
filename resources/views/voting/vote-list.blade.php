@@ -124,37 +124,37 @@
                         <input type="hidden" id="ids" name="ids">
                         <p><span class="text-danger">*</span> Required Field</p>
                         <div class="form-group">
-                            <td width="10%"><label class="form-label" for="name"><span class="text-danger">*</span> Name :</label></td>
+                            <td width="10%"><label class="form-label" for="names"><span class="text-danger">*</span> Name :</label></td>
                             <td colspan="4">
                                 <input class="form-control" id="names" name="names" required>
-                                @error('name')
+                                @error('names')
                                     <p style="color: red">{{ $message }}</p>
                                 @enderror
                             </td>
                         </div>
                         <div class="form-group">
-                            <td width="10%"><label class="form-label" for="description"> Description :</label></td>
+                            <td width="10%"><label class="form-label" for="descriptions"> Description :</label></td>
                             <td colspan="4">
                                 <textarea rows="3" id="descriptions" name="descriptions" class="form-control"></textarea>
-                                @error('description')
+                                @error('descriptions')
                                     <p style="color: red">{{ $message }}</p>
                                 @enderror
                             </td>
                         </div>
                         <div class="form-group">
-                            <td width="10%"><label class="form-label" for="start_date"><span class="text-danger">*</span> Start Date :</label></td>
+                            <td width="10%"><label class="form-label" for="start_dates"><span class="text-danger">*</span> Start Date :</label></td>
                             <td colspan="4">
                                 <input class="form-control" type="datetime-local" id="start_dates" name="start_dates" required>
-                                @error('start_date')
+                                @error('start_dates')
                                     <p style="color: red">{{ $message }}</p>
                                 @enderror
                             </td>
                         </div>
                         <div class="form-group">
-                            <td width="10%"><label class="form-label" for="end_date"><span class="text-danger">*</span> End Date :</label></td>
+                            <td width="10%"><label class="form-label" for="end_dates"><span class="text-danger">*</span> End Date :</label></td>
                             <td colspan="4">
                                 <input class="form-control" type="datetime-local" id="end_dates" name="end_dates" required>
-                                @error('end_date')
+                                @error('end_dates')
                                     <p style="color: red">{{ $message }}</p>
                                 @enderror
                             </td>

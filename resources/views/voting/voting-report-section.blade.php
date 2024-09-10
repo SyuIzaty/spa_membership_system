@@ -45,13 +45,25 @@
                                 @php
                                     $activeStudent = \App\Student::where('students_programme', $programme->programme_code)->where('students_status', 'AKTIF')->count();
 
-                                    $engageVoter = \App\EvmVoter::where('voter_programme', $programme->programme_code)->whereHas('candidate', function($query) use($category, $voteData){
-                                        $query->whereHas('programme', function($subQuery) use($category, $voteData){
-                                            $subQuery->whereHas('category', function($subSubQuery) use($category, $voteData){
-                                                $subSubQuery->where('id', $category->id)->where('vote_id', $voteData->id);
+                                    // $engageVoter = \App\EvmVoter::where('voter_programme', $programme->programme_code)->whereHas('candidate', function($query) use($category, $voteData){
+                                    //     $query->whereHas('programme', function($subQuery) use($category, $voteData){
+                                    //         $subQuery->whereHas('category', function($subSubQuery) use($category, $voteData){
+                                    //             $subSubQuery->where('id', $category->id)->where('vote_id', $voteData->id);
+                                    //         });
+                                    //     });
+                                    // })->count();
+
+                                    $engageVoter = \App\EvmVoter::where('voter_programme', $programme->programme_code)
+                                        ->whereHas('candidate', function($query) use($category, $voteData) {
+                                            $query->whereHas('programme', function($subQuery) use($category, $voteData) {
+                                                $subQuery->whereHas('category', function($subSubQuery) use($category, $voteData) {
+                                                    $subSubQuery->where('id', $category->id)
+                                                        ->where('vote_id', $voteData->id);
+                                                });
                                             });
-                                        });
-                                    })->count();
+                                        })
+                                        ->distinct('voter_id')
+                                        ->count('voter_id');
 
                                     $disengageVoter = $activeStudent - $engageVoter;
 
@@ -90,26 +102,29 @@
                             <h5 class="text-danger">
                                 Candidate Result Information
                             </h5>
-                            <ul>
-                                <li>
-                                    <p class="text-muted">
-                                        @php
-                                            $finalCandidate = $programme->candidates->first(function ($candidate) {
-                                                return $candidate->verify_status === 'Y';
-                                            });
-                                        @endphp
-                                        @if ($finalCandidate)
-                                            <p>
-                                                Candidate <b><u>{{$finalCandidate->student->students_name ?? 'N/A'}}</u></b> has been verified and subsequently declared as the chosen winner in this category of voting.
-                                             </p>
-                                        @else
-                                             <p>
-                                                No verified candidate in this category of voting.
-                                             </p>
-                                        @endif
+                            <p class="text-muted">
+                                @php
+                                    $verifiedCandidates = $programme->candidates->filter(function ($candidate) {
+                                        return $candidate->verify_status === 'Y';
+                                    });
+                                @endphp
+                                @if ($verifiedCandidates->isNotEmpty())
+                                    <p>
+                                        The following candidate(s) have been verified and subsequently declared as the chosen winners in this category of voting:
+                                        <ul>
+                                            @foreach ($verifiedCandidates as $candidate)
+                                                <li style="padding-bottom: 5px">
+                                                    <b><u>{{ $candidate->student->students_name ?? 'N/A' }}</u></b>
+                                                </li>
+                                            @endforeach
+                                        </ul>
                                     </p>
-                                </li>
-                            </ul>
+                                @else
+                                    <p>
+                                        No verified candidate(s) in this category of voting.
+                                    </p>
+                                @endif
+                            </p>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover table-striped w-100">
                                     <thead>

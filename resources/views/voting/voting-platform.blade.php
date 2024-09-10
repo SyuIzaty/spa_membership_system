@@ -75,7 +75,7 @@
                                 <span id="countdown"></span>
                             </b></h1>
                         </span>
-                        You are required to cast a vote. To return to the platform, please click here : <a href="/voting-platform" title="Return to Platform" style="text-decoration: underline; font-weight: bold;"><u>Return to Platform</u></a>
+                        You are required to cast {{ $category->category_max_vote ?? '0' }} vote. To return to the platform, please click here : <a href="/voting-platform" title="Return to Platform" style="text-decoration: underline; font-weight: bold;"><u>Return to Platform</u></a>
                     </div>
                 </div>
             </div>
@@ -178,44 +178,52 @@
     </script>
 
     <script>
-        // Function to cast vote
         document.addEventListener("DOMContentLoaded", function () {
             const checkboxes = document.querySelectorAll(".candidate-checkbox");
+            const maxVotes = {{ $category->category_max_vote }}; // Get the max votes allowed for the category
+            let selectedCandidates = [];
 
             checkboxes.forEach((checkbox) => {
                 checkbox.addEventListener("change", function () {
                     const candidateId = this.getAttribute("data-id");
+
                     if (this.checked) {
-                        console.log('Check');
+                        if (selectedCandidates.length < maxVotes) {
+                            selectedCandidates.push(candidateId);
+                        } else {
+                            this.checked = false;
+                            Swal.fire('Max Votes Reached', `You can only vote for ${maxVotes} candidates.`, 'warning');
+                        }
+                    } else {
+                        selectedCandidates = selectedCandidates.filter(id => id !== candidateId);
+                    }
+
+                    // Show confirmation popup only when the max votes are cast
+                    if (selectedCandidates.length === maxVotes) {
                         Swal.fire({
-                            title: "Confirm Vote",
-                            text: "Are you sure you want to vote for this candidate?",
+                            title: "Confirm Votes",
+                            text: `Are you sure you want to vote for these ${maxVotes} candidates?`,
                             icon: "question",
                             showCancelButton: true,
                             confirmButtonText: "Yes",
                             cancelButtonText: "No",
                         }).then((result) => {
                             if (result.value) {
-                                axios.post('/voting-store', { candidate_id: candidateId })
+                                // Send the selected candidates to the server
+                                axios.post('/voting-store', { candidate_ids: selectedCandidates })
                                     .then(() => {
                                         location.reload();
                                     })
                                     .catch((error) => {
                                         console.error(error);
                                     });
-                            } else {
-                                this.checked = false;
                             }
                         });
-                    } else {
-                        console.log('Uncheck');
                     }
                 });
             });
         });
-
     </script>
-
 
 @endsection
 

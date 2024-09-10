@@ -80,40 +80,75 @@ class VotingPlatformController extends Controller
 
     public function voting_store(Request $request)
     {
-        $candidateId = $request->input('candidate_id');
+        $candidateIds = $request->input('candidate_ids');
 
-        $candidate = EvmCandidate::find($candidateId);
-
-        if ($candidate) {
-
-            if (is_null($candidate->cast_vote)) {
-
-                $candidate->cast_vote = 1;
-            } else {
-
-                $candidate->cast_vote += 1;
-            }
-
-            $candidate->save();
-
+        if ($candidateIds) {
             $student = Student::where('students_id', Auth::user()->id)->first();
 
-            EvmVoter::create([
-                'candidate_id'      => $candidate->id,
-                'voter_id'          => $student->students_id,
-                'voter_programme'   => $student->students_programme,
-                'voter_session'     => $student->current_session,
-                'created_by'        => Auth::user()->id,
-                'updated_by'        => Auth::user()->id,
-            ]);
+            foreach ($candidateIds as $candidateId) {
+                $candidate = EvmCandidate::find($candidateId);
 
-            return response()->json(['message' => 'Vote casted successfully.']);
+                if ($candidate) {
+                    if (is_null($candidate->cast_vote)) {
+                        $candidate->cast_vote = 1;
+                    } else {
+                        $candidate->cast_vote += 1;
+                    }
+                    $candidate->save();
 
+                    EvmVoter::create([
+                        'candidate_id'      => $candidate->id,
+                        'voter_id'          => $student->students_id,
+                        'voter_programme'   => $student->students_programme,
+                        'voter_session'     => $student->current_session,
+                        'created_by'        => Auth::user()->id,
+                        'updated_by'        => Auth::user()->id,
+                    ]);
+                }
+            }
+
+            return response()->json(['message' => 'Votes casted successfully.']);
         } else {
-
-            return response()->json(['message' => 'Candidate not found.'], 404);
+            return response()->json(['message' => 'No candidates selected.'], 400);
         }
     }
+
+    // public function voting_store(Request $request)
+    // {
+    //     $candidateId = $request->input('candidate_id');
+
+    //     $candidate = EvmCandidate::find($candidateId);
+
+    //     if ($candidate) {
+
+    //         if (is_null($candidate->cast_vote)) {
+
+    //             $candidate->cast_vote = 1;
+    //         } else {
+
+    //             $candidate->cast_vote += 1;
+    //         }
+
+    //         $candidate->save();
+
+    //         $student = Student::where('students_id', Auth::user()->id)->first();
+
+    //         EvmVoter::create([
+    //             'candidate_id'      => $candidate->id,
+    //             'voter_id'          => $student->students_id,
+    //             'voter_programme'   => $student->students_programme,
+    //             'voter_session'     => $student->current_session,
+    //             'created_by'        => Auth::user()->id,
+    //             'updated_by'        => Auth::user()->id,
+    //         ]);
+
+    //         return response()->json(['message' => 'Vote casted successfully.']);
+
+    //     } else {
+
+    //         return response()->json(['message' => 'Candidate not found.'], 404);
+    //     }
+    // }
 
     /**
      * Show the form for editing the specified resource.
