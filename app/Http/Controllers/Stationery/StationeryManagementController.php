@@ -183,25 +183,7 @@ class StationeryManagementController extends Controller
 
     public function application_verify(Request $request)
     {
-        if ($request->status == '1') { //Accepted
-
-            $request->validate([
-                'status' => 'required',
-            ]);
-
-            $staff = Staff::where('staff_id', Auth::user()->id)->first();
-
-            $application = IsmApplication::where('id', $request->id)->first();
-
-            $application->update([
-                'current_status' => 'PA',
-            ]);
-
-            $track = IsmApplicationTrack::create([
-                'application_id'    => $application->id,
-                'status_id'         => 'PA',
-                'created_by'        => $staff->staff_id,
-            ]);
+        if($request->status == null) {
 
             foreach ($request->stationery_id as $key => $stationeryId) {
                 $stationery = IsmStationery::find($stationeryId);
@@ -209,66 +191,102 @@ class StationeryManagementController extends Controller
                 $approveQuantity = $request->approve_quantity[$key] ?? null;
                 $approveRemark = $request->approve_remark[$key] ?? null;
 
-                $stationery->approve_quantity = $approveQuantity;
-                $stationery->approve_remark = $approveRemark;
+                if (array_key_exists($key, $request->approve_quantity) || array_key_exists($key, $request->approve_remark)) {
+                    $stationery->approve_quantity = $approveQuantity;
+                    $stationery->approve_remark = $approveRemark;
 
-                $stationery->save();
+                    $stationery->save();
+                }
             }
 
-            $admin = User::whereHas('roles', function ($query) {
-                $query->where('id', 'ISM001');
-            })->get();
+        } else {
+            if ($request->status == '1') { //Accepted
 
-            foreach ($admin as $admin_list) {
+                $request->validate([
+                    'status' => 'required',
+                ]);
+
+                $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+                $application = IsmApplication::where('id', $request->id)->first();
+
+                $application->update([
+                    'current_status' => 'PA',
+                ]);
+
+                $track = IsmApplicationTrack::create([
+                    'application_id'    => $application->id,
+                    'status_id'         => 'PA',
+                    'created_by'        => $staff->staff_id,
+                ]);
+
+                foreach ($request->stationery_id as $key => $stationeryId) {
+                    $stationery = IsmStationery::find($stationeryId);
+
+                    $approveQuantity = $request->approve_quantity[$key] ?? null;
+                    $approveRemark = $request->approve_remark[$key] ?? null;
+
+                    $stationery->approve_quantity = $approveQuantity;
+                    $stationery->approve_remark = $approveRemark;
+
+                    $stationery->save();
+                }
+
+                $admin = User::whereHas('roles', function ($query) {
+                    $query->where('id', 'ISM001');
+                })->get();
+
+                foreach ($admin as $admin_list) {
+                    $data = [
+                        'app_recipient'     => $admin_list->name,
+                        'app_description'   => 'Please be informed that you have received an application (Application ID #'.$application->id.') requiring approval from '.$application->staff->staff_name.' on '
+                                                . date('d/m/Y', strtotime(Carbon::now())). '. Review and approve the application at your earliest convenience.',
+                    ];
+
+                    Mail::send('stationery.mail-template', $data, function($message) use ($staff, $admin_list) {
+                        $message->to($admin_list->email)->subject('I-Stationery : Pending Approval');
+                        $message->from($staff->staff_email);
+                    });
+                }
+
+                Session::flash('message', 'The application has been accepted and verified. It is now pending on approval.');
+
+            } else { //Rejected
+
+                $request->validate([
+                    'status' => 'required',
+                    'remark' => 'required',
+                ]);
+
+                $staff = Staff::where('staff_id', Auth::user()->id)->first();
+
+                $application = IsmApplication::where('id', $request->id)->first();
+
+                $application->update([
+                    'current_status' => 'RV',
+                ]);
+
+                $track = IsmApplicationTrack::create([
+                    'application_id'    => $application->id,
+                    'status_id'         => 'RV',
+                    'created_by'        => $staff->staff_id,
+                    'remark'            => $request->remark,
+                ]);
+
                 $data = [
-                    'app_recipient'     => $admin_list->name,
-                    'app_description'   => 'Please be informed that you have received an application (Application ID #'.$application->id.') requiring approval from '.$application->staff->staff_name.' on '
-                                            . date('d/m/Y', strtotime(Carbon::now())). '. Review and approve the application at your earliest convenience.',
+                    'app_recipient'     => $application->applicant_email,
+                    'app_description'   => 'Please be informed that your application (Application ID #'.$application->id.') has been rejected on ' . date('d/m/Y', strtotime($track->created_at))
+                                            . ' because: "' . ucwords($track->remark) . '".',
+
                 ];
 
-                Mail::send('stationery.mail-template', $data, function($message) use ($staff, $admin_list) {
-                    $message->to($admin_list->email)->subject('I-Stationery : Pending Approval');
+                Mail::send('stationery.mail-template', $data, function($message) use ($application, $staff) {
+                    $message->to($application->applicant_email)->subject('I-Stationery : Application Rejected');
                     $message->from($staff->staff_email);
                 });
+
+                Session::flash('message', 'The application has been rejected, and an email notification has been sent to the applicant.');
             }
-
-            Session::flash('message', 'The application has been accepted and verified. It is now pending on approval.');
-
-        } else { //Rejected
-
-            $request->validate([
-                'status' => 'required',
-                'remark' => 'required',
-            ]);
-
-            $staff = Staff::where('staff_id', Auth::user()->id)->first();
-
-            $application = IsmApplication::where('id', $request->id)->first();
-
-            $application->update([
-                'current_status' => 'RV',
-            ]);
-
-            $track = IsmApplicationTrack::create([
-                'application_id'    => $application->id,
-                'status_id'         => 'RV',
-                'created_by'        => $staff->staff_id,
-                'remark'            => $request->remark,
-            ]);
-
-            $data = [
-                'app_recipient'     => $application->applicant_email,
-                'app_description'   => 'Please be informed that your application (Application ID #'.$application->id.') has been rejected on ' . date('d/m/Y', strtotime($track->created_at))
-                                        . ' because: "' . ucwords($track->remark) . '".',
-
-            ];
-
-            Mail::send('stationery.mail-template', $data, function($message) use ($application, $staff) {
-                $message->to($application->applicant_email)->subject('I-Stationery : Application Rejected');
-                $message->from($staff->staff_email);
-            });
-
-            Session::flash('message', 'The application has been rejected, and an email notification has been sent to the applicant.');
         }
 
         return redirect()->back();

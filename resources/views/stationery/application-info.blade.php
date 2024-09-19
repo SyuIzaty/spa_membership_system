@@ -156,36 +156,64 @@
                                                             @else
                                                                 @if(Auth::user()->hasPermissionTo('Manage Stationery'))
                                                                     @if($application->current_status == 'NA')
-                                                                    <td class="appStationery" style="display: none;">
-                                                                        @php
-                                                                            $total_bal = 0;
-                                                                            $stockId = $stationery->stock_id;
-                                                                            $stockData = \App\Stock::where('id', $stockId)->first();
+                                                                        <td class="appStationery" style="display: none;">
+                                                                            @php
+                                                                                $total_bal = 0;
+                                                                                $stockId = $stationery->stock_id;
+                                                                                $stockData = \App\Stock::where('id', $stockId)->first();
 
-                                                                            if ($stockData) {
-                                                                                foreach ($stockData->transaction as $list) {
-                                                                                    $total_bal += ($list->stock_in - $list->stock_out);
+                                                                                if ($stockData) {
+                                                                                    foreach ($stockData->transaction as $list) {
+                                                                                        $total_bal += ($list->stock_in - $list->stock_out);
+                                                                                    }
+
+                                                                                    $numbers = $total_bal > 0 ? range(1, $total_bal) : [];
                                                                                 }
-
-                                                                                $numbers = $total_bal > 0 ? range(1, $total_bal) : [];
-                                                                            }
-                                                                        @endphp
-                                                                        <select class="form-control approve_quantity" name="approve_quantity[{{$loop->index}}]" id="approve_quantity_{{ $loop->index }}">
-                                                                            <option value="" disabled selected>Please select</option>
-                                                                            @foreach ($numbers as $value)
-                                                                                <option value="{{ $value }}" {{ old("approve_quantity.$loop->index") !== null && old("approve_quantity.$loop->index") == $value ? 'selected' : '' }}>
-                                                                                    {{ $value }}
-                                                                                </option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="appStationery" style="display: none;">
-                                                                        <input class="form-control" id="approve_remark" name="approve_remark[{{$loop->index}}]" value="{{ old("approve_remark.$loop->index") }}">
-                                                                    </td>
-
+                                                                            @endphp
+                                                                            <select class="form-control approve_quantity" name="approve_quantity[{{$loop->index}}]" id="approve_quantity_{{ $loop->index }}">
+                                                                                <option value="" disabled selected>Please select</option>
+                                                                                @foreach ($numbers as $value)
+                                                                                    <option value="{{ $value }}" {{ old("approve_quantity.$loop->index") !== null && old("approve_quantity.$loop->index") == $value ? 'selected' : '' }}>
+                                                                                        {{ $value }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </td>
+                                                                        <td class="appStationery" style="display: none;">
+                                                                            <input class="form-control" id="approve_remark" name="approve_remark[{{$loop->index}}]" value="{{ old("approve_remark.$loop->index") }}">
+                                                                        </td>
                                                                     @else
-                                                                        <td>{{ $stationery->approve_quantity ?? 'N/A' }}</td>
-                                                                        <td>{{ $stationery->approve_remark ?? 'N/A' }}</td>
+                                                                        @if($application->current_status == 'PA')
+                                                                            <td class="appStationery">
+                                                                                @php
+                                                                                    $total_bal = 0;
+                                                                                    $stockId = $stationery->stock_id;
+                                                                                    $stockData = \App\Stock::where('id', $stockId)->first();
+
+                                                                                    if ($stockData) {
+                                                                                        foreach ($stockData->transaction as $list) {
+                                                                                            $total_bal += ($list->stock_in - $list->stock_out);
+                                                                                        }
+
+                                                                                        $numbers = $total_bal > 0 ? range(1, $total_bal) : [];
+                                                                                    }
+                                                                                @endphp
+                                                                                <select class="form-control approve_quantity" name="approve_quantity[{{$loop->index}}]" id="approve_quantity_{{ $loop->index }}">
+                                                                                    <option value="" disabled selected>Please select</option>
+                                                                                    @foreach ($numbers as $value)
+                                                                                        <option value="{{ $value }}" {{ $stationery->approve_quantity == $value ? 'selected' : '' }}>
+                                                                                            {{ $value }}
+                                                                                        </option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                            </td>
+                                                                            <td class="appStationery">
+                                                                                <input class="form-control" id="approve_remark" name="approve_remark[{{$loop->index}}]" value="{{ $stationery->approve_remark }}">
+                                                                            </td>
+                                                                        @else
+                                                                            <td>{{ $stationery->approve_quantity ?? 'N/A' }}</td>
+                                                                            <td>{{ $stationery->approve_remark ?? 'N/A' }}</td>
+                                                                        @endif
                                                                     @endif
                                                                 @else
                                                                     @if(in_array($application->current_status, ['PA', 'AC', 'CP', 'RC']))
@@ -274,7 +302,10 @@
                                         @if(Auth::user()->hasPermissionTo('Manage Stationery'))
                                             @if($application->current_status == 'NA')
                                                 <button type="submit" id="verifyBtn" class="btn btn-success ml-2 float-right"><i class="fal fa-save"></i> Verify Application</button>
-                                             @endif
+                                            @endif
+                                            @if($application->current_status == 'PA')
+                                                <button type="submit" id="updateVerifyBtn" class="btn btn-success ml-2 float-right"><i class="fal fa-save"></i> Update Verification</button>
+                                            @endif
                                         @endif
                                     {!! Form::close() !!}
 
@@ -441,6 +472,38 @@
                 Swal.fire({
                     title: 'Application Verification',
                     text: 'Are you sure you want to verify this application?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.value) {
+                        verifyForm.submit();
+                    } else {
+                        //
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all required fields!',
+                });
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateVerifyBtn = document.getElementById('updateVerifyBtn');
+        const verifyForm = document.getElementById('verifyData');
+
+        updateVerifyBtn.addEventListener('click', function () {
+            event.preventDefault();
+
+            if (verifyForm.checkValidity()) {
+                Swal.fire({
+                    title: 'Update Application Verification',
+                    text: 'Are you sure you want to update this verification?',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: 'Yes!',
