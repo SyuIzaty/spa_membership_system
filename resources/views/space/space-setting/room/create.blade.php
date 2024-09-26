@@ -100,9 +100,6 @@
                                   <td style="width: 10%">
                                       <select class="form-control item_id" name="item_id[]" required>
                                           <option disabled selected>Please Select</option>
-                                          @foreach($asset as $assets)
-                                              <option value="{{ $assets->id }}-1">{{ $assets->asset_type }}</option>
-                                          @endforeach
                                           @foreach($category as $categories)
                                               <option value="{{ $categories->id }}-3">{{ $categories->name }}</option>
                                           @endforeach

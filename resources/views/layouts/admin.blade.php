@@ -1511,6 +1511,18 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="/space/space-setting/space-category" title="Space Category"
+                                            data-filter-tags="space_category">
+                                            <span class="nav-link-text" data-i18n="nav.space_category">Item Category</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/space/space-setting/space-upload" title="Space Upload"
+                                            data-filter-tags="space_upload">
+                                            <span class="nav-link-text" data-i18n="nav.space_upload">Upload</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/space/space-setting/block" title="Pending"
                                             data-filter-tags="pending">
                                             <span class="nav-link-text" data-i18n="nav.pending">Block</span>

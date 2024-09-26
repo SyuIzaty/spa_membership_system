@@ -134,6 +134,7 @@ class BlockController extends Controller
                 return
                 '
                 <a href="/space/space-setting/room/'.$room->id.'/edit" class="btn btn-primary btn-sm"><i class="fal fa-pencil"></i></a>
+                <a href="/space/space-setting/room/'.$room->id.'/print" class="btn btn-info btn-sm"><i class="fal fa-file-pdf"></i></a>
                 <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/space/space-setting/room/' . $room->id . '"> <i class="fal fa-trash"></i></button>
                 ';
             })

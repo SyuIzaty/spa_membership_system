@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Space\SpaceSetting;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\AssetType;
 use App\Asset;
 use App\Stock;
@@ -206,6 +207,16 @@ class RoomController extends Controller
         }
 
         return redirect()->back()->with('message','Updated');
+    }
+
+    public function print($id)
+    {
+        $room = SpaceRoom::find($id);
+        $item = SpaceItem::RoomId($id)->get();
+
+        $pdf = PDF::loadView('space.space-setting.room.pdf',compact('room','item'));
+
+        return $pdf->stream('Room Inventory.pdf');
     }
 
     /**

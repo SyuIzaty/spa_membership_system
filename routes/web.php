@@ -1080,11 +1080,14 @@ Route::group([
 ], function () {
     Route::resource('/space-setting/room-type', 'Space\SpaceSetting\RoomTypeController');
     Route::resource('/space-setting/room', 'Space\SpaceSetting\RoomController');
+    Route::get('/space-setting/room/{id}/print', 'Space\SpaceSetting\RoomController@print');
     Route::resource('/space-setting/space-main', 'Space\SpaceSetting\SpaceMainController');
     Route::resource('/space-setting/block', 'Space\SpaceSetting\BlockController');
     Route::resource('/space-setting/report', 'Space\SpaceSetting\ReportController');
     Route::resource('/space-setting/item', 'Space\SpaceSetting\SpaceItemController');
     Route::resource('/space-setting/space-condition', 'Space\SpaceSetting\SpaceConditionController');
+    Route::resource('/space-setting/space-category', 'Space\SpaceSetting\SpaceCategoryController');
+    Route::resource('/space-setting/space-upload', 'Space\SpaceSetting\SpaceUploadController');
     Route::post('/data_spacereport', 'Space\SpaceSetting\ReportController@data_spacereport');
     Route::resource('/space-setting/dashboard', 'Space\SpaceSetting\DashboardController');
     Route::get('/getChartData', 'Space\SpaceSetting\DashboardController@getChartData');

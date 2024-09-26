@@ -41,6 +41,11 @@ class SpaceItem extends Model
         return $this->hasOne('App\Stock','id','item_id');
     }
 
+    public function spaceCategory()
+    {
+        return $this->hasOne('App\SpaceCategory','id','item_id');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status','1');
