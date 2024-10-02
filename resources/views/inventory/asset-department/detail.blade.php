@@ -51,7 +51,7 @@
                                 <table id="custodian" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr class="text-center bg-primary-50">
-                                            <th>#ID</th>
+                                            <th>ID</th>
                                             <th>STAFF ID</th>
                                             <th>STAFF NAME</th>
                                             <th>ACTION</th>

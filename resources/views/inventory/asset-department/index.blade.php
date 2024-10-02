@@ -29,7 +29,7 @@
                             <table id="department" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr class="text-center bg-primary-50">
-                                        <th>#ID</th>
+                                        <th>ID</th>
                                         <th>DEPARTMENT</th>
                                         <th>CODE NAME</th>
                                         <th>TOTAL MANAGER</th>

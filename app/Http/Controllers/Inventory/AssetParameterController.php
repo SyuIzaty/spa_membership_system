@@ -37,7 +37,7 @@ class AssetParameterController extends Controller
 
         ->editColumn('id', function ($assetType) {
 
-            return '#'.$assetType->id;
+            return $assetType->id;
         })
 
         ->addColumn('action', function ($assetType) {
@@ -94,12 +94,14 @@ class AssetParameterController extends Controller
     public function update_asset_type(Request $request)
     {
         $request->validate([
+            'department_id'   => 'required',
             'asset_type'      => 'required',
         ]);
 
         $assetType = AssetType::where('id', $request->type_id)->first();
 
         $assetType->update([
+            'department_id' => $request->department_id,
             'asset_type'    => $request->asset_type,
         ]);
 
@@ -156,7 +158,7 @@ class AssetParameterController extends Controller
 
         ->editColumn('id', function ($assetDepartment) {
 
-            return '#'.$assetDepartment->id;
+            return $assetDepartment->id;
         })
 
         ->editColumn('department_id', function ($assetDepartment) {
@@ -299,7 +301,7 @@ class AssetParameterController extends Controller
 
         ->editColumn('id', function ($custodian) {
 
-            return '#'.$custodian->id;
+            return $custodian->id;
         })
 
         ->addColumn('action', function ($custodian) {

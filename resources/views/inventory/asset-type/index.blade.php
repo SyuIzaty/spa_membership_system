@@ -29,7 +29,7 @@
                             <table id="type" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr class="text-center bg-primary-50">
-                                        <th>#ID</th>
+                                        <th>ID</th>
                                         <th>DEPARTMENT</th>
                                         <th>ASSET TYPE</th>
                                         <th>ACTION</th>
@@ -108,7 +108,7 @@
                     <div class="form-group">
                         <td width="15%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department :</label></td>
                         <td colspan="5">
-                            <select class="form-control" name="department_id" id="department" disabled>
+                            <select class="form-control" name="department_id" id="department" required>
                                 <option value="" selected disabled>Please select</option>
                                 @foreach($department as $depart)
                                     <option value="{{$depart->id}}">{{ strtoupper($depart->department_name) }}</option><br>
