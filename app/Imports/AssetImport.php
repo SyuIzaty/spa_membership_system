@@ -114,7 +114,7 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
             'remark'                => $asset->remark,
             'acquisition_type'      => $asset->acquisition_type,
             'set_package'           => $asset->set_package,
-            'space_room_id'      => $asset->space_room_id,
+            'space_room_id'         => $asset->space_room_id,
             'custodian_id'          => $asset->custodian_id,
             'created_by'            => $asset->created_by,
             'updated_by'            => Auth::user()->id,

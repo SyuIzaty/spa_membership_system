@@ -98,12 +98,20 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td width="15%"><label class="form-label" for="asset_code_type"><span class="text-danger">*</span> Code Type:</label></td>
+                                                                            <td width="15%">
+                                                                                <label class="form-label" for="asset_code_type"><span class="text-danger">*</span> Code Type:</label>
+                                                                            </td>
                                                                             <td colspan="3">
                                                                                 <select class="form-control asset_code_type" name="asset_code_type" id="asset_code_type" required>
                                                                                     <option value="">Please Select</option>
                                                                                     @foreach ($codeType as $codeTypes)
-                                                                                        <option value="{{ $codeTypes->id }}" {{ old('asset_code_type', ($asset->asset_code_type ? $asset->codeType->id : '' )) == $codeTypes->id ? 'selected' : '' }}>{{ $codeTypes->id }} - {{ $codeTypes->code_name }}</option>
+                                                                                        <option value="{{ $codeTypes->id }}"
+                                                                                            {{ old('asset_code_type', ($asset->codeType ? $asset->codeType->id : '' )) == $codeTypes->id ? 'selected' : '' }}>
+                                                                                            {{ $codeTypes->id ?? old('asset_code_type') }}
+                                                                                            @if(isset($codeTypes->code_name))
+                                                                                                - {{ $codeTypes->code_name }}
+                                                                                            @endif
+                                                                                        </option>
                                                                                     @endforeach
                                                                                 </select>
                                                                                 @error('asset_code_type')
@@ -146,12 +154,17 @@
                                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                 @enderror
                                                                             </td>
-                                                                            <td width="15%"><label class="form-label" for="space_room_id"> Location:</label></td>
+                                                                            <td width="15%">
+                                                                                <label class="form-label" for="space_room_id"> Location:</label>
+                                                                            </td>
                                                                             <td colspan="3">
                                                                                 <select class="form-control space_room_id" name="space_room_id" id="space_room_id" required>
                                                                                     <option value="">Please Select</option>
                                                                                     @foreach ($space as $spaces)
-                                                                                        <option value="{{ $spaces->id }}" {{ old('space_room_id', ($asset->space_room_id ? $asset->spaceRoom->id : '' )) == $spaces->id ? 'selected' : '' }}>{{ $spaces->name }}</option>
+                                                                                        <option value="{{ $spaces->id }}"
+                                                                                            {{ old('space_room_id', ($asset->spaceRoom ? $asset->spaceRoom->id : '' )) == $spaces->id ? 'selected' : '' }}>
+                                                                                            {{ $spaces->name }}
+                                                                                        </option>
                                                                                     @endforeach
                                                                                 </select>
                                                                                 @error('space_room_id')
