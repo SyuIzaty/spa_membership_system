@@ -1036,7 +1036,7 @@ class AduanController extends Controller
                     'stock_in'      => '0',
                     'stock_out'     => $kuantiti,
                     'created_by'    => Auth::user()->id,
-                    'reason'        => 'Transaction Out For E-Aduan.',
+                    'reason'        => 'Transaction Out For E-Aduan : '. $aduan->id,
                     'supply_type'   => 'INT',
                     'supply_to'     => Auth::user()->id,
                     'trans_date'    => $request->tarikh_selesai_aduan,
