@@ -1,0 +1,83 @@
+/* dot */
+
+.high {
+    height: 25px;
+    width: 25px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+.medium {
+    height: 25px;
+    width: 25px;
+    background-color: rgb(240 255 19);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+.low {
+    height: 25px;
+    width: 25px;
+    background-color: rgb(100, 231, 100);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+.none {
+    height: 25px;
+    width: 25px;
+    background-color: rgba(77, 86, 77, 0.755);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+/* badge */
+
+/* selesai */
+.badge-success { 
+    color: #fff;
+    background-color: #28a745;
+}
+/* selesai kontrak*/
+.badge-success2 { 
+  color: #fff;
+  background-color: #075419;
+}
+/* kiv */
+.badge-kiv {
+    color: #fff;
+    background-color: #df8585;
+}
+/* tindih */
+.badge-duplicate {
+  color: #fff;
+  background-color: #b51b1b;
+}
+/* baru */
+.badge-new { 
+    color: #fff;
+    background-color: #1c1ceb;
+}
+/* hntr kpd */
+.badge-sent { 
+    color: #fff;
+    background-color: #b711d5;
+}
+/* ambil tindakan */
+.badge-done { 
+    color: #fff;
+    background-color: #eb911c;
+}
+.badge {
+    display: inline-block;
+    padding: 0.50em .4em;
+    font-size: 90%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
