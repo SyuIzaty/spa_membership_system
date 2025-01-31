@@ -87,9 +87,11 @@ class LoginController extends Controller
     public function registerSignup(Request $request)
     {
         $request->validate([
-            'email'     => 'required|email|unique:users,username',
+            'email'     => 'required|email|unique:customers,customer_email',
             'phone'     => 'required|string|max:15',
             'password'  => 'required|string|confirmed|min:8',
+        ],[
+            'email.unique' => 'This email is already registered.'
         ]);
 
 
