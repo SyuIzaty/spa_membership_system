@@ -13,6 +13,7 @@
             <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('admin/img/favicon/favicon-32x32.jpg') }}">
             <link rel="mask-icon" href="{{ asset('admin/img/favicon/safari-pinned-tab.svg') }}" color="#5bbad5">
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <style>
             body {
@@ -227,12 +228,18 @@
                             <br>
                             <div class="group">
                                 <label for="password" class="label" style="margin-bottom: 10px">Password</label>
-                                <input id="password" type="password" class="input @error('password') is-invalid @enderror" name="password" required autocomplete="off">
+                                <div style="position: relative;">
+                                    <input id="password" type="password" class="input @error('password') is-invalid @enderror" name="password" required autocomplete="off">
+                                    <i class="fa-solid fa-eye toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                </div>
                             </div>
                             <br>
                             <div class="group">
-                                <label for="password_confirmation" class="label" style="margin-bottom: 10px">Repeat Password</label>
-                                <input id="password_confirmation" type="password" class="input @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="off">
+                                <label for="password_confirmation" class="label" style="margin-bottom: 10px">Confirm Password</label>
+                                <div style="position: relative;">
+                                    <input id="password_confirmation" type="password" class="input @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="off">
+                                    <i class="fa-solid fa-eye toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                </div>
                             </div>
                             <br>
                             <div class="group">
@@ -256,3 +263,15 @@
         </div>
     </body>
 </html>
+
+<script>
+    document.querySelectorAll('.toggle-password').forEach(icon => {
+        icon.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>

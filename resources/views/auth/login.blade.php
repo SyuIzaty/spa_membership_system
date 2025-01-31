@@ -13,6 +13,7 @@
             <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('admin/img/favicon/favicon-32x32.jpg') }}">
             <link rel="mask-icon" href="{{ asset('admin/img/favicon/safari-pinned-tab.svg') }}" color="#5bbad5">
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <style>
             body {
@@ -186,6 +187,23 @@
             ::placeholder{
             color: #b3b3b3;
             }
+
+            .eye-icon {
+                transition: all 0.3s ease;
+                color: #666;
+            }
+
+            .eye-icon.eye-visible {
+                color: #2196F3;
+            }
+
+            .eye-icon.eye-visible path:first-child {
+                display: none;
+            }
+
+            .eye-icon.eye-visible + path {
+                display: block;
+            }
         </style>
     </head>
     <body>
@@ -226,7 +244,10 @@
                             <br>
                             <div class="group">
                                 <label for="password" class="label" style="margin-bottom: 10px">Password</label>
-                                <input id="password" type="password" class="input" name="password" required autocomplete="off">
+                                <div style="position: relative;">
+                                    <input id="password" type="password" class="input" name="password" required autocomplete="off">
+                                    <i class="fa-regular fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                </div>
                             </div>
                             <br>
                             <div class="group" style="font-size: 12px">
@@ -257,3 +278,18 @@
         </div>
     </body>
 </html>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function() {
+        // Toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        // Toggle the eye icon class
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>
