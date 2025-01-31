@@ -218,6 +218,10 @@
                             <div class="group">
                                 <label for="username" class="label" style="margin-bottom: 10px; margin-top: 40px">Username</label>
                                 <input id="username" type="text" class="input" name="username" value="{{ old('username') }}" required autofocus>
+                                <small class="form-text text-muted">
+                                    The username is your email before the @ <br>
+                                    e.g: raudhah@example.com → raudhah
+                                </small>
                             </div>
                             <br>
                             <div class="group">
