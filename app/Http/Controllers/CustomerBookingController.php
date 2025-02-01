@@ -104,18 +104,22 @@ class CustomerBookingController extends Controller
             'staff_id'                  => $request->staff_id,
         ]);
 
-        foreach ($services as $service) {
-            BookingService::create([
-                'booking_id' => $booking->id,
-                'service_id' => $service['serviceId'],
-            ]);
+        if (!empty($services)) {
+            foreach ($services as $service) {
+                BookingService::create([
+                    'booking_id' => $booking->id,
+                    'service_id' => $service['serviceId'],
+                ]);
+            }
         }
 
-        foreach ($discounts as $discount) {
-            BookingDiscount::create([
-                'booking_id'    => $booking->id,
-                'discount_id'   => $discount['id'],
-            ]);
+        if (!empty($discounts)) {
+            foreach ($discounts as $discount) {
+                BookingDiscount::create([
+                    'booking_id'    => $booking->id,
+                    'discount_id'   => $discount['id'],
+                ]);
+            }
         }
 
         BookingStatusTrack::create([
@@ -147,10 +151,6 @@ class CustomerBookingController extends Controller
 
         return redirect()->back()->with('message', 'Booking has been successfully reserved. Please check your email for the receipt.');
     }
-
-
-
-
 
     /**
      * Show the form for creating a new resource.

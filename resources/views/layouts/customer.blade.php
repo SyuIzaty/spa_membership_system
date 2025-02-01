@@ -28,14 +28,14 @@
             <div class="container-fluid topbar d-none d-lg-block">
                 <div class="container px-0">
                     <div class="row align-items-center">
-                        <div class="col-lg-8">
+                        <div class="col-lg-7">
                             <div class="d-flex flex-wrap">
                                 <a href="https://maps.app.goo.gl/KveTdJHsU8461BYJ8" class="me-4 text-light"><i class="fas fa-map-marker-alt text-primary me-2"></i>Find A Location</a>
                                 <a href="#" class="me-4 text-light"><i class="fas fa-phone-alt text-primary me-2"></i>(+60) 3-1234 5678</a>
                                 <a href="#" class="text-light"><i class="fas fa-envelope text-primary me-2"></i> info@raudhahserenity.com</a>
                             </div>
                         </div>
-                        <div class="col-lg-4 text-lg-end">
+                        <div class="col-lg-5 text-lg-end">
                             @if(Auth::check())
                                 @php
                                     $mem = \App\Customer::where('user_id', Auth::user()->id)->whereHas('customerPlans', function ($query) {
@@ -62,7 +62,7 @@
             </div>
 
             <div class="container-fluid bg-light">
-                <div class="container px-0">
+                <div class="container px-0" style="max-width: 1450px">
                     <nav class="navbar navbar-light navbar-expand-xl">
                         <a href="/home" class="navbar-brand">
                             <h1 class="text-primary display-4">Raudhah Serenity Spa</h1>
