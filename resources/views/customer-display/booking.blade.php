@@ -69,7 +69,11 @@
 
                                     <div class="col-lg-6">
                                         <label class="label text-white" style="margin-bottom: 10px">Booking Date :</label>
-                                        <input type="date" id="booking_date" name="booking_date" class="form-control py-3 border-white bg-transparent text-white" required>
+                                        <div class="position-relative">
+                                            <input type="date" id="booking_date" name="booking_date"
+                                                   class="form-control py-3 border-white bg-transparent text-white custom-picker"
+                                                   required style="padding-right: 2.5rem;">
+                                        </div>
                                         @error('booking_date')
                                             <p style="color: red; margin-bottom: 10px"><strong> * {{ $message }} </strong></p>
                                         @enderror
@@ -77,7 +81,11 @@
 
                                     <div class="col-lg-6">
                                         <label class="label text-white" style="margin-bottom: 10px">Booking Time :</label>
-                                        <input type="time" id="booking_time" name="booking_time" class="form-control py-3 border-white bg-transparent text-white" required>
+                                        <div class="position-relative">
+                                            <input type="time" id="booking_time" name="booking_time"
+                                                   class="form-control py-3 border-white bg-transparent text-white custom-picker"
+                                                   required>
+                                        </div>
                                         @error('booking_time')
                                             <p style="color: red; margin-bottom: 10px"><strong> * {{ $message }} </strong></p>
                                         @enderror
