@@ -142,7 +142,11 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <label class="label text-white" style="margin-bottom: 10px">Start Date :</label>
-                                        <input type="date" id="start_date" name="start_date" class="form-control py-3 border-white bg-transparent text-white" placeholder="Start Date" disabled>
+                                        <div class="position-relative">
+                                            <input type="date" id="start_date" name="start_date"
+                                                   class="form-control py-3 border-white bg-transparent text-white custom-picker"
+                                                   placeholder="Start Date" disabled>
+                                        </div>
                                         @error('start_date')
                                             <p style="color: red; margin-bottom: 10px"><strong> * {{ $message }} </strong></p>
                                         @enderror

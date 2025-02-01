@@ -19,6 +19,16 @@
         <link href="{{ asset('customer/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('customer/css/style.css') }}" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            .custom-picker::-webkit-calendar-picker-indicator {
+                filter: invert(1);
+                cursor: pointer;
+                position: absolute;
+                right: 10px;
+                padding-left: 300px;
+            }
+        </style>
     </head>
     <body>
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
